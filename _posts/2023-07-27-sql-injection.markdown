@@ -7,14 +7,14 @@ classes: wide
 toc: true
 ---
 # What is SQL injection (SQLi)?
-SQL injection (SQLi) vulnerabilities allow an attacker to interfere with the queries that an application makes to its database. It generally allows an attacker to view data that they are not normally able to retrieve. The challenge with SQL injection is that input can come from many places. People are well aware of SQLi in form fields, but also cookies and request headers can be modified by a malicious client which are not directly
+SQL injection (SQLi) vulnerabilities allow an attacker to interfere with the queries that an application makes to the application database. They allow an attacker to view data they should not be able to retrieve. The challenge with SQL injection is that input can come from many places. People are well aware of SQLi in form fields, but also cookies and request headers can be modified by a malicious client which are not directly
 set by the web app user. 
 
 An even more tricky form of attack is **second order injection**, where an attacker does the injection
-in two steps. This is usually done by placing the input into a database, but no vulnerability arises at the point where the data is stored. Later, when handling a different HTTP request, the application retrieves the stored data and incorporates it into a SQL query in an unsafe way.
+in two steps. By placing the input data into a database an SQL injection can happen at a later stage when handling a different request. The application then retrieves the stored data and uses it into a SQL query in an unsafe way.
 
 ## Retrieving data from database tables
-In cases where the results of an SQL query are returned within the application's responses, an attacker can leverage an SQL injection vulnerability to retrieve data from other tables within the database. This is done using the `UNION` keyword, which lets you execute an additional `SELECT` query and append the results to the original query. For example, if an application executes the following query containing the user input "Gifts" when browsing to `https://insecure-website.com/products?category=Gifts`:
+Attackers can perform SQL injection vulnerabilities to retrieve data from other tables within the database that are not directly involved in the injected query. This can be achieved using the `UNION` keyword, letting the attacker execute an additional `SELECT` query and append the results to the original query. For example, if an application executes the following query containing the user input "Gifts" when browsing to `https://insecure-website.com/products?category=Gifts`:
 ```sql
 SELECT name, description FROM products WHERE category = 'Gifts'
 ```
@@ -22,10 +22,10 @@ An attacker can submit the following input:
 ```sql
 ' UNION SELECT username, password FROM users--
 ```
-This will cause the application to return all usernames and passwords along with the names and descriptions of products. The key thing here is that the double-dash sequence `--` is a comment indicator in SQL, and means that the rest of the query is interpreted as a comment.
+The above statement causes the application to return all usernames and passwords along with the product names and descriptions. The key part of the injection is the double-dash sequence `--`, and means that the rest of the query is interpreted as a comment.
 
 # SQL injection in different contexts
-It's important to note that you can perform SQL injection attacks using any controllable input that is processed as a SQL query by the application. For example, some websites take input in JSON or XML format and use this to query the database. These different formats may even provide alternative ways for you to obfuscate attacks that are otherwise blocked due to WAFs and other defense mechanisms. For example, the following XML-based SQL injection uses an XML escape sequence to encode the S character in `SELECT`:
+An attacker can perform SQL injection using any controllable input that is processed as a SQL query by the application. For example, some websites take input in JSON or XML format and use this to query the database. These different formats can also provide alternative ways to obfuscate payloads that are otherwise blocked due to Web Application Firewall (WAF) and other defense mechanisms. For example, the following XML-based SQL injection uses an XML escape sequence to encode the S character in `SELECT`:
 ```xml
 <stockCheck>
     <productId>
@@ -38,24 +38,24 @@ It's important to note that you can perform SQL injection attacks using any cont
 ```
 
 # Union attacks
-The `UNION` keyword lets you execute one or more additional `SELECT` queries and append the results to the original query. For example:
+The `UNION` keyword allows you execute one or more additional `SELECT` queries and append the results to the original query. For example:
 ```sql
 SELECT a, b FROM table1 UNION SELECT c, d FROM table2
 ```
 This SQL query will return a single result set with two columns, containing values from columns `a` and `b` in `table1` and columns `c` and `d` in `table2`. For a `UNION` query to work, two key requirements must be met:
-- The individual queries must return the same number of columns.
-- The data types in each column must be compatible between the individual queries.
+- Individual queries must return the same number of columns.
+- The data types in every column must be compatible between individual queries.
 
-A method to find out the amount of columns involves submitting a series of `UNION SELECT` payloads specifying a different number of null values:
+To find out the amount of columns that are involved in a query, you can submit a series of `UNION SELECT` payloads specifying different number of null values:
 ```sql
 ' UNION SELECT NULL--
 ' UNION SELECT NULL,NULL--
 ...
 ```
-Having already determined the number of required columns, you can probe each column to test whether it can hold string data by submitting a series of `UNION SELECT` payloads that place a string value into each column in turn.
+Having determined the number of required columns, you can probe each column to test whether it can hold a particular data type by submitting a series of `UNION SELECT` payloads that place the data values into each column in turn.
 
-## Retrieving multiple values within a single column
-You can easily retrieve multiple values together within this single column by concatenating the values together, ideally including a suitable separator to let you distinguish the combined values. For example, on Oracle you could submit the input:
+## Retrieving multiple values in a single column
+One can easily retrieve multiple values together within a single column by concatenating them together, ideally by including a suitable separator to let you distinguish the combined values. For example, on Oracle you could submit the input:
 ```sql
 ' UNION SELECT username || '~' || password FROM users--
 ```
@@ -103,7 +103,7 @@ SELECT 'this is a test' INTO OUTFILE '/tmp/test.txt';
 ```
 
 # Mitigations
-Most instances of SQL injection can be prevented by using parameterized queries (also known as prepared statements) instead of string concatenation within the query. For a parameterized query to be effective in preventing SQL injection, the string that is used in the query must always be a hard-coded constant, and must never contain any variable data from any origin. Think about what phase of the development cycle you want to apply countermeasures:
+Most SQL injection vulnerabilities can be prevented by using parameterized queries (prepared statements) instead of string concatenation within the query. Think about what phase of the development cycle you want to apply countermeasures:
 - **At coding time**: the goal is to prevent vulnerabilities when writing code by doing defensive coding
 (sanitize input/output, whitelisting allowed inputs, identify input sources, use prepared statements, etc.)
 - **At testing time**: the goal is to detect vulnerabilities by doing static, dynamic or hybrid checking of code.
