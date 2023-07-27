@@ -5,3 +5,8 @@ main:
     url: /categories/
   - title: "About"
     url: /about/
+docs:
+  - title: Binary Exploitation
+    children:
+      - title: "Buffer Overflow"
+        url: /categories/#binary-exploitation

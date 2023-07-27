@@ -2,8 +2,9 @@
 layout: single
 title:  "Buffer Overflow"
 date:   2023-07-26 17:22:22 +0200
-categories: binary exploitation
+categories: ['Binary Exploitation']
 classes: wide
+toc: true
 ---
 ## What are memory corruptions?
 Memory management vulnerabilities are one of the most important and dangerous vulnerabilities around, even after decades of studies and countermeasures. Memory corruption refers to an attacker modifying a program’s memory, in a way that was not intended by the program.
