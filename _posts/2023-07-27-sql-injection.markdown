@@ -1,7 +1,7 @@
 ---
 layout: single
 title:  "SQL Injection"
-date:   2023-07-26 17:22:22 +0200
+date:   2023-07-27 13:22:22 +0200
 categories: ['Web Exploitation']
 classes: wide
 toc: true
