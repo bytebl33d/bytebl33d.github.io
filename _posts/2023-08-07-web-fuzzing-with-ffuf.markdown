@@ -28,7 +28,7 @@ ffuf -u http://<HOST>:<PORT>/indexFUZZ -w web-extensions.txt:FUZZ
 ```
 Whenever we found the possible extensions that are used by the web server, we can look for all files with those extensions with the `-e` flag:
 ```shell
-ffuf -u http://<HOST>:<PORT>/FUZZ -w wordlist.txt -u -e .aspx,.html,.php,.txt
+ffuf -u http://<HOST>:<PORT>/FUZZ -w wordlist.txt -e .aspx,.html,.php,.txt
 ```
 
 ## Recursive Fuzzing
