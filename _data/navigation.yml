@@ -11,4 +11,8 @@ docs:
   - title: Web Exploitation
     children:
       - title: "SQL Injection"
-        url: /categories/#web-exploitation	
+        url: /categories/#web-exploitation
+      - title: "Web fuzzing with FFUF"
+        url: /categories/#web-exploitation
+      - title: "Attacking JSON Web Tokens"
+        url: /categories/#web-exploitation
