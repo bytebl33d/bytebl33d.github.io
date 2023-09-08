@@ -20,6 +20,7 @@ description: >- # this means to ignore newlines until "baseurl:"
 github_username: bytebl33d
 minimal_mistakes_skin: default
 search: true
+google_site_verification: "dlOKt3coV5VGKFlhgRHN8m2caAEm_ViKyGuR3g2n8mY"
 
 # Build settings
 markdown: kramdown
