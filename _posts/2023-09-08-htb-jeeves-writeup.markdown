@@ -49,7 +49,7 @@ The assembly view in Ghidra shows this variable is given the hex value of `0xdea
 
 ## Examining the binary in GDB
 Loading the binary into GDB and disassembling the `main` function we get the following output:
-```assembly
+```as
 $ gdb jeeves
 
 pwndbg> disass main
@@ -73,7 +73,7 @@ Dump of assembler code for function main:
    0x0000000000001231 <+72>:    call   0x10a0 <printf@plt>
 ```
 Our task is to figure out how many bytes we have to overflow the buffer in order to overwrite the `check` variable. Lets's set a breakpoint right after the `gets` call and run the program (just enter some A's as our input):
-```assembly
+```as
 pwndbg> b *main+53
 pwndbg> r
 
