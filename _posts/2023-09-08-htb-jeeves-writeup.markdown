@@ -45,6 +45,7 @@ main(void){
 The user input is stored inside the input buffer with a size of 44 bytes. We also see there is a `flag.txt` file that gets opened after the if-statement that verfifies if the `check` variable is equal to the value `0x1337bab3` (or in other words 'leetbabe'). However, this check is never going to succeed because the `check` variable is initialized in a different way. We therefore need to find out how to overwrite this variable on the stack. 
 
 The assembly view in Ghidra shows this variable is given the hex value of `0xdeadc0d3` (since this is indeed just dead code).
+
 ![ghidra](/assets/images/binary-exploitation/ghidra.png)
 
 ## Examining the binary in GDB
@@ -82,7 +83,7 @@ pwndbg> r
 *RBP  0x7fffffffdec0 ◂— 0x1
 *RSP  0x7fffffffde80 ◂— 'AAAAAAAAAA'
 *RIP  0x55555555521e (main+53) ◂— lea rax, [rbp - 0x40]
-───────────────────────────────────────────────────────────────────[ DISASM / x86-64 / set emulate on ] ──────────────────────────────────────────────────────────
+────────────────────────────────────[ DISASM / x86-64 / set emulate on ] ────────────────────────────────────────────────
  ► 0x55555555521e <main+53>     lea    rax, [rbp - 0x40]
    0x555555555222 <main+57>     mov    rsi, rax
    0x555555555225 <main+60>     lea    rdi, [rip + 0xe04]
