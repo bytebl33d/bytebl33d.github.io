@@ -1,12 +1,14 @@
 ---
 layout: single
 title:  "Intro to Binary Exploitation: HTB Jeeves"
+seo_title: "Introduction to Binary Exploitation with Hack The Box: Jeeves Pwn Challenge writeup"
 date:   2023-09-08 12:30:00 +0200
 categories: ['Binary Exploitation','Hack The Box']
 classes: wide
 toc: true
+excerpt: Hack The Box Jeeves writeup for the first Pwn challenge in the Intro to Binary Exploitation track.
 ---
-# Intro to Binary Exploitation: HTB Jeeves Writeup
+# HTB Jeeves Pwn Challenge Writeup
 Today we take on a simple binary exploitation challenge from Hack The Box. In this post we are going to solve the Jeeves Pwn challenge from the **Intro to Binary Exploitation** track.
 
 ## Running the program
@@ -172,7 +174,7 @@ target.sendline(payload)
 
 print(target.recvuntil(b"}"))
 ```
-Runing our exploit code:
+Running our exploit code:
 ```bash
 $ python3 exploit.py
 [+] Starting local process '/usr/bin/nc': pid 20136
