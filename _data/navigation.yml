@@ -8,6 +8,8 @@ docs:
     children:
       - title: "Buffer Overflow"
         url: /categories/#binary-exploitation
+      - title: "HTB Jeeves Challenge"
+        url: /categories/#binary-exploitation
   - title: Web Exploitation
     children:
       - title: "SQL Injection"
