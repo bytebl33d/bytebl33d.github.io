@@ -232,7 +232,7 @@ Now to exploit the vulnerability, we of course need to host a website that imple
         <title>Test Page</title>
     </head>
     <body>
-        <p>{{"{{"}} . {{"}}"}}</p>
+        <p>{% raw %}{{ . }}{% endraw %}</p>
     </body>
 </html>
 ```
@@ -245,7 +245,7 @@ As discussed previously, our job is to read a file from the server (flag.txt). L
         <title>Test Page</title>
     </head>
     <body>
-        <p>{{"{{"}} .OutFileContents .ClientUA {{"}}"}}</p>
+        <p>{% raw %} {{.OutFileContents .ClientUA}}{% endraw %} </p>
     </body>
 </html>
 ```
