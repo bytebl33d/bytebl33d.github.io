@@ -18,3 +18,7 @@ docs:
         url: /categories/#web-exploitation
       - title: "Attacking JSON Web Tokens"
         url: /categories/#web-exploitation
+  - title: CTF WriteUps
+    children:
+      - title: HTBoo 2023 CTF
+        url: /categories/#ctf
