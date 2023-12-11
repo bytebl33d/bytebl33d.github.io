@@ -7,18 +7,22 @@ docs:
   - title: Binary Exploitation
     children:
       - title: "Buffer Overflow"
-        url: /categories/#binary-exploitation
+        url: /binary-exploitation/buffer-overflow/
       - title: "HTB Jeeves Challenge"
-        url: /categories/#binary-exploitation
+        url: /binary-exploitation/hackthebox/htb-jeeves-writeup/
   - title: Web Exploitation
     children:
       - title: "SQL Injection"
-        url: /categories/#web-exploitation
+        url: /web-exploitation/sql-injection/
       - title: "Web fuzzing with FFUF"
-        url: /categories/#web-exploitation
+        url: /web-exploitation/web-fuzzing-with-ffuf/
       - title: "Attacking JSON Web Tokens"
-        url: /categories/#web-exploitation
+        url: /web-exploitation/jwt-attacks/
   - title: CTF WriteUps
     children:
       - title: HTBoo 2023 CTF
-        url: /categories/#ctf
+        url: /hackthebox/ctf/forensics/web-exploitation/htboo-ctf-forensics-reversing/
+      - title: LakeCTF 2023
+        url: /ctf/binary-exploitation/web-exploitation/lake-ctf-pwn-scream-into-the-abyss/
+      - title: HTBoo University CTF 2023
+        url: /hackthebox/ctf/forensics/web-exploitation/htb-university-ctf-23/

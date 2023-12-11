@@ -2,7 +2,7 @@
 layout: single
 title:  "Buffer Overflow"
 date:   2023-08-29 09:22:22 +0200
-categories: ['Binary Exploitation']
+categories: ['Binary-Exploitation']
 classes: wide
 toc: true
 ---

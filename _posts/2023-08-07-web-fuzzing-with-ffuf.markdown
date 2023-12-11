@@ -2,7 +2,7 @@
 layout: single
 title:  "Web Fuzzing with FFUF"
 date:   2023-07-28 13:22:22 +0200
-categories: ['Web Exploitation']
+categories: ['Web-Exploitation']
 classes: wide
 toc: true
 ---

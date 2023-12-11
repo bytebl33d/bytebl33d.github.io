@@ -2,7 +2,7 @@
 layout: single
 title:  "Attacking JSON Web Tokens"
 date:   2023-09-02 13:22:22 +0200
-categories: ['Web Exploitation']
+categories: ['Web-Exploitation']
 classes: wide
 toc: true
 ---

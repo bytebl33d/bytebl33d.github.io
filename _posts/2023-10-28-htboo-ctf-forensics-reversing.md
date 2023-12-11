@@ -3,7 +3,7 @@ layout: single
 title:  "Hack The Boo 2023 CTF - Forensics and Web Writeup"
 seo_title: "Hack The Box (HTB) writeup for the Forensics and Web Challenges of the Hack The Boo 2023 CTF Competition"
 date:   2023-10-28 15:30:00 +0200
-categories: ['Hack The Box', 'CTF', 'Forensics', 'Web Exploitation']
+categories: ['HackTheBox', 'CTF', 'Forensics', 'Web-Exploitation']
 classes: wide
 toc: true
 excerpt: Hack The Boo 2023 CTF writeups for the forensics and web challenges.

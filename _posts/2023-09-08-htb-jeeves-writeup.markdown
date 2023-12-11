@@ -3,7 +3,7 @@ layout: single
 title:  "Intro to Binary Exploitation: HTB Jeeves"
 seo_title: "Introduction to Binary Exploitation with Hack The Box: Jeeves Pwn Challenge writeup"
 date:   2023-09-08 12:30:00 +0200
-categories: ['Binary Exploitation','Hack The Box']
+categories: ['Binary-Exploitation','HackTheBox']
 classes: wide
 toc: true
 excerpt: Hack The Box Jeeves writeup for the first Pwn challenge in the Intro to Binary Exploitation track.
