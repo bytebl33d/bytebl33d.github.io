@@ -23,6 +23,6 @@ docs:
       - title: HTBoo 2023 CTF
         url: /hackthebox/ctf/forensics/web-exploitation/htboo-ctf-forensics-reversing/
       - title: LakeCTF 2023
-        url: /ctf/binary-exploitation/web-exploitation/lake-ctf-pwn-scream-into-the-abyss/
+        url: /ctf/binary-exploitation/lake-ctf-pwn-scream-into-the-abyss/
       - title: HTBoo University CTF 2023
         url: /hackthebox/ctf/forensics/web-exploitation/htb-university-ctf-23/
