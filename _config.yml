@@ -59,7 +59,7 @@ plugins:
 author:
   name   : "Bytebl33d"
   avatar : "/assets/images/bio-photo.jpg"
-  bio    : "Cyber Security enthousiast interested in creating and securing applications."
+  bio    : "I am a software and security enthousiast striving to create innovative and secure software systems."
   links:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
