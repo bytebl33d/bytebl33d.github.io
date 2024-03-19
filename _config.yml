@@ -13,7 +13,7 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: Bytebl33d
+title: bytebl33d
 email:
 description: >- # this means to ignore newlines until "baseurl:"
   Bytebl33d's Cyber Security Blog
@@ -24,7 +24,7 @@ google_site_verification: "dlOKt3coV5VGKFlhgRHN8m2caAEm_ViKyGuR3g2n8mY"
 
 # Build settings
 markdown: kramdown
-remote_theme: mmistakes/minimal-mistakes
+theme: minimal-mistakes-jekyll
 # Outputting
 permalink: /:categories/:title/
 paginate: 5 # amount of posts to show
@@ -57,7 +57,7 @@ plugins:
   - jekyll-seo-tag
 
 author:
-  name   : "Bytebl33d"
+  name   : "bytebl33d"
   avatar : "/assets/images/bio-photo.jpg"
   bio    : "I am a software and security enthousiast striving to create innovative and secure software systems."
   links:

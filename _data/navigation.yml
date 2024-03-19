@@ -24,5 +24,9 @@ docs:
         url: /hackthebox/ctf/forensics/web-exploitation/htboo-ctf-forensics-reversing/
       - title: LakeCTF 2023
         url: /ctf/binary-exploitation/lake-ctf-pwn-scream-into-the-abyss/
-      - title: HTBoo University CTF 2023
+      - title: HTB University CTF 2023
         url: /hackthebox/ctf/forensics/web-exploitation/htb-university-ctf-23/
+  - title: Networking
+    children:
+      - title: Proxmox AD Lab
+        url: /active-directory/homelab/active-directory-homelab/

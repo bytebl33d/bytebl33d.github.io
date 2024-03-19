@@ -21,7 +21,8 @@ We'll create three networks behind the pfSense firewall:
 - Cyber LAB for experimenting with vulnerable machines or data (172.16.100.1/24)
 - Active Directory LAB for creating a windows only AD environment (172.16.200.1/24)
 
-> pfSense is the gateway (router) and firewall four our home lab and should always be booted first when using the lab.
+pfSense is the gateway (router) and firewall four our home lab and should always be booted first when using the lab.
+{: .notice--info}
 
 ## System Requirements
 - 64-bit multi-threaded CPU (minimum 4 cores) with Virtualization Support
@@ -50,7 +51,7 @@ After creating the VM we need to assign it our previously created bridge interfa
 Upon first boot we can configure the firewall and network. Select the following options when they appear:
 - Should VLANs be set up now? `n`
 - Enter the WAN interface name: `vtnet0`
-- Enter the LAN interface name: vtnet1
+- Enter the LAN interface name: `vtnet1`
 - Enter the Optional 1 interface name: `vtnet2`
 - Enter the Optional 2 interface name: `vtnet3`
 

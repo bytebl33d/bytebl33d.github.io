@@ -1,0 +1,43 @@
+---
+# Only the main Sass file needs front matter (the dashes are enough)
+---
+
+@charset "utf-8";
+
+$link-color: #455d7a;
+$text-color: #373842;
+$masthead-link-color: $link-color;
+
+@import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
+@import "minimal-mistakes"; // main partials
+
+h1 {
+    margin-top: $type-size-5;
+}
+
+// home page post item
+.archive__item-title {
+    font-family: $global-font-family;
+    font-size: $type-size-5;
+}  
+.archive__item-title a {
+    color: $link-color;
+}
+.archive__item-title a:hover {
+    color:#233142;
+}
+
+// post paragraph
+.page__content p, .page__content li{
+    font-size: $type-size-6;
+}
+
+// toc
+.toc__menu li{
+    font-size: $type-size-5;
+}
+
+// inline code style
+.language-plaintext {
+    background: #efecea;
+}
