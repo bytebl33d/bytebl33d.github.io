@@ -24,7 +24,7 @@ google_site_verification: "dlOKt3coV5VGKFlhgRHN8m2caAEm_ViKyGuR3g2n8mY"
 
 # Build settings
 markdown: kramdown
-theme: minimal-mistakes-jekyll
+remote_theme: mmistakes/minimal-mistakes@4.24.0
 # Outputting
 permalink: /:categories/:title/
 paginate: 5 # amount of posts to show
