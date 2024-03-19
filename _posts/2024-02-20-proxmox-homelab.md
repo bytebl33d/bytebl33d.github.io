@@ -78,11 +78,12 @@ Select option 2 and OPT2:
 - Enter the new OPT2 IPv4 address: `172.16.200.1`
 - Enter the new OPT2 IPv4 subnet bit count: `24`
 - Configure IPv6 address OPT2 interface via DHCP6: `n`
-- For the new OPT2 IPv6 address question press Enter
+- For the new OPT2 IPv6 address question press `Enter`
 - Do you want to enable the DHCP server on OPT2?: `n`
 - Do you want to revert to HTTP as the webConfigurator protocol?: `n`
 
-> We do not setup DHCP as we will let the Domain Controller handle this for us later on.
+We do not setup DHCP as we will let the Domain Controller handle this for us later on.
+{: .notice--info}
 
 ![alt text](/assets/images/homelab/pfsense.png)
 
