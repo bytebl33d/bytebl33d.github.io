@@ -7,6 +7,9 @@ categories: ['CTF', 'Binary-Exploitation']
 classes: wide
 toc: true
 excerpt: LakeCTF 2023 writeup for the Scream Into The Abyss binary exploitation challenge.
+header:
+    image: /assets/images/headers/lakectf.png
+    teaser: /assets/images/headers/lakectf.png
 ---
 # LakeCTF 2023 - Scream Into The Abyss
 We are given the following files:

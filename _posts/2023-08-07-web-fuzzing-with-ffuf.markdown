@@ -5,6 +5,9 @@ date:   2023-07-28 13:22:22 +0200
 categories: ['Web-Exploitation']
 classes: wide
 toc: true
+header:
+    image: /assets/images/headers/ffuf.png
+    teaser: /assets/images/headers/ffuf.png
 ---
 # What is fuzzing?
 Fuzzing is "the art of automatic bug finding", as described by the OWASP community. It is the act of sending various types of input in HTTP requests, trying to find an input or payload that causes the application to respond in unexpected ways and reveal a vulnerability. In the context of web applications, pentesters use fuzzing to discover directories and files that are hosted on the web server.

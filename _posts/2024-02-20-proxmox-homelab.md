@@ -7,6 +7,9 @@ categories: ['Active-Directory', 'Homelab']
 classes: wide
 toc: true
 excerpt: Building an Active Directory Penetration Testing Attack Lab with Proxmox VE
+header:
+    image: /assets/images/headers/ad-lab.png
+    teaser: /assets/images/headers/ad-lab.png
 ---
 # Objective
 In this post I'll take you through the setup of my very own homelab. This process is largely for documentation purposes - a note to my future self. The goal of this project is to learn more about system administration (things like networking, firewall rules and policy management) but also to get more knowledge on how certain misconfigurations in AD can actually be introduced. In the final part of this post I will be braking into my own lab environment that I purposely misconfigured with known vulnerabilities.

@@ -4,7 +4,7 @@
 
 @charset "utf-8";
 
-$link-color: #455d7a;
+$link-color: #373842;
 $text-color: #373842;
 $masthead-link-color: $link-color;
 
@@ -24,7 +24,7 @@ h1 {
     color: $link-color;
 }
 .archive__item-title a:hover {
-    color:#233142;
+    color:#455d7a;
 }
 
 // post paragraph
