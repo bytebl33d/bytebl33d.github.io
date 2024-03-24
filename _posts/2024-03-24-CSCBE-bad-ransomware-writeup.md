@@ -1,6 +1,6 @@
 ---
 layout: single
-title:  "CSCBE24 Bad Ransomware Forensics Challenge Writeup"
+title:  "CSCBE24 - Bad Ransomware Forensics Challenge Writeup"
 seo_title: "Writeup for the bad ransomware forensics challenge in the Cyber Security Challenge Belgium 24 Qualifiers"
 date:   2024-03-24 17:30:00 +0200
 categories: ['Forensics', 'CTF']
@@ -20,7 +20,6 @@ Ransomware encrypted file by "connemara" with a slight variation on the magic se
 
 A cookie factory was attacked by the “Bad Ransomware!” ransomware gang.
 All their cookie recipes have been encrypted.
-
 It is your job to recover the cookie recipes!
 
 You have one advantage: you know that the cryptographic design of their ransomware application is flawed.
@@ -43,7 +42,7 @@ At the end of the file we find something that looks like markers. It appears tha
 
 Now based on this information be can try to derive the original XOR key that was used to encrypt the files. We just need to find some plaintext bytes from the original file and then do a Known-Plaintext-Attack (KPA) on the XOR.
 
-### Identifying plaintext
+### Identifying Plaintext
 
 A Zip file usually contains local file headers with information about the file such as the comment, file size and file name, followed by optional "extra" data fields, and then the possibly compressed, possibly encrypted file data. The `ZIPDIRRECORD` also contains some of this information like the file name.
 
@@ -97,7 +96,7 @@ $ hexedit key
 29 6B D6 EB  2C A9 03 21  BB EF 5F 5F  4C FC 10 EC
 ```
 
-### Decrypting the file
+### Decryption
 
 We can now decrypt the file by applying the XOR with the key we found on the first 256 bytes for every block.
 

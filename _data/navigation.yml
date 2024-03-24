@@ -27,7 +27,7 @@ docs:
       - title: HTB University CTF 2023
         url: /htb-university-ctf-23
       - title: CSCBE24 Bad Ransomware
-        url: /cscbe-bad-ransomware-writeup
+        url: /CSCBE-bad-ransomware-writeup
   - title: Networking
     children:
       - title: Proxmox Home Lab
