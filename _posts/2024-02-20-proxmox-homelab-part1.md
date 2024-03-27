@@ -1,12 +1,11 @@
 ---
 layout: single
-title:  "Building an Active Directory Attack lab with Proxmox"
+title:  "Building an Active Directory Home Lab with Proxmox - Part 1"
 seo_title: "Setting up and Active Directory (AD) Penetration Testing Attack Home Lab with Proxmox VE"
 date:   2024-02-20 15:30:00 +0200
 categories: ['Active-Directory', 'Homelab']
 classes: wide
 toc: true
-excerpt: Building an Active Directory Penetration Testing Attack Lab with Proxmox VE
 header:
     image: /assets/images/headers/ad-lab.png
     teaser: /assets/images/headers/ad-lab.png
@@ -201,4 +200,4 @@ This makes sure all devices in the Active Directory domain can communicate with 
 Now we need to restart pfSense to persist the firewall rules. From the navigation bar select `Diagnostics -> Reboot`. Once pfSense boots up you will be redirected to the login page.
 
 # Conclusion
-At this point, we have sucessfully setup our firewall rules and segmented our network. The next step is to setup our virtual machines and add them to the internal network by selecting the right bridge interface in Proxmox when creating the VM.
+At this point, we have sucessfully setup our firewall rules and segmented our network. The next step is to setup some virtual machines and add them to the internal network by selecting the right bridge interface in Proxmox. In the next part we will configure the Active Directory environment and introduce a few common vulnerabilities.

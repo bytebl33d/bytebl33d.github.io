@@ -6,7 +6,6 @@ date:   2023-10-28 15:30:00 +0200
 categories: ['HackTheBox', 'CTF', 'Forensics', 'Web-Exploitation']
 classes: wide
 toc: true
-excerpt: Hack The Boo 2023 CTF writeups for the forensics and web challenges.
 header:
     image: /assets/images/headers/htboo-ctf.jpg
     teaser: /assets/images/headers/htboo-ctf.jpg

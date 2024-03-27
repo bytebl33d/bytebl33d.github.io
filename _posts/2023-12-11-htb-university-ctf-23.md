@@ -6,7 +6,6 @@ date:   2023-10-28 15:30:00 +0200
 categories: ['HackTheBox', 'CTF', 'Forensics', 'Web-Exploitation']
 classes: wide
 toc: true
-excerpt: Hack The Box University CTF 2023 writeups for forensics and pwn challenges.
 header:
     image: /assets/images/headers/htb-uni-ctf.jpg
     teaser: /assets/images/headers/htb-uni-ctf.jpg
