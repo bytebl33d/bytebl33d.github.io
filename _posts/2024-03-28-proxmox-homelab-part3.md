@@ -59,7 +59,7 @@ Finally go to `Computer Configuration > Policies > Security Settings > Windows F
 Select `Predefined` and choose `Windows Remote Management` from the list (not the one with compatible). Click `Next`. Select the one for Domain and Private, and `Allow` the connection at the next screen.
 
 You can scan port 5985 on one of your remote computers to see if it responds (it might need a restart):
-```Powershell
+```bash
 PS C:\> Test-NetConnection -ComputerName MS01 -Port 5985
 
 ComputerName        : MS01
@@ -94,7 +94,7 @@ To make a folder shared on the network go to `Network access: Shares that can be
 ## Enforce the Domain Policies
 Right-click on the Start menu and select Windows PowerShell (Admin).
 In the terminal enter the following:
-```Powershell
+```bash
 gpupdate /force
 ```
 Now whenever a new device joins our AD environment the Group Policies that apply to all the devices will automatically be applied to them. With this, we have completed the Domain Controller setup.
@@ -120,7 +120,7 @@ Br0wsing_F1L3_Sh4r3S_FTW!
 Awesome! Seems like we got some juicy information.
 
 To verify that we can also WinRM to our Windows VMs I created a new user called `winnie.wonder` with the password `P@ssw0rd123` and logged into `MS01` with this account. To add this user to the Built-In Remote Management Users run:
-```Powershell
+```bash
 PS C:/> net localgroup "Remote Management Users" /add winnie.wonder
 ```
 
