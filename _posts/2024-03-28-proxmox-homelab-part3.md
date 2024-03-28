@@ -14,7 +14,7 @@ We are now going to add some simple misconfigurations to our AD Lab. In the fina
 Open the `Start menu` and click on `Windows Administrative Tools`, then choose `Group Policy Management`. Expand `Forest` and `Domains`, to view your own domain.
 
 ## Disable Windows Defender and Firewall
-We can create a first GPO that will disable the Windows Defender Firewall so we can more easily experiment with attacks later on. Of course we could also disable the policy later to add some extra layer of security.
+We can create a first GPO that will disable the Windows Defender Firewall so we can more easily experiment with attacks later on. Of course we could also disable (unlink) the policy later.
 
 Do not do this in a real enterprise environment! You can skip this step if you don't want to make your lab vulnerable.
 {: .notice--warning}
@@ -40,11 +40,13 @@ Right-click on your domain name. Select `Create a GPO in the domain and link her
 
 ![vulnerability-setup-4](../assets/images/homelab/vuln-setup-4.png)
 
-Also enable `Allow Basic authentication` and `Allow unencrypted traffic`. Next navigate to `Computer Configuration > Preferences > Control Panel Settings`. Right-click on `Services` and select `New > Service`.
+Optionally you can enable `Allow Basic authentication` and `Allow unencrypted traffic` if you want people to perform Man-in-the-Middle attacks.
+
+Next navigate to `Computer Configuration > Preferences > Control Panel Settings`. Right-click on `Services` and select `New > Service`.
 
 ![vulnerability-setup-5](../assets/images/homelab/vuln-setup-5.png)
 
-Select `Startup` to `Automatic`. Use the `...` button to select the service name. Select `Windows Remote Management (WS-Management)` and click on Select. Set the service action to `Start Service`.
+Set `Startup` to `Automatic`. Use the `...` button to select the service name. Select `Windows Remote Management (WS-Management)` and click on Select. Set the service action to `Start Service`.
 
 ![vulnerability-setup-6](../assets/images/homelab/vuln-setup-6.png)
 
@@ -84,6 +86,8 @@ Next create a new folder, Right-click and go to `Properties > Sharing tab > Shar
 
 ![vulnerability-setup-9](../assets/images/homelab/vuln-setup-9.png)
 
+If you want to allow users to access the file share as a `Guest` user, then open `Local Security Policy` as an Administrator on the computer you want to allow guest access. Next go to `Local Policies > Security Options > Accounts: Guest account status` and switch it to Enabled. By doing this users can authenticate as the Guest user with a blank password.
+
 ### Domain Share
 Login as a domain administrator to one of the domain joined hosts. Go to `Local Security Policy > Local Policies > Security Options`. Set the option `Accounts: Guest account status` to `Enabled`. Also enable `Network access: Let Everyone permissions apply to anonymous users `.
 
@@ -119,7 +123,7 @@ Br0wsing_F1L3_Sh4r3S_FTW!
 ```
 Awesome! Seems like we got some juicy information.
 
-To verify that we can also WinRM to our Windows VMs I created a new user called `winnie.wonder` with the password `P@ssw0rd123` and logged into `MS01` with this account. To add this user to the Built-In Remote Management Users run:
+To verify that we can also WinRM to our Windows VMs I created a new user called `winnie.wonder` with the password `P@ssw0rd123` and logged into `MS01` with this account. By default, PowerShell Remoting (and WinRM) only allows connections from members of the Administrators or Remote Management Group. To add our user to the Built-In Remote Management Users run:
 ```bash
 PS C:/> net localgroup "Remote Management Users" /add winnie.wonder
 ```
@@ -135,10 +139,10 @@ HTTP        172.16.200.11  5985   MS01             [+] cicada.local\winnie.wonde
 Nice! We can now run remote commands using the tool Evil-WinRM.
 ```bash
 $ evil-winrm-docker -i 192.168.128.10 -u 'winnie.wonder' -p 'P@ssw0rd123'
-                                        
-Evil-WinRM shell v3.5
-                                        
+                      
+Evil-WinRM shell v3.5                                
 Info: Establishing connection to remote endpoint
+
 *Evil-WinRM* PS C:\Users\winnie.wonder.CICADA\Documents> whoami
 cicada\winnie.wonder
 ```
