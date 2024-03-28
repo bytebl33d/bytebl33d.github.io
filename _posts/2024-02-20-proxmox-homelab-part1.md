@@ -1,7 +1,7 @@
 ---
 layout: single
 title:  "Building an Active Directory Home Lab with Proxmox - Part 1"
-seo_title: "Setting up and Active Directory (AD) Penetration Testing Attack Home Lab with Proxmox VE"
+seo_title: "Setting up and Active Directory (AD) Home Lab with Proxmox VE Part 1"
 date:   2024-02-20 15:30:00 +0200
 categories: ['Active-Directory', 'Homelab']
 classes: wide

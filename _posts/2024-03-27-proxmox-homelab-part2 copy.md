@@ -1,8 +1,8 @@
 ---
 layout: single
 title:  "Building an Active Directory Home Lab with Proxmox - Part 2"
-seo_title: "Setting up and Active Directory (AD) Penetration Testing Attack Home Lab with Proxmox VE"
-date:   2024-02-20 15:30:00 +0200
+seo_title: "Setting up and Active Directory (AD) Home Lab with Proxmox VE Part 2"
+date:   2024-03-27 15:30:00 +0200
 categories: ['Active-Directory', 'Homelab']
 classes: wide
 toc: true
@@ -76,5 +76,5 @@ Go through the initial setup wizard and login with the local account you created
 
 Windows 10 will restart after entering the credentials. After rebooting, you can now login to the domain by selecting Other User in the lower left corner.
 
-# Final thoughts
+# Conclusion
 We now have a working Active Directory home lab that we can experiment on. We are now able to add more hosts to the domain and begin planning our attack scenario. In the next part we will introduce several common misconfigurations inside Windows and Active Directory and see how we can eploit them from an attacker standpoint.
