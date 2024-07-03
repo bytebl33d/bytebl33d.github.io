@@ -47,16 +47,27 @@ Create a new VM by clicking the blue box on the top right corner. Select the upl
 
 After creating the VM we need to assign it our previously created bridge interfaces. Click on the VM and go to `Hardware -> Add Network Device` and select `vmbr1`. Repeat this for `vmbr2` and `vmbr3`.
 
-Upon first boot we can configure the firewall and network. Select the following options when they appear:
+Complete the installation process and reboot. Upon reboot we can configure the firewall and network. Select the following options when they appear:
 - Should VLANs be set up now? `n`
 - Enter the WAN interface name: `vtnet0`
 - Enter the LAN interface name: `vtnet1`
 - Enter the Optional 1 interface name: `vtnet2`
 - Enter the Optional 2 interface name: `vtnet3`
 
+Select option 2 and WAN:
+- Configure IPv4 address WAN interface via DHCP?: `n`
+- Enter the new WAN IPv4 address: `your_local_ip_of_choice`
+- Enter the new WAN IPv4 subnet bit count: `your_subnet_bits`
+- Enter the new WAN IPv4 upstream gateway address: `your_default_gateway`
+- Configure IPv6 address WAN interface via DHCP6?: `n`
+- Enter the new WAN IPv6 address: `Enter`
+- Do you want to enable the DHCP server on WAN?: `n`
+
 Select option 2 and LAN:
 - Configure IPv4 address LAN interface via DHCP?: `n`
-- Enter the new LAN IPv4 address: `172.16.0.1/24`
+- Enter the new LAN IPv4 address: `172.16.0.1`
+- Enter the new LAN IPv4 subnet bit count: `24`
+- For the new LAN IPv6 address question press `Enter`
 - Do you want to enable the DHCP server on LAN?: `y`
 - Enter the start address of the IPv4 client address range: `172.16.0.10`
 - Enter the end address of the IPv4 client address range: `172.16.0.254`
@@ -91,7 +102,7 @@ Now we can create new hosts and assign them the `vmbr1` NIC on the LAN. From a h
 ### Firewall Setup
 Log into the pfSense dashboard using the credentials `admin:pfsense` and change the following settings during the setup process:
 - Step 2: uncheck override DNS
-- Step 3: Uncheck the Block RFC1918 Private Networks option. Because this is not a real WAN.
+- Step 4: Uncheck the `Block private networks from entering via WAN` option. Because this is not a real WAN.
 
 Complete the remaining steps by filling out your preferred configuration settings. We can also rename our interfaces that were created by pfSense on the interface tab. 
 
