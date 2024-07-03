@@ -11,6 +11,12 @@ $masthead-link-color: $link-color;
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
 @import "minimal-mistakes"; // main partials
 
+/* Define variables */
+:root {
+    --color-highlight: #424b54;
+    --color-secondary: #A6B0CB;
+}
+
 h1 {
     margin-top: $type-size-5;
 }
@@ -35,4 +41,11 @@ h1 {
 // toc
 .toc__menu li{
     font-size: $type-size-5;
+}
+
+/* Code block styling */
+.language-plaintext {
+    color: var(--color-highlight);
+    background-color: inherit;
+    font-weight: bold;
 }

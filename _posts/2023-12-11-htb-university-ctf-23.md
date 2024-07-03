@@ -6,9 +6,6 @@ date:   2023-10-28 15:30:00 +0200
 categories: ['HackTheBox', 'CTF', 'Forensics', 'Web-Exploitation']
 classes: wide
 toc: true
-header:
-    image: /assets/images/headers/htb-uni-ctf.jpg
-    teaser: /assets/images/headers/htb-uni-ctf.jpg
 ---
 # Hack The Box University CTF 2023: Brains & Bytes - Writeups
 ## Forensics: One Step Closer - Easy
