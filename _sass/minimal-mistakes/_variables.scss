@@ -61,16 +61,17 @@ $darker-gray: mix(#000, $gray, 60%) !default;
 $light-gray: mix(#fff, $gray, 50%) !default;
 $lighter-gray: mix(#fff, $gray, 90%) !default;
 
-$background-color: #fff !default;
-$code-background-color: none;
+$background-color: #202020 !default;
+$code-background-color: #534c48;
 $code-background-color-dark: $light-gray !default;
-$text-color: $dark-gray !default;
+$text-color: #dacbc1 !default;
 $muted-text-color: mix(#fff, $text-color, 20%) !default;
-$border-color: $lighter-gray !default;
+$border-color: $darker-gray !default;
 $form-background-color: $lighter-gray !default;
-$footer-background-color: $lighter-gray !default;
+$footer-background-color: #2b2b2b !default;
 
-$primary-color: #424b54 !default;
+$primary-color: #dbc6b7 !default;
+$secondary-color: #b4a487 !default;
 $success-color: #3fa63f !default;
 $warning-color: #d67f05 !default;
 $danger-color: #ee5f5b !default;
@@ -163,7 +164,7 @@ $right-sidebar-width-wide: 400px !default;
    Other
    ========================================================================== */
 
-$border-radius: 10px !default;
+$border-radius: 5px !default;
 $box-shadow: 0 1px 1px rgba(0, 0, 0, 0.125) !default;
 $nav-height: 2em !default;
 $nav-toggle-height: 2rem !default;

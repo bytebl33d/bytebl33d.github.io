@@ -4,16 +4,12 @@
 
 @charset "utf-8";
 
-$link-color: #373842;
-$text-color: #373842;
-$masthead-link-color: $link-color;
-
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
 @import "minimal-mistakes"; // main partials
 
 /* Define variables */
 :root {
-    --color-highlight: #424b54;
+    --color-highlight: #25161b;
     --color-secondary: #A6B0CB;
 }
 
@@ -27,10 +23,10 @@ h1 {
     font-size: $type-size-5;
 }  
 .archive__item-title a {
-    color: $link-color;
+    color: $secondary-color;
 }
 .archive__item-title a:hover {
-    color:#455d7a;
+    color:$primary-color;
 }
 
 // post paragraph
@@ -41,11 +37,4 @@ h1 {
 // toc
 .toc__menu li{
     font-size: $type-size-5;
-}
-
-/* Code block styling */
-.language-plaintext {
-    color: var(--color-highlight);
-    background-color: inherit;
-    font-weight: bold;
 }
