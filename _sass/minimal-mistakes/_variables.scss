@@ -64,7 +64,7 @@ $lighter-gray: mix(#fff, $gray, 90%) !default;
 $background-color: #202020 !default;
 $code-background-color: #534c48;
 $code-background-color-dark: $light-gray !default;
-$text-color: #dacbc1 !default;
+$text-color: #e2d9d3 !default;
 $muted-text-color: mix(#fff, $text-color, 20%) !default;
 $border-color: $darker-gray !default;
 $form-background-color: $lighter-gray !default;
@@ -113,7 +113,7 @@ $xing-color: #006567 !default;
 
 /* links */
 $link-color: mix(#000, $info-color, 20%) !default;
-$link-color-hover: mix(#000, $link-color, 25%) !default;
+$link-color-hover: $secondary-color !default;
 $link-color-visited: none;
 $masthead-link-color: $primary-color !default;
 $masthead-link-color-hover: mix(#000, $primary-color, 25%) !default;
