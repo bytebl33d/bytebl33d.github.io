@@ -1,7 +1,7 @@
 title: bytebl33d
 email:
 description: >- # this means to ignore newlines until "baseurl:"
-  Bytebl33d's Cyber Security Blog
+  Bytebl33d Cyber Security Blog
 github_username: bytebl33d
 minimal_mistakes_skin: default
 search: true
@@ -41,7 +41,7 @@ plugins:
   - jekyll-seo-tag
 
 author:
-  name   : "bytebl33d"
+  name   : "Bashee"
   avatar : "/assets/images/bio-photo.jpg"
   bio    : "I am a software and security enthousiast striving to create innovative and secure software systems."
   links:

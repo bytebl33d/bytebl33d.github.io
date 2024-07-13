@@ -3,7 +3,7 @@
    ========================================================================== */
 
 .archive {
-  margin-top: 1em;
+  margin-top: 0em;
   margin-bottom: 2em;
 
   @include breakpoint($large) {
@@ -21,6 +21,9 @@
 .archive__item {
   position: relative;
   margin-bottom: 1.5em;
+  background: $footer-background-color;
+  padding: 0.5rem;
+  border-radius: $border-radius;
 
   a {
     position: relative;
@@ -34,13 +37,13 @@
 
 .archive__subtitle {
   margin: 1.414em 0 0.5em;
-  padding-bottom: 0.5em;
+  padding-bottom: 0.1em;
   font-size: $type-size-5;
   color: $muted-text-color;
   border-bottom: 1px solid $border-color;
 
   + .list__item .archive__item-title {
-    margin-top: 0.5em;
+    margin-top: 0.1em;
   }
 }
 
@@ -73,7 +76,7 @@
 /* remove border*/
 .page__content {
   .archive__item-title {
-    margin-top: 1em;
+    margin-top: 0.1em;
     border-bottom: none;
   }
 }
@@ -218,7 +221,7 @@
   }
 
   .archive__item-title {
-    margin-top: 0.5em;
+    margin-top: 0.1em;
     font-size: $type-size-5;
   }
 

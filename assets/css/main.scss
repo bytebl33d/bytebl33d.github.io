@@ -7,18 +7,13 @@
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
 @import "minimal-mistakes"; // main partials
 
-/* Define variables */
-:root {
-    --color-highlight: #25161b;
-    --color-secondary: #A6B0CB;
-}
-
 h1 {
     margin-top: $type-size-5;
 }
 
 // home page post item
 .archive__item-title {
+    margin-top: 0.1rem;
     font-family: $global-font-family;
     font-size: $type-size-5;
 }  
@@ -27,6 +22,10 @@ h1 {
 }
 .archive__item-title a:hover {
     color:$primary-color;
+}
+
+.archive__item-excerpt{
+    margin-bottom: 0.1rem;
 }
 
 // post paragraph
