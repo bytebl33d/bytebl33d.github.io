@@ -20,7 +20,7 @@
 
 .archive__item {
   position: relative;
-  margin-bottom: 1.5em;
+  margin-bottom: 1em;
   background: $footer-background-color;
   padding: 0.5rem;
   border-radius: $border-radius;
@@ -161,7 +161,7 @@
 }
 
 .grid__item {
-  margin-bottom: 2em;
+  margin-bottom: 1em;
 
   @include breakpoint($small) {
     float: left;
