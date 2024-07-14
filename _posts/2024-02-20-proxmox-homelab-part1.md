@@ -1,13 +1,14 @@
 ---
 layout: single
-title:  "Building an Active Directory Home Lab with Proxmox - Part 1"
+title:  "Active Directory Home Lab with Proxmox - Part 1"
 seo_title: "Setting up and Active Directory (AD) Home Lab with Proxmox VE Part 1"
 date:   2024-02-20 15:30:00 +0200
 categories: ['Active-Directory', 'Homelab']
 classes: wide
 toc: true
+header:
+    teaser: "/assets/images/homelab/AD-banner.jpg"
 ---
-# Objective
 In this post I'll take you through the setup of my very own homelab. This process is largely for documentation purposes - a note to my future self. The goal of this project is to learn more about system administration (things like networking, firewall rules and policy management) but also to get more knowledge on how certain misconfigurations in AD can actually be introduced. In the final part of this post I will be braking into my own lab environment that I purposely misconfigured with known vulnerabilities.
 
 # Network Setup

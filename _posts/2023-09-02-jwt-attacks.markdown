@@ -6,7 +6,6 @@ categories: ['Web-Exploitation']
 classes: wide
 toc: true
 ---
-# JWT Attacks
 Incorrect handling of JSON Web Tokens (JWTs) can leave a website vulnerable to a variety of attacks. To understand these attacks we first have to know what a JWT token is.
 
 ## What is a JSON Web Token?

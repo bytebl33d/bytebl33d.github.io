@@ -1,13 +1,14 @@
 ---
 layout: single
-title:  "Building an Active Directory Home Lab with Proxmox - Part 3: Making it Vulnerable"
+title:  "Active Directory Home Lab with Proxmox - Part 3"
 seo_title: "Setting up and Active Directory (AD) Home Lab with Proxmox VE Part 3"
 date:   2024-03-30 18:38:00 +0200
 categories: ['Active-Directory', 'Homelab']
 classes: wide
 toc: true
+header:
+    teaser: "/assets/images/homelab/AD-banner.jpg"
 ---
-# Objective
 We are now going to add some simple misconfigurations to our AD Lab. In the final section we will verify them by targeting our network from an outside Linux VM. To make the Active Directory Lab vulnerable we first need to change some settings.
 
 # Group Policy Configuration

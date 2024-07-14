@@ -1,13 +1,14 @@
 ---
 layout: single
-title:  "Building an Active Directory Home Lab with Proxmox - Part 2"
+title:  "Active Directory Home Lab with Proxmox - Part 2"
 seo_title: "Setting up and Active Directory (AD) Home Lab with Proxmox VE Part 2"
 date:   2024-03-27 15:30:00 +0200
 categories: ['Active-Directory', 'Homelab']
 classes: wide
 toc: true
+header:
+    teaser: "/assets/images/homelab/AD-banner.jpg"
 ---
-# Objective
 In this post, we will look at setting up our Windows guests in our Proxmox home lab. We will create a Domain Controller that acts as the DHCP server for our AD Lab and will also join a Windows 10 host to the domain.
 
 # Requirements

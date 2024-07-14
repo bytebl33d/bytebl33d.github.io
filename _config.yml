@@ -43,7 +43,8 @@ plugins:
 author:
   name   : "Bashee"
   avatar : "/assets/images/bio-photo.jpg"
-  bio    : "I am a software and security enthousiast striving to create innovative and secure software systems."
+  bio    : "Software and cyber security enthousiast striving to create innovative and secure software systems
+while aiding companies to protect their digital assets."
   links:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"

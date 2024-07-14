@@ -6,10 +6,9 @@ date:   2024-03-24 17:30:00 +0200
 categories: ['Forensics', 'CTF']
 classes: wide
 toc: true
-excerpt: 
+header:
+    teaser: "/assets/images/ransomware.png"
 ---
-
-## Bad Ransomware
 Ransomware attacks are becoming more common every day. This forensics challenge goes in depth into the solution of the 'Bad Ransomware' challenge of the CSCBE24 Qualifiers dealing with a Known Plain-Text Attack on an encrypted zip archive. We are given a ransomware encrypted file by "connemara" with a slight variation on the magic sequence.
 
 ## Scenario

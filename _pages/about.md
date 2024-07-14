@@ -2,7 +2,8 @@
 permalink: /about/
 title: "About"
 ---
-I’m a software and cyber security enthousiast with a drive to create innovative and secure applications. In my free time I like to participate in Capture The Flag events and experiment on my home lab.
+During my studies I developed an
+interest in software development, networking and cyber security. In my free time I like to participate in CTF competitions and upskill on platforms like HackTheBox and TryHackMe. 
 
 On this blog, I will explore different topics within cybersecurity and software development. In particular, expect many posts about web security, exploitation, CTF write-ups and some networking.
 

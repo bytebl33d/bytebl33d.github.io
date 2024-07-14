@@ -6,8 +6,9 @@ date:   2023-10-28 15:30:00 +0200
 categories: ['HackTheBox', 'CTF', 'Forensics', 'Web-Exploitation']
 classes: wide
 toc: true
+header:
+    teaser: "/assets/images/htb-ctf-2023.jpg"
 ---
-# Hack The Box University CTF 2023: Brains & Bytes - Writeups
 ## Forensics: One Step Closer - Easy
 ### Description
 Tasked with defending the antidote's research, a diverse group of students united against a relentless cyber onslaught. As codes clashed and defenses were tested, their collective effort stood as humanity's beacon, inching closer to safeguarding the research for the cure with every thwarted attack. A stealthy attack might have penetrated their defenses. Along with the Hackster's University students, analyze the provided file so you can detect this attack in the future. 
