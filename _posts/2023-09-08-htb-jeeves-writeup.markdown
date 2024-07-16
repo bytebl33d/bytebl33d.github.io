@@ -8,7 +8,7 @@ classes: wide
 toc: true
 excerpt: Hack The Box Jeeves writeup for the first Pwn challenge in the Intro to Binary Exploitation track.
 header:
-    teaser: "/assets/images/HTB/Jeeves.png"
+    teaser: "/assets/images/headers/Jeeves.png"
 ---
 Today we take on a simple binary exploitation challenge from Hack The Box. In this post we are going to solve the Jeeves Pwn challenge from the **Intro to Binary Exploitation** track.
 

@@ -7,7 +7,7 @@ categories: ['HackTheBox', 'CTF', 'Forensics', 'Web-Exploitation']
 classes: wide
 toc: true
 header:
-    teaser: "/assets/images/htb-ctf-2023.jpg"
+    teaser: "/assets/images/headers/htb-ctf-2023.jpg"
 ---
 ## Forensics: One Step Closer - Easy
 ### Description

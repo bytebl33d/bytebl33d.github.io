@@ -7,7 +7,7 @@ categories: ['HackTheBox', 'CTF', 'Forensics', 'Web-Exploitation']
 classes: wide
 toc: true
 header:
-    teaser: "/assets/images/htboo-ctf-2023.jpg"
+    teaser: "/assets/images/headers/htboo-ctf-2023.jpg"
 ---
 For this years halloween I decided to participate in the Hack The Boo CTF competition from Hack the Box. Despite this being my first solo public CTF competition, I still managed to climb to leaderboards and reach top 50 (48th to be exact). In total I managed to capture 7 out of the 10 flags, some easier than others. In this post I will delve into how I managed to solve the forensics and web challenges, as those where the areas my skills stuck out the most.
 

