@@ -2,7 +2,7 @@
 layout: single
 title:  "HTB FormulaX Writeup"
 seo_title: "Writeup for the HackTheBox FormulaX Machine"
-date:   2024-07-22 21:00:00 +0200
+date:   2024-08-22 21:00:00 +0200
 categories: ['HackTheBox']
 classes: wide
 toc: true

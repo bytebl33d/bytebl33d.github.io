@@ -3,7 +3,7 @@ layout: single
 title:  "Hack The Box University CTF 2023: Brains & Bytes Writeup"
 seo_title: "CTF writeup for some of the Forensics and Pwn Challenges of the Hack The Box University CTF 2023 Competition"
 date:   2023-10-28 15:30:00 +0200
-categories: ['HackTheBox', 'CTF', 'Forensics', 'Web-Exploitation']
+categories: ['HackTheBox', 'CTF', 'DFIR', 'Web-Exploitation']
 classes: wide
 toc: true
 header:

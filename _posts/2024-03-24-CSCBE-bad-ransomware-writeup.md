@@ -3,7 +3,7 @@ layout: single
 title:  "CSCBE24 - Bad Ransomware Forensics Challenge Writeup"
 seo_title: "Writeup for the bad ransomware forensics challenge in the Cyber Security Challenge Belgium 24 Qualifiers"
 date:   2024-03-24 17:30:00 +0200
-categories: ['Forensics', 'CTF']
+categories: ['DFIR', 'CTF']
 classes: wide
 toc: true
 header:
