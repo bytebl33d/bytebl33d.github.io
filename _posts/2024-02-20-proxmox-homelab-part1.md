@@ -9,46 +9,48 @@ toc: true
 header:
     teaser: "/assets/images/homelab/AD-banner.jpg"
 ---
-In this post I'll take you through the setup of my very own homelab. This process is largely for documentation purposes - a note to my future self. The goal of this project is to learn more about system administration (things like networking, firewall rules and policy management) but also to get more knowledge on how certain misconfigurations in AD can actually be introduced. In the final part of this post I will be braking into my own lab environment that I purposely misconfigured with known vulnerabilities.
+In this post, I'll walk you through setting up my personal homelab - a project that serves both as a hands-on learning experience and as a future reference. While this documentation is partly a note to my future self, it's also a guide for anyone interested in gaining a deeper understanding of system administration, including networking, firewall configuration, and policy management. Ultimately, the goal is to create an environment where I can safely experiment with Active Directory (AD) misconfigurations and vulnerabilities, culminating in a simulated attack on my own lab.
 
 # Network Setup
-The idea is to create several internal segmented networks to house a few virtual machines (VMs), isolated from my home network by a firewall. As the firewall, we will use pfSense and for creating all the VMs we will use Proxmox. I'll keep things short and focus on getting a basic system up-and-running. The schematic for the eventual homelab is shown below:
+The backbone of this homelab is a segmented network architecture that isolates various virtual machines (VMs) from my home network using a firewall. We'll use pfSense as our firewall solution and Proxmox for managing the VMs. I’ll keep the initial setup straightforward, focusing on getting the basic system up and running. Here’s a schematic overview of the homelab architecture:
 
 ![Proxmox Setup](/assets/images/homelab/proxmox-homelab.svg)
 
-We'll create three networks behind the pfSense firewall:
-- Internal network for regular machines (172.16.0.1/24)
-- Cyber LAB for experimenting with vulnerable machines or data (172.16.100.1/24)
-- Active Directory LAB for creating a windows only AD environment (172.16.200.1/24)
+We’ll establish three distinct networks behind the pfSense firewall:
 
-pfSense is the gateway (router) and firewall four our home lab and should always be booted first when using the lab.
+- **Internal Network**: For regular machines (`172.16.0.1/24`)
+- **Cyber LAB**: A playground for experimenting with vulnerable machines and data (`172.16.100.1/24`)
+- **Active Directory LAB**: A dedicated Windows-only AD environment (`172.16.200.1/24`)
+
+pfSense will act as the gateway (router) and firewall for our homelab, so it should always be the first thing you boot up when using the lab.
 {: .notice--info}
 
 ## System Requirements
-- 64-bit multi-threaded CPU (minimum 4 cores) with Virtualization Support
+To ensure smooth operation, here’s what you’ll need:
+- A 64-bit multi-core CPU (minimum 4 cores) with virtualization support
 - 16GB of RAM
-- 250GB of Disk Space
-- Bootable Proxmox VE drive (ISO)
+- 250GB of disk space
+- A bootable Proxmox VE drive (ISO)
 
 # Proxmox Setup
-The installation of Proxmox is relatively straight forward, so I will not include it here. If everything was successful, you should be able to reach the login portal via the IP address you specified during installation.
+Installing Proxmox is relatively simple, so I’ll skip the step-by-step details. After a successful installation, you should be able to access the login portal via the IP address you specified.
 
 ![login](/assets/images/homelab/proxmox-login.png)
 
-Login with your credentials and create three new bridged interfaces alongside the default `vmbr0` interface. Your CIDR and gateway might be different.
+Once logged in, we’ll create three new bridged interfaces alongside the default `vmbr0` interface. Your CIDR and gateway might vary depending on your network configuration.
 
-![alt text](/assets/images/homelab/proxmox-network.png)
+![proxmox-network](/assets/images/homelab/proxmox-network.png)
 
-If you want to stay organized, you can create new pools for your networks as I did. To do this click on `Datacenter -> Permissions -> Pools -> Create`. When we create our VMs, we can then assign them to one of our pools.
+For better organization, consider creating new pools for your networks. This can be done by navigating to `Datacenter > Permissions > Pools > Create`. When you start creating VMs, you can assign them to one of these pools.
 
-To upload ISOs to Proxmox go to `lab -> local (lab) -> ISO Images -> Upload`.
+To upload ISOs to Proxmox go to `lab > local (lab) > ISO Images > Upload`.
 
-## PfSense 
-Create a new VM by clicking the blue box on the top right corner. Select the uploaded pfSense ISO and keep the default settings. 
+## Setting Up PfSense 
+To begin, create a new VM in Proxmox by clicking the blue box in the top right corner. Select the uploaded pfSense ISO and proceed with the default settings.
 
-After creating the VM we need to assign it our previously created bridge interfaces. Click on the VM and go to `Hardware -> Add Network Device` and select `vmbr1`. Repeat this for `vmbr2` and `vmbr3`.
+After creating the VM, assign it to our previously created bridge interfaces by going to `Hardware > Add Network Device` and selecting `vmbr1`. Repeat this process for `vmbr2` and `vmbr3`.
 
-Complete the installation process and reboot. Upon reboot we can configure the firewall and network. Select the following options when they appear:
+Complete the pfSense installation and reboot the system. During the initial setup, you’ll be prompted to configure the network interfaces. Here’s how I set it up:
 - Should VLANs be set up now? `n`
 - Enter the WAN interface name: `vtnet0`
 - Enter the LAN interface name: `vtnet1`
@@ -93,16 +95,16 @@ Select option 2 and OPT2:
 - Do you want to enable the DHCP server on OPT2?: `n`
 - Do you want to revert to HTTP as the webConfigurator protocol?: `n`
 
-We do not setup DHCP as we will let the Domain Controller handle this for us later on.
+We do not setup DHCP as we will let the Domain Controller handle this for us later on. 
 {: .notice--info}
 
-![alt text](/assets/images/homelab/pfsense.png)
+![Pfsense terminal](/assets/images/homelab/pfsense.png)
 
-Now we can create new hosts and assign them the `vmbr1` NIC on the LAN. From a host on the `172.16.0.1/24` network, we can access the pfSense Web Interface and proceed with the setup.
+After setting up pfSense, you can create new hosts and assign them the `vmbr1` NIC on the LAN. From any host on the `172.16.0.1/24` network, you can access the pfSense web interface for further configuration.
 
-### Firewall Setup
-Log into the pfSense dashboard using the credentials `admin:pfsense` and change the following settings during the setup process:
-- Step 2: uncheck override DNS
+### Configuring Firewall Rules
+Let’s set up some basic firewall rules to control traffic between our networks and the outside world. Log into the pfSense dashboard using the credentials `admin:pfsense` and change the following settings during the setup process:
+- Step 2: Uncheck override DNS
 - Step 4: Uncheck the `Block private networks from entering via WAN` option. Because this is not a real WAN.
 
 Complete the remaining steps by filling out your preferred configuration settings. We can also rename our interfaces that were created by pfSense on the interface tab. 
@@ -175,7 +177,7 @@ The final Cyber LAB configuration will look something like this:
 
 ![pfsense CYBER rule](/assets/images/homelab/pfsense-CYBER.png)
 
-With these rules in place, all machines in the Cyber Lab network can reach each other and have access to the internet. They are also able to reach our attacker VM to allow further attacks.
+These rules ensure that devices in the Cyber LAB can communicate with each other, access the internet, and interact with the Attacker VM.
 
 ### AD LAB Rules
 Go to `Firewall -> Rules -> AD Lab -> Add rule to end`:
@@ -204,9 +206,9 @@ The final AD LAB configuration will look something like this:
 
 ![pfsense CYBER rule](/assets/images/homelab/pfsense-AD.png)
 
-This makes sure all devices in the Active Directory domain can communicate with one another. This network is isolated and managed further by the domain controllers.
+This setup ensures that devices within the Active Directory domain can communicate freely with each other, while remaining isolated from other networks.
 
-Now we need to restart pfSense to persist the firewall rules. From the navigation bar select `Diagnostics -> Reboot`. Once pfSense boots up you will be redirected to the login page.
+Now we need to restart pfSense to persist the firewall rules. From the navigation bar select `Diagnostics > Reboot`. Once pfSense boots up you will be redirected to the login page.
 
 # Conclusion
-At this point, we have sucessfully setup our firewall rules and segmented our network. The next step is to setup some virtual machines and add them to the internal network by selecting the right bridge interface in Proxmox. In the next part we will configure the Active Directory environment and introduce a few common vulnerabilities.
+Congratulations! You’ve successfully set up your firewall rules and segmented your network. The next step is to create virtual machines and add them to the appropriate network segments by selecting the correct bridge interface in Proxmox. In the following part of this series, we’ll configure the Active Directory environment and introduce common vulnerabilities for further experimentation.

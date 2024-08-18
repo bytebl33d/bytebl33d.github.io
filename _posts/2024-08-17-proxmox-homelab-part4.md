@@ -21,30 +21,30 @@ Under the Interfaces tab, select the interfaces that Suricata will monitor. For 
 ![PfSense-suricata-interfaces](../assets/images/homelab/pfsense-suricata-interfaces.png)
 
 ## Creating Custom Detection Rules
-Next, let's create custom rules tailored to our lab environment. We’ll do this by editing one of the interfaces and navigating to the Rules tab. 
+Next, let's create custom rules tailored to our lab environment. We’ll do this by editing one of the interfaces and navigating to the rules tab.
 
 
 ### Detecting Evil-WinRM Traffic
-Our first custom rule will detect Evil-WinRM traffic, which is often used for remote management in penetration testing scenarios.
+Our first custom rule will detect Evil-WinRM traffic, which is often used for remote management in penetration testing scenarios. For more information on setting up Remote Management on your target hosts, refer to Part 3 of this series.
 
 ![PfSense-suricata-rules](../assets/images/homelab/pfsense-suricata-rules.png)
 
-To build this rule, we need to understand how an authentication request from Evil-WinRM appears in network traffic. Using WireShark, I captured an authentication attempt from a domain-joined host on the LAN interface with the following command:
+To build this rule, we need to understand how an authentication request from Evil-WinRM appears in network traffic. Using WireShark, we can capture an authentication attempt from a host on the LAN interface. We run the following command in a Linux terminal:
 
 ```console
-evil-winrm -i 172.16.0.17 -u 'cicada.local\winnie.wonder' -p 'P@ssw0rd123'
+$ evil-winrm -i 172.16.0.17 -u 'cicada.local\winnie.wonder' -p 'P@ssw0rd123'
 ```
 
 To capture this traffic in PfSense, go to `Diagnostics > Packet Capture` and select the appropriate interface.
 
-**Tip:** Ensure the packet capture targets a host from outside the LAN to properly capture traffic. If you capture traffic from within the LAN, PfSense may not log the packets you're interested in.
+**Tip:** Ensure you target the domain-joined host from a machine outside of the LAN to properly capture traffic. If you capture traffic from devices within the same LAN, PfSense may not log the packets you're interested in.
 {: .notice--info}
 
 In WireShark, we can focus on the packet containing the authentication request.
 
 ![PfSense-capture-winrm](../assets/images/homelab/pfsense-capture-winrm.png)
 
-The captured packet shows the authentication request from winnie.wonder. Based on this, we can now craft our Suricata rule:
+The captured packet shows the authentication request from `winnie.wonder`. Based on this, we can now craft our Suricata rule:
 ```
 alert http any any -> any 5985 (msg: "Authentication via Evil-WinRM Detected"; flow:established,to_server; http.method; content:"POST"; http.header; content:"User-Agent: Ruby WinRM Client"; content:"Authorization: "; base64_decode:bytes 13,offset 10,relative; base64_data; content:"NTLMSSP"; content:"|03|"; classtype:bad-unknown; sid:9990001; rev:1;)
 ```
@@ -54,15 +54,15 @@ alert http any any -> any 5985 (msg: "Authentication via Evil-WinRM Detected"; f
 
 Explanation:
 - The rule targets HTTP traffic performing a POST request on port 5985.
-- It looks for the Ruby WinRM Client in the User-Agent header, a unique identifier for Evil-WinRM.
-- The rule then examines the Authorization header, decoding a portion of the Base64 encoded data to detect the NTLMSSP authentication.
+- It looks for the `Ruby WinRM Client` string in the User-Agent header, a unique identifier for Evil-WinRM.
+- The rule then examines the Authorization header, decoding a portion of the Base64 encoded data to detect the NTLMSSP authentication type.
 
-With this rule in place, Suricata will trigger an alert whenever someone tries to authenticate using Evil-WinRM.
+With this rule in place, Suricata will trigger an alert whenever someone tries to authenticate using Evil-WinRM using the default settings. We could tune this rule even further, or write additional rules that alert on traffic even if the attacker changes the User-Agent.
 
 ![PfSense-suricata-alert](../assets/images/homelab/pfsense-suricata-alert.png)
 
 ### Detecting SMB Authentication
-Similarly, we can create a custom rule to detect SMB authentication attempts within the `CICADA.LOCAL` domain:
+Similarly, we can create a custom rule to detect SMB authentication attempts within the `CICADA` domain. The below rule looks for the SMB header with the NTLMSSP authentication type set to `03` and the domain name in hex format, separated by null bytes.
 
 ```
 alert smb any any -> any 445 (msg: "SMB Authentication";flow:established,to_server; content:"|FE|SMB";content:"NTLMSSP"; content:"|03|";distance: 1; content:"|63 00 69 00 63 00 61 00 64 00 61|"; sid:9990002; rev:1;)
@@ -78,7 +78,7 @@ As expected, Suricata raised an alert upon detecting the authentication:
 ![PfSense-suricata-alert2](../assets/images/homelab/pfsense-suricata-alert2.png)
 
 ### Detecting AS-REPRoasting
-In the previous part of our series, we executed the following command to perform an ASREPRoast attack on domain users, checking for any accounts with the `Do not require Kerberos preauthentication` option enabled:
+In the third part of our series, we executed the following command to perform an ASREPRoasting attack on domain users:
 
 ```
 GetNPUsers.py CICADA.LOCAL/ -dc-ip 172.16.200.100 -no-pass -usersfile valid_users -format hashcat
@@ -103,4 +103,4 @@ Rule Breakdown:
 By implementing this rule, Suricata will trigger an alert when it detects a pattern consistent with an ASREPRoast attack, helping to protect your domain from this common exploitation method.
 
 # Conclusion
-By implementing these custom rules, you can enhance the security of your Active Directory lab environment, gaining visibility into specific attacks and unauthorized access attempts. Stay tuned for the next part of the series, where we'll dive deeper into securing our home lab!
+In this part we have seen how we can leverage Suricata to detect malicious traffic on our network. We have also learned how we can write our own rules based on IOCs. By implementing these custom rules, you can enhance the security of your Active Directory lab environment, gaining visibility into specific attacks and unauthorized access attempts.
