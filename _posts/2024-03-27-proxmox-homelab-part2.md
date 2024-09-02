@@ -49,21 +49,21 @@ Open Server Manager and select `Add roles and features`. Accept the default sett
 
 ![DC-Setup-ad-services](../assets/images/homelab/DC-setup-ad-services.gif)
 
-The next step is to promote the server to a domain controller. You will need to have the domain name you want to use in the next step. I will choose the domain name of `cicada.local`. To promote the server to a domain controller, click on the notification icon on the top section of the Server Manager program. Then select `Promote this server to a domain controller`. Select `Add a new forest` as this is a newly created AD environment. Enter the domain name in the Root domain name: area. Once the Windows Server has rebooted, you will see the login screen show the domain entered in the previous step.
+The next step is to promote the server to a domain controller. You will need to have the domain name you want to use in the next step. I will choose the domain name of `cicada.local`. To promote the server to a domain controller, click on the notification icon on the top section of the Server Manager program. Then select `Promote this server to a domain controller`. Select `Add a new forest` as this is a newly created AD environment. Enter the domain name in the root domain name field. Once the Windows Server has rebooted, you will see the login screen show the domain entered in the previous step.
 
 ## Step 3: Create a Domain Admin Account
-After logging in, open `Active Directory Users and Computers`. As I like to keep things organized, I will create a new group for all the user accounts. Right click on your domain and select `New > Group` and name it `Users`. Move the Administrator and Guest account from the `Groups` to the `Users` folder. Right click on the `Users` folder and select `New > User`.
+After logging in, open `Active Directory Users and Computers`. As I like to keep things organized, I will create a new group for all the user accounts. Right click on your domain and select `New > Organizational Unit` and name it `Groups`. Move all group related objects from the `Users` to the `Groups` folder. Right click on the `Users` folder and select `New > User`.
 
 ![DC-Setup-5](../assets/images/homelab/DC-setup-5.png)
 
 Fill in the user details and set a password for the account. Disable the option `User must change password at next logon` and check the `Password never expires`. In an organization, the former should be checked so that the end user can set their own password.
 
-Now we need to add the newly created account to the `Domain Admin` group. This can be done right clicking the newly created user and selecting Properties. Select the `Member of > Add > Select Groups`. Under the `Enter the object names to select` section, click on the `Advanced` button. Then click `Find now > Domain Admins` and click `OK`.
+Now we need to add the newly created account to the `Domain Admin` group. This can be done right clicking the newly created user and selecting Properties. Select the `Member of > Add`. Under the `Enter the object names to select` section, click on the `Advanced` button. Then click `Find now > Domain Admins` and click `OK`.
 
-We can then logout of the Administrator account and login with our newly created domain account. Whenever we create a new user account, they are able to login with their credentials on any domain joined host. Now let's see how we can add a host to our newly created domain.
+We can then logout of the Administrator account and login with our newly created domain account. Whenever we create a new user account, they are able to login with their credentials on any domain joined host.
 
 ## Step 4: Configure the DHCP Server
-Go to `Server Manager > Add roles` and features, select DHCP Server, and complete the installation. Once done, complete the DHCP configuration through the notifications in Server Manager.
+Go to `Server Manager > Add roles and Features`, select DHCP Server, and complete the installation. Once done, complete the DHCP configuration through the notifications in Server Manager.
 
 We then have to configure a DHCP scope. To do so, go to `Server Manager` once again. Then select `Tools > DHCP`. Expand the available options and then right click on IPv4 to create an IPv4 Scope. Set a name for the scope and give it a description if you wish to do so. Select `Next` and set the range to be somewhere inside the `172.16.200.1/24` network. I choose the starting IP to be `172.16.200.11` to give me some room in case I want to add some static IPs later. You can also exclude some IP addresses if you want to.
 

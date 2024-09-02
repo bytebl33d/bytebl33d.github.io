@@ -37,7 +37,7 @@ Installing Proxmox is relatively simple, so I’ll skip the step-by-step details
 
 ![login](/assets/images/homelab/proxmox-login.png)
 
-Once logged in, we’ll create three new bridged interfaces alongside the default `vmbr0` interface. Your CIDR and gateway might vary depending on your network configuration.
+Once logged in, we’ll create one new OVS bridged interfaces alongside the default `vmbr0` Linux bridge interface. Your CIDR and gateway might vary depending on your network configuration.
 
 ![proxmox-network](/assets/images/homelab/proxmox-network.png)
 
@@ -65,20 +65,24 @@ Select option 2 and WAN:
 - Configure IPv6 address WAN interface via DHCP6?: `n`
 - Enter the new WAN IPv6 address: `Enter`
 - Do you want to enable the DHCP server on WAN?: `n`
+- Do you want to revert to HTTP as the webConfigurator protocol?: `n`
 
 Select option 2 and LAN:
 - Configure IPv4 address LAN interface via DHCP?: `n`
 - Enter the new LAN IPv4 address: `172.16.0.1`
 - Enter the new LAN IPv4 subnet bit count: `24`
-- For the new LAN IPv6 address question press `Enter`
+- For a LAN, press <ENTER> for none: `Enter`
+- Configure IPv6 address WAN interface via DHCP6?: `y`
 - Do you want to enable the DHCP server on LAN?: `y`
 - Enter the start address of the IPv4 client address range: `172.16.0.10`
 - Enter the end address of the IPv4 client address range: `172.16.0.254`
+- Do you want to revert to HTTP as the webConfigurator protocol?: `n`
 
 Select option 2 and OPT1:
 - Configure IPv4 address OPT1 interface via DHCP?: `n`
 - Enter the new OPT1 IPv4 address: `172.16.100.1`
 - Enter the new OPT1 IPv4 subnet bit count: `24`
+- For a LAN, press <ENTER> for none: `Enter`
 - Configure IPv6 address OPT1 interface via DHCP6: `n`
 - For the new OPT1 IPv6 address question press `Enter`
 - Do you want to enable the DHCP server on OPT1?: `y`

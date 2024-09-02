@@ -2,7 +2,7 @@
 layout: single
 title:  "Active Directory Home Lab with Proxmox - Part 4"
 seo_title: "Setting up and Active Directory (AD) Home Lab with Proxmox VE Part 4"
-date:   2024-08-17 18:38:00 +0200
+date:   2024-08-18 18:38:00 +0200
 categories: ['Active-Directory', 'Homelab']
 classes: wide
 toc: true
@@ -46,7 +46,7 @@ In WireShark, we can focus on the packet containing the authentication request.
 
 The captured packet shows the authentication request from `winnie.wonder`. Based on this, we can now craft our Suricata rule:
 ```
-alert http any any -> any 5985 (msg: "Authentication via Evil-WinRM Detected"; flow:established,to_server; http.method; content:"POST"; http.header; content:"User-Agent: Ruby WinRM Client"; content:"Authorization: "; base64_decode:bytes 13,offset 10,relative; base64_data; content:"NTLMSSP"; content:"|03|"; classtype:bad-unknown; sid:9990001; rev:1;)
+alert http any any -> any 5985 (msg: "Connection via Evil-WinRM Detected"; flow:established,to_server; http.method; content:"POST"; http.header; content:"User-Agent: Ruby WinRM Client"; content:"Authorization: "; base64_decode:bytes 13,offset 10,relative; base64_data; content:"NTLMSSP"; content:"|03|"; classtype:bad-unknown; sid:9990001; rev:1;)
 ```
 
 **Snort** is a similar IDS/IPS solution that can be installed on PfSense, but has slightly different syntax.
