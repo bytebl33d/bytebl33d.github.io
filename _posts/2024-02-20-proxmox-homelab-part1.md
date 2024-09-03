@@ -14,7 +14,7 @@ In this post, I'll walk you through setting up my personal homelab - a project t
 # Network Setup
 The backbone of this homelab is a segmented network architecture that isolates various virtual machines (VMs) from my home network using a firewall. We'll use pfSense as our firewall solution and Proxmox for managing the VMs. I’ll keep the initial setup straightforward, focusing on getting the basic system up and running. Here’s a schematic overview of the homelab architecture:
 
-![Proxmox Setup](/assets/images/homelab/proxmox-homelab.svg)
+![Proxmox Setup](../assets/images/homelab/proxmox-homelab.svg)
 
 We’ll establish three distinct networks behind the pfSense firewall:
 
@@ -35,11 +35,11 @@ To ensure smooth operation, here’s what you’ll need:
 # Proxmox Setup
 Installing Proxmox is relatively simple, so I’ll skip the step-by-step details. After a successful installation, you should be able to access the login portal via the IP address you specified.
 
-![login](/assets/images/homelab/proxmox-login.png)
+![login](../assets/images/homelab/proxmox-login.png)
 
 Once logged in, we’ll create one new OVS bridged interfaces alongside the default `vmbr0` Linux bridge interface. Your CIDR and gateway might vary depending on your network configuration.
 
-![proxmox-network](/assets/images/homelab/proxmox-network.png)
+![proxmox-network](../assets/images/homelab/proxmox-network.png)
 
 For better organization, consider creating new pools for your networks. This can be done by navigating to `Datacenter > Permissions > Pools > Create`. When you start creating VMs, you can assign them to one of these pools.
 
@@ -102,7 +102,7 @@ Select option 2 and OPT2:
 We do not setup DHCP as we will let the Domain Controller handle this for us later on. 
 {: .notice--info}
 
-![Pfsense terminal](/assets/images/homelab/pfsense.png)
+![Pfsense terminal](../assets/images/homelab/pfsense.png)
 
 After setting up pfSense, you can create new hosts and assign them the `vmbr1` NIC on the LAN. From any host on the `172.16.0.1/24` network, you can access the pfSense web interface for further configuration.
 
@@ -147,7 +147,7 @@ Go to `Firewall -> Rules -> LAN -> Add` and make a new rule with the following o
 
 The final LAN configuration will look something like this:
 
-![pfsense LAN rule](/assets/images/homelab/pfsense-LAN.png)
+![pfsense LAN rule](../assets/images/homelab/pfsense-LAN.png)
 
 This makes sure that the internal networks behind the WAN cannot reach our home network. If you want to connect from a device on your home network, you can add another allow rule at the top for that specific IP.
 
@@ -179,7 +179,7 @@ Add another rule to end:
 
 The final Cyber LAB configuration will look something like this:
 
-![pfsense CYBER rule](/assets/images/homelab/pfsense-CYBER.png)
+![pfsense CYBER rule](../assets/images/homelab/pfsense-CYBER.png)
 
 These rules ensure that devices in the Cyber LAB can communicate with each other, access the internet, and interact with the Attacker VM.
 
@@ -208,7 +208,7 @@ Add another rule to end:
 
 The final AD LAB configuration will look something like this:
 
-![pfsense CYBER rule](/assets/images/homelab/pfsense-AD.png)
+![pfsense CYBER rule](../assets/images/homelab/pfsense-AD.png)
 
 This setup ensures that devices within the Active Directory domain can communicate freely with each other, while remaining isolated from other networks.
 
