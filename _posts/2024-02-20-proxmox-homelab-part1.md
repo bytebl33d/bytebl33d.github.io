@@ -14,7 +14,7 @@ In this post, I'll walk you through setting up my personal homelab - a project t
 # Network Setup
 The backbone of this homelab is a segmented network architecture that isolates various virtual machines (VMs) from my home network using a firewall. We'll use pfSense as our firewall solution and Proxmox for managing the VMs. I’ll keep the initial setup straightforward, focusing on getting the basic system up and running. Here’s a schematic overview of the homelab architecture:
 
-![Proxmox Setup](../assets/images/homelab/proxmox-homelab.svg)
+![Proxmox Setup](../assets/images/homelab/proxmox-homelab.png)
 
 We’ll establish three distinct networks behind the pfSense firewall:
 
