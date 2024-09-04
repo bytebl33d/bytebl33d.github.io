@@ -25,6 +25,8 @@ We’ll establish three distinct networks behind the pfSense firewall:
 pfSense will act as the gateway (router) and firewall for our homelab, so it should always be the first thing you boot up when using the lab.
 {: .notice--info}
 
+Later on in this series, we will also add our own Intrusion Detection System (IDS) with Suricata. This will be a host that captures all traffic from your networks of choice and alerts for suspicious events.
+
 ## System Requirements
 To ensure smooth operation, here’s what you’ll need:
 - A 64-bit multi-core CPU (minimum 4 cores) with virtualization support
