@@ -83,18 +83,17 @@ I found that when applying the GPO to the domain, I was still not able to WinRM 
 ### Local Share
 Login as a local administator to one of your Windows VMs and navigate to `Control Panel > Network and Internet > Network and Sharing Center > Change Advanced sharing settings > Guest or Public > Turn on File and Printer sharing`.
 
-Next create a new folder, Right-click and go to `Properties > Sharing tab > Share` and give the `Everyone` user full read and write permission (read only).
+Next create a new folder, Right-click and go to `Properties > Sharing tab > Share` and give the `Everyone` user read permission.
 
 ![vulnerability-setup-9](../assets/images/homelab/vuln-setup-9.png)
 
-If you want to allow users to access the file share as a `Guest` user, then open `Local Security Policy` as an Administrator on the computer you want to allow guest access. Next go to `Local Policies > Security Options > Accounts: Guest account status` and switch it to Enabled. By doing this users can authenticate as the Guest user with a blank password.
-
-### Domain Share
-Login as a domain administrator to one of the domain joined hosts. Go to `Local Security Policy > Local Policies > Security Options`. Set the option `Accounts: Guest account status` to `Enabled`. Also enable `Network access: Let Everyone permissions apply to anonymous users `.
+If you want to allow users to access the file share as a `Guest` user, then open `Local Security Policy` as an Administrator. Next go to `Local Policies > Security Options > Accounts: Guest account status` and switch it to Enabled. 
 
 ![vulnerability-setup-8](../assets/images/homelab/vuln-setup-8.png)
 
-To make a folder shared on the network go to `Network access: Shares that can be accessed anonymously` and enter your folder name.
+In the same window go to `User Rights Assignment > Deny access to this computer from the network` and make sure that the Guest account is not in this list.
+
+![vulnerability-setup-8](../assets/images/homelab/vuln-setup-8.1.png)
 
 ## Enforce the Domain Policies
 Right-click on the Start menu and select Windows PowerShell (Admin).
