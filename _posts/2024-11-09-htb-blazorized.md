@@ -10,6 +10,7 @@ header:
     teaser: "/assets/images/headers/Blazorized.png"
 ---
 
+Blazorized is a Windows machine, starting with a website written using the Blazor .NET framework that allows downloading a DLL file that can be reverse engineered to find a JWT secret and use it to get access to the admin panel. The admin panel is vulnerable to an SQL injection to get code execution. To pivot to the next user, the WriteSPN privilege  can be abused to perform a targeted Kerberoast attack on another user. The targeted user is able to write a logon script that ultimately gives access to a user that allows performing a DCSync attack on the domain.
 
 # Reconnaissance
 Starting with an nmap scan, we see that the host is a domain controller and redirects us to `blazorized.htb`. 
@@ -51,9 +52,6 @@ Host script results:
 | smb2-security-mode: 
 |   3:1:1: 
 |_    Message signing enabled and required
-
-Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-# Nmap done at Tue Jul  2 08:55:15 2024 -- 1 IP address (1 host up) scanned in 16.33 seconds
 ```
 
 We add the domain to our `/etc/hosts` file and continue to enumerate the website. On the website we notice that it is built using `Blazor WebAssembly`. One feature of the site is to request all posts and categories from the API at `/check-updates`. 
