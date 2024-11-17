@@ -308,6 +308,4 @@ $ evil-winrm -i 10.10.11.22 -u 'Administrator' -H 'f55ed1465179ba374ec1cad05b34a
 If you enjoyed this machine and want to learn more about DACL attacks, check out the 'DACL Attacks I' and 'DACL Attacks II' modules on HTB Academy.
 
 - Pedant
-``` 
-
-[test](https://www.hackthebox.com/achievement/machine/122577/614?ref=benheater.com)
+```
