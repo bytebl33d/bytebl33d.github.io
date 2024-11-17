@@ -43,8 +43,7 @@ plugins:
 author:
   name   : "Bashee"
   avatar : "/assets/images/bio-photo.jpg"
-  bio    : "Software and cyber security enthousiast striving to create innovative and secure software systems
-while aiding companies to protect their digital assets."
+  bio    : "Passionate about software development and cybersecurity, I strive to create secure, innovative systems while helping companies safeguard their digital assets."
   links:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
@@ -83,3 +82,8 @@ category_archive:
 tag_archive:
   type: liquid
   path: /tags/
+
+collections:
+  posts:
+    output: true
+    layout: grid

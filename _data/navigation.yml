@@ -4,12 +4,6 @@ main:
   - title: "About"
     url: /about/
 docs:
-  - title: Binary Exploitation
-    children:
-      - title: "Buffer Overflow"
-        url: /buffer-overflow/
-      - title: "HTB Jeeves Challenge"
-        url: /htb-jeeves-writeup/
   - title: Web Exploitation
     children:
       - title: "SQL Injection"
