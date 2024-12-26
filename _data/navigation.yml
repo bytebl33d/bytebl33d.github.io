@@ -4,25 +4,21 @@ main:
   - title: "About"
     url: /about/
 docs:
-  - title: Web Exploitation
+  - title: Red Teaming
     children:
-      - title: "SQL Injection"
-        url: /sql-injection/
-      - title: "Web fuzzing with FFUF"
-        url: /web-fuzzing-with-ffuf/
-      - title: "Attacking JSON Web Tokens"
-        url: /jwt-attacks/
+      - title: "AV Evasion with Sliver"
+        url: /sliver-evasion/
   - title: CTF WriteUps
     children:
-      - title: HTBoo 2023 CTF
+      - title: "HTBoo 2023 CTF"
         url: /htboo-ctf-forensics-reversing/
       - title: LakeCTF 2023
         url: /lake-ctf-pwn-scream-into-the-abyss/
-      - title: HTB University CTF 2023
+      - title: "HTB University CTF 2023"
         url: /htb-university-ctf-23/
-      - title: CSCBE24 Bad Ransomware
+      - title: "CSCBE24 Bad Ransomware"
         url: /CSCBE-bad-ransomware-writeup/
-  - title: Networking
+  - title: Homelab
     children:
       - title: Proxmox Home Lab Part 1
         url: /proxmox-homelab-part1/
