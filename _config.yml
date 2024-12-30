@@ -41,7 +41,7 @@ plugins:
   - jekyll-seo-tag
 
 author:
-  name   : "Bashee"
+  name   : "s3rp3nt"
   avatar : "/assets/images/bio-photo.jpg"
   bio    : "Passionate about software development and cybersecurity, I strive to create secure, innovative systems while helping companies safeguard their digital assets."
   links:

