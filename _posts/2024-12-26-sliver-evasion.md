@@ -12,8 +12,7 @@ header:
 
 Recently I have been playing around with [Sliver](https://github.com/BishopFox/sliver) from BishopFox as a C2 framework. After trying it out and executing some beacon payloads on a Windows VM, I noticed that the beacons instantly get flagged by Windows Defender. So to improve my Red Teaming skills, I was interested in finding ways to bypass some general anti-virus software like Windows Defender. In this post I will take you through the process of using [DInvoke](https://github.com/Kara-4search/DInvoke_shellcodeload_CSharp/tree/main) as a shellcode injecter and using common obfuscation techniques for bypassing AVs.
 
-# Building our Shellcode Loader
-## DInvoke
+# DInvoke Shellcode Loader (.NET)
 To start building our shellcode loader, I decided to make use of DInvoke by [TheWover](https://github.com/TheWover). Using DInvoke, we can use Dynamic Invocation to load unmanaged code via DLLs at runtime. This can help us avoiding API Hooking by calling arbitrary code from memory, while also avoiding detections that look for imports of suspicious API calls via the Import Address Table. For more information about the DInvoke project, be sure to read [TheWover's blog post](https://thewover.github.io/Dynamic-Invoke/) where he demonstrates how the project works.
 
 In order to make use of DInvoke as a shellcode loader, I modified an existing C# Visual Studio project of [Kara-4search](https://github.com/Kara-4search/DInvoke_shellcodeload_CSharp/tree/main). I changed the original code to download the shellcode from a web server and then load it into memory.
@@ -87,6 +86,25 @@ C:\Tools\ThreatCheck\bin\Release> ThreatCheck.exe -f C:\Tools\BasheeLoader.exe
 
 No threats have been found! This means that we have now made a program that can fetch our shellcode and execute it in memory without triggering Defender.
 
+# FilelessPELoader (C++)
+The one downside to the above approach is that it requires .NET to be installed on the host to be able to execute our loader. Another technique that can be used to load an encrypted version in memory, decrypt it and execute the payload. To do this, we can make use of the [FilelessPELoader](https://github.com/SaadAhla/FilelessPELoader) project and obfuscate the code. Since this is not a C# project, we cannot use InvisibilityCloak to do the obfuscation. We will do the this manually this time. Again we can use either DefenderCheck or ThreatCheck to see if our executable is good to go.
+
+![FilelessPELoader](../assets/images/maldev/FilelessPELoader-1.png)
+
+From the above output, we can see that our file has some bad bytes that will be detected by AV. To fix this I removed all comments, any unnecessary print statements and reversed a few function names.
+
+![FilelessPELoader](../assets/images/maldev/FilelessPELoader-2.png)
+
+Afterwards we can encrypt any file we want with the `aes.py` script.
+
+```console
+$ python3 aes.py malicious_file.exe
+$ ls
+aes.py cipher.bin key.bin malicious_file.exe
+```
+
+This will create the files `cipher.bin` and `key.bin` that we can pass to our loader as arguments in order to retrieve the files. In the next section we will have a look at how we can make use of our loaders. We can even do this with any file we want in order to evade detection.
+
 # Sliver in Action
 ## Shellcode Generation
 Moving to our attack machine, we create shellcode for a Sliver C2 beacon. Start Sliver, generate a mTLS beacon targeting your IP and save it to a directory of your choosing. Next we start the mTLS listener.
@@ -125,7 +143,17 @@ Now with everything set lets try to get a beacon from our victim machine (`172.1
 
 ![Sliver Execution](../assets/images/maldev/sliver-execution.png)
 
-After executing our custom shellcode loader, we can see it has grabbed our beacon from our Python server, loaded our shellcode in memory and we received a connection from our server without alerting Windows Defender. We can now even go a step further and escalate privileges on the victim.
+After executing our custom shellcode loader, we can see it has grabbed our beacon from our Python server, loaded our shellcode in memory and we received a connection from our server without alerting Windows Defender. We can also try running our modified FilelessPELoader executable.
+
+```console
+$ python3 aes.py beacon.exe
+$ python3 -m http.server 8080
+Serving HTTP on 0.0.0.0 port 8080 (http://0.0.0.0:8080/) ...
+```
+
+![Sliver FilelessPELoader](../assets/images/maldev/sliver-FilelessPELoader.png)
+
+We can now even go a step further and escalate privileges on the victim.
 
 ## Privilege Escalation
 Use the beacon and run `sa-whoami`. This will run a `whoami /all` in a more safe way.
