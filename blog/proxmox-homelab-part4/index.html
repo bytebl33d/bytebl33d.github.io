@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799059026210">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799082581645">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.7.0">
@@ -35,12 +35,12 @@
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../resources/css/retype.css?v=3.7.0.799059026210" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.7.0.799082581645" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.7.0.799059026210" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.7.0.799082581645" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.7.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.7.0.799059026210" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.7.0.799059026210" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.7.0.799082581645" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.7.0.799082581645" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -236,7 +236,24 @@
 <pre class="language-shell-session"><code v-pre class="language-shell-session">$ evil-winrm -i 172.16.0.17 -u 'cicada.local\winnie.wonder' -p 'P@ssw0rd123'</code></pre>
 </doc-codeblock></div>
 <p>To capture this traffic in PfSense, go to <code v-pre>Diagnostics &gt; Packet Capture</code> and select the appropriate interface.</p>
-<p><strong>Tip:</strong> Ensure you target the domain-joined host from a machine outside of the LAN to properly capture traffic. If you capture traffic from devices within the same LAN, PfSense may not log the packets unless you create a port mirror. At the final section, I will discuss how to setup a SPAN port and route traffic to another machine to monitor traffic.</p>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+            <h5>Tip</h5>
+<p>Ensure you target the domain-joined host from a machine outside of the LAN to properly capture traffic. If you capture traffic from devices within the same LAN, PfSense may not log the packets unless you create a port mirror. At the final section, I will discuss how to setup a SPAN port and route traffic to another machine to monitor traffic.</p>
+        </div>
+    </div>
+</div>
 <p>In WireShark, we can focus on the packet containing the authentication request.</p>
 <p><figure class="content-center">
     <img src="../../assets/images/homelab/pfsense-capture-winrm.png" alt="PfSense-capture-winrm">
@@ -247,7 +264,23 @@
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-none"><code v-pre class="language-none">alert http any any -&gt; any 5985 (msg: &quot;Connection via Evil-WinRM Detected&quot;; flow:established,to_server; http.method; content:&quot;POST&quot;; http.header; content:&quot;User-Agent: Ruby WinRM Client&quot;; content:&quot;Authorization: &quot;; base64_decode:bytes 13,offset 10,relative; base64_data; content:&quot;NTLMSSP&quot;; content:&quot;|03|&quot;; classtype:bad-unknown; sid:9990001; rev:1;)</code></pre>
 </doc-codeblock></div>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
 <p><strong>Snort</strong> is a similar IDS/IPS solution that can be installed on PfSense, but has slightly different syntax.</p>
+        </div>
+    </div>
+</div>
 <p>Explanation:</p>
 <ul>
 <li>The rule targets HTTP traffic performing a POST request on port 5985.</li>
@@ -272,7 +305,7 @@
 </doc-codeblock></div>
 <p>This rule was applied to the ADLAB interface. To test it, I used <code v-pre>NetExec</code> to initiate an SMB authentication from outside the ADLAB interface:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">nxc smb 172.16.200.100 -u 'winnie.wonder' -p 'P@ssw0rd123' -d 'cicada.local'</code></pre>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ nxc smb 172.16.200.100 -u 'winnie.wonder' -p 'P@ssw0rd123' -d 'cicada.local'</code></pre>
 </doc-codeblock></div>
 <p>As expected, Suricata raised an alert upon detecting the authentication:
 <figure class="content-center">
@@ -288,7 +321,7 @@
 </doc-anchor-target>
 <p>In the third part of our series, we executed the following command to perform an ASREPRoasting attack on domain users:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">GetNPUsers.py CICADA.LOCAL/ -dc-ip 172.16.200.100 -no-pass -usersfile valid_users -format hashcat</code></pre>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ GetNPUsers.py CICADA.LOCAL/ -dc-ip 172.16.200.100 -no-pass -usersfile valid_users -format hashcat</code></pre>
 </doc-codeblock></div>
 <p>Now, let’s examine what this traffic looks like in WireShark
 <figure class="content-center">

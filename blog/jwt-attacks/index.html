@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799059026210">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799082581645">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.7.0">
@@ -35,12 +35,12 @@
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../resources/css/retype.css?v=3.7.0.799059026210" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.7.0.799082581645" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.7.0.799059026210" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.7.0.799082581645" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.7.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.7.0.799059026210" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.7.0.799059026210" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.7.0.799082581645" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.7.0.799082581645" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -268,9 +268,24 @@ V8WS+YiYCU5OBAmTcz2w2kzBhZFlH6RK4mquexJHra23IGv5UJ5GVPEXpdCqK3Tr
 -----END PUBLIC KEY-----</code></pre>
 </doc-codeblock></div>
 <p>This means we can make our own JWTs with a forged signature created using the public key and the HS256 algorithm to bypass the authentication completely. Since the JWT was already signed using the public key, the signature verification by the application is successful leading to a successful key confusion attack.</p>
-<blockquote>
-<p><strong><em>NOTE:</em></strong> In cases where the public key isn&#x27;t readily available, you may still be able to test for algorithm confusion by deriving the key from a pair of existing JWTs. This process is relatively simple using tools such as <a href="https://github.com/silentsignal/rsa_sign2n/tree/release/standalone">jwt_forgery.py</a>.</p>
-</blockquote>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+            <h5>Note</h5>
+<p>In cases where the public key isn&#x27;t readily available, you may still be able to test for algorithm confusion by deriving the key from a pair of existing JWTs. This process is relatively simple using tools such as <a href="https://github.com/silentsignal/rsa_sign2n/tree/release/standalone">jwt_forgery.py</a>.</p>
+        </div>
+    </div>
+</div>
 <doc-anchor-target id="jwt-header-parameter-injection">
     <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#jwt-header-parameter-injection">#</doc-anchor-trigger>
@@ -353,11 +368,11 @@ V8WS+YiYCU5OBAmTcz2w2kzBhZFlH6RK4mquexJHra23IGv5UJ5GVPEXpdCqK3Tr
 </doc-anchor-target>
 <p>The <a href="https://github.com/ticarpi/jwt_tool">jwt_tool.py</a> is a very useful toolkit for validating, forging, scanning and tampering with JSON Web Tokens. It can test for a variety of known exploits such as the RS/HS256 public key mismatch vulnerability discussed in this article. Let&#x27;s look at an example that leverages the key confusion attack on a JWT token when we have access to the public key. The <code v-pre>-X k</code> flag can be used for the key confusion attack.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">python3 jwt_tool.py &lt;JWT_TOKEN&gt; -X k -pk public.pem</code></pre>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ python3 jwt_tool.py &lt;JWT_TOKEN&gt; -X k -pk public.pem</code></pre>
 </doc-codeblock></div>
 <p>Using this tool we can even inject SQL queries in certain payload fields that we are interested in. We can do this using the <code v-pre>-I</code> flag, specifying the claim <code v-pre>-pc</code> and value <code v-pre>-pv</code> of the payload to tamper. In this example we are changing the current username to be &#x27;admin&#x27;.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">python3 jwt_tool.py &lt;JWT_TOKEN&gt; -I -pc username -pv &quot;admin&quot; -X k -pk key.pem</code></pre>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ python3 jwt_tool.py &lt;JWT_TOKEN&gt; -I -pc username -pv &quot;admin&quot; -X k -pk key.pem</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="sql-injection-payloads">
     <h3>
@@ -367,11 +382,11 @@ V8WS+YiYCU5OBAmTcz2w2kzBhZFlH6RK4mquexJHra23IGv5UJ5GVPEXpdCqK3Tr
 </doc-anchor-target>
 <p>If certain functions on the web application are vulnerable to SQL injection, we can even modify the JWT token to include an injection payload of our choice.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">python3 jwt_tool.py &lt;JWT_TOKEN&gt; -I -pc username -pv &quot;' AND 1 = 0 UNION ALL SELECT 1,group_concat(sql),3 FROM sqlite_master--&quot; -X k -pk public.pem</code></pre>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ python3 jwt_tool.py &lt;JWT_TOKEN&gt; -I -pc username -pv &quot;' AND 1 = 0 UNION ALL SELECT 1,group_concat(sql),3 FROM sqlite_master--&quot; -X k -pk public.pem</code></pre>
 </doc-codeblock></div>
 <p>We can then use the newly generated fake token and set it as our session cookie:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">curl http://&lt;Host&gt;:&lt;PORT&gt;/ -b 'session=&lt;FAKE-TOKEN&gt;'</code></pre>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ curl http://&lt;Host&gt;:&lt;PORT&gt;/ -b 'session=&lt;FAKE-TOKEN&gt;'</code></pre>
 </doc-codeblock></div>
 
                             
