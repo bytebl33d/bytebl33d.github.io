@@ -1,0 +1,13 @@
+input: .
+output: .retype
+url: bytebl33d.github.io
+branding:
+  title: bytebl33d
+  label: Blog
+links:
+- text: Posts
+  link: /blog
+- text: GitHub
+  link: https://github.com/bytebl33d
+footer:
+  copyright: "&copy; Copyright {{ year }}. All rights reserved."
