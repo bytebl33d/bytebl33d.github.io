@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799082581645">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799084971022">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.7.0">
@@ -32,12 +32,12 @@
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../../../resources/css/retype.css?v=3.7.0.799082581645" rel="stylesheet">
+    <link href="../../../../resources/css/retype.css?v=3.7.0.799084971022" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.7.0.799082581645" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.7.0.799084971022" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../../resources/js/retype.js?v=3.7.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.7.0.799082581645" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.7.0.799082581645" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.7.0.799084971022" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.7.0.799084971022" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -190,12 +190,18 @@
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
-<p>Yummy is a hard box that starts with a Restaurant web app using Caddy web service, on port 80, where an attacker finds an arbitrary file read HTTP Location header, which is not handled and sanitized properly by the default Caddy configuration. This allows an attacker to find several <code v-pre>cronjob</code> scripts that allow downloading the web app source code. Reading the source code, the web app uses JWT RSA keypairs to forge an admin token and escalate privileges on the web app. The admin panel has an SQL injection, allowing arbitrary file write over a file running periodically (<code v-pre>cronjob</code>). Improper directory permissions allow the attacker to move laterally to <code v-pre>www-data</code> and eventually a <code v-pre>dev</code> user. The <code v-pre>dev</code> user can execute <code v-pre>rsync</code> binary as root, which helps escalate privileges to root.</p>
-<doc-anchor-target id="reconnaissance" class="break-words">
+<doc-anchor-target id="synopsis" class="break-words">
     <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#synopsis">#</doc-anchor-trigger>
+        <span>Synopsis</span>
+    </h1>
+</doc-anchor-target>
+<p>Yummy is a hard box that starts with a Restaurant web app using Caddy web service, on port 80, where an attacker finds an arbitrary file read HTTP Location header, which is not handled and sanitized properly by the default Caddy configuration. This allows an attacker to find several <code v-pre>cronjob</code> scripts that allow downloading the web app source code. Reading the source code, the web app uses JWT RSA keypairs to forge an admin token and escalate privileges on the web app. The admin panel has an SQL injection, allowing arbitrary file write over a file running periodically (<code v-pre>cronjob</code>). Improper directory permissions allow the attacker to move laterally to <code v-pre>www-data</code> and eventually a <code v-pre>dev</code> user. The <code v-pre>dev</code> user can execute <code v-pre>rsync</code> binary as root, which helps escalate privileges to root.</p>
+<doc-anchor-target id="reconnaissance">
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#reconnaissance">#</doc-anchor-trigger>
         <span>Reconnaissance</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <p>Our initial port scan only shows two ports open: SSH on port 22 and a web server on port 80. By looking at the <code v-pre>http-server-header</code>, we identify that the server is running Caddy as a reverse proxy.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -250,10 +256,10 @@ qa:x:1001:1001::/home/qa:/bin/bash</code></pre>
 </doc-codeblock></div>
 <p>We can download those files via the LFI vulnerability and check their contents.</p>
 <doc-anchor-target id="app-backup">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#app-backup">#</doc-anchor-trigger>
         <span>App Backup</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>The contents of the <code v-pre>app_backup.sh</code> script reveals the location of a zip file in the <code v-pre>/var/www</code> directory.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -332,10 +338,10 @@ order_query = request.args.get('o', '')
 sql = f&quot;SELECT * FROM appointments WHERE appointment_email LIKE %s order by appointment_date {order_query}&quot;</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="foothold">
-    <h1>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#foothold">#</doc-anchor-trigger>
         <span>Foothold</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <p>Let&#x27;s perform a search query on the admin dashboard and intercept the request with BurpSuite. We can confirm the SQL Injection by making the server sleep for several seconds.</p>
 <p><figure class="content-center">
@@ -400,16 +406,16 @@ write_file &quot;&quot; &quot;/data/scripts/dbstatus.json&quot;</code></pre>
 mysql@yummy:/var/spool/cron$</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="user">
-    <h1>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#user">#</doc-anchor-trigger>
         <span>User</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <doc-anchor-target id="mysql-to-www-data">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#mysql-to-www-data">#</doc-anchor-trigger>
         <span>Mysql to www-data</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>After getting a shell as the <code v-pre>mysql</code> we still have very limited access. We can move laterally to the <code v-pre>www-data</code> user since there is also a script (<code v-pre>app_backup.sh</code>) that runs every minute by this user. We are able to remove the backup file and replace it with the same reverse shell script.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -420,10 +426,10 @@ mysql@yummy:/data/scripts$ mv shell.sh app_backup.sh</code></pre>
 </doc-codeblock></div>
 <p>We again run a netcat listener to catch the shell (it might take a few tries).</p>
 <doc-anchor-target id="www-data-to-qa">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#www-data-to-qa">#</doc-anchor-trigger>
         <span>www-data to qa</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>We can find a password for the <code v-pre>qa</code> user in the <code v-pre>/var/www/qa_testing/.hg/store/data/app.py.i</code> file.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -441,16 +447,16 @@ www-data@yummy:~/app-qatesting/.hg/store/data$ strings app.py.i
 qa@yummy:~$ cat user.txt</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="root">
-    <h1>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#root">#</doc-anchor-trigger>
         <span>Root</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <doc-anchor-target id="qa-to-dev">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#qa-to-dev">#</doc-anchor-trigger>
         <span>QA to Dev</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>The qa user can run a command as the dev user.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -477,10 +483,10 @@ qa@yummy:~/tmp$ cp ~/.hgrc .hg/hgrc
 qa@yummy:~/tmp$ sudo -u dev /usr/bin/hg pull /home/dev/app-production/</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="dev-to-root">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#dev-to-root">#</doc-anchor-trigger>
         <span>Dev to Root</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>We now have a shell as the <code v-pre>dev</code> user that can run <code v-pre>rsync</code> as root. Rsync is a tool for synchronizing files and directories between location.</p>
 <div class="codeblock-wrapper"><doc-codeblock>

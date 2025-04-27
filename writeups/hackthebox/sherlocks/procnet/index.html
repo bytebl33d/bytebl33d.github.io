@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799082581645">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799084971022">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.7.0">
@@ -32,12 +32,12 @@
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../../../resources/css/retype.css?v=3.7.0.799082581645" rel="stylesheet">
+    <link href="../../../../resources/css/retype.css?v=3.7.0.799084971022" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.7.0.799082581645" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.7.0.799084971022" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../../resources/js/retype.js?v=3.7.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.7.0.799082581645" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.7.0.799082581645" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.7.0.799084971022" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.7.0.799084971022" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -190,12 +190,18 @@
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
-<p>With the increasing use of open-source Command and Control (C2) frameworks by threat actors, it has become crucial for blue teams to develop strategies to detect and mitigate these threats. In this exercise, our red team simulated an attack using a popular open-source C2 framework to help improve defenses. We were provided with PCAP files, EVTX logs, and API traces, which we will analyze to uncover the attack&#x27;s methodology.</p>
-<doc-anchor-target id="introduction-to-tools-and-files" class="break-words">
+<doc-anchor-target id="synopsis" class="break-words">
     <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#synopsis">#</doc-anchor-trigger>
+        <span>Synopsis</span>
+    </h1>
+</doc-anchor-target>
+<p>With the increasing use of open-source Command and Control (C2) frameworks by threat actors, it has become crucial for blue teams to develop strategies to detect and mitigate these threats. In this exercise, our red team simulated an attack using a popular open-source C2 framework to help improve defenses. We were provided with PCAP files, EVTX logs, and API traces, which we will analyze to uncover the attack&#x27;s methodology.</p>
+<doc-anchor-target id="introduction-to-tools-and-files">
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#introduction-to-tools-and-files">#</doc-anchor-trigger>
         <span>Introduction to Tools and Files</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <p>During this investigation, we will use various tools to examine the artifacts:</p>
 <ul>
@@ -205,16 +211,16 @@
 </ul>
 <p>One of the less familiar file types encountered, <code v-pre>.apmx64</code>, is associated with <strong>API Monitor</strong>, a powerful tool for monitoring and controlling API calls made by applications. This tool was instrumental in understanding the behavior of the malware on the host.</p>
 <doc-anchor-target id="analyzing-the-packet-capture">
-    <h1>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#analyzing-the-packet-capture">#</doc-anchor-trigger>
         <span>Analyzing the Packet Capture</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <doc-anchor-target id="csgo-malware-download-and-execution">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#csgo-malware-download-and-execution">#</doc-anchor-trigger>
         <span>CSGO Malware Download and Execution</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>We begin by examining the <code v-pre>Employee.pcapng</code> file using Wireshark. Filtering the traffic by the HTTP protocol, we quickly identified a file named <code v-pre>csgo.exe</code> being downloaded.</p>
 <p><figure class="content-center">
@@ -236,10 +242,10 @@
 </figure>
 </p>
 <doc-anchor-target id="identifying-the-c2-framework-sliver-detection">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#identifying-the-c2-framework-sliver-detection">#</doc-anchor-trigger>
         <span>Identifying the C2 Framework: Sliver Detection</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>To determine the C2 framework being used, we can extract the <code v-pre>csgo.exe</code> binary from the packet capture by following the TCP stream of the HTTP request and exporting the payload. We will then upload this binary to <strong>VirusTotal</strong> for analysis.</p>
 <p><figure class="content-center">
@@ -249,16 +255,16 @@
 </p>
 <p>VirusTotal identified the binary as associated with the Sliver C2 framework, a popular open-source tool used by both red teams and malicious actors for post-exploitation tasks. Sliver provides various capabilities, including remote command execution, lateral movement, and credential harvesting.</p>
 <doc-anchor-target id="monitoring-api-calls-with-api-monitor">
-    <h1>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#monitoring-api-calls-with-api-monitor">#</doc-anchor-trigger>
         <span>Monitoring API Calls with API Monitor</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <doc-anchor-target id="accessing-secure-vault-data">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#accessing-secure-vault-data">#</doc-anchor-trigger>
         <span>Accessing Secure Vault Data</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>The next phase of the investigation involves examining the behavior of the <code v-pre>csgo.exe</code> malware on the infected system. Using <a href="http://www.rohitab.com/apimonitor">API Monitor</a>, we can track the API calls made by this process. Early in the execution, the malware retrieved the current working directory using the <code v-pre>GetCurrentDirectoryW</code> API call. Shortly afterward, it launched a new process named <code v-pre>notepad.exe</code>.</p>
 <p><figure class="content-center">
@@ -285,10 +291,10 @@
 </doc-codeblock></div>
 <p>This command lists all members of the &quot;Domain Admins&quot; group, which typically has high-level privileges across the domain. Gaining knowledge of these users is crucial for an attacker, as compromising one of these accounts can give them control over the entire domain.</p>
 <doc-anchor-target id="downloading-additional-malware-via-wmi">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#downloading-additional-malware-via-wmi">#</doc-anchor-trigger>
         <span>Downloading Additional Malware via WMI</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>The investigation revealed that after gaining access to domain information, the attacker used WMI (Windows Management Instrumentation) to download another Sliver beacon, named <code v-pre>fifa24.exe</code>, to the Domain Controller (DC).</p>
 <p><figure class="content-center">
@@ -298,10 +304,10 @@
 </p>
 <p>WMI is a powerful feature in Windows that allows for remote management of systems, including executing commands, scripts, and managing files. The attacker used a tool from the Sliver ARMORY called <code v-pre>SharpWMI</code> to download and execute this payload on the DC. This indicates that the attacker had already escalated privileges, likely by compromising a domain admin account retrieved from the Windows Vault, enabling them to execute commands remotely on the DC.</p>
 <doc-anchor-target id="extracting-the-ntdsdit-file">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#extracting-the-ntdsdit-file">#</doc-anchor-trigger>
         <span>Extracting the NTDS.dit File</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>One of the most critical actions taken by the attacker was the extraction of the <code v-pre>NTDS.dit</code> file. This file contains a database of Active Directory (AD) data, including password hashes for all domain users.</p>
 <p><figure class="content-center">
@@ -315,17 +321,17 @@
 </doc-codeblock></div>
 <p>Compressing the <code v-pre>NTDS.dit</code> file and other related files into a zip archive is a common tactic used to prepare the data for exfiltration. Once the file is compressed, it becomes easier to transfer out of the network, typically over encrypted channels to avoid detection.</p>
 <doc-anchor-target id="conclusion">
-    <h1>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#conclusion">#</doc-anchor-trigger>
         <span>Conclusion</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <p>In this exercise, we observed a sophisticated attack leveraging the Sliver C2 framework, which included the use of process injection, credential harvesting, remote command execution, and data exfiltration. By understanding the tactics and techniques used, blue teams can better prepare for similar threats in their environments.</p>
 <doc-anchor-target id="key-takeaways">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#key-takeaways">#</doc-anchor-trigger>
-        <span>Key Takeaways:</span>
-    </h2>
+        <span>Key Takeaways</span>
+    </h3>
 </doc-anchor-target>
 <ul>
 <li><strong>Use of C2 Frameworks</strong>: Open-source C2 frameworks like Sliver are increasingly used by both red teams and malicious actors. Being familiar with their behaviors, such as JA3 fingerprints and typical process injections, is essential for detection.</li>

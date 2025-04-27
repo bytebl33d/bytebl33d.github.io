@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799082581645">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799084971022">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.7.0">
@@ -35,12 +35,12 @@
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../resources/css/retype.css?v=3.7.0.799082581645" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.7.0.799084971022" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.7.0.799082581645" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.7.0.799084971022" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.7.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.7.0.799082581645" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.7.0.799082581645" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.7.0.799084971022" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.7.0.799084971022" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -193,18 +193,18 @@
 </figure>
 </p>
 <p>In this part of our Active Directory Home Lab series, we&#x27;ll focus on enhancing the security and visibility of our environment by adding network monitoring. Since we&#x27;re utilizing PfSense as our software-based firewall, it provides a convenient platform for deploying additional security tools. Specifically, we&#x27;ll be setting up Suricata, a powerful intrusion detection and prevention system (IDS/IPS), to monitor traffic and detect potential threats. This post will guide you through configuring Suricata and creating custom rules to detect attacks, such as those we simulated in Part 3.</p>
-<doc-anchor-target id="suricata-setup" class="break-words">
-    <h1>
+<doc-anchor-target id="suricata-setup">
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#suricata-setup">#</doc-anchor-trigger>
         <span>Suricata Setup</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <p>To begin, navigate to the PfSense web interface and proceed to <code v-pre>System &gt; Package Manager &gt; Available Packages</code>. Search for Suricata and install the latest version. Once installed, go to <code v-pre>Services &gt; Suricata</code> to start configuring the tool. We’ll add interfaces and tweak some options, but the default settings should suffice for most purposes. For our ruleset, we&#x27;ll use the ETOpen Emerging Threats as a foundation.</p>
 <doc-anchor-target id="adding-monitoring-interfaces">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#adding-monitoring-interfaces">#</doc-anchor-trigger>
         <span>Adding Monitoring Interfaces</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>Under the Interfaces tab, select the interfaces that Suricata will monitor. For our lab, I chose the <code v-pre>LAN</code> and <code v-pre>ADLAB</code> interfaces to observe traffic between the attacking VM on the LAN and the AD network.</p>
 <p><figure class="content-center">
@@ -213,17 +213,17 @@
 </figure>
 </p>
 <doc-anchor-target id="creating-custom-detection-rules">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#creating-custom-detection-rules">#</doc-anchor-trigger>
         <span>Creating Custom Detection Rules</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>Next, let&#x27;s create custom rules tailored to our lab environment. We’ll do this by editing one of the interfaces and navigating to the rules tab.</p>
 <doc-anchor-target id="detecting-evil-winrm-traffic">
-    <h3>
+    <h4>
         <doc-anchor-trigger class="header-anchor-trigger" to="#detecting-evil-winrm-traffic">#</doc-anchor-trigger>
         <span>Detecting Evil-WinRM Traffic</span>
-    </h3>
+    </h4>
 </doc-anchor-target>
 <p>Our first custom rule will detect Evil-WinRM traffic, which is often used for remote management in penetration testing scenarios. For more information on setting up Remote Management on your target hosts, refer to Part 3 of this series.</p>
 <p><figure class="content-center">
@@ -294,10 +294,10 @@
 </figure>
 </p>
 <doc-anchor-target id="detecting-smb-authentication">
-    <h3>
+    <h4>
         <doc-anchor-trigger class="header-anchor-trigger" to="#detecting-smb-authentication">#</doc-anchor-trigger>
         <span>Detecting SMB Authentication</span>
-    </h3>
+    </h4>
 </doc-anchor-target>
 <p>Similarly, we can create a custom rule to detect SMB authentication attempts within the <code v-pre>CICADA</code> domain. The below rule looks for the SMB header with the NTLMSSP authentication type set to <code v-pre>03</code> and the domain name in hex format, separated by null bytes.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -314,10 +314,10 @@
 </figure>
 </p>
 <doc-anchor-target id="detecting-as-reproasting">
-    <h3>
+    <h4>
         <doc-anchor-trigger class="header-anchor-trigger" to="#detecting-as-reproasting">#</doc-anchor-trigger>
         <span>Detecting AS-REPRoasting</span>
-    </h3>
+    </h4>
 </doc-anchor-target>
 <p>In the third part of our series, we executed the following command to perform an ASREPRoasting attack on domain users:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -342,10 +342,10 @@
 </ul>
 <p>By implementing this rule, Suricata will trigger an alert when it detects a pattern consistent with an ASREPRoast attack, helping to protect your domain from this common exploitation method.</p>
 <doc-anchor-target id="creating-span-ports-on-proxmox">
-    <h1>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#creating-span-ports-on-proxmox">#</doc-anchor-trigger>
         <span>Creating SPAN Ports on Proxmox</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <p>Start by creating a new LXC and assign at least 2 cores, 2GB of RAM and 25GB of storage. After creating the container, add another network interface for the ports you want to mirror. In my case I added interfaces <code v-pre>vmbr1</code> and <code v-pre>vmbr2</code>. The interface is going to send copies of packets of machines connected to the switch to the container. Make sure the firewall is unchecked for these interfaces.
 <figure class="content-center">
@@ -402,10 +402,10 @@ $ tail /var/log/suricata/fast.log</code></pre>
 </doc-codeblock></div>
 <p>After this, we should be able to capture all traffic coming from our network in pfSense (even same-LAN traffic). One issue we are having now is that the port mirror command needs to be ran each time the container is restarted. It is possible to create a hookscript for this. Check out <a href="https://codingpackets.com/blog/proxmox-vm-bridge-port-mirror/">this post</a> to create a custom script to run at VM start and stop. Since we created a LXC, it is (at the time of writing) not possible to create hookscripts for containers, but you can always create a hookscript on the pfSense VM that creates the SPAN ports at boot for the Suricata container.</p>
 <doc-anchor-target id="conclusion">
-    <h1>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#conclusion">#</doc-anchor-trigger>
         <span>Conclusion</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <p>In this part we have seen how we can leverage Suricata to detect malicious traffic on our network. We have also learned how we can write our own rules based on IOCs. By implementing these custom rules, you can enhance the security of your Active Directory lab environment, gaining visibility into specific attacks and unauthorized access attempts.</p>
 

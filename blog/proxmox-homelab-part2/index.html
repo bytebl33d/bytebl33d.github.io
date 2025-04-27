@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799082581645">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799084971022">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.7.0">
@@ -35,11 +35,11 @@
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../resources/css/retype.css?v=3.7.0.799082581645" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.7.0.799084971022" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.7.0.799082581645" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.7.0.799084971022" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.7.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.7.0.799082581645" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.7.0.799084971022" data-turbo-eval="false" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -192,11 +192,11 @@
 </figure>
 </p>
 <p>In this post, we&#x27;re diving into the setup of Windows virtual machines (VMs) in a Proxmox home lab, with the ultimate goal of building an Active Directory (AD) environment. This includes creating a Domain Controller that will also serve as the DHCP server for our AD Lab, and joining a Windows 10 host to the domain. By the end of this guide, you&#x27;ll have a functional AD lab that you can use for learning, experimenting, and testing.</p>
-<doc-anchor-target id="what-youll-need" class="break-words">
-    <h1>
+<doc-anchor-target id="what-youll-need">
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#what-youll-need">#</doc-anchor-trigger>
         <span>What You&#x27;ll Need</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <p>To get started with setting up your Windows VMs and creating the AD Lab, make sure you have the following:</p>
 <ul>
@@ -223,17 +223,17 @@
     </div>
 </div>
 <doc-anchor-target id="setting-up-the-ad-lab">
-    <h1>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#setting-up-the-ad-lab">#</doc-anchor-trigger>
         <span>Setting Up the AD Lab</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <p>We&#x27;ll start by uploading the necessary ISOs to our Proxmox server. For this guide, we&#x27;ll create two VMs: a Windows 10 machine and a Domain Controller. Since the setup for both is quite similar, we&#x27;ll focus on the Domain Controller.</p>
 <doc-anchor-target id="step-1-create-the-domain-controller-vm">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#step-1-create-the-domain-controller-vm">#</doc-anchor-trigger>
         <span>Step 1: Create the Domain Controller VM</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>Create a new Virtual Machine and select the Windows Server 2022 ISO image you downloaded. Check the box to add an additional drive for the VirtIO drivers and select the corresponding ISO image.</p>
 <p><figure class="content-center">
@@ -262,10 +262,10 @@
 </figure>
 </p>
 <doc-anchor-target id="step-2-install-active-directory-domain-services">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#step-2-install-active-directory-domain-services">#</doc-anchor-trigger>
         <span>Step 2: Install Active Directory Domain Services</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>Open Server Manager and select <code v-pre>Add roles and features</code>. Accept the default settings until you&#x27;re prompted with the <code v-pre>Server Roles</code> section. Select <code v-pre>Active Directory Domain Services</code> and add the necessary features. Once it has installed successfully, select <code v-pre>Close</code>. I also installed the DNS and DHCP Server Features together with Active Directory Certificate Services, but this is optional.</p>
 <p><figure class="content-center">
@@ -275,10 +275,10 @@
 </p>
 <p>The next step is to promote the server to a domain controller. You will need to have the domain name you want to use in the next step. I will choose the domain name of <code v-pre>cicada.local</code>. To promote the server to a domain controller, click on the notification icon on the top section of the Server Manager program. Then select <code v-pre>Promote this server to a domain controller</code>. Select <code v-pre>Add a new forest</code> as this is a newly created AD environment. Enter the domain name in the root domain name field. Once the Windows Server has rebooted, you will see the login screen show the domain entered in the previous step.</p>
 <doc-anchor-target id="step-3-create-a-domain-admin-account">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#step-3-create-a-domain-admin-account">#</doc-anchor-trigger>
         <span>Step 3: Create a Domain Admin Account</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>After logging in, open <code v-pre>Active Directory Users and Computers</code>. As I like to keep things organized, I will create a new group for all the user accounts. Right click on your domain and select <code v-pre>New &gt; Organizational Unit</code> and name it <code v-pre>Groups</code>. Move all group related objects from the <code v-pre>Users</code> to the <code v-pre>Groups</code> folder. Right click on the <code v-pre>Users</code> folder and select <code v-pre>New &gt; User</code>.</p>
 <p><figure class="content-center">
@@ -290,10 +290,10 @@
 <p>Now we need to add the newly created account to the <code v-pre>Domain Admin</code> group. This can be done right clicking the newly created user and selecting Properties. Select the <code v-pre>Member of &gt; Add</code>. Under the <code v-pre>Enter the object names to select</code> section, click on the <code v-pre>Advanced</code> button. Then click <code v-pre>Find now &gt; Domain Admins</code> and click <code v-pre>OK</code>.</p>
 <p>We can then logout of the Administrator account and login with our newly created domain account. Whenever we create a new user account, they are able to login with their credentials on any domain joined host.</p>
 <doc-anchor-target id="step-4-configure-the-dhcp-server">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#step-4-configure-the-dhcp-server">#</doc-anchor-trigger>
         <span>Step 4: Configure the DHCP Server</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>Go to <code v-pre>Server Manager &gt; Add roles and Features</code>, select DHCP Server, and complete the installation. Once done, complete the DHCP configuration through the notifications in Server Manager.</p>
 <p>We then have to configure a DHCP scope. To do so, go to <code v-pre>Server Manager</code> once again. Then select <code v-pre>Tools &gt; DHCP</code>. Expand the available options and then right click on IPv4 to create an IPv4 Scope. Set a name for the scope and give it a description if you wish to do so. Select <code v-pre>Next</code> and set the range to be somewhere inside the <code v-pre>172.16.200.1/24</code> network. I choose the starting IP to be <code v-pre>172.16.200.11</code> to give me some room in case I want to add some static IPs later. You can also exclude some IP addresses if you want to.</p>
@@ -304,18 +304,18 @@
 </p>
 <p>When prompted if you want to configure DHCP options for this scope now, choose <code v-pre>Yes</code>, then select <code v-pre>Next</code>. You will then be prompted to select the IP address for the default gateway. The IP address we gave our default gateway was <code v-pre>172.16.200.1</code>. Enter that and click on Add. Then select Next.</p>
 <doc-anchor-target id="add-windows-10-vm-to-domain">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#add-windows-10-vm-to-domain">#</doc-anchor-trigger>
         <span>Add Windows 10 VM to Domain</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>Go through the initial setup wizard and login with the local account you created. The next step is to join the Windows 10 VM to the domain. To do so, open the <code v-pre>Settings</code> program and go to <code v-pre>Accounts &gt; Access work or school &gt; Connect</code>. In the pop out window, select the option <code v-pre>Join this device to a local Active Directory domain</code>. Enter the domain name we used to configure our Active Directory forest (I used cicada.local). You will then be prompted for a login.</p>
 <p>Windows 10 will restart after entering the credentials. After rebooting, you can now login to the domain by selecting Other User in the lower left corner.</p>
 <doc-anchor-target id="conclusion">
-    <h1>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#conclusion">#</doc-anchor-trigger>
         <span>Conclusion</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <p>Congratulations! You now have a fully functioning Active Directory home lab. With your Domain Controller and Windows 10 VM set up, you’re ready to explore, experiment, and even simulate attacks to understand how AD environments operate and how they can be secured or compromised. In the next part, we’ll delve into common misconfigurations in Windows and Active Directory and explore how attackers might exploit them. Stay tuned!</p>
 

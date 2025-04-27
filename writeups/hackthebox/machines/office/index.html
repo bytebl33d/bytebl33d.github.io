@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799082581645">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799084971022">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.7.0">
@@ -32,12 +32,12 @@
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../../../resources/css/retype.css?v=3.7.0.799082581645" rel="stylesheet">
+    <link href="../../../../resources/css/retype.css?v=3.7.0.799084971022" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.7.0.799082581645" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.7.0.799084971022" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../../resources/js/retype.js?v=3.7.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.7.0.799082581645" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.7.0.799082581645" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.7.0.799084971022" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.7.0.799084971022" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -191,12 +191,18 @@
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
-<p>The &quot;Office&quot; machine on HackTheBox is a challenging Windows-based environment that incorporates a variety of vulnerabilities. These include exploiting a Joomla web application, analyzing PCAP files to extract Kerberos credentials, leveraging LibreOffice macros by manipulating registry settings, abusing MSKRP to dump DPAPI credentials, and exploiting Group Policies due to excessive privileges in Active Directory.</p>
-<doc-anchor-target id="reconnaissance" class="break-words">
+<doc-anchor-target id="synopsis" class="break-words">
     <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#synopsis">#</doc-anchor-trigger>
+        <span>Synopsis</span>
+    </h1>
+</doc-anchor-target>
+<p>The &quot;Office&quot; machine on HackTheBox is a challenging Windows-based environment that incorporates a variety of vulnerabilities. These include exploiting a Joomla web application, analyzing PCAP files to extract Kerberos credentials, leveraging LibreOffice macros by manipulating registry settings, abusing MSKRP to dump DPAPI credentials, and exploiting Group Policies due to excessive privileges in Active Directory.</p>
+<doc-anchor-target id="reconnaissance">
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#reconnaissance">#</doc-anchor-trigger>
         <span>Reconnaissance</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <p>The initial phase begins with an <code v-pre>nmap</code> scan, revealing that the target is a Windows Domain Controller.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -230,10 +236,10 @@ PORT      STATE SERVICE
 <pre class="language-shell-session"><code v-pre class="language-shell-session">$ echo 10.10.11.3 office.htb dc.office.htb | sudo tee -a /etc/hosts</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="joomla-website">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#joomla-website">#</doc-anchor-trigger>
         <span>Joomla Website</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>On accessing the website, we encounter a Joomla CMS for &quot;Tony Stark&#x27;s Iron Man Company&quot;. By checking the version, we identify it as <code v-pre>4.2.7</code>, which is vulnerable to a known exploit (<code v-pre>CVE-2023-23752</code>).</p>
 <p><figure class="content-center">
@@ -265,10 +271,10 @@ Coded By: K3ysTr0K3R --&gt; Hug me ʕっ•ᴥ•ʔっ
 </doc-codeblock></div>
 <p>Trying to login as the <code v-pre>Administrator</code> account on the Joomla backend fails. Looking at the endpoint where this password was found, it looks like this is the password for the Joomla database, so for now we proceed.</p>
 <doc-anchor-target id="domain-enumeration">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#domain-enumeration">#</doc-anchor-trigger>
         <span>Domain Enumeration</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>With port <code v-pre>88</code> open, we proceed to enumerate domain usernames using <code v-pre>kerbrute</code>, successfully identifying several valid accounts.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -293,16 +299,16 @@ Version: v1.0.3 (9dad6e1) - 07/16/24 - Ronnie Flathers @ropnop
 </doc-codeblock></div>
 <p>We found 6 usernames from the <code v-pre>jsmith</code> wordlist and add them to our <code v-pre>ad_users.txt</code> list.</p>
 <doc-anchor-target id="foothold">
-    <h1>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#foothold">#</doc-anchor-trigger>
         <span>Foothold</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <doc-anchor-target id="access-as-dwolfe">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#access-as-dwolfe">#</doc-anchor-trigger>
         <span>Access as Dwolfe</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>By performing a password spraying attack using <a href="https://github.com/Pennyw0rth/NetExec">NetExec</a> we gain access to the domain with the <code v-pre>dwolfe</code> account.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -385,16 +391,16 @@ $krb5pa$18$tstark$office.htb$a16f4806da05760af63c566d566f071c5bb35d0a41445941761
 </doc-codeblock></div>
 <p>We found the credentials to be <code v-pre>tstark:playboy69</code>.</p>
 <doc-anchor-target id="lateral-movement">
-    <h1>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#lateral-movement">#</doc-anchor-trigger>
         <span>Lateral Movement</span>
-    </h1>
-</doc-anchor-target>
-<doc-anchor-target id="access-as-tstark">
-    <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#access-as-tstark">#</doc-anchor-trigger>
-        <span>Access as TStark</span>
     </h2>
+</doc-anchor-target>
+<doc-anchor-target id="access-as-tstark-user">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#access-as-tstark-user">#</doc-anchor-trigger>
+        <span>Access as TStark (User)</span>
+    </h3>
 </doc-anchor-target>
 <p>We found that <code v-pre>tstark</code> is also the administrator user for the Joomla backend so we can login with the following credentials: <code v-pre>Administrator:playboy69</code>. Next we can go to <code v-pre>System &gt; Site Templates</code> and select the available template. We can then add a web shell on one of the available pages (e.g. <code v-pre>error.php</code>) to get remote code execution.</p>
 <p><figure class="content-center">
@@ -425,10 +431,10 @@ Mode                 LastWriteTime         Length Name
 -ar---         7/16/2024  12:58 PM             34 user.txt</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="access-as-ppotts">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#access-as-ppotts">#</doc-anchor-trigger>
         <span>Access as PPotts</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>Looking at the installed applications, we notice <code v-pre>LibreOffice 5</code> is installed.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -620,10 +626,10 @@ meterpreter &gt; getuid
 Server username: OFFICE\ppotts</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="access-as-hhogan">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#access-as-hhogan">#</doc-anchor-trigger>
         <span>Access as HHogan</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>After getting a shell as the user <code v-pre>ppotts</code> we can start to do some pillaging and look for any saved credentials on the current account. Executing <code v-pre>cmdkey /list</code> reveals there is also a saved credential for the user <code v-pre>HHogan</code>. Looking at the privileges of this user, we see that this account is part of the <code v-pre>Remote Management Users</code> group.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -656,6 +662,12 @@ Mode                 LastWriteTime         Length Name
 -a-hs-          5/9/2023   4:03 PM            398 84F1CAEEBF466550F4967858F9353FB4
 -a-hs-         1/18/2024  11:53 AM            374 E76CCA3670CD9BB98DF79E0A8D176F1E</code></pre>
 </doc-codeblock></div>
+<doc-anchor-target id="root">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#root">#</doc-anchor-trigger>
+        <span>Root</span>
+    </h2>
+</doc-anchor-target>
 <p>We see three protected files and to be able to extract any data from them we need the master key.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-shell-session"><code v-pre class="language-shell-session">PS C:\Users\PPotts&gt; gci -force AppData\Roaming\Microsoft\Protect
@@ -678,6 +690,12 @@ Mode                 LastWriteTime         Length Name
 -a-hs-         7/16/2024  12:59 PM            740 dd51073f-efb9-463b-a892-31cfafe2feb4
 -a-hs-         7/16/2024  12:59 PM             24 Preferred</code></pre>
 </doc-codeblock></div>
+<doc-anchor-target id="mimikatz-credential-extraction">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#mimikatz-credential-extraction">#</doc-anchor-trigger>
+        <span>Mimikatz Credential Extraction</span>
+    </h3>
+</doc-anchor-target>
 <p>In order to get the secret out of these blobs we would normally need to know the user&#x27;s password. However, since we are logged in we can query the Domain Controller to retrieve the secrets for us. Since we own the
 master credentials associated with our own account, we can abuse this component by using the <code v-pre>/rpc</code> flag in Mimikatz. We will first upload a copy of <code v-pre>mimikatz.exe</code> and run it to extract the master key.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -735,11 +753,11 @@ Decrypting Credential:
 mimikatz(commandline) # exit
 Bye!</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="privilege-escalation">
-    <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#privilege-escalation">#</doc-anchor-trigger>
-        <span>Privilege Escalation</span>
-    </h1>
+<doc-anchor-target id="gpo-abuse">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#gpo-abuse">#</doc-anchor-trigger>
+        <span>GPO Abuse</span>
+    </h3>
 </doc-anchor-target>
 <p>With the found DPAPI credentials we can now get a WinRM session with the user <code v-pre>HHogan</code>. This user is a member of the <code v-pre>GPO Managers</code> group and there are a few GPOs in the domain.</p>
 <div class="codeblock-wrapper"><doc-codeblock>

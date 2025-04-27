@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799082581645">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799084971022">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.7.0">
@@ -35,12 +35,12 @@
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../resources/css/retype.css?v=3.7.0.799082581645" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.7.0.799084971022" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.7.0.799082581645" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.7.0.799084971022" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.7.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.7.0.799082581645" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.7.0.799082581645" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.7.0.799084971022" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.7.0.799084971022" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -193,18 +193,18 @@
 </figure>
 </p>
 <p>We are now going to add some simple misconfigurations to our AD Lab. In the final section we will verify them by targeting our network from an outside Linux VM. To make the Active Directory Lab vulnerable we first need to change some settings.</p>
-<doc-anchor-target id="group-policy-configuration" class="break-words">
-    <h1>
+<doc-anchor-target id="group-policy-configuration">
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#group-policy-configuration">#</doc-anchor-trigger>
         <span>Group Policy Configuration</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <p>Open the <code v-pre>Start menu</code> and click on <code v-pre>Windows Administrative Tools</code>, then choose <code v-pre>Group Policy Management</code>. Expand <code v-pre>Forest</code> and <code v-pre>Domains</code>, to view your own domain.</p>
 <doc-anchor-target id="disable-windows-defender-and-firewall">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#disable-windows-defender-and-firewall">#</doc-anchor-trigger>
         <span>Disable Windows Defender and Firewall</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>We can create a first GPO that will disable the Windows Defender Firewall so we can more easily experiment with attacks later on. Of course we could also disable (unlink) the policy later.</p>
 <div class="flex mb-6">
@@ -244,10 +244,10 @@
 </p>
 <p>Close Group Policy Management Editor. From the sidebar of Group Policy Management right-click on <code v-pre>Disable Protections</code> and choose <code v-pre>Enforced</code>.</p>
 <doc-anchor-target id="enable-winrm-server">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#enable-winrm-server">#</doc-anchor-trigger>
         <span>Enable WinRM Server</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>Right-click on your domain name. Select <code v-pre>Create a GPO in the domain and link here</code>. Give the GPO the name <code v-pre>Enable WinRM Server</code>. Right-click on it and choose <code v-pre>Edit</code>. Using the sidebar go to the following folder: <code v-pre>Computer Configuration &gt; Policies &gt; Administrative Templates &gt; Windows Components &gt; Windows Remote Management (WinRM) &gt; WinRM Service</code>. Select <code v-pre>Allow remote server management through WinRM</code> and then click on <code v-pre>Edit policy settings</code>. Set the policy to <code v-pre>Enabled</code> and in the IPv4 filter field enter <code v-pre>*</code>. Click on <code v-pre>Apply</code> then <code v-pre>OK</code>.</p>
 <p><figure class="content-center">
@@ -293,10 +293,10 @@ SourceAddress       : 172.16.200.100
 TcpTestSucceeded    : True</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="additional-registry-edit">
-    <h3>
+    <h4>
         <doc-anchor-trigger class="header-anchor-trigger" to="#additional-registry-edit">#</doc-anchor-trigger>
         <span>Additional Registry Edit</span>
-    </h3>
+    </h4>
 </doc-anchor-target>
 <p>I found that when applying the GPO to the domain, I was still not able to WinRM from a remote host. I found that enabling the WinRM service throught the Registry solved the issue. To do this go to <code v-pre>Computer Configuration &gt; Preferences &gt; Registry</code>. Right-click and select <code v-pre>New &gt; Registry Item</code>. As the registry path select <code v-pre>HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WinRM\Service</code> and set the value of the IPv4Filter to <code v-pre>*</code> or whatever IP range you want to include.</p>
 <p><figure class="content-center">
@@ -305,16 +305,16 @@ TcpTestSucceeded    : True</code></pre>
 </figure>
 </p>
 <doc-anchor-target id="adding-a-public-file-share">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#adding-a-public-file-share">#</doc-anchor-trigger>
         <span>Adding a Public File Share</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <doc-anchor-target id="local-share">
-    <h3>
+    <h4>
         <doc-anchor-trigger class="header-anchor-trigger" to="#local-share">#</doc-anchor-trigger>
         <span>Local Share</span>
-    </h3>
+    </h4>
 </doc-anchor-target>
 <p>Login as a local administator to one of your Windows VMs and navigate to <code v-pre>Control Panel &gt; Network and Internet &gt; Network and Sharing Center &gt; Change Advanced sharing settings &gt; Guest or Public &gt; Turn on File and Printer sharing</code>.</p>
 <p>Next create a new folder, Right-click and go to <code v-pre>Properties &gt; Sharing tab &gt; Share</code> and give the <code v-pre>Everyone</code> user read permission.</p>
@@ -336,10 +336,10 @@ TcpTestSucceeded    : True</code></pre>
 </figure>
 </p>
 <doc-anchor-target id="enforce-the-domain-policies">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#enforce-the-domain-policies">#</doc-anchor-trigger>
         <span>Enforce the Domain Policies</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>Right-click on the Start menu and select Windows PowerShell (Admin).
 In the terminal enter the following:</p>
@@ -348,16 +348,16 @@ In the terminal enter the following:</p>
 </doc-codeblock></div>
 <p>Now whenever a new device joins our AD environment the Group Policies that apply to all the devices will automatically be applied to them. With this, we have completed the Domain Controller setup.</p>
 <doc-anchor-target id="account-misconfigurations">
-    <h1>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#account-misconfigurations">#</doc-anchor-trigger>
         <span>Account Misconfigurations</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <doc-anchor-target id="asrep-roasting">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#asrep-roasting">#</doc-anchor-trigger>
         <span>ASREP Roasting</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>In older versions of Kerberos, it was possible to allow authentication without a password. Since Kerberos 5, a password is required, which is called <code v-pre>Pre-Authentication</code>. If an account has the option <code v-pre>Do not require Kerberos preauthentication</code> checked, an attacker can send any request for authentication to the KDC to retrieve an encrypted TGT that can be brute-forced offline.</p>
 <p><figure class="content-center">
@@ -366,16 +366,16 @@ In the terminal enter the following:</p>
 </figure>
 </p>
 <doc-anchor-target id="attacking-our-environment">
-    <h1>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#attacking-our-environment">#</doc-anchor-trigger>
         <span>Attacking our Environment</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <doc-anchor-target id="browsing-public-shares">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#browsing-public-shares">#</doc-anchor-trigger>
         <span>Browsing Public Shares</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>Lets start by checking if we can see any available shares on the network. I made one public share on the Windows VM with IP <code v-pre>172.16.200.11</code>. In Part 1 of this series we added an attacker VM to the AD network as our initial entry point that is whitelisted from the firewall. From this host, we should be able to list the share we made public.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -406,10 +406,10 @@ smb: \&gt; more flag.txt
 Br0wsing_F1L3_Sh4r3S_FTW!</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="evil-winrm">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#evil-winrm">#</doc-anchor-trigger>
         <span>Evil-WinRM</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>To verify that we can also WinRM to our Windows VMs I created a honeypot account called <code v-pre>winnie.wonder</code> with the password <code v-pre>P@ssw0rd123</code> and logged into <code v-pre>MS01</code> with this account. By default, PowerShell Remoting (and WinRM) only allows connections from members of the Administrators or Remote Management Group. To add our user to the Built-In Remote Management Users run:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -433,10 +433,10 @@ Info: Establishing connection to remote endpoint
 cicada\winnie.wonder</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="asreproasting">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#asreproasting">#</doc-anchor-trigger>
         <span>ASREPRoasting</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>Assuming we have gathered a list of valid users, we can try to perform an ASREPRoast attack on the domain users to see if any account has the <code v-pre>Do not require Kerberos preauthentication</code> option set. With a valid list of users, we can use <a href="https://github.com/fortra/impacket/blob/master/examples/GetNPUsers.py">Get-NPUsers.py</a> from the Impacket toolkit to hunt for all users with Kerberos pre-authentication not required.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -450,10 +450,10 @@ $krb5asrep$23$winnie.wonder@CICADA.LOCAL:ab15aee9c9bd66ee5a0c56e4a30395b9$d030a2
 </doc-codeblock></div>
 <p>Look like we got a valid hash for the user <code v-pre>winnie.wonder</code>. We can crack the hashes offline using Hashcat with mode <code v-pre>18200</code> to find the password.</p>
 <doc-anchor-target id="conclusion">
-    <h1>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#conclusion">#</doc-anchor-trigger>
         <span>Conclusion</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <p>The possible attack surface in an AD environment is very large so we just introduced a few misconfigurations in our home lab. We also went over on how an outsider can find these flaws to possible gain a foothold on one of our systems. In the next part of this series we will look at how we can monitor and defend against these attacks.</p>
 

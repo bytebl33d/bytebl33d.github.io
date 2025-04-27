@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799082581645">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799084971022">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.7.0">
@@ -35,11 +35,11 @@
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../resources/css/retype.css?v=3.7.0.799082581645" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.7.0.799084971022" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.7.0.799082581645" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.7.0.799084971022" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.7.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.7.0.799082581645" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.7.0.799084971022" data-turbo-eval="false" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -192,11 +192,11 @@
 </figure>
 </p>
 <p>In this post, I&#x27;ll walk you through setting up my personal homelab - a project that serves both as a hands-on learning experience and as a future reference. While this documentation is partly a note to my future self, it&#x27;s also a guide for anyone interested in gaining a deeper understanding of system administration, including networking, firewall configuration, and policy management. Ultimately, the goal is to create an environment where I can safely experiment with Active Directory (AD) misconfigurations and vulnerabilities, culminating in a simulated attack on my own lab.</p>
-<doc-anchor-target id="network-setup" class="break-words">
-    <h1>
+<doc-anchor-target id="network-setup">
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#network-setup">#</doc-anchor-trigger>
         <span>Network Setup</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <p>The backbone of this homelab is a segmented network architecture that isolates various virtual machines (VMs) from my home network using a firewall. We&#x27;ll use pfSense as our firewall solution and Proxmox for managing the VMs. I’ll keep the initial setup straightforward, focusing on getting the basic system up and running. Here’s a schematic overview of the homelab architecture:</p>
 <p><figure class="content-center">
@@ -242,10 +242,10 @@
 <li>A bootable Proxmox VE drive (ISO)</li>
 </ul>
 <doc-anchor-target id="proxmox-setup">
-    <h1>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#proxmox-setup">#</doc-anchor-trigger>
         <span>Proxmox Setup</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <p>Installing Proxmox is relatively simple, so I’ll skip the step-by-step details but you can go ahead and follow their official <a href="https://www.proxmox.com/en/products/proxmox-virtual-environment/get-started">Getting Started</a>. After a successful installation, you should be able to access the login portal via the IP address you specified.</p>
 <p><figure class="content-center">
@@ -262,10 +262,10 @@
 <p>For better organization, consider creating new pools for your networks. This can be done by navigating to <code v-pre>Datacenter &gt; Permissions &gt; Pools &gt; Create</code>. When you start creating VMs, you can assign them to one of these pools.</p>
 <p>To upload ISOs to Proxmox go to <code v-pre>lab &gt; local (lab) &gt; ISO Images &gt; Upload</code>.</p>
 <doc-anchor-target id="setting-up-pfsense">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#setting-up-pfsense">#</doc-anchor-trigger>
         <span>Setting Up PfSense</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>Download the <a href="https://www.pfsense.org/download/">latest stable ISO</a> of pfSense and create a new VM in Proxmox by clicking the blue box in the top right corner. Select the uploaded pfSense ISO and proceed with the default settings.</p>
 <p>After creating the VM, assign it to our previously created bridge interfaces by going to <code v-pre>Hardware &gt; Add Network Device</code> and selecting <code v-pre>vmbr1</code>. Repeat this process for <code v-pre>vmbr2</code> and <code v-pre>vmbr3</code>.</p>
@@ -364,10 +364,10 @@
 </p>
 <p>After setting up pfSense, you can create new hosts and assign them the <code v-pre>vmbr1</code> NIC on the LAN. From any host on the <code v-pre>172.16.0.1/24</code> network, you can access the pfSense web interface for further configuration.</p>
 <doc-anchor-target id="configuring-firewall-rules">
-    <h3>
+    <h4>
         <doc-anchor-trigger class="header-anchor-trigger" to="#configuring-firewall-rules">#</doc-anchor-trigger>
         <span>Configuring Firewall Rules</span>
-    </h3>
+    </h4>
 </doc-anchor-target>
 <p>Let’s set up some basic firewall rules to control traffic between our networks and the outside world. Log into the pfSense dashboard using the credentials <code v-pre>admin:pfsense</code> and change the following settings during the setup process:</p>
 <ul>
@@ -388,10 +388,10 @@
 <li>Network 5: <code v-pre>127.0.0.0/8</code></li>
 </ul>
 <doc-anchor-target id="wan-rules">
-    <h3>
+    <h4>
         <doc-anchor-trigger class="header-anchor-trigger" to="#wan-rules">#</doc-anchor-trigger>
         <span>WAN Rules</span>
-    </h3>
+    </h4>
 </doc-anchor-target>
 <p>Go to <code v-pre>Firewall &gt; Rules &gt; WAN &gt; Add</code> and make a new rule with the following options:</p>
 <ul>
@@ -404,10 +404,10 @@
 </ul>
 <p>Replace the <code v-pre>&lt;pfSense IP&gt;</code> field with the real internal IP address of the pfSense VM (in my case <code v-pre>192.168.129.52</code>). This can be viewed at the start menu on the pfSense VM.</p>
 <doc-anchor-target id="lan-rules">
-    <h3>
+    <h4>
         <doc-anchor-trigger class="header-anchor-trigger" to="#lan-rules">#</doc-anchor-trigger>
         <span>LAN Rules</span>
-    </h3>
+    </h4>
 </doc-anchor-target>
 <p>Go to <code v-pre>Firewall &gt; Rules &gt; LAN &gt; Add</code> and make a new rule with the following options:</p>
 <ul>
@@ -426,10 +426,10 @@
 </p>
 <p>This makes sure that the internal networks behind the WAN cannot reach our home network. If you want to connect from a device on your home network, you can add another allow rule at the top for that specific IP.</p>
 <doc-anchor-target id="cyber-lab-rules">
-    <h3>
+    <h4>
         <doc-anchor-trigger class="header-anchor-trigger" to="#cyber-lab-rules">#</doc-anchor-trigger>
         <span>Cyber Lab Rules</span>
-    </h3>
+    </h4>
 </doc-anchor-target>
 <p>Go to <code v-pre>Firewall &gt; Rules &gt; Cyber Lab &gt; Add rule to end</code>:</p>
 <ul>
@@ -468,10 +468,10 @@
 </p>
 <p>These rules ensure that devices in the Cyber Lab can communicate with each other, access the internet, and interact with the Attacker VM.</p>
 <doc-anchor-target id="ad-lab-rules">
-    <h3>
+    <h4>
         <doc-anchor-trigger class="header-anchor-trigger" to="#ad-lab-rules">#</doc-anchor-trigger>
         <span>AD LAB Rules</span>
-    </h3>
+    </h4>
 </doc-anchor-target>
 <p>Go to <code v-pre>Firewall &gt; Rules &gt; AD Lab &gt; Add rule to end</code>:</p>
 <ul>
@@ -507,10 +507,10 @@
 <p>This setup ensures that devices within the Active Directory domain can communicate freely with each other, while remaining isolated from other networks.</p>
 <p>Now we need to restart pfSense to persist the firewall rules. From the navigation bar select <code v-pre>Diagnostics &gt; Reboot</code>. Once pfSense boots up you will be redirected to the login page.</p>
 <doc-anchor-target id="conclusion">
-    <h1>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#conclusion">#</doc-anchor-trigger>
         <span>Conclusion</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <p>Congratulations! You’ve successfully set up your firewall rules and segmented your network. The next step is to create virtual machines and add them to the appropriate network segments by selecting the correct bridge interface in Proxmox. In the following part of this series, we’ll configure the Active Directory environment and introduce common vulnerabilities for further experimentation.</p>
 

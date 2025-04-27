@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799082581645">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799084971022">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.7.0">
@@ -35,12 +35,12 @@
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../resources/css/retype.css?v=3.7.0.799082581645" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.7.0.799084971022" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.7.0.799082581645" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.7.0.799084971022" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.7.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.7.0.799082581645" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.7.0.799082581645" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.7.0.799084971022" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.7.0.799084971022" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -173,10 +173,10 @@
                             <!-- Rendered if sidebar right is enabled -->
                             <div id="docs-sidebar-right-toggle"></div>
                             <!-- Page content  -->
-<doc-anchor-target id="what-is-fuzzing" class="break-words">
+<doc-anchor-target id="web-fuzzing-with-ffuf" class="break-words">
     <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#what-is-fuzzing">#</doc-anchor-trigger>
-        <span>What is fuzzing?</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#web-fuzzing-with-ffuf">#</doc-anchor-trigger>
+        <span>Web Fuzzing with FFUF</span>
     </h1>
 </doc-anchor-target>
 <div class="-mt-3 mb-12 flex flex-wrap text-sm text-gray-400 dark:text-dark-350 items-center">
@@ -186,12 +186,18 @@
     <div class="flex items-center shrink-0">Published&nbsp;<span>2023-07-28</span></div>
 </div>
 
+<doc-anchor-target id="what-is-fuzzing">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#what-is-fuzzing">#</doc-anchor-trigger>
+        <span>What is fuzzing?</span>
+    </h2>
+</doc-anchor-target>
 <p>Fuzzing is &quot;the art of automatic bug finding&quot;, as described by the OWASP community. It is the act of sending various types of input in HTTP requests, trying to find an input or payload that causes the application to respond in unexpected ways and reveal a vulnerability. In the context of web applications, pentesters use fuzzing to discover directories and files that are hosted on the web server.</p>
 <doc-anchor-target id="fuzz-faster-you-fool">
-    <h1>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#fuzz-faster-you-fool">#</doc-anchor-trigger>
         <span>Fuzz Faster You Fool</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <p>FFUF, short for “Fuzz Faster you Fool”, is an open source web fuzzing tool to discover elements and content within web applications, or web servers. FFUF is known for its speed, flexibility and efficiency and is mostly used by Pentesters and Bug-Bounty hunters.
 <figure class="content-center">
@@ -200,10 +206,10 @@
 </figure>
 </p>
 <doc-anchor-target id="directory-brute-forcing">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#directory-brute-forcing">#</doc-anchor-trigger>
         <span>Directory Brute Forcing</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>FFUF takes two main arguments for brute forcing directories: <code v-pre>-u</code> for the target URL and <code v-pre>-w</code> for the wordlist. Multiple wordlists can be specified by a comma seperated list if required. Some of the most commonly used wordlists can be found under the GitHub <a href="https://github.com/danielmiessler/SecLists">SecLists</a> repository, which categorizes wordlists under various types of fuzzing, even including commonly used passwords. To tell FFUZ where we would like to fuzz we place the word FUZZ where we want our wordlist items to be placed.</p>
 <p>If we put everything together, we can craft the command for brute forcing:</p>
@@ -211,10 +217,10 @@
 <pre class="language-bash"><code v-pre class="language-bash">ffuf -u http://&lt;HOST&gt;:&lt;PORT&gt;/FUZZ -w /path/to/wordlist</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="file-discovery">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#file-discovery">#</doc-anchor-trigger>
         <span>File Discovery</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>Sometimes we must find out what types of pages the website uses, like .html, .aspx, .php, etc. We can utilize the following wordlist in SecLists for extensions:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -225,30 +231,30 @@
 <pre class="language-bash"><code v-pre class="language-bash">ffuf -u http://&lt;HOST&gt;:&lt;PORT&gt;/FUZZ -w wordlist.txt -e .aspx,.html,.php,.txt</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="recursive-fuzzing">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#recursive-fuzzing">#</doc-anchor-trigger>
         <span>Recursive Fuzzing</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>When we scan recursively, it automatically starts another scan under any newly identified directories until it has fuzzed the main website and all of its subdirectories. We can enable recursive scanning with the <code v-pre>-recursion</code> flag, the depth with the <code v-pre>-recursion-depth</code> flag and the extension with <code v-pre>-e .php</code>.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-bash"><code v-pre class="language-bash">ffuf -u http://&lt;HOST&gt;:&lt;PORT&gt;/FUZZ -w wordlist.txt -recursion -recursion-depth 1 -e .php -v</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="vhost-discovery">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#vhost-discovery">#</doc-anchor-trigger>
         <span>VHOST Discovery</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>Many websites have sub-domains that are not public and hence if we visit them in a browser, we would fail to connect. This is where we utilize VHosts Fuzzing on an IP we already have.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-bash"><code v-pre class="language-bash">ffuf -w wordlist.txt -u http://&lt;HOST&gt;:&lt;PORT&gt;/ -H 'Host: FUZZ.&lt;HOST&gt;'</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="filtering-options">
-    <h1>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#filtering-options">#</doc-anchor-trigger>
         <span>Filtering Options</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <p>To display only responses with specific status codes, number of lines, response size, etc, we can make use of several flags:</p>
 <ul>
@@ -275,27 +281,27 @@
 <pre class="language-bash"><code v-pre class="language-bash">ffuf -u http://&lt;HOST&gt;:&lt;PORT&gt;/ -H 'Host: FUZZ.&lt;HOST&gt;' -fw 1000</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="request-fuzzing">
-    <h1>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#request-fuzzing">#</doc-anchor-trigger>
         <span>Request Fuzzing</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <p>Ffuf also allows use to fuzz at any position in HTTP headers. To fuzz a URL with a particular HTTP method just add the -X flag and specify the method.</p>
 <doc-anchor-target id="get-requests">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#get-requests">#</doc-anchor-trigger>
         <span>GET Requests</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>Similarly to how one fuzzes various parts of a website, we can enumerate http parameters. In this example we try to fuzz for available parameters we can use on the <code v-pre>admin.php</code> page.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-bash"><code v-pre class="language-bash">ffuf -u http://&lt;HOST&gt;:&lt;PORT&gt;/admin.php?FUZZ=key -w wordlist.txt -fs xxx</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="post-requests">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#post-requests">#</doc-anchor-trigger>
         <span>POST Requests</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>To fuzz the data field in a request, we can use the -d flag. We additionally have to add the <code v-pre>-X POST</code> to send POST requests.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
