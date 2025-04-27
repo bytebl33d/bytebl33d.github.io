@@ -16,7 +16,7 @@ To begin, navigate to the PfSense web interface and proceed to `System > Package
 ## Adding Monitoring Interfaces
 Under the Interfaces tab, select the interfaces that Suricata will monitor. For our lab, I chose the `LAN` and `ADLAB` interfaces to observe traffic between the attacking VM on the LAN and the AD network.
 
-![PfSense-suricata-interfaces](../assets/images/homelab/pfsense-suricata-interfaces.png)
+![PfSense-suricata-interfaces](/assets/images/homelab/pfsense-suricata-interfaces.png)
 
 ## Creating Custom Detection Rules
 Next, let's create custom rules tailored to our lab environment. We’ll do this by editing one of the interfaces and navigating to the rules tab.
@@ -25,7 +25,7 @@ Next, let's create custom rules tailored to our lab environment. We’ll do this
 ### Detecting Evil-WinRM Traffic
 Our first custom rule will detect Evil-WinRM traffic, which is often used for remote management in penetration testing scenarios. For more information on setting up Remote Management on your target hosts, refer to Part 3 of this series.
 
-![PfSense-suricata-rules](../assets/images/homelab/pfsense-suricata-rules.png)
+![PfSense-suricata-rules](/assets/images/homelab/pfsense-suricata-rules.png)
 
 To build this rule, we need to understand how an authentication request from Evil-WinRM appears in network traffic. Using WireShark, we can capture an authentication attempt from a host on the LAN interface. We run the following command in a Linux terminal:
 
@@ -35,20 +35,22 @@ $ evil-winrm -i 172.16.0.17 -u 'cicada.local\winnie.wonder' -p 'P@ssw0rd123'
 
 To capture this traffic in PfSense, go to `Diagnostics > Packet Capture` and select the appropriate interface.
 
-**Tip:** Ensure you target the domain-joined host from a machine outside of the LAN to properly capture traffic. If you capture traffic from devices within the same LAN, PfSense may not log the packets unless you create a port mirror. At the final section, I will discuss how to setup a SPAN port and route traffic to another machine to monitor traffic.
-{: .notice--info}
+!!!info Tip
+Ensure you target the domain-joined host from a machine outside of the LAN to properly capture traffic. If you capture traffic from devices within the same LAN, PfSense may not log the packets unless you create a port mirror. At the final section, I will discuss how to setup a SPAN port and route traffic to another machine to monitor traffic.
+!!!
 
 In WireShark, we can focus on the packet containing the authentication request.
 
-![PfSense-capture-winrm](../assets/images/homelab/pfsense-capture-winrm.png)
+![PfSense-capture-winrm](/assets/images/homelab/pfsense-capture-winrm.png)
 
 The captured packet shows the authentication request from `winnie.wonder`. Based on this, we can now craft our Suricata rule:
 ```
 alert http any any -> any 5985 (msg: "Connection via Evil-WinRM Detected"; flow:established,to_server; http.method; content:"POST"; http.header; content:"User-Agent: Ruby WinRM Client"; content:"Authorization: "; base64_decode:bytes 13,offset 10,relative; base64_data; content:"NTLMSSP"; content:"|03|"; classtype:bad-unknown; sid:9990001; rev:1;)
 ```
 
+!!!info
 **Snort** is a similar IDS/IPS solution that can be installed on PfSense, but has slightly different syntax.
-{: .notice--info}
+!!!
 
 Explanation:
 - The rule targets HTTP traffic performing a POST request on port 5985.
@@ -57,7 +59,7 @@ Explanation:
 
 With this rule in place, Suricata will trigger an alert whenever someone tries to authenticate using Evil-WinRM using the default settings. We could tune this rule even further, or write additional rules that alert on traffic even if the attacker changes the User-Agent.
 
-![PfSense-suricata-alert](../assets/images/homelab/pfsense-suricata-alert.png)
+![PfSense-suricata-alert](/assets/images/homelab/pfsense-suricata-alert.png)
 
 ### Detecting SMB Authentication
 Similarly, we can create a custom rule to detect SMB authentication attempts within the `CICADA` domain. The below rule looks for the SMB header with the NTLMSSP authentication type set to `03` and the domain name in hex format, separated by null bytes.
@@ -69,21 +71,21 @@ alert smb any any -> any 445 (msg: "SMB Authentication";flow:established,to_serv
 This rule was applied to the ADLAB interface. To test it, I used `NetExec` to initiate an SMB authentication from outside the ADLAB interface:
 
 ```console
-nxc smb 172.16.200.100 -u 'winnie.wonder' -p 'P@ssw0rd123' -d 'cicada.local'
+$ nxc smb 172.16.200.100 -u 'winnie.wonder' -p 'P@ssw0rd123' -d 'cicada.local'
 ```
 
 As expected, Suricata raised an alert upon detecting the authentication:
-![PfSense-suricata-alert2](../assets/images/homelab/pfsense-suricata-alert2.png)
+![PfSense-suricata-alert2](/assets/images/homelab/pfsense-suricata-alert2.png)
 
 ### Detecting AS-REPRoasting
 In the third part of our series, we executed the following command to perform an ASREPRoasting attack on domain users:
 
-```
-GetNPUsers.py CICADA.LOCAL/ -dc-ip 172.16.200.100 -no-pass -usersfile valid_users -format hashcat
+```console
+$ GetNPUsers.py CICADA.LOCAL/ -dc-ip 172.16.200.100 -no-pass -usersfile valid_users -format hashcat
 ```
 
 Now, let’s examine what this traffic looks like in WireShark
-![PfSense-capture-asrep](../assets/images/homelab/pfsense-capture-asrep.png)
+![PfSense-capture-asrep](/assets/images/homelab/pfsense-capture-asrep.png)
 
 In this scenario, we identified one user with preauthentication disabled. By analyzing the `AS-REQ` packet, we can craft a Suricata rule to detect this type of attack:
 
@@ -102,7 +104,7 @@ By implementing this rule, Suricata will trigger an alert when it detects a patt
 
 # Creating SPAN Ports on Proxmox
 Start by creating a new LXC and assign at least 2 cores, 2GB of RAM and 25GB of storage. After creating the container, add another network interface for the ports you want to mirror. In my case I added interfaces `vmbr1` and `vmbr2`. The interface is going to send copies of packets of machines connected to the switch to the container. Make sure the firewall is unchecked for these interfaces.
-![Suricata LXC Net](../assets/images/homelab/pfsense-suricata-lxc-net.png)
+![Suricata LXC Net](/assets/images/homelab/pfsense-suricata-lxc-net.png)
 
 Log in to the container and run the following commands.
 
@@ -119,7 +121,7 @@ If the interfaces are down, just run `ip link set <INT_NAME> up`. Next, open the
 # ip link show | grep <LXC_ID>
 ```
 where the `<LXC_ID>` is the id of the Proxmox node where Suricata is running.
-![Suricata Proxmox link](../assets/images/homelab/pfsense-suricata-lxc-link.png)
+![Suricata Proxmox link](/assets/images/homelab/pfsense-suricata-lxc-link.png)
 
 The first result is the interface that is connected to my home network, the last two are going to be the SPAN ports. Now we run the following command in the Proxmox shell to create the SPAN ports on the switch:
 ```console

