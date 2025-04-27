@@ -8,9 +8,10 @@ categories: ['HackTheBox', 'Linux']
 
 ![](/assets/images/headers/Yummy.png)
 
+# Synopsis
 Yummy is a hard box that starts with a Restaurant web app using Caddy web service, on port 80, where an attacker finds an arbitrary file read HTTP Location header, which is not handled and sanitized properly by the default Caddy configuration. This allows an attacker to find several `cronjob` scripts that allow downloading the web app source code. Reading the source code, the web app uses JWT RSA keypairs to forge an admin token and escalate privileges on the web app. The admin panel has an SQL injection, allowing arbitrary file write over a file running periodically (`cronjob`). Improper directory permissions allow the attacker to move laterally to `www-data` and eventually a `dev` user. The `dev` user can execute `rsync` binary as root, which helps escalate privileges to root.
 
-# Reconnaissance
+## Reconnaissance
 Our initial port scan only shows two ports open: SSH on port 22 and a web server on port 80. By looking at the `http-server-header`, we identify that the server is running Caddy as a reverse proxy.
 
 ```
@@ -65,7 +66,7 @@ Further enumeration reveals that the contents of the `/etc/crontab` file contain
 
 We can download those files via the LFI vulnerability and check their contents.
 
-## App Backup
+### App Backup
 The contents of the `app_backup.sh` script reveals the location of a zip file in the `/var/www` directory.
 
 ```bash
@@ -149,7 +150,7 @@ order_query = request.args.get('o', '')
 sql = f"SELECT * FROM appointments WHERE appointment_email LIKE %s order by appointment_date {order_query}"
 ```
 
-# Foothold
+## Foothold
 Let's perform a search query on the admin dashboard and intercept the request with BurpSuite. We can confirm the SQL Injection by making the server sleep for several seconds.
 
 ![](/assets/images/writeups/yummy/SQLI.png)
@@ -221,8 +222,8 @@ $ nc -nvlp 9001
 mysql@yummy:/var/spool/cron$
 ```
 
-# User
-## Mysql to www-data
+## User
+### Mysql to www-data
 After getting a shell as the `mysql` we still have very limited access. We can move laterally to the `www-data` user since there is also a script (`app_backup.sh`) that runs every minute by this user. We are able to remove the backup file and replace it with the same reverse shell script.
 
 ```console
@@ -234,7 +235,7 @@ mysql@yummy:/data/scripts$ mv shell.sh app_backup.sh
 
 We again run a netcat listener to catch the shell (it might take a few tries). 
 
-## www-data to qa
+### www-data to qa
 We can find a password for the `qa` user in the `/var/www/qa_testing/.hg/store/data/app.py.i` file. 
 
 ```console
@@ -254,8 +255,8 @@ $ ssh qa@yummy.htb
 qa@yummy:~$ cat user.txt
 ```
 
-# Root
-## QA to Dev
+## Root
+### QA to Dev
 The qa user can run a command as the dev user.
 
 ```console
@@ -288,7 +289,7 @@ qa@yummy:~/tmp$ cp ~/.hgrc .hg/hgrc
 qa@yummy:~/tmp$ sudo -u dev /usr/bin/hg pull /home/dev/app-production/
 ```
 
-## Dev to Root
+### Dev to Root
 We now have a shell as the `dev` user that can run `rsync` as root. Rsync is a tool for synchronizing files and directories between location.
 
 ```console

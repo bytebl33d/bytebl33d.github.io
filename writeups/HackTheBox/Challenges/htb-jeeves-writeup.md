@@ -9,6 +9,8 @@ excerpt: Hack The Box Jeeves writeup for the first Pwn challenge in the Intro to
 
 ![](/assets/images/headers/Jeeves.png)
 
+# Synopsis
+
 Today we take on a simple binary exploitation challenge from Hack The Box. In this post we are going to solve the Jeeves Pwn challenge from the **Intro to Binary Exploitation** track.
 
 ## Running the program

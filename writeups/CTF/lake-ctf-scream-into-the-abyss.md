@@ -9,12 +9,12 @@ excerpt: LakeCTF 2023 writeup for the Scream Into The Abyss binary exploitation 
 
 ![](/assets/images/headers/lake-ctf.png)
 
+# Challenge
 We are given the following files:
 - nc chall.polygl0ts.ch 9001
 - abyss_scream
 - Dockerfile
 
-# Writeup
 Lets see what we are dealing with and list the protections that are enabled:
 ```console
 $ checksec abyss_scream

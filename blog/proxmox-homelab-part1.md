@@ -10,7 +10,7 @@ categories: ['Active-Directory', 'Homelab']
 
 In this post, I'll walk you through setting up my personal homelab - a project that serves both as a hands-on learning experience and as a future reference. While this documentation is partly a note to my future self, it's also a guide for anyone interested in gaining a deeper understanding of system administration, including networking, firewall configuration, and policy management. Ultimately, the goal is to create an environment where I can safely experiment with Active Directory (AD) misconfigurations and vulnerabilities, culminating in a simulated attack on my own lab.
 
-# Network Setup
+## Network Setup
 The backbone of this homelab is a segmented network architecture that isolates various virtual machines (VMs) from my home network using a firewall. We'll use pfSense as our firewall solution and Proxmox for managing the VMs. I’ll keep the initial setup straightforward, focusing on getting the basic system up and running. Here’s a schematic overview of the homelab architecture:
 
 ![Proxmox Setup](/assets/images/homelab/proxmox-homelab.png)
@@ -34,7 +34,7 @@ To ensure smooth operation, here’s what you’ll need:
 - 250GB of disk space
 - A bootable Proxmox VE drive (ISO)
 
-# Proxmox Setup
+## Proxmox Setup
 Installing Proxmox is relatively simple, so I’ll skip the step-by-step details but you can go ahead and follow their official [Getting Started](https://www.proxmox.com/en/products/proxmox-virtual-environment/get-started). After a successful installation, you should be able to access the login portal via the IP address you specified.
 
 ![login](/assets/images/homelab/proxmox-login.png)
@@ -47,7 +47,7 @@ For better organization, consider creating new pools for your networks. This can
 
 To upload ISOs to Proxmox go to `lab > local (lab) > ISO Images > Upload`.
 
-## Setting Up PfSense 
+### Setting Up PfSense 
 Download the [latest stable ISO](https://www.pfsense.org/download/) of pfSense and create a new VM in Proxmox by clicking the blue box in the top right corner. Select the uploaded pfSense ISO and proceed with the default settings.
 
 After creating the VM, assign it to our previously created bridge interfaces by going to `Hardware > Add Network Device` and selecting `vmbr1`. Repeat this process for `vmbr2` and `vmbr3`.
@@ -113,7 +113,7 @@ We do not setup DHCP as we will let the Domain Controller handle this for us lat
 
 After setting up pfSense, you can create new hosts and assign them the `vmbr1` NIC on the LAN. From any host on the `172.16.0.1/24` network, you can access the pfSense web interface for further configuration.
 
-### Configuring Firewall Rules
+#### Configuring Firewall Rules
 Let’s set up some basic firewall rules to control traffic between our networks and the outside world. Log into the pfSense dashboard using the credentials `admin:pfsense` and change the following settings during the setup process:
 - Step 2: Uncheck override DNS
 - Step 4: Uncheck the `Block private networks from entering via WAN` option. Because this is not a real WAN.
@@ -132,7 +132,7 @@ Next go to `Firewall > Aliases` and make a new alias with the following options:
 - Network 4: `169.254.0.0/16`
 - Network 5: `127.0.0.0/8`
 
-### WAN Rules
+#### WAN Rules
 Go to `Firewall > Rules > WAN > Add` and make a new rule with the following options:
 - Action: `Pass`
 - Address Family: `Ipv4`
@@ -143,7 +143,7 @@ Go to `Firewall > Rules > WAN > Add` and make a new rule with the following opti
 
 Replace the `<pfSense IP>` field with the real internal IP address of the pfSense VM (in my case `192.168.129.52`). This can be viewed at the start menu on the pfSense VM.
 
-### LAN Rules
+#### LAN Rules
 Go to `Firewall > Rules > LAN > Add` and make a new rule with the following options:
 - Action: `Block`
 - Address Family: `Ipv4+IPv6`
@@ -158,7 +158,7 @@ The final LAN configuration will look something like this:
 
 This makes sure that the internal networks behind the WAN cannot reach our home network. If you want to connect from a device on your home network, you can add another allow rule at the top for that specific IP.
 
-### Cyber Lab Rules
+#### Cyber Lab Rules
 Go to `Firewall > Rules > Cyber Lab > Add rule to end`:
 - Address Family: `IPv4+IPv6`
 - Protocol: `Any`
@@ -190,7 +190,7 @@ The final Cyber LAB configuration will look something like this:
 
 These rules ensure that devices in the Cyber Lab can communicate with each other, access the internet, and interact with the Attacker VM.
 
-### AD LAB Rules
+#### AD LAB Rules
 Go to `Firewall > Rules > AD Lab > Add rule to end`:
 - Action: `Block`
 - Address Family: `IPv4+IPv6`
@@ -221,5 +221,5 @@ This setup ensures that devices within the Active Directory domain can communica
 
 Now we need to restart pfSense to persist the firewall rules. From the navigation bar select `Diagnostics > Reboot`. Once pfSense boots up you will be redirected to the login page.
 
-# Conclusion
+## Conclusion
 Congratulations! You’ve successfully set up your firewall rules and segmented your network. The next step is to create virtual machines and add them to the appropriate network segments by selecting the correct bridge interface in Proxmox. In the following part of this series, we’ll configure the Active Directory environment and introduce common vulnerabilities for further experimentation.

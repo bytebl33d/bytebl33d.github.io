@@ -8,9 +8,11 @@ categories: ['Maldev', 'Windows', 'Homelab']
 
 ![](/assets/images/headers/Sliver-Purple.jpg)
 
+# Sliver C2
+
 Recently I have been playing around with [Sliver](https://github.com/BishopFox/sliver) from BishopFox as a C2 framework. After using it for some time and executing several beacon payloads on my Windows VM, I noticed that the beacons instantly get dropped by Windows Defender. In order to improve my Red Teaming skills, I was interested in finding ways to bypass some general anti-virus software like Windows Defender. In this post I will take you through the process of using [DInvoke](https://github.com/Kara-4search/DInvoke_shellcodeload_CSharp/tree/main) as a shellcode injecter. I will also showcase how we can make a PE loader to inject code into memory, together with some common obfuscation techniques.
 
-# DInvoke Shellcode Loader (.NET)
+## DInvoke Shellcode Loader (.NET)
 In recent years, more and more tools are coded in C# or ported from PowerShell. One of the features of C# is its ability to call the Win32 API and interact with low-level functions just like you would in C or C++.
 
 To build a shellcode loader, I decided to make use of DInvoke by [TheWover](https://github.com/TheWover). Using DInvoke, we can use Dynamic Invocation to load unmanaged code via DLLs at runtime (unlike PInvoke). This can help us avoiding API Hooking by calling arbitrary code from memory, while also avoiding detections that look for imports of suspicious API calls via the Import Address Table. For more information about the DInvoke project, be sure to read [TheWover's blog post](https://thewover.github.io/Dynamic-Invoke/) where he demonstrates how the project works.
@@ -19,7 +21,7 @@ In order to make use of DInvoke as a shellcode loader, I made a few modification
 
 ![DInvoke Loader](/assets/images/maldev/DInvoke-Loader-1.png)
 
-## Obfuscation with InvisibilityCloak
+### Obfuscation with InvisibilityCloak
 With our modifications in place, we can save the project and perform some code obfuscation. The [InvisibilityCloak](https://github.com/h4wkst3r/InvisibilityCloak) project serves as an easy-to-use obfuscation toolkit that allows for some quick modifications to your project. This includes things like changing the project name, project GUID, applying string obfuscation, removing comments and removing program database (PDB) strings. Just clone the project, compile the binary and run the following command in order to rename the project and apply string reversing as the obfuscation method.
 
 ```console
@@ -70,7 +72,7 @@ From the output we see that we have succesfully obfuscated the project. Before c
 
 We can now compile the project to x64 architecture in release mode by going to `Build > Build Solution`.
 
-## AV Check
+### AV Check
 With our loader ready, we can verify if our file is not getting detected as malicious by running [ThreatCheck](https://github.com/rasta-mouse/ThreatCheck) or [DefenderCheck](https://github.com/matterpreter/DefenderCheck).
 
 ```console
@@ -86,7 +88,7 @@ C:\Tools\ThreatCheck\bin\Release> ThreatCheck.exe -f C:\Tools\s3rp3ntLoader.exe
 
 No threats have been found!
 
-# FilelessPELoader (C++)
+## FilelessPELoader (C++)
 One downside of using DInvoke is that it requires .NET to be installed on the host to be able to execute our loader because of the CLR. This means that we need to write our application in another language like C++. At this point I don't feel like rewriting the whole project in C++ so I will make use of another way.
 
 Another technique that can be used is to load an encrypted version of our shellcode in memory, decrypt it and execute it. To do this, we can make use of the [FilelessPELoader](https://github.com/SaadAhla/FilelessPELoader) project and again do some obfuscation on the original code. Since this is not a C# project, we cannot use InvisibilityCloak to do the obfuscation, so we will do it manually this time. Again we can use either DefenderCheck or ThreatCheck to see if our executable is good to go. Let's first clone the project and compile our binary without any modifications.
@@ -107,8 +109,8 @@ aes.py cipher.bin key.bin malicious_file.exe
 
 The generated files `cipher.bin` and `key.bin` can be passed to our loader as arguments. In the next section we will have a look at how we can make use of our loaders.
 
-# Sliver in Action
-## Shellcode Generation
+## Sliver in Action
+### Shellcode Generation
 Moving to our attack machine, we will create shellcode for a Sliver beacon. Start Sliver, generate a mTLS beacon targeting your IP and save it to a directory of your choosing. Next we start the mTLS listener.
 
 ![Sliver Setup](/assets/images/maldev/sliver-setup.png)
@@ -140,7 +142,7 @@ $ python3 -m http.server 8080
 Serving HTTP on 0.0.0.0 port 8080 (http://0.0.0.0:8080/) ...
 ```
 
-## Payload Execution
+### Payload Execution
 Now with everything set lets try to get a beacon from our victim machine (`172.16.0.5`).
 
 ![Sliver Execution](/assets/images/maldev/sliver-execution.png)
@@ -159,7 +161,7 @@ Serving HTTP on 0.0.0.0 port 8080 (http://0.0.0.0:8080/) ...
 
 We can now even go a step further and escalate privileges on the victim.
 
-## Privilege Escalation
+### Privilege Escalation
 Use one of the beacons and run `sa-whoami`. This will run a `whoami /all` in a more safe way.
 
 ```console

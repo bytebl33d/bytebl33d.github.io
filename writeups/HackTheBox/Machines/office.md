@@ -8,9 +8,11 @@ categories: ['HackTheBox', 'Active-Directory', 'Windows']
 
 ![](/assets/images/headers/Office.png)
 
+# Synopsis
+
 The "Office" machine on HackTheBox is a challenging Windows-based environment that incorporates a variety of vulnerabilities. These include exploiting a Joomla web application, analyzing PCAP files to extract Kerberos credentials, leveraging LibreOffice macros by manipulating registry settings, abusing MSKRP to dump DPAPI credentials, and exploiting Group Policies due to excessive privileges in Active Directory.
 
-# Reconnaissance
+## Reconnaissance
 The initial phase begins with an `nmap` scan, revealing that the target is a Windows Domain Controller.
 
 ```console
@@ -46,7 +48,7 @@ The domain being used is `office.htb` and the Domain Controller is called `DC` s
 $ echo 10.10.11.3 office.htb dc.office.htb | sudo tee -a /etc/hosts
 ```
 
-## Joomla Website
+### Joomla Website
 On accessing the website, we encounter a Joomla CMS for "Tony Stark's Iron Man Company". By checking the version, we identify it as `4.2.7`, which is vulnerable to a known exploit (`CVE-2023-23752`).
 
 ![Joomla Version](/assets/images/writeups/office/joomla-version.png)
@@ -76,7 +78,7 @@ Coded By: K3ysTr0K3R --> Hug me ʕっ•ᴥ•ʔっ
 ```
 Trying to login as the `Administrator` account on the Joomla backend fails. Looking at the endpoint where this password was found, it looks like this is the password for the Joomla database, so for now we proceed.
 
-## Domain Enumeration
+### Domain Enumeration
 With port `88` open, we proceed to enumerate domain usernames using `kerbrute`, successfully identifying several valid accounts.
 
 ```console
@@ -101,8 +103,8 @@ Version: v1.0.3 (9dad6e1) - 07/16/24 - Ronnie Flathers @ropnop
 ```
 We found 6 usernames from the `jsmith` wordlist and add them to our `ad_users.txt` list. 
 
-# Foothold
-## Access as Dwolfe
+## Foothold
+### Access as Dwolfe
 By performing a password spraying attack using [NetExec](https://github.com/Pennyw0rth/NetExec) we gain access to the domain with the `dwolfe` account. 
 
 ```console
@@ -186,8 +188,8 @@ $krb5pa$18$tstark$office.htb$a16f4806da05760af63c566d566f071c5bb35d0a41445941761
 
 We found the credentials to be `tstark:playboy69`. 
 
-# Lateral Movement
-## Access as TStark
+## Lateral Movement
+### Access as TStark (User)
 We found that `tstark` is also the administrator user for the Joomla backend so we can login with the following credentials: `Administrator:playboy69`. Next we can go to `System > Site Templates` and select the available template. We can then add a web shell on one of the available pages (e.g. `error.php`) to get remote code execution.
 
 ![Joomla RCE](/assets/images/writeups/office/joomla-rce.png)
@@ -218,7 +220,7 @@ Mode                 LastWriteTime         Length Name
 -ar---         7/16/2024  12:58 PM             34 user.txt
 ```
 
-## Access as PPotts
+### Access as PPotts
 Looking at the installed applications, we notice `LibreOffice 5` is installed.
 
 ```console
@@ -421,7 +423,7 @@ meterpreter > getuid
 Server username: OFFICE\ppotts
 ```
 
-## Access as HHogan
+### Access as HHogan
 After getting a shell as the user `ppotts` we can start to do some pillaging and look for any saved credentials on the current account. Executing `cmdkey /list` reveals there is also a saved credential for the user `HHogan`. Looking at the privileges of this user, we see that this account is part of the `Remote Management Users` group.
 
 ```console
@@ -457,6 +459,7 @@ Mode                 LastWriteTime         Length Name
 -a-hs-         1/18/2024  11:53 AM            374 E76CCA3670CD9BB98DF79E0A8D176F1E
 ```
 
+## Root
 We see three protected files and to be able to extract any data from them we need the master key.
 
 ```console
@@ -481,6 +484,7 @@ Mode                 LastWriteTime         Length Name
 -a-hs-         7/16/2024  12:59 PM             24 Preferred
 ```
 
+### Mimikatz Credential Extraction
 In order to get the secret out of these blobs we would normally need to know the user's password. However, since we are logged in we can query the Domain Controller to retrieve the secrets for us. Since we own the
 master credentials associated with our own account, we can abuse this component by using the `/rpc` flag in Mimikatz. We will first upload a copy of `mimikatz.exe` and run it to extract the master key.
 
@@ -542,7 +546,7 @@ mimikatz(commandline) # exit
 Bye!
 ```
 
-# Privilege Escalation
+### GPO Abuse
 With the found DPAPI credentials we can now get a WinRM session with the user `HHogan`. This user is a member of the `GPO Managers` group and there are a few GPOs in the domain.
 
 ```console

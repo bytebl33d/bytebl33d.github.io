@@ -10,19 +10,19 @@ categories: ['Active-Directory', 'Homelab']
 
 In this part of our Active Directory Home Lab series, we'll focus on enhancing the security and visibility of our environment by adding network monitoring. Since we're utilizing PfSense as our software-based firewall, it provides a convenient platform for deploying additional security tools. Specifically, we'll be setting up Suricata, a powerful intrusion detection and prevention system (IDS/IPS), to monitor traffic and detect potential threats. This post will guide you through configuring Suricata and creating custom rules to detect attacks, such as those we simulated in Part 3.
 
-# Suricata Setup
+## Suricata Setup
 To begin, navigate to the PfSense web interface and proceed to `System > Package Manager > Available Packages`. Search for Suricata and install the latest version. Once installed, go to `Services > Suricata` to start configuring the tool. We’ll add interfaces and tweak some options, but the default settings should suffice for most purposes. For our ruleset, we'll use the ETOpen Emerging Threats as a foundation.
 
-## Adding Monitoring Interfaces
+### Adding Monitoring Interfaces
 Under the Interfaces tab, select the interfaces that Suricata will monitor. For our lab, I chose the `LAN` and `ADLAB` interfaces to observe traffic between the attacking VM on the LAN and the AD network.
 
 ![PfSense-suricata-interfaces](/assets/images/homelab/pfsense-suricata-interfaces.png)
 
-## Creating Custom Detection Rules
+### Creating Custom Detection Rules
 Next, let's create custom rules tailored to our lab environment. We’ll do this by editing one of the interfaces and navigating to the rules tab.
 
 
-### Detecting Evil-WinRM Traffic
+#### Detecting Evil-WinRM Traffic
 Our first custom rule will detect Evil-WinRM traffic, which is often used for remote management in penetration testing scenarios. For more information on setting up Remote Management on your target hosts, refer to Part 3 of this series.
 
 ![PfSense-suricata-rules](/assets/images/homelab/pfsense-suricata-rules.png)
@@ -61,7 +61,7 @@ With this rule in place, Suricata will trigger an alert whenever someone tries t
 
 ![PfSense-suricata-alert](/assets/images/homelab/pfsense-suricata-alert.png)
 
-### Detecting SMB Authentication
+#### Detecting SMB Authentication
 Similarly, we can create a custom rule to detect SMB authentication attempts within the `CICADA` domain. The below rule looks for the SMB header with the NTLMSSP authentication type set to `03` and the domain name in hex format, separated by null bytes.
 
 ```
@@ -77,7 +77,7 @@ $ nxc smb 172.16.200.100 -u 'winnie.wonder' -p 'P@ssw0rd123' -d 'cicada.local'
 As expected, Suricata raised an alert upon detecting the authentication:
 ![PfSense-suricata-alert2](/assets/images/homelab/pfsense-suricata-alert2.png)
 
-### Detecting AS-REPRoasting
+#### Detecting AS-REPRoasting
 In the third part of our series, we executed the following command to perform an ASREPRoasting attack on domain users:
 
 ```console
@@ -102,7 +102,7 @@ Rule Breakdown:
 
 By implementing this rule, Suricata will trigger an alert when it detects a pattern consistent with an ASREPRoast attack, helping to protect your domain from this common exploitation method.
 
-# Creating SPAN Ports on Proxmox
+## Creating SPAN Ports on Proxmox
 Start by creating a new LXC and assign at least 2 cores, 2GB of RAM and 25GB of storage. After creating the container, add another network interface for the ports you want to mirror. In my case I added interfaces `vmbr1` and `vmbr2`. The interface is going to send copies of packets of machines connected to the switch to the container. Make sure the firewall is unchecked for these interfaces.
 ![Suricata LXC Net](/assets/images/homelab/pfsense-suricata-lxc-net.png)
 
@@ -156,5 +156,5 @@ $ tail /var/log/suricata/fast.log
 
 After this, we should be able to capture all traffic coming from our network in pfSense (even same-LAN traffic). One issue we are having now is that the port mirror command needs to be ran each time the container is restarted. It is possible to create a hookscript for this. Check out [this post](https://codingpackets.com/blog/proxmox-vm-bridge-port-mirror/) to create a custom script to run at VM start and stop. Since we created a LXC, it is (at the time of writing) not possible to create hookscripts for containers, but you can always create a hookscript on the pfSense VM that creates the SPAN ports at boot for the Suricata container.
 
-# Conclusion
+## Conclusion
 In this part we have seen how we can leverage Suricata to detect malicious traffic on our network. We have also learned how we can write our own rules based on IOCs. By implementing these custom rules, you can enhance the security of your Active Directory lab environment, gaining visibility into specific attacks and unauthorized access attempts.
