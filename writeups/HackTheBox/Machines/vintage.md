@@ -94,7 +94,7 @@ L.Bianchi_adm
 ```
 
 ### Kerberos Authentication
-After using some common queries over ldap, I decided to retry using NetExec with the `-k` flag which uses Kerberos as authentication protocol instead of NTLM (default).
+After using some common queries over ldap, I decided to retry using NetExec with the `-k` flag which uses Kerberos as authentication protocol instead of NTLM (default). When dealing with Kerberos, you generally don't want to use IP addresses and use hostnames instead.
 
 ```console
 $ nxc smb dc01.vintage.htb -u P.Rosa -p Rosaisbest123 -k --shares
@@ -154,7 +154,7 @@ We managed to save the machine's TGT meaning this is indeed a valid password. Lo
 ![](/assets/images/writeups/vintage/BH-FS01.png)
 
 ### ReadGMSAPassword Abuse
-There are several methods we can use to read this password, but the easiest method is to use `BloodyAD.py`. Again we need to do our authentication over Kerberos by using the TGT of `FS01$`.
+There are several methods we can use to read this password, but the easiest method is to use `BloodyAD`. Again we need to do our authentication over Kerberos by using the TGT of `FS01$`.
 
 ```console
 $ bloodyAD -k ccache=FS01$.ccache --host dc01.vintage.htb -d "VINTAGE.HTB" --dc-ip 10.10.11.45 get object 'GMSA01$' --attr msDS-ManagedPassword
