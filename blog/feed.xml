@@ -11,7 +11,7 @@
     <item>
       <title>Anti-Virus Evasion with Sliver C2</title>
       <guid isPermaLink="true">https://bytebl33d.github.io/blog/sliver-evasion/</guid>
-      <description>My recent exploration into C2 frameworks led me to BishopFox's Sliver.</description>
+      <description>My recent exploration into C2 frameworks led me to BishopFox's Sliver project.</description>
       <pubDate>Sat, 04 Jan 2025 09:00:00 GMT</pubDate>
       <category domain="https://bytebl33d.github.io/categories/maldev/">Maldev</category>
       <category domain="https://bytebl33d.github.io/categories/windows/">Windows</category>
