@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.8.0.799865686822">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.9.0.802110875010">
 
     <!-- See retype.com -->
-    <meta name="generator" content="Retype 3.8.0">
+    <meta name="generator" content="Retype 3.9.0">
 
     <!-- Primary Meta Tags -->
     <title>Office (Hard)</title>
@@ -30,14 +30,14 @@
     <meta property="twitter:description" content="The \"Office\" machine on HackTheBox is a challenging Windows-based environment that incorporates a variety of vulnerabilities.">
     <meta property="twitter:image" content="https://bytebl33d.github.io/assets/images/headers/office.png">
 
-    <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
+    <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../../../resources/css/retype.css?v=3.8.0.799865686822" rel="stylesheet">
+    <link href="../../../../resources/css/retype.css?v=3.9.0.802110875010" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.8.0.799865686822" data-turbo-eval="false" defer></script>
-    <script data-cfasync="false" src="../../../../resources/js/retype.js?v=3.8.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.8.0.799865686822" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.8.0.799865686822" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.9.0.802110875010" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/retype.js?v=3.9.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.9.0.802110875010" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.9.0.802110875010" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -54,7 +54,7 @@
                     <div class="flex items-center px-2 md:px-6">
                         <a id="docs-site-logo" href="../../../../" class="flex items-center leading-snug text-2xl">
                             <span class="dark:text-white font-bold line-clamp-1 md:line-clamp-2">bytebl33d</span>
-                        </a><span class="hidden px-2 py-1 ml-4 text-sm font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-sm md:inline-block">Blog</span>
+                        </a><span class="hidden mt-1 px-2 py-1 ml-4 text-xs font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-md md:inline-block">Blog</span>
                     </div>
         
                     <span class="hidden h-8 border-r md:inline-block dark:border-dark-650"></span>
@@ -177,7 +177,7 @@
         <span>Office (Hard)</span>
     </h1>
 </doc-anchor-target>
-<div class="-mt-3 mb-12 flex flex-wrap text-sm text-gray-400 dark:text-dark-350 items-center">
+<div class="-mt-3 mb-12 flex flex-wrap text-sm text-gray-400 dark:text-dark-350 items-center print:justify-center">
     <div>In&nbsp;</div>
     <div><a href="../../../../categories/hackthebox/">HackTheBox</a>,&nbsp;</div>
     <div><a href="../../../../categories/active-directory/">Active-Directory</a>,&nbsp;</div>
@@ -187,7 +187,7 @@
 </div>
 
 <p><figure class="content-center">
-    <img src="../../../../assets/images/headers/office.png" alt="">
+    <img src="../../../../assets/images/headers/office.png" alt="" />
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
@@ -243,7 +243,7 @@ PORT      STATE SERVICE
 </doc-anchor-target>
 <p>On accessing the website, we encounter a Joomla CMS for &quot;Tony Stark&#x27;s Iron Man Company&quot;. By checking the version, we identify it as <code v-pre>4.2.7</code>, which is vulnerable to a known exploit (<code v-pre>CVE-2023-23752</code>).</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/office/joomla-version.png" alt="Joomla Version">
+    <img src="../../../../assets/images/writeups/office/joomla-version.png" alt="Joomla Version" />
     <figcaption class="caption">Joomla Version</figcaption>
 </figure>
 </p>
@@ -357,19 +357,19 @@ SMB         10.10.11.3      445    DC               [-] office.htb\ppotts:H0lOgr
 </doc-codeblock></div>
 <p>The share contains a <code v-pre>PCAP</code> file, so lets inspect this further with WireShark. We start by showing the <code v-pre>Protocol Hierarchy</code> and notice there are several frames for the <code v-pre>Kerberos</code> protocol.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/office/pcap-kerberos.png" alt="PCAP Protocol Hierarchy">
+    <img src="../../../../assets/images/writeups/office/pcap-kerberos.png" alt="PCAP Protocol Hierarchy" />
     <figcaption class="caption">PCAP Protocol Hierarchy</figcaption>
 </figure>
 </p>
 <p>Filtering the packets on the Kerberos protocol we notice an NTLM authentication session using SMB, which transmits an <code v-pre>AS-REQ</code>. In the second AS-REQ packet, we have a hashed timestamp. We can use this information to attempt to crack the password of the user that tried to authenticate.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/office/pcap-kerberos-req.png" alt="PCAP Kerberos As-Req">
+    <img src="../../../../assets/images/writeups/office/pcap-kerberos-req.png" alt="PCAP Kerberos As-Req" />
     <figcaption class="caption">PCAP Kerberos As-Req</figcaption>
 </figure>
 </p>
 <p>We can create a <code v-pre>Kerberos Pre-Auth</code> hash for the user <code v-pre>tstark</code>. To do this we first have to check the format that is expected by <a href="https://hashcat.net/wiki/doku.php?id=example_hashes">Hashcat</a>.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/office/kerberos-preauth-format.png" alt="Hashcat kerberos example">
+    <img src="../../../../assets/images/writeups/office/kerberos-preauth-format.png" alt="Hashcat kerberos example" />
     <figcaption class="caption">Hashcat kerberos example</figcaption>
 </figure>
 </p>
@@ -404,7 +404,7 @@ $krb5pa$18$tstark$office.htb$a16f4806da05760af63c566d566f071c5bb35d0a41445941761
 </doc-anchor-target>
 <p>We found that <code v-pre>tstark</code> is also the administrator user for the Joomla backend so we can login with the following credentials: <code v-pre>Administrator:playboy69</code>. Next we can go to <code v-pre>System &gt; Site Templates</code> and select the available template. We can then add a web shell on one of the available pages (e.g. <code v-pre>error.php</code>) to get remote code execution.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/office/joomla-rce.png" alt="Joomla RCE">
+    <img src="../../../../assets/images/writeups/office/joomla-rce.png" alt="Joomla RCE" />
     <figcaption class="caption">Joomla RCE</figcaption>
 </figure>
 </p>
@@ -518,7 +518,7 @@ $ ./chisel_1.9.1_linux_amd64 server --port 8000 --reverse</code></pre>
 </doc-codeblock></div>
 <p>We can now access the internal website by browsing to <code v-pre>http://127.0.0.1:8083</code> and we also find the page where we can upload a resume.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/office/resume-upload.png" alt="Web form resume upload">
+    <img src="../../../../assets/images/writeups/office/resume-upload.png" alt="Web form resume upload" />
     <figcaption class="caption">Web form resume upload</figcaption>
 </figure>
 </p>
@@ -820,13 +820,13 @@ Mode                 LastWriteTime         Length Name
                             </footer>
                         </main>
                 
-                        <div class="border-t dark:border-dark-650 pt-6 mb-8">
-                            <footer class="flex flex-wrap items-center justify-between">
-                                <div>
+                        <div class="print:border-none border-t dark:border-dark-650 pt-6 mb-8">
+                            <footer class="flex flex-wrap items-center justify-between print:justify-center">
+                                <div class="print:hidden">
                                     <ul class="flex flex-wrap items-center text-sm">
                                     </ul>
                                 </div>
-                                <div class="docs-copyright py-2 text-gray-500 dark:text-dark-350 text-sm leading-relaxed"><p>© Copyright 2025. All rights reserved.</p></div>
+                                <div class="print:justify-center docs-copyright py-2 text-gray-500 dark:text-dark-350 text-sm leading-relaxed"><p>© Copyright 2025. All rights reserved.</p></div>
                             </footer>
                         </div>
                     </div>

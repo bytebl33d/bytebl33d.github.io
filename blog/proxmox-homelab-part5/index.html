@@ -9,25 +9,25 @@
     <meta name="generator" content="Retype 3.9.0">
 
     <!-- Primary Meta Tags -->
-    <title>Active Directory Home Lab with Proxmox - Part 4</title>
-    <meta name="title" content="Active Directory Home Lab with Proxmox - Part 4">
-    <meta name="description" content="In this part of our Active Directory Home Lab series, we'll focus on enhancing the security and visibility of our environment by adding network...">
+    <title>Active Directory Home Lab with Proxmox - Part 5</title>
+    <meta name="title" content="Active Directory Home Lab with Proxmox - Part 5">
+    <meta name="description" content="Connecting Linux machines to an Active Directory (AD) domain can streamline user authentication and management in mixed-environment networks.">
 
     <!-- Canonical -->
-    <link rel="canonical" href="https://bytebl33d.github.io/blog/proxmox-homelab-part4/">
+    <link rel="canonical" href="https://bytebl33d.github.io/blog/proxmox-homelab-part5/">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://bytebl33d.github.io/blog/proxmox-homelab-part4/">
-    <meta property="og:title" content="Active Directory Home Lab with Proxmox - Part 4">
-    <meta property="og:description" content="In this part of our Active Directory Home Lab series, we'll focus on enhancing the security and visibility of our environment by adding network...">
+    <meta property="og:url" content="https://bytebl33d.github.io/blog/proxmox-homelab-part5/">
+    <meta property="og:title" content="Active Directory Home Lab with Proxmox - Part 5">
+    <meta property="og:description" content="Connecting Linux machines to an Active Directory (AD) domain can streamline user authentication and management in mixed-environment networks.">
     <meta property="og:image" content="https://bytebl33d.github.io/assets/images/headers/ad-banner.jpg">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://bytebl33d.github.io/blog/proxmox-homelab-part4/">
-    <meta property="twitter:title" content="Active Directory Home Lab with Proxmox - Part 4">
-    <meta property="twitter:description" content="In this part of our Active Directory Home Lab series, we'll focus on enhancing the security and visibility of our environment by adding network...">
+    <meta property="twitter:url" content="https://bytebl33d.github.io/blog/proxmox-homelab-part5/">
+    <meta property="twitter:title" content="Active Directory Home Lab with Proxmox - Part 5">
+    <meta property="twitter:description" content="Connecting Linux machines to an Active Directory (AD) domain can streamline user authentication and management in mixed-environment networks.">
     <meta property="twitter:image" content="https://bytebl33d.github.io/assets/images/headers/ad-banner.jpg">
 
     <!-- RSS -->
@@ -173,10 +173,10 @@
                             <!-- Rendered if sidebar right is enabled -->
                             <div id="docs-sidebar-right-toggle"></div>
                             <!-- Page content  -->
-<doc-anchor-target id="active-directory-home-lab-with-proxmox---part-4" class="break-words">
+<doc-anchor-target id="active-directory-home-lab-with-proxmox---part-5" class="break-words">
     <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#active-directory-home-lab-with-proxmox---part-4">#</doc-anchor-trigger>
-        <span>Active Directory Home Lab with Proxmox - Part 4</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#active-directory-home-lab-with-proxmox---part-5">#</doc-anchor-trigger>
+        <span>Active Directory Home Lab with Proxmox - Part 5</span>
     </h1>
 </doc-anchor-target>
 <div class="-mt-3 mb-12 flex flex-wrap text-sm text-gray-400 dark:text-dark-350 items-center print:justify-center">
@@ -184,7 +184,7 @@
     <div><a href="../../categories/active-directory/">Active-Directory</a>,&nbsp;</div>
     <div><a href="../../categories/homelab/">Homelab</a></div>
     <div class="mx-2">&#9679;</div>
-    <div class="flex items-center shrink-0">Published&nbsp;<span>2024-09-03</span></div>
+    <div class="flex items-center shrink-0">Published&nbsp;<span>2025-06-01</span></div>
 </div>
 
 <p><figure class="content-center">
@@ -192,50 +192,14 @@
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
-<p>In this part of our Active Directory Home Lab series, we&#x27;ll focus on enhancing the security and visibility of our environment by adding network monitoring. Since we&#x27;re utilizing PfSense as our software-based firewall, it provides a convenient platform for deploying additional security tools. Specifically, we&#x27;ll be setting up Suricata, a powerful intrusion detection and prevention system (IDS/IPS), to monitor traffic and detect potential threats. This post will guide you through configuring Suricata and creating custom rules to detect attacks, such as those we simulated in Part 3.</p>
-<doc-anchor-target id="suricata-setup">
-    <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#suricata-setup">#</doc-anchor-trigger>
-        <span>Suricata Setup</span>
-    </h2>
+<p>Connecting Linux machines to an Active Directory (AD) domain can streamline user authentication and management in mixed-environment networks. In this post I will guide you through the process of joining a Linux machine to a Windows Active Directory domain, allowing for centralized authentication and simplified access control for your Linux servers.</p>
+<doc-anchor-target id="setting-up-your-web-server" class="break-words">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#setting-up-your-web-server">#</doc-anchor-trigger>
+        <span>Setting Up Your Web Server</span>
+    </h1>
 </doc-anchor-target>
-<p>To begin, navigate to the PfSense web interface and proceed to <code v-pre>System &gt; Package Manager &gt; Available Packages</code>. Search for Suricata and install the latest version. Once installed, go to <code v-pre>Services &gt; Suricata</code> to start configuring the tool. We’ll add interfaces and tweak some options, but the default settings should suffice for most purposes. For our ruleset, we&#x27;ll use the ETOpen Emerging Threats as a foundation.</p>
-<doc-anchor-target id="adding-monitoring-interfaces">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#adding-monitoring-interfaces">#</doc-anchor-trigger>
-        <span>Adding Monitoring Interfaces</span>
-    </h3>
-</doc-anchor-target>
-<p>Under the Interfaces tab, select the interfaces that Suricata will monitor. For our lab, I chose the <code v-pre>LAN</code> and <code v-pre>ADLAB</code> interfaces to observe traffic between the attacking VM on the LAN and the AD network.</p>
-<p><figure class="content-center">
-    <img src="../../assets/images/homelab/pfsense-suricata-interfaces.png" alt="PfSense-suricata-interfaces" />
-    <figcaption class="caption">PfSense-suricata-interfaces</figcaption>
-</figure>
-</p>
-<doc-anchor-target id="creating-custom-detection-rules">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#creating-custom-detection-rules">#</doc-anchor-trigger>
-        <span>Creating Custom Detection Rules</span>
-    </h3>
-</doc-anchor-target>
-<p>Next, let&#x27;s create custom rules tailored to our lab environment. We’ll do this by editing one of the interfaces and navigating to the rules tab.</p>
-<doc-anchor-target id="detecting-evil-winrm-traffic">
-    <h4>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#detecting-evil-winrm-traffic">#</doc-anchor-trigger>
-        <span>Detecting Evil-WinRM Traffic</span>
-    </h4>
-</doc-anchor-target>
-<p>Our first custom rule will detect Evil-WinRM traffic, which is often used for remote management in penetration testing scenarios. For more information on setting up Remote Management on your target hosts, refer to Part 3 of this series.</p>
-<p><figure class="content-center">
-    <img src="../../assets/images/homelab/pfsense-suricata-rules.png" alt="PfSense-suricata-rules" />
-    <figcaption class="caption">PfSense-suricata-rules</figcaption>
-</figure>
-</p>
-<p>To build this rule, we need to understand how an authentication request from Evil-WinRM appears in network traffic. Using WireShark, we can capture an authentication attempt from a host on the LAN interface. We run the following command in a Linux terminal:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ evil-winrm -i 172.16.0.17 -u 'cicada.local\winnie.wonder' -p 'P@ssw0rd123'</code></pre>
-</doc-codeblock></div>
-<p>To capture this traffic in PfSense, go to <code v-pre>Diagnostics &gt; Packet Capture</code> and select the appropriate interface.</p>
+<p>To begin, we&#x27;ll provision a new AlmaLinux container.</p>
 <div class="flex mb-6">
     <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-blue-300"></div>
     <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr-lg rounded-br-lg doc-callout bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
@@ -249,165 +213,165 @@
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-            <h5>Tip</h5>
-<p>Ensure you target the domain-joined host from a machine outside of the LAN to properly capture traffic. If you capture traffic from devices within the same LAN, PfSense may not log the packets unless you create a port mirror. At the final section, I will discuss how to setup a SPAN port and route traffic to another machine to monitor traffic.</p>
+<p>You need to make a privileged container in order to join it to the domain. To do this you first make a regular LXC, make a backup and restore it as privileged.</p>
         </div>
     </div>
 </div>
-<p>In WireShark, we can focus on the packet containing the authentication request.</p>
 <p><figure class="content-center">
-    <img src="../../assets/images/homelab/pfsense-capture-winrm.png" alt="PfSense-capture-winrm" />
-    <figcaption class="caption">PfSense-capture-winrm</figcaption>
+    <img src="../../assets/images/homelab/almalinux-container-setup.png" alt="" />
+    <figcaption class="caption"></figcaption>
 </figure>
 </p>
-<p>The captured packet shows the authentication request from <code v-pre>winnie.wonder</code>. Based on this, we can now craft our Suricata rule:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">alert http any any -&gt; any 5985 (msg: &quot;Connection via Evil-WinRM Detected&quot;; flow:established,to_server; http.method; content:&quot;POST&quot;; http.header; content:&quot;User-Agent: Ruby WinRM Client&quot;; content:&quot;Authorization: &quot;; base64_decode:bytes 13,offset 10,relative; base64_data; content:&quot;NTLMSSP&quot;; content:&quot;|03|&quot;; classtype:bad-unknown; sid:9990001; rev:1;)</code></pre>
-</doc-codeblock></div>
-<div class="flex mb-6">
-    <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-blue-300"></div>
-    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr-lg rounded-br-lg doc-callout bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
-        <div class="flex items-center ml-4 h-7">
-            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
-                <g fill="currentColor"><g>
-                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
-                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
-                    <path fill="none" d="M0 0h24v24H0z"></path>
-                </g></g>
-            </svg>
-        </div>
-        <div class="pr-5 ml-3 w-full">
-<p><strong>Snort</strong> is a similar IDS/IPS solution that can be installed on PfSense, but has slightly different syntax.</p>
-        </div>
-    </div>
-</div>
-<p>Explanation:</p>
-<ul>
-<li>The rule targets HTTP traffic performing a POST request on port 5985.</li>
-<li>It looks for the <code v-pre>Ruby WinRM Client</code> string in the User-Agent header, a unique identifier for Evil-WinRM.</li>
-<li>The rule then examines the Authorization header, decoding a portion of the Base64 encoded data to detect the NTLMSSP authentication type.</li>
-</ul>
-<p>With this rule in place, Suricata will trigger an alert whenever someone tries to authenticate using Evil-WinRM using the default settings. We could tune this rule even further, or write additional rules that alert on traffic even if the attacker changes the User-Agent.</p>
 <p><figure class="content-center">
-    <img src="../../assets/images/homelab/pfsense-suricata-alert.png" alt="PfSense-suricata-alert" />
-    <figcaption class="caption">PfSense-suricata-alert</figcaption>
+    <img src="../../assets/images/homelab/almalinux-container-setup-config.png" alt="" />
+    <figcaption class="caption"></figcaption>
 </figure>
 </p>
-<doc-anchor-target id="detecting-smb-authentication">
-    <h4>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#detecting-smb-authentication">#</doc-anchor-trigger>
-        <span>Detecting SMB Authentication</span>
-    </h4>
-</doc-anchor-target>
-<p>Similarly, we can create a custom rule to detect SMB authentication attempts within the <code v-pre>CICADA</code> domain. The below rule looks for the SMB header with the NTLMSSP authentication type set to <code v-pre>03</code> and the domain name in hex format, separated by null bytes.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">alert smb any any -&gt; any 445 (msg: &quot;SMB Authentication&quot;;flow:established,to_server; content:&quot;|FE|SMB&quot;;content:&quot;NTLMSSP&quot;; content:&quot;|03|&quot;;distance: 1; content:&quot;|63 00 69 00 63 00 61 00 64 00 61|&quot;; sid:9990002; rev:1;)</code></pre>
-</doc-codeblock></div>
-<p>This rule was applied to the ADLAB interface. To test it, I used <code v-pre>NetExec</code> to initiate an SMB authentication from outside the ADLAB interface:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ nxc smb 172.16.200.100 -u 'winnie.wonder' -p 'P@ssw0rd123' -d 'cicada.local'</code></pre>
-</doc-codeblock></div>
-<p>As expected, Suricata raised an alert upon detecting the authentication:
-<figure class="content-center">
-    <img src="../../assets/images/homelab/pfsense-suricata-alert2.png" alt="PfSense-suricata-alert2" />
-    <figcaption class="caption">PfSense-suricata-alert2</figcaption>
-</figure>
-</p>
-<doc-anchor-target id="detecting-as-reproasting">
-    <h4>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#detecting-as-reproasting">#</doc-anchor-trigger>
-        <span>Detecting AS-REPRoasting</span>
-    </h4>
-</doc-anchor-target>
-<p>In the third part of our series, we executed the following command to perform an ASREPRoasting attack on domain users:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ GetNPUsers.py CICADA.LOCAL/ -dc-ip 172.16.200.100 -no-pass -usersfile valid_users -format hashcat</code></pre>
-</doc-codeblock></div>
-<p>Now, let’s examine what this traffic looks like in WireShark
-<figure class="content-center">
-    <img src="../../assets/images/homelab/pfsense-capture-asrep.png" alt="PfSense-capture-asrep" />
-    <figcaption class="caption">PfSense-capture-asrep</figcaption>
-</figure>
-</p>
-<p>In this scenario, we identified one user with preauthentication disabled. By analyzing the <code v-pre>AS-REQ</code> packet, we can craft a Suricata rule to detect this type of attack:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">alert tcp any any -&gt; any 88 (msg:&quot;Possible AS-REP Roasting Attack&quot;; flow: to_server, stateless; content:&quot;|a0 07 03 05 00 50 80 00 00 a1|&quot;; content:&quot;|6b 72 62 74 67 74|&quot;; fast_pattern; content:!&quot;|a2 03 02 01 0c|&quot;; sid:9990003; rev:1;)</code></pre>
-</doc-codeblock></div>
-<p>Rule Breakdown:</p>
-<ul>
-<li>The rule monitors TCP traffic on port 88, which is used by Kerberos.</li>
-<li>It looks for a specific sequence of bytes that indicate the presence of an AS-REQ request.</li>
-<li>The string krbtgt (represented as <code v-pre>6b 72 62 74 67 74</code> in hexadecimal) is a key identifier within the packet.</li>
-<li>We also check for the absence of the byte sequence <code v-pre>a2 03 02 01 0c</code>, which indicates the presence of preauthentication. The lack of this sequence suggests the possibility of an AS-REP Roasting attack.</li>
-</ul>
-<p>By implementing this rule, Suricata will trigger an alert when it detects a pattern consistent with an ASREPRoast attack, helping to protect your domain from this common exploitation method.</p>
-<doc-anchor-target id="creating-span-ports-on-proxmox">
+<p>This container will serve as our web server and the machine we&#x27;ll join to the Active Directory domain.</p>
+<doc-anchor-target id="installing-necessary-packages">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#creating-span-ports-on-proxmox">#</doc-anchor-trigger>
-        <span>Creating SPAN Ports on Proxmox</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#installing-necessary-packages">#</doc-anchor-trigger>
+        <span>Installing Necessary Packages</span>
     </h2>
 </doc-anchor-target>
-<p>Start by creating a new LXC and assign at least 2 cores, 2GB of RAM and 25GB of storage. After creating the container, add another network interface for the ports you want to mirror. In my case I added interfaces <code v-pre>vmbr1</code> and <code v-pre>vmbr2</code>. The interface is going to send copies of packets of machines connected to the switch to the container. Make sure the firewall is unchecked for these interfaces.
-<figure class="content-center">
-    <img src="../../assets/images/homelab/pfsense-suricata-lxc-net.png" alt="Suricata LXC Net" />
-    <figcaption class="caption">Suricata LXC Net</figcaption>
-</figure>
-</p>
-<p>Log in to the container and run the following commands.</p>
+<p>Before joining the domain, you need to install several key packages that facilitate communication and integration with Active Directory. It&#x27;s always a good practice to ensure your system is up-to-date before installing new software.</p>
+<p>First, update and upgrade your existing packages:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ apt update &amp;&amp; apt upgrade -y
-$ ip a | grep @
-2: eth0@if95: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000
-3: mirrorInt@if96: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000
-4: mirrorAD@if97: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000</code></pre>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">[root@WEB01 ~]# yum update &amp;&amp; yum upgrade</code></pre>
 </doc-codeblock></div>
-<p>If the interfaces are down, just run <code v-pre>ip link set &lt;INT_NAME&gt; up</code>. Next, open the shell on your Proxmox server, and run the command:</p>
+<p>Next, install the required packages. These include <code v-pre>sssd</code> (System Security Services Daemon) for authentication and identity management, <code v-pre>realmd</code> for domain joining, <code v-pre>oddjob</code> and <code v-pre>oddjob-mkhomedir</code> for home directory creation, <code v-pre>adcli</code> for Active Directory command-line tools, <code v-pre>samba-common</code> and <code v-pre>samba-common-tools</code> for Samba utilities, <code v-pre>krb5-workstation</code> for Kerberos authentication, and <code v-pre>openldap-clients</code> for LDAP client utilities.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session"># ip link show | grep &lt;LXC_ID&gt;</code></pre>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">[root@WEB01 ~]# yum update &amp;&amp; yum upgrade
+[root@WEB01 ~]# yum install sssd realmd oddjob oddjob-mkhomedir adcli samba-common samba-common-tools krb5-workstation openldap-clients</code></pre>
 </doc-codeblock></div>
-<p>where the <code v-pre>&lt;LXC_ID&gt;</code> is the id of the Proxmox node where Suricata is running.
-<figure class="content-center">
-    <img src="../../assets/images/homelab/pfsense-suricata-lxc-link.png" alt="Suricata Proxmox link" />
-    <figcaption class="caption">Suricata Proxmox link</figcaption>
-</figure>
-</p>
-<p>The first result is the interface that is connected to my home network, the last two are going to be the SPAN ports. Now we run the following command in the Proxmox shell to create the SPAN ports on the switch:</p>
+<doc-anchor-target id="joining-active-directory">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#joining-active-directory">#</doc-anchor-trigger>
+        <span>Joining Active Directory</span>
+    </h1>
+</doc-anchor-target>
+<p>With the necessary packages installed, you can now join your AlmaLinux machine to the Active Directory domain. This is done using the <code v-pre>realm</code> command, which simplifies the process of configuring Kerberos and SSSD for domain integration.</p>
+<p>Execute the following command, replacing <code v-pre>CICADA.LOCAL</code> with your actual domain name and <code v-pre>Administrator</code> with an Active Directory user account that has permissions to join machines to the domain:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session"># ovs-vsctl \
-  -- --id=@veth101i1 get Port tap101i1 \
-  -- --id=@101m1 create mirror name=mirrorInt \
-  select-all=true output-port=@veth101i1 \
-  -- set Bridge vmbr1 mirrors=@101m1
-# ovs-vsctl \
-  -- --id=@veth101i2 get Port veth101i2 \
-  -- --id=@101m2 create mirror name=mirrorAD \
-  select-all=true output-port=@veth101i2 \
-  -- set Bridge vmbr2 mirrors=@101m2</code></pre>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">[root@WEB01 ~]# realm join CICADA.LOCAL -U Administrator
+Password for Administrator@CICADA.LOCAL: &lt;REDACTED&gt;</code></pre>
 </doc-codeblock></div>
-<p>Replace the link names, ids and bridge name according to your setup.
-Next we need to edit the configuration file of Suricata located at <code v-pre>/etc/suricata/suricata.yaml</code>:</p>
-<ol>
-<li>Add our IP ranges to the <code v-pre>HOME_NET</code> variable under <code v-pre>vars</code> to hold <code v-pre>[172.16.0.0/24,172.16.100.0/24]</code>.</li>
-<li>Change the interface under <code v-pre>af-packet</code> from <code v-pre>eth0</code> to the monitoring interface. I added both <code v-pre>mirrorInt</code> and <code v-pre>mirrorAD</code> as an interface and assigned it a <code v-pre>cluster-id</code> of 99 and 100 respectively.</li>
-<li>Change the default rule path under <code v-pre>default-rule-path</code> to <code v-pre>/etc/suricata/rules</code> and add another <code v-pre>rule-files</code> value for any local rules (e.g. <code v-pre>local.rules</code>).</li>
-<li>Create the custom rule file under <code v-pre>/etc/suricata/rules/local.rules</code>. Here we can place our custom rules we created earlier.</li>
-</ol>
-<p>Finally we can restart Suricata on the container and monitor the two added interfaces. Any alerts will be logged to <code v-pre>fast.log</code>.</p>
+<p>You&#x27;ll be prompted to enter the password for the Administrator account. If the join is successful, you can verify it by checking the machine&#x27;s domain status. The <code v-pre>id</code> command with the machine&#x27;s hostname followed by a dollar sign and the domain (<code v-pre>web01$@CICADA.LOCAL</code>) should show that the machine is recognized as a domain computer.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ systemctl enable suricata
-$ systemctl restart suricata
-$ suricata -i mirrorInt -i mirrorAD &amp;
+<pre class="language-shell-session"><code v-pre class="language-shell-session">[root@WEB01 ~]# id 'web01$@CICADA.LOCAL'
+uid=136801114(web01$@cicada.local) gid=136800515(domain computers@cicada.local) groups=136800515(domain computers@cicada.local)</code></pre>
+</doc-codeblock></div>
+<p>As you can see, our machine is now recognized as a domain computer within Active Directory.</p>
+<doc-anchor-target id="configuring-sssd-and-pam-for-ad-integration">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#configuring-sssd-and-pam-for-ad-integration">#</doc-anchor-trigger>
+        <span>Configuring SSSD and PAM for AD Integration</span>
+    </h2>
+</doc-anchor-target>
+<p>To enable users to authenticate against Active Directory and have their home directories created automatically upon login, you need to configure SSSD and edit the PAM (Pluggable Authentication Modules) configuration for SSH.</p>
+<p>First, ensure <code v-pre>openssh-server</code> is installed, as it&#x27;s crucial for remote access and is often a primary way users will interact with the joined Linux machine.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">[root@WEB01 ~]# dnf install openssh-server
+[root@WEB01 ~]# sudo systemctl start sssd
+[root@WEB01 ~]# sudo systemctl enable sssd</code></pre>
+</doc-codeblock></div>
+<p>Next, start and enable the <code v-pre>sssd</code> and <code v-pre>oddjobd</code> services. SSSD is responsible for handling authentication and identity lookups against Active Directory, while <code v-pre>oddjobd</code> (along with <code v-pre>oddjob-mkhomedir</code>) helps with tasks like creating home directories for domain users.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">[root@WEB01 ~]# sudo systemctl start oddjobd
+[root@WEB01 ~]# sudo systemctl enable oddjobd</code></pre>
+</doc-codeblock></div>
+<p>Now, edit the PAM configuration for SSH (<code v-pre>/etc/pam.d/sshd</code>) to allow SSSD to handle authentication and to enable automatic home directory creation.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">[root@WEB01 ~]# vi /etc/pam.d/sshd
+auth       required     pam_sepermit.so
+auth       include      system-auth
 
-$ tail /var/log/suricata/fast.log</code></pre>
+account    required     pam_nologin.so
+account    include      system-auth
+
+password   include      system-auth
+
+session    optional     pam_keyinit.so force revoke
+session    required     pam_loginuid.so
+session    include      system-auth
+session    required     pam_limits.so
+session    required     pam_unix.so
+session    optional     pam_oddjob_mkhomedir.so skel=/etc/skel/ umask=0077 # For auto-home dir creation
+session    optional     pam_systemd.so</code></pre>
 </doc-codeblock></div>
-<p>After this, we should be able to capture all traffic coming from our network in pfSense (even same-LAN traffic). One issue we are having now is that the port mirror command needs to be ran each time the container is restarted. It is possible to create a hookscript for this. Check out <a href="https://codingpackets.com/blog/proxmox-vm-bridge-port-mirror/">this post</a> to create a custom script to run at VM start and stop. Since we created a LXC, it is (at the time of writing) not possible to create hookscripts for containers, but you can always create a hookscript on the pfSense VM that creates the SPAN ports at boot for the Suricata container.</p>
-<doc-anchor-target id="conclusion">
+<p>Finally, configure the <code v-pre>sssd.conf</code> file to specify how SSSD should interact with your Active Directory domain. This file defines the domain settings, default shell, home directory creation, and access providers.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">[root@WEB01 ~]# vi /etc/sssd/sssd.conf
+[sssd]
+domains = cicada.local
+config_file_version = 2
+services = nss, pam
+
+[domain/cicada.local]
+ad_domain = cicada.local
+krb5_realm = CICADA.LOCAL
+default_shell = /bin/bash
+krb5_store_password_if_offline = True
+cache_credentials = True
+realmd_tags = manages-system joined-with-adcli
+id_provider = ad
+fallback_homedir = /home/%u
+use_fully_qualified_names = False
+ldap_id_mapping = True
+access_provider = ad</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="authenticating-with-kerberos-and-ssh">
     <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#authenticating-with-kerberos-and-ssh">#</doc-anchor-trigger>
+        <span>Authenticating with Kerberos and SSH</span>
+    </h2>
+</doc-anchor-target>
+<p>To enable Kerberos authentication, you need to configure the <code v-pre>/etc/krb5.conf</code> file on your local machine. This file tells your system how to locate the Kerberos Key Distribution Center (KDC) for your domain. Add the following configuration:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">[libdefaults]
+    default_realm = CICADA.LOCAL
+    dns_lookup_realm = true
+    dns_lookup_kdc = true
+    udp_preference_limit = 0
+
+[realms]
+CICADA.LOCAL = {
+     kdc = dc01.cicada.local
+     admin_server = dc01.cicada.local
+     default_domain = cicada.local
+}
+
+[domain_realm]
+    .cicada.local = CICADA.LOCAL
+    cicada.local = CICADA.LOCAL</code></pre>
+</doc-codeblock></div>
+<p>Now, you can request a Kerberos Ticket Granting Ticket (TGT) for a domain user and then use it to SSH into the Linux machine without needing to enter a password for each connection.</p>
+<p>First, use <code v-pre>kinit</code> to obtain a TGT for your domain user (e.g., w.wonder):</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ kinit w.wonder
+Password for w.wonder@CICADA.LOCAL: P@ssw0rd123</code></pre>
+</doc-codeblock></div>
+<p>After entering the password, you can verify that you have a valid TGT using <code v-pre>klist</code>. Finally, you can SSH into your AlmaLinux machine using your domain username.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ klist
+Ticket cache: FILE:/tmp/krb5cc_1000
+Default principal: w.wonder@CICADA.LOCAL
+
+Valid starting       Expires              Service principal
+05/25/2025 18:20:11  05/26/2025 04:20:11  krbtgt/CICADA.LOCAL@CICADA.LOCAL
+  renew until 05/26/2025 18:20:07
+05/25/2025 18:20:21  05/26/2025 04:20:11  host/web01.cicada.local@CICADA.LOCAL
+  renew until 05/26/2025 18:20:07
+$ ssh w.wonder@web01.cicada.local</code></pre>
+</doc-codeblock></div>
+<p>You should be logged in without being prompted for a password, demonstrating successful Kerberos authentication and Active Directory integration!</p>
+<doc-anchor-target id="conclusion">
+    <h1>
         <doc-anchor-trigger class="header-anchor-trigger" to="#conclusion">#</doc-anchor-trigger>
         <span>Conclusion</span>
-    </h2>
+    </h1>
 </doc-anchor-target>
-<p>In this part we have seen how we can leverage Suricata to detect malicious traffic on our network. We have also learned how we can write our own rules based on IOCs. By implementing these custom rules, you can enhance the security of your Active Directory lab environment, gaining visibility into specific attacks and unauthorized access attempts.</p>
+<p>By following these steps, you&#x27;ve successfully joined your Linux machine to a Windows Active Directory domain. This setup allows for centralized user authentication and management, significantly simplifying administration in environments with both Windows and Linux systems. Users can now seamlessly log in to your Linux machines using their Active Directory credentials, benefiting from single sign-on capabilities.</p>
 
                             
                             <!-- Required only on API pages -->
@@ -417,20 +381,13 @@ $ tail /var/log/suricata/fast.log</code></pre>
                         
                             <nav class="print:hidden flex mt-14">
                                 <div class="w-1/2">
-                                    <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../blog/sliver-evasion/">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
-                                        <span>
-                                            <span class="block text-xs font-normal text-gray-400 dark:text-dark-400">Newer</span>
-                                            <span class="block mt-1">Anti-​Virus Evasion with Sliver C​2</span>
-                                        </span>
-                                    </a>
                                 </div>
                         
                                 <div class="w-1/2">
-                                    <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../blog/proxmox-homelab-part3/">
+                                    <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../blog/sliver-evasion/">
                                         <span>
                                             <span class="block text-xs font-normal text-right text-gray-400 dark:text-dark-400">Older</span>
-                                            <span class="block mt-1">Active Directory Home Lab with Proxmox - Part 3</span>
+                                            <span class="block mt-1">Anti-​Virus Evasion with Sliver C​2</span>
                                         </span>
                                         <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                     </a>
@@ -471,6 +428,6 @@ $ tail /var/log/suricata/fast.log</code></pre>
 
     <div id="docs-overlay-target"></div>
 
-    <script data-cfasync="false">window.__DOCS__ = { "title": "Active Directory Home Lab with Proxmox - Part 4", level: 2, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+    <script data-cfasync="false">window.__DOCS__ = { "title": "Active Directory Home Lab with Proxmox - Part 5", level: 2, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
 </body>
 </html>

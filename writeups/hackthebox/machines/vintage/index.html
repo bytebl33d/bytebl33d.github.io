@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.8.0.799865686822">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.9.0.802110875010">
 
     <!-- See retype.com -->
-    <meta name="generator" content="Retype 3.8.0">
+    <meta name="generator" content="Retype 3.9.0">
 
     <!-- Primary Meta Tags -->
     <title>Vintage (Hard)</title>
@@ -30,14 +30,14 @@
     <meta property="twitter:description" content="Vintage is a hard difficulty Windows machine designed around an assumed breach scenario, where the attacker is provided with low-privileged user...">
     <meta property="twitter:image" content="https://bytebl33d.github.io/assets/images/headers/vintage.png">
 
-    <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
+    <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../../../resources/css/retype.css?v=3.8.0.799865686822" rel="stylesheet">
+    <link href="../../../../resources/css/retype.css?v=3.9.0.802110875010" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.8.0.799865686822" data-turbo-eval="false" defer></script>
-    <script data-cfasync="false" src="../../../../resources/js/retype.js?v=3.8.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.8.0.799865686822" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.8.0.799865686822" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.9.0.802110875010" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/retype.js?v=3.9.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.9.0.802110875010" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.9.0.802110875010" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -54,7 +54,7 @@
                     <div class="flex items-center px-2 md:px-6">
                         <a id="docs-site-logo" href="../../../../" class="flex items-center leading-snug text-2xl">
                             <span class="dark:text-white font-bold line-clamp-1 md:line-clamp-2">bytebl33d</span>
-                        </a><span class="hidden px-2 py-1 ml-4 text-sm font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-sm md:inline-block">Blog</span>
+                        </a><span class="hidden mt-1 px-2 py-1 ml-4 text-xs font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-md md:inline-block">Blog</span>
                     </div>
         
                     <span class="hidden h-8 border-r md:inline-block dark:border-dark-650"></span>
@@ -177,7 +177,7 @@
         <span>Vintage (Hard)</span>
     </h1>
 </doc-anchor-target>
-<div class="-mt-3 mb-12 flex flex-wrap text-sm text-gray-400 dark:text-dark-350 items-center">
+<div class="-mt-3 mb-12 flex flex-wrap text-sm text-gray-400 dark:text-dark-350 items-center print:justify-center">
     <div>In&nbsp;</div>
     <div><a href="../../../../categories/hackthebox/">HackTheBox</a>,&nbsp;</div>
     <div><a href="../../../../categories/windows/">Windows</a>,&nbsp;</div>
@@ -187,7 +187,7 @@
 </div>
 
 <p><figure class="content-center">
-    <img src="../../../../assets/images/headers/vintage.png" alt="">
+    <img src="../../../../assets/images/headers/vintage.png" alt="" />
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
@@ -325,7 +325,7 @@ LDAP        dc01.vintage.htb 389    DC01             Compressing output into /ho
 </doc-anchor-target>
 <p>The first thing I found was that the computer account <code v-pre>FS01$</code> belongs to the <code v-pre>PRE-WINDOWS 2000</code> group.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/vintage/bh-fs01-member.png" alt="">
+    <img src="../../../../assets/images/writeups/vintage/bh-fs01-member.png" alt="" />
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
@@ -344,7 +344,7 @@ Password:fs01
 </doc-codeblock></div>
 <p>We managed to save the machine&#x27;s TGT meaning this is indeed a valid password. Looking at the results from BloodHound again, this account can read the password for the GMSA <code v-pre>GMSA01$</code>. And the latter can also add itself it the <code v-pre>SERVICEMANAGERS</code> group.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/vintage/bh-fs01.png" alt="">
+    <img src="../../../../assets/images/writeups/vintage/bh-fs01.png" alt="" />
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
@@ -379,7 +379,7 @@ $ bloodyAD -k ccache=GMSA01$.ccache --host dc01.vintage.htb -d &quot;VINTAGE.HTB
 </doc-codeblock></div>
 <p>Let&#x27;s see what control this group has over other accounts.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/vintage/bh-servicemanagers.png" alt="">
+    <img src="../../../../assets/images/writeups/vintage/bh-servicemanagers.png" alt="" />
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
@@ -603,7 +603,7 @@ Unknown     : Uncr4ck4bl3P4ssW0rd0312 </code></pre>
     </h3>
 </doc-anchor-target>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/vintage/bh-neri-delegate.png" alt="">
+    <img src="../../../../assets/images/writeups/vintage/bh-neri-delegate.png" alt="" />
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
@@ -621,7 +621,7 @@ $ getTGT.py vintage.htb/svc_sql:Zer0the0ne -dc-ip dc01.vintage.htb</code></pre>
 </doc-codeblock></div>
 <p>In BloodHound the permissions will now look as follows:</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/vintage/bh-sql-delegate.png" alt="">
+    <img src="../../../../assets/images/writeups/vintage/bh-sql-delegate.png" alt="" />
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
@@ -668,13 +668,13 @@ C:\&gt; type C:\Users\Administrator\Desktop\root.txt</code></pre>
                             </footer>
                         </main>
                 
-                        <div class="border-t dark:border-dark-650 pt-6 mb-8">
-                            <footer class="flex flex-wrap items-center justify-between">
-                                <div>
+                        <div class="print:border-none border-t dark:border-dark-650 pt-6 mb-8">
+                            <footer class="flex flex-wrap items-center justify-between print:justify-center">
+                                <div class="print:hidden">
                                     <ul class="flex flex-wrap items-center text-sm">
                                     </ul>
                                 </div>
-                                <div class="docs-copyright py-2 text-gray-500 dark:text-dark-350 text-sm leading-relaxed"><p>© Copyright 2025. All rights reserved.</p></div>
+                                <div class="print:justify-center docs-copyright py-2 text-gray-500 dark:text-dark-350 text-sm leading-relaxed"><p>© Copyright 2025. All rights reserved.</p></div>
                             </footer>
                         </div>
                     </div>

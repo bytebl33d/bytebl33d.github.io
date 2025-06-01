@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.8.0.799865686822">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.9.0.802110875010">
 
     <!-- See retype.com -->
-    <meta name="generator" content="Retype 3.8.0">
+    <meta name="generator" content="Retype 3.9.0">
 
     <!-- Primary Meta Tags -->
     <title>ProcNet (Hard)</title>
@@ -30,14 +30,14 @@
     <meta property="twitter:description" content="With the increasing use of open-source Command and Control (C2) frameworks by threat actors, it has become crucial for blue teams to develop...">
     <meta property="twitter:image" content="https://bytebl33d.github.io/assets/images/headers/procnet.png">
 
-    <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
+    <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../../../resources/css/retype.css?v=3.8.0.799865686822" rel="stylesheet">
+    <link href="../../../../resources/css/retype.css?v=3.9.0.802110875010" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.8.0.799865686822" data-turbo-eval="false" defer></script>
-    <script data-cfasync="false" src="../../../../resources/js/retype.js?v=3.8.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.8.0.799865686822" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.8.0.799865686822" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.9.0.802110875010" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/retype.js?v=3.9.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.9.0.802110875010" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.9.0.802110875010" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -54,7 +54,7 @@
                     <div class="flex items-center px-2 md:px-6">
                         <a id="docs-site-logo" href="../../../../" class="flex items-center leading-snug text-2xl">
                             <span class="dark:text-white font-bold line-clamp-1 md:line-clamp-2">bytebl33d</span>
-                        </a><span class="hidden px-2 py-1 ml-4 text-sm font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-sm md:inline-block">Blog</span>
+                        </a><span class="hidden mt-1 px-2 py-1 ml-4 text-xs font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-md md:inline-block">Blog</span>
                     </div>
         
                     <span class="hidden h-8 border-r md:inline-block dark:border-dark-650"></span>
@@ -177,7 +177,7 @@
         <span>ProcNet (Hard)</span>
     </h1>
 </doc-anchor-target>
-<div class="-mt-3 mb-12 flex flex-wrap text-sm text-gray-400 dark:text-dark-350 items-center">
+<div class="-mt-3 mb-12 flex flex-wrap text-sm text-gray-400 dark:text-dark-350 items-center print:justify-center">
     <div>In&nbsp;</div>
     <div><a href="../../../../categories/hackthebox/">HackTheBox</a>,&nbsp;</div>
     <div><a href="../../../../categories/dfir/">DFIR</a></div>
@@ -186,7 +186,7 @@
 </div>
 
 <p><figure class="content-center">
-    <img src="../../../../assets/images/headers/procnet.png" alt="">
+    <img src="../../../../assets/images/headers/procnet.png" alt="" />
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
@@ -224,20 +224,20 @@
 </doc-anchor-target>
 <p>We begin by examining the <code v-pre>Employee.pcapng</code> file using Wireshark. Filtering the traffic by the HTTP protocol, we quickly identified a file named <code v-pre>csgo.exe</code> being downloaded.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/procnet/pcap-download-file.png" alt="PCAP File Download">
+    <img src="../../../../assets/images/writeups/procnet/pcap-download-file.png" alt="PCAP File Download" />
     <figcaption class="caption">PCAP File Download</figcaption>
 </figure>
 </p>
 <p>The download was completed around <code v-pre>7:22:22 UTC</code>. Following this, the malware attempted to establish a connection with a remote IP address (<code v-pre>3.6.165.8</code>) over port <code v-pre>443</code>, likely to secure its communications using TLS.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/procnet/pcap-malware-connect.png" alt="PCAP Malware Connect">
+    <img src="../../../../assets/images/writeups/procnet/pcap-malware-connect.png" alt="PCAP Malware Connect" />
     <figcaption class="caption">PCAP Malware Connect</figcaption>
 </figure>
 </p>
 <p>This type of communication is typical of C2 servers, where the malware contacts a command server to receive further instructions or to exfiltrate data. To further analyze the server, we extract the JA3 fingerprint from the TLS handshake.</p>
 <p>The JA3 fingerprint is a unique identifier generated from the client&#x27;s TLS configuration, which can be used to detect malicious activity even if the IP address changes.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/procnet/pcap-c2-ja3.png" alt="PCAP Malware C2 JA3">
+    <img src="../../../../assets/images/writeups/procnet/pcap-c2-ja3.png" alt="PCAP Malware C2 JA3" />
     <figcaption class="caption">PCAP Malware C2 JA3</figcaption>
 </figure>
 </p>
@@ -249,7 +249,7 @@
 </doc-anchor-target>
 <p>To determine the C2 framework being used, we can extract the <code v-pre>csgo.exe</code> binary from the packet capture by following the TCP stream of the HTTP request and exporting the payload. We will then upload this binary to <strong>VirusTotal</strong> for analysis.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/procnet/virustotal-sliver-beacon.png" alt="VirusTotal Sliver Detection">
+    <img src="../../../../assets/images/writeups/procnet/virustotal-sliver-beacon.png" alt="VirusTotal Sliver Detection" />
     <figcaption class="caption">VirusTotal Sliver Detection</figcaption>
 </figure>
 </p>
@@ -268,20 +268,20 @@
 </doc-anchor-target>
 <p>The next phase of the investigation involves examining the behavior of the <code v-pre>csgo.exe</code> malware on the infected system. Using <a href="http://www.rohitab.com/apimonitor">API Monitor</a>, we can track the API calls made by this process. Early in the execution, the malware retrieved the current working directory using the <code v-pre>GetCurrentDirectoryW</code> API call. Shortly afterward, it launched a new process named <code v-pre>notepad.exe</code>.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/procnet/apimonitor-notepad.png" alt="API Monitor Notepad executed">
+    <img src="../../../../assets/images/writeups/procnet/apimonitor-notepad.png" alt="API Monitor Notepad executed" />
     <figcaption class="caption">API Monitor Notepad executed</figcaption>
 </figure>
 </p>
 <p>Sliver typically spawns a sacrificial process (often notepad.exe) when using the execute-assembly command, injecting .NET assemblies into the process for execution.  This can be changed, but it seems like the defaults were utilized by the operators.</p>
 <p>Next, we observe the malware loading the <code v-pre>vaultcli.dll</code> module into the <code v-pre>notepad.exe</code> process. This library is used to interact with the Windows Credential Manager (often referred to as the Windows Vault), which stores and retrieves user credentials. By loading this DLL, the attacker aimed to enumerate and potentially extract sensitive credentials stored in the vault.
 <figure class="content-center">
-    <img src="../../../../assets/images/writeups/procnet/apimonitor-vault.png" alt="API Monitor Vault">
+    <img src="../../../../assets/images/writeups/procnet/apimonitor-vault.png" alt="API Monitor Vault" />
     <figcaption class="caption">API Monitor Vault</figcaption>
 </figure>
 </p>
 <p>The specific API call observed was <code v-pre>VaultEnumerateVaults</code>, which lists the available vaults on the system. This suggests the attacker was attempting to identify and access stored credentials, possibly to facilitate lateral movement within the network. Credential theft is a common goal in such attacks, as it allows threat actors to escalate privileges and gain access to additional systems.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/procnet/apimonitor-enumerate.png" alt="API Monitor Enumerating Domain Users">
+    <img src="../../../../assets/images/writeups/procnet/apimonitor-enumerate.png" alt="API Monitor Enumerating Domain Users" />
     <figcaption class="caption">API Monitor Enumerating Domain Users</figcaption>
 </figure>
 </p>
@@ -298,7 +298,7 @@
 </doc-anchor-target>
 <p>The investigation revealed that after gaining access to domain information, the attacker used WMI (Windows Management Instrumentation) to download another Sliver beacon, named <code v-pre>fifa24.exe</code>, to the Domain Controller (DC).</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/procnet/apimonitor-fifa-download.png" alt="API Monitor Fifa Download">
+    <img src="../../../../assets/images/writeups/procnet/apimonitor-fifa-download.png" alt="API Monitor Fifa Download" />
     <figcaption class="caption">API Monitor Fifa Download</figcaption>
 </figure>
 </p>
@@ -311,7 +311,7 @@
 </doc-anchor-target>
 <p>One of the most critical actions taken by the attacker was the extraction of the <code v-pre>NTDS.dit</code> file. This file contains a database of Active Directory (AD) data, including password hashes for all domain users.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/procnet/apimonitor-dump.png" alt="API Monitor NTDS Dump">
+    <img src="../../../../assets/images/writeups/procnet/apimonitor-dump.png" alt="API Monitor NTDS Dump" />
     <figcaption class="caption">API Monitor NTDS Dump</figcaption>
 </figure>
 </p>
@@ -349,13 +349,13 @@
                             </footer>
                         </main>
                 
-                        <div class="border-t dark:border-dark-650 pt-6 mb-8">
-                            <footer class="flex flex-wrap items-center justify-between">
-                                <div>
+                        <div class="print:border-none border-t dark:border-dark-650 pt-6 mb-8">
+                            <footer class="flex flex-wrap items-center justify-between print:justify-center">
+                                <div class="print:hidden">
                                     <ul class="flex flex-wrap items-center text-sm">
                                     </ul>
                                 </div>
-                                <div class="docs-copyright py-2 text-gray-500 dark:text-dark-350 text-sm leading-relaxed"><p>© Copyright 2025. All rights reserved.</p></div>
+                                <div class="print:justify-center docs-copyright py-2 text-gray-500 dark:text-dark-350 text-sm leading-relaxed"><p>© Copyright 2025. All rights reserved.</p></div>
                             </footer>
                         </div>
                     </div>
