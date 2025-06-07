@@ -1,0 +1,4 @@
+---
+icon: trophy
+#expanded: true
+---

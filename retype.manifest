@@ -1,0 +1,552 @@
+{
+  "version": "3.7.0",
+  "created": "2025-06-07T19:04:28Z",
+  "files": [
+    {
+      "path": ".nojekyll"
+    },
+    {
+      "path": "404.html"
+    },
+    {
+      "path": "about/index.html"
+    },
+    {
+      "path": "assets/images/binary-exploitation/ghidra.png"
+    },
+    {
+      "path": "assets/images/bio-photo.jpg"
+    },
+    {
+      "path": "assets/images/headers/ad-banner.jpg"
+    },
+    {
+      "path": "assets/images/headers/administrator.png"
+    },
+    {
+      "path": "assets/images/headers/blazorized.png"
+    },
+    {
+      "path": "assets/images/headers/checker.png"
+    },
+    {
+      "path": "assets/images/headers/htb-ctf-2023.jpg"
+    },
+    {
+      "path": "assets/images/headers/htboo-ctf-2023.jpg"
+    },
+    {
+      "path": "assets/images/headers/jeeves.png"
+    },
+    {
+      "path": "assets/images/headers/jwt.png"
+    },
+    {
+      "path": "assets/images/headers/lake-ctf.png"
+    },
+    {
+      "path": "assets/images/headers/office.png"
+    },
+    {
+      "path": "assets/images/headers/procnet.png"
+    },
+    {
+      "path": "assets/images/headers/ransomware.png"
+    },
+    {
+      "path": "assets/images/headers/sliver-purple.jpg"
+    },
+    {
+      "path": "assets/images/headers/vintage.png"
+    },
+    {
+      "path": "assets/images/headers/yummy.png"
+    },
+    {
+      "path": "assets/images/homelab/ad-attack-1.png"
+    },
+    {
+      "path": "assets/images/homelab/ad-attack-2.png"
+    },
+    {
+      "path": "assets/images/homelab/almalinux-container-setup-config.png"
+    },
+    {
+      "path": "assets/images/homelab/almalinux-container-setup.png"
+    },
+    {
+      "path": "assets/images/homelab/dc-setup-2.png"
+    },
+    {
+      "path": "assets/images/homelab/dc-setup-3.png"
+    },
+    {
+      "path": "assets/images/homelab/dc-setup-4.png"
+    },
+    {
+      "path": "assets/images/homelab/dc-setup-5.png"
+    },
+    {
+      "path": "assets/images/homelab/dc-setup-6.png"
+    },
+    {
+      "path": "assets/images/homelab/dc-setup-ad-services.gif"
+    },
+    {
+      "path": "assets/images/homelab/dc-setup.png"
+    },
+    {
+      "path": "assets/images/homelab/pam-auth-update.png"
+    },
+    {
+      "path": "assets/images/homelab/pfsense-ad.png"
+    },
+    {
+      "path": "assets/images/homelab/pfsense-capture-asrep.png"
+    },
+    {
+      "path": "assets/images/homelab/pfsense-capture-winrm.png"
+    },
+    {
+      "path": "assets/images/homelab/pfsense-cyber.png"
+    },
+    {
+      "path": "assets/images/homelab/pfsense-lan.png"
+    },
+    {
+      "path": "assets/images/homelab/pfsense-suricata-alert.png"
+    },
+    {
+      "path": "assets/images/homelab/pfsense-suricata-alert2.png"
+    },
+    {
+      "path": "assets/images/homelab/pfsense-suricata-interfaces.png"
+    },
+    {
+      "path": "assets/images/homelab/pfsense-suricata-lxc-link.png"
+    },
+    {
+      "path": "assets/images/homelab/pfsense-suricata-lxc-net.png"
+    },
+    {
+      "path": "assets/images/homelab/pfsense-suricata-rules.png"
+    },
+    {
+      "path": "assets/images/homelab/pfsense.png"
+    },
+    {
+      "path": "assets/images/homelab/proxmox-homelab.png"
+    },
+    {
+      "path": "assets/images/homelab/proxmox-homelab.svg"
+    },
+    {
+      "path": "assets/images/homelab/proxmox-login.png"
+    },
+    {
+      "path": "assets/images/homelab/proxmox-network.png"
+    },
+    {
+      "path": "assets/images/homelab/vuln-setup-1.png"
+    },
+    {
+      "path": "assets/images/homelab/vuln-setup-10.png"
+    },
+    {
+      "path": "assets/images/homelab/vuln-setup-2.png"
+    },
+    {
+      "path": "assets/images/homelab/vuln-setup-3.png"
+    },
+    {
+      "path": "assets/images/homelab/vuln-setup-4.png"
+    },
+    {
+      "path": "assets/images/homelab/vuln-setup-5.png"
+    },
+    {
+      "path": "assets/images/homelab/vuln-setup-6.png"
+    },
+    {
+      "path": "assets/images/homelab/vuln-setup-7.0.png"
+    },
+    {
+      "path": "assets/images/homelab/vuln-setup-7.1.png"
+    },
+    {
+      "path": "assets/images/homelab/vuln-setup-7.png"
+    },
+    {
+      "path": "assets/images/homelab/vuln-setup-8.1.png"
+    },
+    {
+      "path": "assets/images/homelab/vuln-setup-8.png"
+    },
+    {
+      "path": "assets/images/homelab/vuln-setup-9.png"
+    },
+    {
+      "path": "assets/images/maldev/dinvoke-loader-1.png"
+    },
+    {
+      "path": "assets/images/maldev/dinvoke-loader-2.png"
+    },
+    {
+      "path": "assets/images/maldev/filelesspeloader-1.png"
+    },
+    {
+      "path": "assets/images/maldev/filelesspeloader-2.png"
+    },
+    {
+      "path": "assets/images/maldev/loader-aeskey-recipe.png"
+    },
+    {
+      "path": "assets/images/maldev/loader-base64.png"
+    },
+    {
+      "path": "assets/images/maldev/sliver-execution.png"
+    },
+    {
+      "path": "assets/images/maldev/sliver-filelesspeloader.png"
+    },
+    {
+      "path": "assets/images/maldev/sliver-privesc.png"
+    },
+    {
+      "path": "assets/images/maldev/sliver-session.png"
+    },
+    {
+      "path": "assets/images/maldev/sliver-setup.png"
+    },
+    {
+      "path": "assets/images/maldev/sliver-setup1.png"
+    },
+    {
+      "path": "assets/images/maldev/sliver-stager-setup.png"
+    },
+    {
+      "path": "assets/images/maldev/sliverloader.png"
+    },
+    {
+      "path": "assets/images/maldev/stager-diagram.png"
+    },
+    {
+      "path": "assets/images/web-exploitation/ffuf-scan.png"
+    },
+    {
+      "path": "assets/images/web-exploitation/metabase-login.png"
+    },
+    {
+      "path": "assets/images/web-exploitation/umbrella-qr-code.png"
+    },
+    {
+      "path": "assets/images/writeups/administrator/bh-dcsync.png"
+    },
+    {
+      "path": "assets/images/writeups/administrator/bh-path.png"
+    },
+    {
+      "path": "assets/images/writeups/administrator/pwsafe-emily.png"
+    },
+    {
+      "path": "assets/images/writeups/administrator/pwsafe.png"
+    },
+    {
+      "path": "assets/images/writeups/blazorized/admin-panel.png"
+    },
+    {
+      "path": "assets/images/writeups/blazorized/blazor-dll-decompile.png"
+    },
+    {
+      "path": "assets/images/writeups/blazorized/bloodhound-nu.png"
+    },
+    {
+      "path": "assets/images/writeups/blazorized/bloodhound-ssa.png"
+    },
+    {
+      "path": "assets/images/writeups/blazorized/check-updates-api.png"
+    },
+    {
+      "path": "assets/images/writeups/blazorized/check-updates.png"
+    },
+    {
+      "path": "assets/images/writeups/blazorized/forged-jwt.png"
+    },
+    {
+      "path": "assets/images/writeups/blazorized/sqli-enable-shell.png"
+    },
+    {
+      "path": "assets/images/writeups/checker/bookstack-backups.png"
+    },
+    {
+      "path": "assets/images/writeups/checker/bookstack.png"
+    },
+    {
+      "path": "assets/images/writeups/checker/burp-oracle-changes.png"
+    },
+    {
+      "path": "assets/images/writeups/checker/burp-oracle-right.png"
+    },
+    {
+      "path": "assets/images/writeups/checker/burp-oracle-wrong.png"
+    },
+    {
+      "path": "assets/images/writeups/checker/teampass.png"
+    },
+    {
+      "path": "assets/images/writeups/checker/teampass1.png"
+    },
+    {
+      "path": "assets/images/writeups/checker/totp-gen.png"
+    },
+    {
+      "path": "assets/images/writeups/formulax/chatbot-help.png"
+    },
+    {
+      "path": "assets/images/writeups/formulax/website-contact.png"
+    },
+    {
+      "path": "assets/images/writeups/formulax/website-login.png"
+    },
+    {
+      "path": "assets/images/writeups/formulax/website-register.png"
+    },
+    {
+      "path": "assets/images/writeups/office/joomla-rce.png"
+    },
+    {
+      "path": "assets/images/writeups/office/joomla-version.png"
+    },
+    {
+      "path": "assets/images/writeups/office/kerberos-preauth-format.png"
+    },
+    {
+      "path": "assets/images/writeups/office/pcap-kerberos-req.png"
+    },
+    {
+      "path": "assets/images/writeups/office/pcap-kerberos.png"
+    },
+    {
+      "path": "assets/images/writeups/office/resume-upload.png"
+    },
+    {
+      "path": "assets/images/writeups/procnet/apimonitor-dump.png"
+    },
+    {
+      "path": "assets/images/writeups/procnet/apimonitor-enumerate.png"
+    },
+    {
+      "path": "assets/images/writeups/procnet/apimonitor-fifa-download.png"
+    },
+    {
+      "path": "assets/images/writeups/procnet/apimonitor-notepad.png"
+    },
+    {
+      "path": "assets/images/writeups/procnet/apimonitor-vault.png"
+    },
+    {
+      "path": "assets/images/writeups/procnet/pcap-c2-ja3.png"
+    },
+    {
+      "path": "assets/images/writeups/procnet/pcap-download-file.png"
+    },
+    {
+      "path": "assets/images/writeups/procnet/pcap-malware-connect.png"
+    },
+    {
+      "path": "assets/images/writeups/procnet/virustotal-sliver-beacon.png"
+    },
+    {
+      "path": "assets/images/writeups/vintage/bh-fs01-member.png"
+    },
+    {
+      "path": "assets/images/writeups/vintage/bh-fs01.png"
+    },
+    {
+      "path": "assets/images/writeups/vintage/bh-neri-delegate.png"
+    },
+    {
+      "path": "assets/images/writeups/vintage/bh-servicemanagers.png"
+    },
+    {
+      "path": "assets/images/writeups/vintage/bh-sql-delegate.png"
+    },
+    {
+      "path": "assets/images/writeups/yummy/backup.png"
+    },
+    {
+      "path": "assets/images/writeups/yummy/booking.png"
+    },
+    {
+      "path": "assets/images/writeups/yummy/lfi.png"
+    },
+    {
+      "path": "assets/images/writeups/yummy/save-icalendar.png"
+    },
+    {
+      "path": "assets/images/writeups/yummy/sqli.png"
+    },
+    {
+      "path": "blog/feed.xml"
+    },
+    {
+      "path": "blog/index.html"
+    },
+    {
+      "path": "blog/jwt-attacks/index.html"
+    },
+    {
+      "path": "blog/proxmox-homelab-part1/index.html"
+    },
+    {
+      "path": "blog/proxmox-homelab-part2/index.html"
+    },
+    {
+      "path": "blog/proxmox-homelab-part3/index.html"
+    },
+    {
+      "path": "blog/proxmox-homelab-part4/index.html"
+    },
+    {
+      "path": "blog/proxmox-homelab-part5/index.html"
+    },
+    {
+      "path": "blog/sliver-evasion/index.html"
+    },
+    {
+      "path": "blog/web-fuzzing-with-ffuf/index.html"
+    },
+    {
+      "path": "categories/active-directory/index.html"
+    },
+    {
+      "path": "categories/binary-exploitation/index.html"
+    },
+    {
+      "path": "categories/ctf/index.html"
+    },
+    {
+      "path": "categories/dfir/index.html"
+    },
+    {
+      "path": "categories/hackthebox/index.html"
+    },
+    {
+      "path": "categories/homelab/index.html"
+    },
+    {
+      "path": "categories/index.html"
+    },
+    {
+      "path": "categories/linux/index.html"
+    },
+    {
+      "path": "categories/maldev/index.html"
+    },
+    {
+      "path": "categories/web-exploitation/index.html"
+    },
+    {
+      "path": "categories/windows/index.html"
+    },
+    {
+      "path": "index.html"
+    },
+    {
+      "path": "resources/css/retype.css"
+    },
+    {
+      "path": "resources/fonts/Inter-italic-latin-var.woff2"
+    },
+    {
+      "path": "resources/fonts/Inter-roman-latin-var.woff2"
+    },
+    {
+      "path": "resources/js/config.js"
+    },
+    {
+      "path": "resources/js/lunr.js"
+    },
+    {
+      "path": "resources/js/prism.js"
+    },
+    {
+      "path": "resources/js/retype.js"
+    },
+    {
+      "path": "resources/js/search.json"
+    },
+    {
+      "path": "resources/lunr.js.LICENSE.txt"
+    },
+    {
+      "path": "resources/mermaid.js.LICENSE.txt"
+    },
+    {
+      "path": "resources/prism.js.LICENSE.txt"
+    },
+    {
+      "path": "resources/retype.js.LICENSE.txt"
+    },
+    {
+      "path": "resources/retype.LICENSE.txt"
+    },
+    {
+      "path": "robots.txt"
+    },
+    {
+      "path": "sitemap.xml.gz"
+    },
+    {
+      "path": "writeups/ctf/cscbe-bad-ransomware/index.html"
+    },
+    {
+      "path": "writeups/ctf/htb-university-ctf-23/index.html"
+    },
+    {
+      "path": "writeups/ctf/htboo-forensics-reversing/index.html"
+    },
+    {
+      "path": "writeups/ctf/index.html"
+    },
+    {
+      "path": "writeups/ctf/lake-ctf-scream-into-the-abyss/index.html"
+    },
+    {
+      "path": "writeups/hackthebox/challenges/htb-jeeves-writeup/index.html"
+    },
+    {
+      "path": "writeups/hackthebox/challenges/index.html"
+    },
+    {
+      "path": "writeups/hackthebox/index.html"
+    },
+    {
+      "path": "writeups/hackthebox/machines/administrator/index.html"
+    },
+    {
+      "path": "writeups/hackthebox/machines/blazorized/index.html"
+    },
+    {
+      "path": "writeups/hackthebox/machines/checker/index.html"
+    },
+    {
+      "path": "writeups/hackthebox/machines/index.html"
+    },
+    {
+      "path": "writeups/hackthebox/machines/office/index.html"
+    },
+    {
+      "path": "writeups/hackthebox/machines/vintage/index.html"
+    },
+    {
+      "path": "writeups/hackthebox/machines/yummy/index.html"
+    },
+    {
+      "path": "writeups/hackthebox/sherlocks/procnet/index.html"
+    },
+    {
+      "path": "writeups/index.html"
+    }
+  ]
+}

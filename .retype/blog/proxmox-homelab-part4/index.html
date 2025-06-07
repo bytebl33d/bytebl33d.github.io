@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.802638266418">
+
+    <!-- See retype.com -->
+    <meta name="generator" content="Retype 3.7.0">
+
+    <!-- Primary Meta Tags -->
+    <title>Active Directory Home Lab with Proxmox - Part 4</title>
+    <meta name="title" content="Active Directory Home Lab with Proxmox - Part 4">
+    <meta name="description" content="In this part of our Active Directory Home Lab series, we'll focus on enhancing the security and visibility of our environment by adding network...">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://bytebl33d.github.io/blog/proxmox-homelab-part4/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bytebl33d.github.io/blog/proxmox-homelab-part4/">
+    <meta property="og:title" content="Active Directory Home Lab with Proxmox - Part 4">
+    <meta property="og:description" content="In this part of our Active Directory Home Lab series, we'll focus on enhancing the security and visibility of our environment by adding network...">
+    <meta property="og:image" content="https://bytebl33d.github.io/assets/images/headers/ad-banner.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://bytebl33d.github.io/blog/proxmox-homelab-part4/">
+    <meta property="twitter:title" content="Active Directory Home Lab with Proxmox - Part 4">
+    <meta property="twitter:description" content="In this part of our Active Directory Home Lab series, we'll focus on enhancing the security and visibility of our environment by adding network...">
+    <meta property="twitter:image" content="https://bytebl33d.github.io/assets/images/headers/ad-banner.jpg">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="Blog >> Feed" href="https://bytebl33d.github.io/blog/feed.xml">
+
+    <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
+
+    <link href="../../resources/css/retype.css?v=3.7.0.802638266418" rel="stylesheet">
+
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.7.0.802638266418" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/retype.js?v=3.7.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.7.0.802638266418" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.7.0.802638266418" defer></script>
+</head>
+<body>
+    <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
+        <header id="docs-site-header" class="sticky top-0 z-30 flex w-full h-16 bg-white border-b border-gray-200 md:h-20 dark:bg-dark-850 dark:border-dark-650">
+            <div class="container relative flex items-center justify-between pr-6 grow md:justify-start">
+                <!-- Mobile menu button skeleton -->
+                <button v-cloak class="skeleton docs-mobile-menu-button flex items-center justify-center shrink-0 overflow-hidden dark:text-white focus:outline-none rounded-full w-10 h-10 ml-3.5 md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mb-px shrink-0" width="24" height="24" viewBox="0 0 24 24" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor"><path d="M2 4h20v2H2zM2 11h20v2H2zM2 18h20v2H2z"></path></g></svg></button>
+                <div v-cloak id="docs-sidebar-toggle"></div>
+        
+                <!-- Logo -->
+                <div class="flex items-center justify-between h-full py-2 md:w-75">
+                    <div class="flex items-center px-2 md:px-6">
+                        <a id="docs-site-logo" href="../../" class="flex items-center leading-snug text-2xl">
+                            <span class="dark:text-white font-semibold line-clamp-1 md:line-clamp-2">bytebl33d</span>
+                        </a><span class="hidden px-2 py-1 ml-4 text-sm font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-sm md:inline-block">Blog</span>
+                    </div>
+        
+                    <span class="hidden h-8 border-r md:inline-block dark:border-dark-650"></span>
+                </div>
+        
+                <div class="flex justify-between md:grow">
+                    <!-- Top Nav -->
+                    <nav class="hidden md:flex">
+                        <ul class="flex flex-col mb-4 md:pl-16 md:mb-0 md:flex-row md:items-center">
+                            <li class="mr-6">
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="../../blog/">Posts</a>
+                            </li>
+                            <li class="mr-6">
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="https://github.com/bytebl33d">GitHub</a>
+                            </li>
+        
+                        </ul>
+                    </nav>
+        
+                    <!-- Header Right Skeleton -->
+                    <div v-cloak class="flex justify-end grow skeleton">
+        
+                        <!-- Search input mock -->
+                        <div class="relative hidden w-40 lg:block lg:max-w-sm lg:ml-auto">
+                            <div class="absolute flex items-center justify-center h-full pl-3 dark:text-dark-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-base" width="16" height="16" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 1px;"><g fill="currentColor" ><path d="M21.71 20.29l-3.68-3.68A8.963 8.963 0 0020 11c0-4.96-4.04-9-9-9s-9 4.04-9 9 4.04 9 9 9c2.12 0 4.07-.74 5.61-1.97l3.68 3.68c.2.19.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.03 0-1.42zM4 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 1.92-.78 3.66-2.04 4.93-.01.01-.02.01-.02.01-.01.01-.01.01-.01.02A6.98 6.98 0 0111 18c-3.86 0-7-3.14-7-7z" ></path></g></svg>
+                            </div>
+                            <input class="w-full h-10 placeholder-gray-400 transition-colors duration-200 ease-in bg-gray-200 border border-transparent rounded md:text-sm hover:bg-white hover:border-gray-300 focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-dark-600 dark:border-dark-600 dark:placeholder-dark-400" style="padding: 0.625rem 0.75rem 0.625rem 2rem" type="text" placeholder="Search">
+                        </div>
+        
+                        <!-- Mobile search button -->
+                        <div class="flex items-center justify-center w-10 h-10 lg:hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 icon-base" width="20" height="20" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor" ><path d="M21.71 20.29l-3.68-3.68A8.963 8.963 0 0020 11c0-4.96-4.04-9-9-9s-9 4.04-9 9 4.04 9 9 9c2.12 0 4.07-.74 5.61-1.97l3.68 3.68c.2.19.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.03 0-1.42zM4 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 1.92-.78 3.66-2.04 4.93-.01.01-.02.01-.02.01-.01.01-.01.01-.01.02A6.98 6.98 0 0111 18c-3.86 0-7-3.14-7-7z" ></path></g></svg>
+                        </div>
+        
+                        <!-- Dark mode switch placeholder -->
+                        <div class="w-10 h-10 lg:ml-2"></div>
+        
+                        <!-- History button -->
+                        <div class="flex items-center justify-center w-10 h-10" style="margin-right: -0.625rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 icon-base" width="22" height="22" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor" ><g ><path d="M12.01 6.01c-.55 0-1 .45-1 1V12a1 1 0 00.4.8l3 2.22a.985.985 0 001.39-.2.996.996 0 00-.21-1.4l-2.6-1.92V7.01c.02-.55-.43-1-.98-1z"></path><path d="M12.01 1.91c-5.33 0-9.69 4.16-10.05 9.4l-.29-.26a.997.997 0 10-1.34 1.48l1.97 1.79c.19.17.43.26.67.26s.48-.09.67-.26l1.97-1.79a.997.997 0 10-1.34-1.48l-.31.28c.34-4.14 3.82-7.41 8.05-7.41 4.46 0 8.08 3.63 8.08 8.09s-3.63 8.08-8.08 8.08c-2.18 0-4.22-.85-5.75-2.4a.996.996 0 10-1.42 1.4 10.02 10.02 0 007.17 2.99c5.56 0 10.08-4.52 10.08-10.08.01-5.56-4.52-10.09-10.08-10.09z"></path></g></g></svg>
+                        </div>
+                    </div>
+        
+                    <div v-cloak class="flex justify-end grow">
+                        <div id="docs-mobile-search-button"></div>
+                        <doc-search-desktop></doc-search-desktop>
+        
+                        <doc-theme-switch class="lg:ml-2"></doc-theme-switch>
+                        <doc-history></doc-history>
+                    </div>
+                </div>
+            </div>
+        </header>
+    
+        <div class="relative flex mx-auto bg-white max-w-core">
+            <div class="md:hidden">
+                <!-- Sidebar Skeleton -->
+                <div v-cloak class="fixed flex flex-col shrink-0 duration-300 ease-in-out bg-gray-100 border-gray-200 sidebar top-20 w-75 border-r h-screen md:sticky transition-transform skeleton dark:bg-dark-800 dark:border-dark-650">
+                
+                    <div class="flex items-center h-16 px-6">
+                        <input class="w-full h-8 px-3 py-2 transition-colors duration-200 ease-linear bg-white border border-gray-200 rounded shadow-none text-sm focus:outline-none focus:border-gray-600 dark:bg-dark-600 dark:border-dark-600" type="text" placeholder="Filter">
+                    </div>
+                
+                    <div class="pl-6 mt-1 mb-4">
+                        <div class="w-32 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                        <div class="w-48 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                        <div class="w-40 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                        <div class="w-32 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                        <div class="w-48 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                        <div class="w-40 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    </div>
+                
+                    <div class="shrink-0 mt-auto bg-transparent dark:border-dark-650">
+                        <a class="flex items-center justify-center flex-nowrap h-16 text-gray-400 dark:text-dark-400 hover:text-gray-700 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                            <span class="text-xs whitespace-nowrap">Powered by</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Sidebar component -->
+                <doc-sidebar v-cloak>
+                    <template #sidebar-footer>
+                        <div class="shrink-0 mt-auto border-t md:bg-transparent md:border-none dark:border-dark-650">
+                
+                            <div class="py-3 px-6 md:hidden border-b dark:border-dark-650">
+                                <nav>
+                                    <ul class="flex flex-wrap justify-center items-center">
+                                        <li class="mr-6">
+                                            <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="../../blog/">Posts</a>
+                                        </li>
+                                        <li class="mr-6">
+                                            <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="https://github.com/bytebl33d">GitHub</a>
+                                        </li>
+                
+                                    </ul>
+                                </nav>
+                            </div>
+                
+                            <a class="flex items-center justify-center flex-nowrap h-16 text-gray-400 dark:text-dark-400 hover:text-gray-700 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                                <span class="text-xs whitespace-nowrap">Powered by</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                            </a>
+                        </div>
+                    </template>
+                </doc-sidebar>
+            </div>
+    
+            <div class="grow min-w-0 dark:bg-dark-850">
+                <!-- Render page content -->
+                <div class="grow min-w-0 px-6">
+                    <main class="relative pt-6 pb-16">
+                        <div class="docs-markdown" id="docs-content">
+                            <!-- Rendered if sidebar right is enabled -->
+                            <div id="docs-sidebar-right-toggle"></div>
+                            <!-- Page content  -->
+<doc-anchor-target id="active-directory-home-lab-with-proxmox---part-4" class="break-words">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#active-directory-home-lab-with-proxmox---part-4">#</doc-anchor-trigger>
+        <span>Active Directory Home Lab with Proxmox - Part 4</span>
+    </h1>
+</doc-anchor-target>
+<div class="-mt-3 mb-12 flex flex-wrap text-sm text-gray-400 dark:text-dark-350 items-center">
+    <div>In&nbsp;</div>
+    <div><a href="../../categories/active-directory/">Active-Directory</a>,&nbsp;</div>
+    <div><a href="../../categories/homelab/">Homelab</a></div>
+    <div class="mx-2">&#9679;</div>
+    <div class="flex items-center shrink-0">Published&nbsp;<span>2024-09-03</span></div>
+</div>
+
+<p><figure class="content-center">
+    <img src="../../assets/images/headers/ad-banner.jpg" alt="">
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>In this part of our Active Directory Home Lab series, we&#x27;ll focus on enhancing the security and visibility of our environment by adding network monitoring. Since we&#x27;re utilizing PfSense as our software-based firewall, it provides a convenient platform for deploying additional security tools. Specifically, we&#x27;ll be setting up Suricata, a powerful intrusion detection and prevention system (IDS/IPS), to monitor traffic and detect potential threats. This post will guide you through configuring Suricata and creating custom rules to detect attacks, such as those we simulated in Part 3.</p>
+<doc-anchor-target id="suricata-setup">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#suricata-setup">#</doc-anchor-trigger>
+        <span>Suricata Setup</span>
+    </h2>
+</doc-anchor-target>
+<p>To begin, navigate to the PfSense web interface and proceed to <code v-pre>System &gt; Package Manager &gt; Available Packages</code>. Search for Suricata and install the latest version. Once installed, go to <code v-pre>Services &gt; Suricata</code> to start configuring the tool. We’ll add interfaces and tweak some options, but the default settings should suffice for most purposes. For our ruleset, we&#x27;ll use the ETOpen Emerging Threats as a foundation.</p>
+<doc-anchor-target id="adding-monitoring-interfaces">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#adding-monitoring-interfaces">#</doc-anchor-trigger>
+        <span>Adding Monitoring Interfaces</span>
+    </h3>
+</doc-anchor-target>
+<p>Under the Interfaces tab, select the interfaces that Suricata will monitor. For our lab, I chose the <code v-pre>LAN</code> and <code v-pre>ADLAB</code> interfaces to observe traffic between the attacking VM on the LAN and the AD network.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/homelab/pfsense-suricata-interfaces.png" alt="PfSense-suricata-interfaces">
+    <figcaption class="caption">PfSense-suricata-interfaces</figcaption>
+</figure>
+</p>
+<doc-anchor-target id="creating-custom-detection-rules">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#creating-custom-detection-rules">#</doc-anchor-trigger>
+        <span>Creating Custom Detection Rules</span>
+    </h3>
+</doc-anchor-target>
+<p>Next, let&#x27;s create custom rules tailored to our lab environment. We’ll do this by editing one of the interfaces and navigating to the rules tab.</p>
+<doc-anchor-target id="detecting-evil-winrm-traffic">
+    <h4>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#detecting-evil-winrm-traffic">#</doc-anchor-trigger>
+        <span>Detecting Evil-WinRM Traffic</span>
+    </h4>
+</doc-anchor-target>
+<p>Our first custom rule will detect Evil-WinRM traffic, which is often used for remote management in penetration testing scenarios. For more information on setting up Remote Management on your target hosts, refer to Part 3 of this series.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/homelab/pfsense-suricata-rules.png" alt="PfSense-suricata-rules">
+    <figcaption class="caption">PfSense-suricata-rules</figcaption>
+</figure>
+</p>
+<p>To build this rule, we need to understand how an authentication request from Evil-WinRM appears in network traffic. Using WireShark, we can capture an authentication attempt from a host on the LAN interface. We run the following command in a Linux terminal:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ evil-winrm -i 172.16.0.17 -u 'cicada.local\winnie.wonder' -p 'P@ssw0rd123'</code></pre>
+</doc-codeblock></div>
+<p>To capture this traffic in PfSense, go to <code v-pre>Diagnostics &gt; Packet Capture</code> and select the appropriate interface.</p>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+            <h5>Tip</h5>
+<p>Ensure you target the domain-joined host from a machine outside of the LAN to properly capture traffic. If you capture traffic from devices within the same LAN, PfSense may not log the packets unless you create a port mirror. At the final section, I will discuss how to setup a SPAN port and route traffic to another machine to monitor traffic.</p>
+        </div>
+    </div>
+</div>
+<p>In WireShark, we can focus on the packet containing the authentication request.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/homelab/pfsense-capture-winrm.png" alt="PfSense-capture-winrm">
+    <figcaption class="caption">PfSense-capture-winrm</figcaption>
+</figure>
+</p>
+<p>The captured packet shows the authentication request from <code v-pre>winnie.wonder</code>. Based on this, we can now craft our Suricata rule:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">alert http any any -&gt; any 5985 (msg: &quot;Connection via Evil-WinRM Detected&quot;; flow:established,to_server; http.method; content:&quot;POST&quot;; http.header; content:&quot;User-Agent: Ruby WinRM Client&quot;; content:&quot;Authorization: &quot;; base64_decode:bytes 13,offset 10,relative; base64_data; content:&quot;NTLMSSP&quot;; content:&quot;|03|&quot;; classtype:bad-unknown; sid:9990001; rev:1;)</code></pre>
+</doc-codeblock></div>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1 rounded-tl rounded-bl bg-blue-300"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p><strong>Snort</strong> is a similar IDS/IPS solution that can be installed on PfSense, but has slightly different syntax.</p>
+        </div>
+    </div>
+</div>
+<p>Explanation:</p>
+<ul>
+<li>The rule targets HTTP traffic performing a POST request on port 5985.</li>
+<li>It looks for the <code v-pre>Ruby WinRM Client</code> string in the User-Agent header, a unique identifier for Evil-WinRM.</li>
+<li>The rule then examines the Authorization header, decoding a portion of the Base64 encoded data to detect the NTLMSSP authentication type.</li>
+</ul>
+<p>With this rule in place, Suricata will trigger an alert whenever someone tries to authenticate using Evil-WinRM using the default settings. We could tune this rule even further, or write additional rules that alert on traffic even if the attacker changes the User-Agent.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/homelab/pfsense-suricata-alert.png" alt="PfSense-suricata-alert">
+    <figcaption class="caption">PfSense-suricata-alert</figcaption>
+</figure>
+</p>
+<doc-anchor-target id="detecting-smb-authentication">
+    <h4>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#detecting-smb-authentication">#</doc-anchor-trigger>
+        <span>Detecting SMB Authentication</span>
+    </h4>
+</doc-anchor-target>
+<p>Similarly, we can create a custom rule to detect SMB authentication attempts within the <code v-pre>CICADA</code> domain. The below rule looks for the SMB header with the NTLMSSP authentication type set to <code v-pre>03</code> and the domain name in hex format, separated by null bytes.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">alert smb any any -&gt; any 445 (msg: &quot;SMB Authentication&quot;;flow:established,to_server; content:&quot;|FE|SMB&quot;;content:&quot;NTLMSSP&quot;; content:&quot;|03|&quot;;distance: 1; content:&quot;|63 00 69 00 63 00 61 00 64 00 61|&quot;; sid:9990002; rev:1;)</code></pre>
+</doc-codeblock></div>
+<p>This rule was applied to the ADLAB interface. To test it, I used <code v-pre>NetExec</code> to initiate an SMB authentication from outside the ADLAB interface:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ nxc smb 172.16.200.100 -u 'winnie.wonder' -p 'P@ssw0rd123' -d 'cicada.local'</code></pre>
+</doc-codeblock></div>
+<p>As expected, Suricata raised an alert upon detecting the authentication:
+<figure class="content-center">
+    <img src="../../assets/images/homelab/pfsense-suricata-alert2.png" alt="PfSense-suricata-alert2">
+    <figcaption class="caption">PfSense-suricata-alert2</figcaption>
+</figure>
+</p>
+<doc-anchor-target id="detecting-as-reproasting">
+    <h4>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#detecting-as-reproasting">#</doc-anchor-trigger>
+        <span>Detecting AS-REPRoasting</span>
+    </h4>
+</doc-anchor-target>
+<p>In the third part of our series, we executed the following command to perform an ASREPRoasting attack on domain users:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ GetNPUsers.py CICADA.LOCAL/ -dc-ip 172.16.200.100 -no-pass -usersfile valid_users -format hashcat</code></pre>
+</doc-codeblock></div>
+<p>Now, let’s examine what this traffic looks like in WireShark
+<figure class="content-center">
+    <img src="../../assets/images/homelab/pfsense-capture-asrep.png" alt="PfSense-capture-asrep">
+    <figcaption class="caption">PfSense-capture-asrep</figcaption>
+</figure>
+</p>
+<p>In this scenario, we identified one user with preauthentication disabled. By analyzing the <code v-pre>AS-REQ</code> packet, we can craft a Suricata rule to detect this type of attack:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">alert tcp any any -&gt; any 88 (msg:&quot;Possible AS-REP Roasting Attack&quot;; flow: to_server, stateless; content:&quot;|a0 07 03 05 00 50 80 00 00 a1|&quot;; content:&quot;|6b 72 62 74 67 74|&quot;; fast_pattern; content:!&quot;|a2 03 02 01 0c|&quot;; sid:9990003; rev:1;)</code></pre>
+</doc-codeblock></div>
+<p>Rule Breakdown:</p>
+<ul>
+<li>The rule monitors TCP traffic on port 88, which is used by Kerberos.</li>
+<li>It looks for a specific sequence of bytes that indicate the presence of an AS-REQ request.</li>
+<li>The string krbtgt (represented as <code v-pre>6b 72 62 74 67 74</code> in hexadecimal) is a key identifier within the packet.</li>
+<li>We also check for the absence of the byte sequence <code v-pre>a2 03 02 01 0c</code>, which indicates the presence of preauthentication. The lack of this sequence suggests the possibility of an AS-REP Roasting attack.</li>
+</ul>
+<p>By implementing this rule, Suricata will trigger an alert when it detects a pattern consistent with an ASREPRoast attack, helping to protect your domain from this common exploitation method.</p>
+<doc-anchor-target id="creating-span-ports-on-proxmox">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#creating-span-ports-on-proxmox">#</doc-anchor-trigger>
+        <span>Creating SPAN Ports on Proxmox</span>
+    </h2>
+</doc-anchor-target>
+<p>Start by creating a new LXC and assign at least 2 cores, 2GB of RAM and 25GB of storage. After creating the container, add another network interface for the ports you want to mirror. In my case I added interfaces <code v-pre>vmbr1</code> and <code v-pre>vmbr2</code>. The interface is going to send copies of packets of machines connected to the switch to the container. Make sure the firewall is unchecked for these interfaces.
+<figure class="content-center">
+    <img src="../../assets/images/homelab/pfsense-suricata-lxc-net.png" alt="Suricata LXC Net">
+    <figcaption class="caption">Suricata LXC Net</figcaption>
+</figure>
+</p>
+<p>Log in to the container and run the following commands.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ apt update &amp;&amp; apt upgrade -y
+$ ip a | grep @
+2: eth0@if95: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000
+3: mirrorInt@if96: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000
+4: mirrorAD@if97: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000</code></pre>
+</doc-codeblock></div>
+<p>If the interfaces are down, just run <code v-pre>ip link set &lt;INT_NAME&gt; up</code>. Next, open the shell on your Proxmox server, and run the command:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session"># ip link show | grep &lt;LXC_ID&gt;</code></pre>
+</doc-codeblock></div>
+<p>where the <code v-pre>&lt;LXC_ID&gt;</code> is the id of the Proxmox node where Suricata is running.
+<figure class="content-center">
+    <img src="../../assets/images/homelab/pfsense-suricata-lxc-link.png" alt="Suricata Proxmox link">
+    <figcaption class="caption">Suricata Proxmox link</figcaption>
+</figure>
+</p>
+<p>The first result is the interface that is connected to my home network, the last two are going to be the SPAN ports. Now we run the following command in the Proxmox shell to create the SPAN ports on the switch:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session"># ovs-vsctl \
+  -- --id=@veth101i1 get Port tap101i1 \
+  -- --id=@101m1 create mirror name=mirrorInt \
+  select-all=true output-port=@veth101i1 \
+  -- set Bridge vmbr1 mirrors=@101m1
+# ovs-vsctl \
+  -- --id=@veth101i2 get Port veth101i2 \
+  -- --id=@101m2 create mirror name=mirrorAD \
+  select-all=true output-port=@veth101i2 \
+  -- set Bridge vmbr2 mirrors=@101m2</code></pre>
+</doc-codeblock></div>
+<p>Replace the link names, ids and bridge name according to your setup.
+Next we need to edit the configuration file of Suricata located at <code v-pre>/etc/suricata/suricata.yaml</code>:</p>
+<ol>
+<li>Add our IP ranges to the <code v-pre>HOME_NET</code> variable under <code v-pre>vars</code> to hold <code v-pre>[172.16.0.0/24,172.16.100.0/24]</code>.</li>
+<li>Change the interface under <code v-pre>af-packet</code> from <code v-pre>eth0</code> to the monitoring interface. I added both <code v-pre>mirrorInt</code> and <code v-pre>mirrorAD</code> as an interface and assigned it a <code v-pre>cluster-id</code> of 99 and 100 respectively.</li>
+<li>Change the default rule path under <code v-pre>default-rule-path</code> to <code v-pre>/etc/suricata/rules</code> and add another <code v-pre>rule-files</code> value for any local rules (e.g. <code v-pre>local.rules</code>).</li>
+<li>Create the custom rule file under <code v-pre>/etc/suricata/rules/local.rules</code>. Here we can place our custom rules we created earlier.</li>
+</ol>
+<p>Finally we can restart Suricata on the container and monitor the two added interfaces. Any alerts will be logged to <code v-pre>fast.log</code>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ systemctl enable suricata
+$ systemctl restart suricata
+$ suricata -i mirrorInt -i mirrorAD &amp;
+
+$ tail /var/log/suricata/fast.log</code></pre>
+</doc-codeblock></div>
+<p>After this, we should be able to capture all traffic coming from our network in pfSense (even same-LAN traffic). One issue we are having now is that the port mirror command needs to be ran each time the container is restarted. It is possible to create a hookscript for this. Check out <a href="https://codingpackets.com/blog/proxmox-vm-bridge-port-mirror/">this post</a> to create a custom script to run at VM start and stop. Since we created a LXC, it is (at the time of writing) not possible to create hookscripts for containers, but you can always create a hookscript on the pfSense VM that creates the SPAN ports at boot for the Suricata container.</p>
+<doc-anchor-target id="conclusion">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#conclusion">#</doc-anchor-trigger>
+        <span>Conclusion</span>
+    </h2>
+</doc-anchor-target>
+<p>In this part we have seen how we can leverage Suricata to detect malicious traffic on our network. We have also learned how we can write our own rules based on IOCs. By implementing these custom rules, you can enhance the security of your Active Directory lab environment, gaining visibility into specific attacks and unauthorized access attempts.</p>
+
+                            
+                            <!-- Required only on API pages -->
+                            <doc-toolbar-member-filter-no-results></doc-toolbar-member-filter-no-results>
+                        </div>
+                        <footer class="clear-both">
+                        
+                            <nav class="flex mt-14">
+                                <div class="w-1/2">
+                                    <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../blog/sliver-evasion/">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
+                                        <span>
+                                            <span class="block text-xs font-normal text-gray-400 dark:text-dark-400">Newer</span>
+                                            <span class="block mt-1">Anti-​Virus Evasion with Sliver C​2</span>
+                                        </span>
+                                    </a>
+                                </div>
+                        
+                                <div class="w-1/2">
+                                    <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../blog/proxmox-homelab-part3/">
+                                        <span>
+                                            <span class="block text-xs font-normal text-right text-gray-400 dark:text-dark-400">Older</span>
+                                            <span class="block mt-1">Active Directory Home Lab with Proxmox - Part 3</span>
+                                        </span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
+                                    </a>
+                                </div>
+                            </nav>
+                        </footer>
+                    </main>
+                </div>
+
+            </div>
+        </div>
+    
+        <div class="border-t dark:border-dark-650">
+            <div class="max-w-core mx-auto px-6 py-6">
+                <footer>
+                    <div class="flex flex-wrap items-center justify-between">
+                        <div class="pt-3">
+                            <ul class="flex flex-wrap items-center text-sm">
+                            </ul>
+                        </div>
+                        <div class="docs-copyright pt-3 text-gray-500 dark:text-dark-350 text-sm leading-relaxed"><p>© Copyright 2025. All rights reserved.</p></div>
+                    </div>
+                
+                    <div class="flex sm:justify-center">
+                        <a class="flex items-center justify-center flex-nowrap h-16 text-gray-400 dark:text-dark-400 hover:text-gray-700 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                            <span class="text-xs whitespace-nowrap">Powered by</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                        </a>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    
+        <doc-search-mobile></doc-search-mobile>
+        <doc-back-to-top></doc-back-to-top>
+    </div>
+
+
+    <div id="docs-overlay-target"></div>
+
+    <script data-cfasync="false">window.__DOCS__ = { "title": "Active Directory Home Lab with Proxmox - Part 4", level: 2, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+</body>
+</html>
