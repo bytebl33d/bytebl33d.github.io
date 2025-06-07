@@ -1,4 +1,0 @@
----
-icon: book
-expanded: true
----

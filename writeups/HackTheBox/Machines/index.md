@@ -1,5 +1,0 @@
----
-icon: server
-# expanded: true
-# order: 90
----

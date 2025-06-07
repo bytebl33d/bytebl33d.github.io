@@ -1,4 +1,0 @@
----
-icon: package
-expanded: true
----
