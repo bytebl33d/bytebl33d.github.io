@@ -1,5 +1,4 @@
 ---
-layout: page
 title:  "Administrator (Medium)"
 seo_title: "Writeup for the HackTheBox Administrator Machine"
 date:   2025-04-19T21:01

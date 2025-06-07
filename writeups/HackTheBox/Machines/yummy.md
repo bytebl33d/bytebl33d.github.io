@@ -1,5 +1,4 @@
 ---
-layout: page
 title:  "Yummy (Hard)"
 seo_title: "Writeup for the HackTheBox Yummy Machine"
 date:   2025-02-22T16:01

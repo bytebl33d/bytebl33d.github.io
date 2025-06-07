@@ -1,5 +1,4 @@
 ---
-layout: page
 title:  "Vintage (Hard)"
 seo_title: "Writeup for the HackTheBox Vintage Machine"
 date:   2025-04-26T10:01

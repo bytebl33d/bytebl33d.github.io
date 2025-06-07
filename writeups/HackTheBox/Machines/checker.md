@@ -1,5 +1,4 @@
 ---
-layout: page
 title:  "Checker (Hard)"
 seo_title: "Writeup for the HackTheBox Checker Machine"
 date:   2025-04-19T21:01

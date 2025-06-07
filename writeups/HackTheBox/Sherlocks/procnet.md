@@ -1,5 +1,4 @@
 ---
-layout: page
 title:  "ProcNet (Hard)"
 seo_title: "Writeup for the HackTheBox ProcNet Sherlock"
 date:   2024-07-23T09:00

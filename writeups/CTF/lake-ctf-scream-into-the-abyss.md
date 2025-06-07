@@ -1,5 +1,4 @@
 ---
-layout: page
 title:  "LakeCTF 2023 - Scream Into The Abyss"
 seo_title: "LakeCTF writeup for the Scream Into The Abyss binary exploitation (pwn) challenge"
 date:   2023-11-06T15:00

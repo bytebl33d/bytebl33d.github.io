@@ -1,5 +1,4 @@
 ---
-layout: page
 title:  "Office (Hard)"
 seo_title: "Writeup for the HackTheBox Office Machine"
 date:   2024-07-16T15:00

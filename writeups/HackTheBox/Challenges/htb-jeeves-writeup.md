@@ -1,5 +1,4 @@
 ---
-layout: page
 title:  "Jeeves (Easy)"
 seo_title: "Introduction to Binary Exploitation with Hack The Box: Jeeves Pwn Challenge writeup"
 date:   2023-09-08T12:30

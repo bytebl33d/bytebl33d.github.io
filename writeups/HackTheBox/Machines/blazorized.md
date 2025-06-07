@@ -1,5 +1,4 @@
 ---
-layout: page
 title:  "Blazorized (Hard)"
 seo_title: "Writeup for the HackTheBox Blazorized Machine"
 date:   2024-11-09T17:00

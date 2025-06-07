@@ -1,5 +1,4 @@
 ---
-layout: page
 title:  "CSCBE24 - Bad Ransomware"
 seo_title: "Writeup for the bad ransomware forensics challenge in the Cyber Security Challenge Belgium 24 Qualifiers"
 date:   2024-03-24T17:30

@@ -1,5 +1,4 @@
 ---
-layout: page
 title:  "HTB University CTF 2023: Brains & Bytes"
 seo_title: "CTF writeup for some of the Forensics and Pwn Challenges of the Hack The Box University CTF 2023 Competition"
 date:   2023-10-28T15:30
