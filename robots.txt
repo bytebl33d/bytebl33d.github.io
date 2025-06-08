@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://bytebl33d.github.io/sitemap.xml.gz
+Sitemap: https://bytebl33d.github.io/sitemap.xml
