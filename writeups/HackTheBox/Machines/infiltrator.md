@@ -10,7 +10,7 @@ categories: ['HackTheBox', 'Windows', 'Active-Directory']
 # Synopsis
 Infiltrator is an Insane Windows Active Directory machine that starts with a website that an attacker can scrape for possible usernames on the machine. One user doesn't have Kerberos pre-authentication enabled, and his password can be cracked. Afterwards, an intricate attack chain focused on Active Directory permissions allows the attacker to get access to the machine over WinRM as the user `M.harris`. Once on the machine, the attacker can identify that the whole company communicates through the `Output Messenger` application. Infiltrating the application, switching users, reverse engineering a binary, and using the application's API, he can eventually land a shell as the user `O.martinez` on the remote machine. Afterwards, he discovers a network capture file with a backup archive and a BitLocker volume recovery key. Unlocking the volume, another backup folder contains an `ntds.dit` file from which he can read sensitive user information and find a valid password for the user `lan_managment`. This new user can read the GMSA password of the user `infiltrator_svc$`. This last user can exploit a vulnerable ESC4 certificate template. Finally, he can get the Administrator's hash and compromise the whole domain through the certificate exploitation.
 
-## Enumeration
+# Enumeration
 I ain’t wastin' time with your granddaddy’s nmap scan — nah, we already know this box be bustin’ that Active Directory life, so we skip the foreplay and go raw into **user enumeration**. First, we rip a list of names straight off the company site like it’s LinkedIn recon but with zero professionalism and maximum goblin energy (we be lootin').
 
 ```
@@ -142,7 +142,7 @@ This ain't a wrong password, nah. This is **“you got it, but you still ain't a
 
 So yeah — creds probably valid, but maybe they’re disabled, locked out, got logon restrictions, or just spiritually unavailable. Either way, these accounts are on some ✨emotional boundary✨ arc and we gotta pivot.
 
-### Bloodhound
+## Bloodhound
 So now that we got creds for `l.clark` (shoutout to my boy k.turner), we unleash **BloodHound** to sniff out the domain like a digital truffle pig.
 
 ```console
@@ -184,7 +184,7 @@ $ bloodyAD --host dc01.infiltrator.htb -d infiltrator.htb -k add genericAll 'OU=
 
 That’s it, **l.clark just went from running marketing reports to rewriting destiny.** Let the ACL shenanigans commence.
 
-## User
+# User
 Now that we’ve yeeted `GenericAll` onto the OU like it’s a cursed enchantment, our permissions have **trickled down** to lil’ `e.rodriguez` too. BloodHound’s over here grinning like:
 
 > “Congrats, you just unlocked the side quest to **`m.harris`**.”
@@ -281,7 +281,7 @@ $ export KRB5CCNAME=m.harris.ccache
 $ evil-winrm -i dc01.infiltrator.htb -u 'm.harris' --realm INFILTRATOR.HTB 
 ```
 
-## Root
+# Root
 After logging in, we find a few zip files in `C:\ProgramData\Output Messenger Server\Temp>`. Inside the `OutputMessengerMysql.zip` we find a `OutputMysql.ini` that contains a password for port 14406.
 
 ```
@@ -304,7 +304,7 @@ MySQL_data=data
 Backup=backup
 ```
 
-### Unintended Path
+## Unintended Path
 Since the database is running with admin powers like it’s the kingpin of this system, we just casually port-forward that juicy MySQL on port 14406 and grab the root flag like a boss.  
 Dropped Chisel on the target because who doesn’t love a good reverse tunnel flex?
 
@@ -319,7 +319,7 @@ MariaDB [outputwall]> select LOAD_FILE("C:/Users/Administrator/Desktop/root.txt"
 
 Easy mode activated — root flag, served on a silver platter. Now buckle up, because it’s time to dive into the _actual_ intended way to get root. Spoiler: it’s not this chill.
 
-### Intended Path (Windows Client needed)
+## Intended Path (Windows Client needed)
 From here on out, we’re hopping into a Windows VM because… well, reasons. Spoiler alert: it gets messy and way more fun. If you still have the TGT ticket for `m.harris` chilling somewhere, just yank it over and convert to a Kirbi file like a pro hacker. But nah, I’m gonna show you how to climb back up from `e.rodriguez` to `m.harris` — Windows style.
 
 !!!warning
@@ -403,7 +403,7 @@ Translation: “Linux users? Sorry babes, go get a real OS.”
 
 So yeah, looks like we’re installing the Windows client if we want this app to actually function. Time to bootleg some enterprise nostalgia.
 
-#### OutputMessenger Windows Client
+### OutputMessenger Windows Client
 So we spin up the Windows OutputMessenger client (don’t ask how we still trust this thing), login as our dev-king `m.harris` using the creds from the earlier DB leak: `D3v3l0p3r_Pass@1337!`
 
 ![](/assets/images/writeups/infiltrator/OM-login-win-client.png)
@@ -533,7 +533,7 @@ Now I create a new event with a nearby time, logout and login as `k.turner` with
 At this point you can switch back to a Linux VM or continue on Windows if you prefer ;)
 !!!
 
-#### PCAP Analysis and BitLocker Decrypt
+### PCAP Analysis and BitLocker Decrypt
 So we pokin’ around in Martinez’s AppData, and guess what man’s got tucked away in the digital sock drawer? A juicy lil `.pcapng` file sittin’ there like it didn’t just witness a whole cybercrime. File’s named `network_capture_2024.pcapng`—real subtle. Naturally, we snatch it. Set up a quick n’ dirty Python upload server on our end, then slap that file across the internet like we’re trading bootleg mixtapes.
 
 ```console
@@ -580,7 +580,7 @@ $ nxc smb 10.10.11.31 -u 'lan_managment' -p 'l@n_M@an!1331' -d infiltrator.htb
 SMB         10.10.11.31     445    DC01             [+] infiltrator.htb\lan_managment:l@n_M@an!1331
 ```
 
-#### Bloodhound LAN_MANAGMENT to INFILTRATOR_SVC
+### Bloodhound LAN_MANAGMENT to INFILTRATOR_SVC
 So now that we deep in this bish, rootin' around like cyber raccoons, we stumble on a shiny lil gem: the gMSA password for `infiltrator_svc$`. Yeah, you heard me—**group managed service account** type beat. The kind of account that's like, “I rotate my password so you can’t get me,” but guess what? We got you, bozo.
 
 ![](/assets/images/writeups/infiltrator/BH-LAN.png)
@@ -604,7 +604,7 @@ One quick decrypt later and boom: password’s sittin’ in plaintext like it pa
 
 Let’s cook.
 
-#### Certipy
+### Certipy
 
 We back on the grind and it’s time to hunt some **ADCS** sauce. Fire up that **Certipy** like it’s a radar gun pointed straight at Microsoft’s feelings.
 

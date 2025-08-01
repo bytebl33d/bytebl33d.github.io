@@ -23,7 +23,7 @@ Below you can find reference links to my blog posts, writeups and educational co
   </div>
   <div class="p-6">
     <div class="text-xs font-semibold text-blue-500 uppercase dark:text-blue-400">HackTheBox • Windows • Active Directory</div>
-    <div class="mt-2 text-lg font-semibold leading-snug text-gray-900 dark:text-white md:text-xl">Infiltrator (Hard)</div>
+    <div class="mt-2 text-lg font-semibold leading-snug text-gray-900 dark:text-white md:text-xl">Infiltrator (Insane)</div>
     <div class="line-clamp-3">
       <p class="hidden mt-2 md:block">Infiltrator is an Insane Windows Active Directory machine that starts with a website that an attacker can scrape for possible usernames on the machine... </p>
     </div>
