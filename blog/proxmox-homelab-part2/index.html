@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.11.0.807375038140">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.11.0.807378339601">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.11.0">
@@ -35,11 +35,11 @@
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../resources/css/retype.css?v=3.11.0.807375038140" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.11.0.807378339601" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.11.0.807375038140" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.11.0.807378339601" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.11.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.11.0.807375038140" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.11.0.807378339601" data-turbo-eval="false" defer></script>
 </head>
 <body>
     <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
@@ -238,7 +238,13 @@
 </doc-anchor-target>
 <p>Create a new Virtual Machine and select the Windows Server 2022 ISO image you downloaded. Check the box to add an additional drive for the VirtIO drivers and select the corresponding ISO image.</p>
 <p><figure class="content-center">
-    <img src="../../assets/images/homelab/dc-setup.png" alt="DC-Setup-1" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <img src="../../assets/images/homelab/dc-setup.png" alt="DC-Setup" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption">DC-Setup</figcaption>
+</figure>
+</p>
+<p>Enable the &quot;Qemu Agent&quot; in the system tab and use the following configuration for the disks.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/homelab/dc-setup-1.png" alt="DC-Setup-1" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption">DC-Setup-1</figcaption>
 </figure>
 </p>
@@ -254,7 +260,12 @@
     <figcaption class="caption">DC-Setup-3</figcaption>
 </figure>
 </p>
-<p>Once the OS installation is complete, install the qemu-guest-agent. Open Windows Explorer, open the CD drive, and install <code v-pre>Guest-agent\qemu-ga-x86_64 (64-bit)</code>. Next open Windows Device Manager and check for any missing drivers. If everything looks good, you&#x27;re ready to move on.</p>
+<p>Follow the installer steps until you reach the installation step where you need to select the location to install Windows Server. Click &quot;Load driver&quot; to install the VirtIO drivers for hard disk and the network. Browse to the CD drive where you mounted the VirtIO driver and select folder <code v-pre>vioscsi\2k22\amd64</code> and confirm. Select the &quot;Red Hat VirtIO SCSI pass-through controller&quot; and click next to install it. Repeat this for the <code v-pre>NetKVM\2k22\amd64</code> and <code v-pre>Balloon\2k22\amd64</code> folders.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/homelab/dc-setup-3.1.png" alt="DC-Setup-3.1" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption">DC-Setup-3.1</figcaption>
+</figure>
+</p>
 <p>The first thing to do after the first boot is to rename the computer. Go to <code v-pre>Settings &gt; System &gt; About &gt; Rename This PC</code>. I renamed mine to <code v-pre>DC01</code> and chose to restart later.</p>
 <p>Since this machine will serve as the DHCP server, it needs a static IP. Go to <code v-pre>Control Panel &gt; Network and Internet &gt; Network and Sharing Center &gt; Change Adapter Settings</code>, and configure the network interface with a private IP address (e.g., <code v-pre>172.16.200.100</code>). Set the DNS server to <code v-pre>127.0.0.1</code>, since the DC will also be a DNS server.</p>
 <p><figure class="content-center">
