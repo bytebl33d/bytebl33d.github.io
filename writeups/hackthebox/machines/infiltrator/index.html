@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.11.0.807378339601">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.11.0.807378551402">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.11.0">
@@ -32,12 +32,12 @@
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../../../resources/css/retype.css?v=3.11.0.807378339601" rel="stylesheet">
+    <link href="../../../../resources/css/retype.css?v=3.11.0.807378551402" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.11.0.807378339601" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.11.0.807378551402" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../../resources/js/retype.js?v=3.11.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.11.0.807378339601" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.11.0.807378339601" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.11.0.807378551402" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.11.0.807378551402" defer></script>
 </head>
 <body>
     <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
@@ -200,10 +200,10 @@
 </doc-anchor-target>
 <p>Infiltrator is an Insane Windows Active Directory machine that starts with a website that an attacker can scrape for possible usernames on the machine. One user doesn&#x27;t have Kerberos pre-authentication enabled, and his password can be cracked. Afterwards, an intricate attack chain focused on Active Directory permissions allows the attacker to get access to the machine over WinRM as the user <code v-pre>M.harris</code>. Once on the machine, the attacker can identify that the whole company communicates through the <code v-pre>Output Messenger</code> application. Infiltrating the application, switching users, reverse engineering a binary, and using the application&#x27;s API, he can eventually land a shell as the user <code v-pre>O.martinez</code> on the remote machine. Afterwards, he discovers a network capture file with a backup archive and a BitLocker volume recovery key. Unlocking the volume, another backup folder contains an <code v-pre>ntds.dit</code> file from which he can read sensitive user information and find a valid password for the user <code v-pre>lan_managment</code>. This new user can read the GMSA password of the user <code v-pre>infiltrator_svc$</code>. This last user can exploit a vulnerable ESC4 certificate template. Finally, he can get the Administrator&#x27;s hash and compromise the whole domain through the certificate exploitation.</p>
 <doc-anchor-target id="enumeration">
-    <h2>
+    <h1>
         <doc-anchor-trigger class="header-anchor-trigger" to="#enumeration">#</doc-anchor-trigger>
         <span>Enumeration</span>
-    </h2>
+    </h1>
 </doc-anchor-target>
 <p>I ain’t wastin&#x27; time with your granddaddy’s nmap scan — nah, we already know this box be bustin’ that Active Directory life, so we skip the foreplay and go raw into <strong>user enumeration</strong>. First, we rip a list of names straight off the company site like it’s LinkedIn recon but with zero professionalism and maximum goblin energy (we be lootin&#x27;).</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -316,10 +316,10 @@ SMB         10.10.11.31   445    DC01             [-] infiltrator.htb\d.anderson
 <p>This ain&#x27;t a wrong password, nah. This is <strong>“you got it, but you still ain&#x27;t allowed.”</strong> That’s the cyber equivalent of your key working in the lock but some dude inside just holding the door shut whispering, <em>“not today, boi.”</em></p>
 <p>So yeah — creds probably valid, but maybe they’re disabled, locked out, got logon restrictions, or just spiritually unavailable. Either way, these accounts are on some <span class="docs-emoji">&#x2728;</span>emotional boundary<span class="docs-emoji">&#x2728;</span> arc and we gotta pivot.</p>
 <doc-anchor-target id="bloodhound">
-    <h3>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#bloodhound">#</doc-anchor-trigger>
         <span>Bloodhound</span>
-    </h3>
+    </h2>
 </doc-anchor-target>
 <p>So now that we got creds for <code v-pre>l.clark</code> (shoutout to my boy k.turner), we unleash <strong>BloodHound</strong> to sniff out the domain like a digital truffle pig.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -355,10 +355,10 @@ Impacket v0.11.0 - Copyright 2023 Fortra
 </doc-codeblock></div>
 <p>That’s it, <strong>l.clark just went from running marketing reports to rewriting destiny.</strong> Let the ACL shenanigans commence.</p>
 <doc-anchor-target id="user">
-    <h2>
+    <h1>
         <doc-anchor-trigger class="header-anchor-trigger" to="#user">#</doc-anchor-trigger>
         <span>User</span>
-    </h2>
+    </h1>
 </doc-anchor-target>
 <p>Now that we’ve yeeted <code v-pre>GenericAll</code> onto the OU like it’s a cursed enchantment, our permissions have <strong>trickled down</strong> to lil’ <code v-pre>e.rodriguez</code> too. BloodHound’s over here grinning like:</p>
 <blockquote>
@@ -444,10 +444,10 @@ $ export KRB5CCNAME=m.harris.ccache
 $ evil-winrm -i dc01.infiltrator.htb -u 'm.harris' --realm INFILTRATOR.HTB </code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="root">
-    <h2>
+    <h1>
         <doc-anchor-trigger class="header-anchor-trigger" to="#root">#</doc-anchor-trigger>
         <span>Root</span>
-    </h2>
+    </h1>
 </doc-anchor-target>
 <p>After logging in, we find a few zip files in <code v-pre>C:\ProgramData\Output Messenger Server\Temp&gt;</code>. Inside the <code v-pre>OutputMessengerMysql.zip</code> we find a <code v-pre>OutputMysql.ini</code> that contains a password for port 14406.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -470,10 +470,10 @@ MySQL_data=data
 Backup=backup</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="unintended-path">
-    <h3>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#unintended-path">#</doc-anchor-trigger>
         <span>Unintended Path</span>
-    </h3>
+    </h2>
 </doc-anchor-target>
 <p>Since the database is running with admin powers like it’s the kingpin of this system, we just casually port-forward that juicy MySQL on port 14406 and grab the root flag like a boss.<br />
 Dropped Chisel on the target because who doesn’t love a good reverse tunnel flex?</p>
@@ -487,10 +487,10 @@ MariaDB [outputwall]&gt; select LOAD_FILE(&quot;C:/Users/Administrator/Desktop/r
 </doc-codeblock></div>
 <p>Easy mode activated — root flag, served on a silver platter. Now buckle up, because it’s time to dive into the <em>actual</em> intended way to get root. Spoiler: it’s not this chill.</p>
 <doc-anchor-target id="intended-path-windows-client-needed">
-    <h3>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#intended-path-windows-client-needed">#</doc-anchor-trigger>
         <span>Intended Path (Windows Client needed)</span>
-    </h3>
+    </h2>
 </doc-anchor-target>
 <p>From here on out, we’re hopping into a Windows VM because… well, reasons. Spoiler alert: it gets messy and way more fun. If you still have the TGT ticket for <code v-pre>m.harris</code> chilling somewhere, just yank it over and convert to a Kirbi file like a pro hacker. But nah, I’m gonna show you how to climb back up from <code v-pre>e.rodriguez</code> to <code v-pre>m.harris</code> — Windows style.</p>
 <div class="flex mb-6">
@@ -573,10 +573,10 @@ There have been some complaints regarding the stability of the &quot;Output Mess
 <p>Translation: “Linux users? Sorry babes, go get a real OS.”</p>
 <p>So yeah, looks like we’re installing the Windows client if we want this app to actually function. Time to bootleg some enterprise nostalgia.</p>
 <doc-anchor-target id="outputmessenger-windows-client">
-    <h4>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#outputmessenger-windows-client">#</doc-anchor-trigger>
         <span>OutputMessenger Windows Client</span>
-    </h4>
+    </h3>
 </doc-anchor-target>
 <p>So we spin up the Windows OutputMessenger client (don’t ask how we still trust this thing), login as our dev-king <code v-pre>m.harris</code> using the creds from the earlier DB leak: <code v-pre>D3v3l0p3r_Pass@1337!</code></p>
 <p><figure class="content-center">
@@ -713,10 +713,10 @@ PS C:\&gt; C:\Tools\nc64.exe -nlvp 443</code></pre>
     </div>
 </div>
 <doc-anchor-target id="pcap-analysis-and-bitlocker-decrypt">
-    <h4>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#pcap-analysis-and-bitlocker-decrypt">#</doc-anchor-trigger>
         <span>PCAP Analysis and BitLocker Decrypt</span>
-    </h4>
+    </h3>
 </doc-anchor-target>
 <p>So we pokin’ around in Martinez’s AppData, and guess what man’s got tucked away in the digital sock drawer? A juicy lil <code v-pre>.pcapng</code> file sittin’ there like it didn’t just witness a whole cybercrime. File’s named <code v-pre>network_capture_2024.pcapng</code>—real subtle. Naturally, we snatch it. Set up a quick n’ dirty Python upload server on our end, then slap that file across the internet like we’re trading bootleg mixtapes.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -759,10 +759,10 @@ Head of Development Department</code></pre>
 SMB         10.10.11.31     445    DC01             [+] infiltrator.htb\lan_managment:l@n_M@an!1331</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="bloodhound-lan_managment-to-infiltrator_svc">
-    <h4>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#bloodhound-lan_managment-to-infiltrator_svc">#</doc-anchor-trigger>
         <span>Bloodhound LAN_MANAGMENT to INFILTRATOR_SVC</span>
-    </h4>
+    </h3>
 </doc-anchor-target>
 <p>So now that we deep in this bish, rootin&#x27; around like cyber raccoons, we stumble on a shiny lil gem: the gMSA password for <code v-pre>infiltrator_svc$</code>. Yeah, you heard me—<strong>group managed service account</strong> type beat. The kind of account that&#x27;s like, “I rotate my password so you can’t get me,” but guess what? We got you, bozo.</p>
 <p><figure class="content-center">
@@ -786,10 +786,10 @@ infiltrator_svc$:aes128-cts-hmac-sha1-96:4d556ec8ebc73e358d05430c7696f1f0</code>
 <p>One quick decrypt later and boom: password’s sittin’ in plaintext like it paid rent. Now <code v-pre>infiltrator_svc$</code> is ours to command. And with a gMSA under your belt? Bro, you’re not just in the network. <strong>You are</strong> the network.</p>
 <p>Let’s cook.</p>
 <doc-anchor-target id="certipy">
-    <h4>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#certipy">#</doc-anchor-trigger>
         <span>Certipy</span>
-    </h4>
+    </h3>
 </doc-anchor-target>
 <p>We back on the grind and it’s time to hunt some <strong>ADCS</strong> sauce. Fire up that <strong>Certipy</strong> like it’s a radar gun pointed straight at Microsoft’s feelings.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
