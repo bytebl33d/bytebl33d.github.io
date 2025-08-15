@@ -17,6 +17,23 @@ Below you can find reference links to my blog posts, writeups and educational co
 [!ref icon="beaker"](/categories/homelab/)
 
 ## Featured
+<a class="no-link mb-6 overflow-hidden border border-gray-200 rounded-lg md:flex dark:border-dark-700 hover:border-gray-400 dark:hover:border-dark-450" href="/writeups/hackthebox/machines/university/">
+  <div class="relative shrink-0 bg-gray-300 md:w-5/12 pb-9/16 md:pb-0 dark:bg-dark-450">
+    <img class="absolute object-cover w-full h-full" src="/assets/images/headers/university.png">
+  </div>
+  <div class="p-6">
+    <div class="text-xs font-semibold text-blue-500 uppercase dark:text-blue-400">HackTheBox • Windows • Active Directory</div>
+    <div class="mt-2 text-lg font-semibold leading-snug text-gray-900 dark:text-white md:text-xl">University (Insane)</div>
+    <div class="line-clamp-3">
+      <p class="hidden mt-2 md:block">University is an Insane Windows Active Directory machine that starts with a university webpage. The web application allows exporting user profile pages... </p>
+    </div>
+    <div class="flex mt-3 items-center">
+      <div class="text-sm text-gray-500 dark:text-dark-350">
+        <span>2025-08-15</span>
+      </div>
+    </div>
+  </div>
+</a>
 <a class="no-link mb-6 overflow-hidden border border-gray-200 rounded-lg md:flex dark:border-dark-700 hover:border-gray-400 dark:hover:border-dark-450" href="/writeups/hackthebox/machines/infiltrator/">
   <div class="relative shrink-0 bg-gray-300 md:w-5/12 pb-9/16 md:pb-0 dark:bg-dark-450">
     <img class="absolute object-cover w-full h-full" src="/assets/images/headers/infiltrator.png">
