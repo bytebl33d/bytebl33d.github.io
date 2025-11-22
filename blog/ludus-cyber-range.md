@@ -162,7 +162,7 @@ $ ludus range deploy --user NHA
 
 At the end you should see something like this:
 
-![](/assets/images/headers/ludus-nha-range-status.png)
+![](/assets/images/homelab/ludus-nha-range-status.png)
 
 At this point the old desktop is usually running enough VMs to sound mildly annoyed, but it manages.
 
@@ -192,6 +192,8 @@ If you get the error `Ansible could not initialize the preferred locale: unsuppo
 $ cd ansible
 $ ansible-playbook -i ../ad/NHA/data/inventory -i ../globalsettings.ini main.yml
 ```
+
+This will take some time to finish.
 
 ## Connecting to the Lab
 
