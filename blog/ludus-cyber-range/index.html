@@ -9,26 +9,26 @@
     <meta name="generator" content="Retype 3.11.0">
 
     <!-- Primary Meta Tags -->
-    <title>Active Directory Home Lab with Proxmox - Part 4</title>
-    <meta name="title" content="Active Directory Home Lab with Proxmox - Part 4">
-    <meta name="description" content="In this part of our Active Directory Home Lab series, we'll focus on enhancing the security and visibility of our environment by adding network...">
+    <title>Building a Cyber Range with Ludus</title>
+    <meta name="title" content="Building a Cyber Range with Ludus">
+    <meta name="description" content="Ever since I built my first homelab, I’ve been obsessed with having my own dedicated cyber range — my little digital fight club where I can break...">
 
     <!-- Canonical -->
-    <link rel="canonical" href="https://bytebl33d.github.io/blog/proxmox-homelab-part4/">
+    <link rel="canonical" href="https://bytebl33d.github.io/blog/ludus-cyber-range/">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://bytebl33d.github.io/blog/proxmox-homelab-part4/">
-    <meta property="og:title" content="Active Directory Home Lab with Proxmox - Part 4">
-    <meta property="og:description" content="In this part of our Active Directory Home Lab series, we'll focus on enhancing the security and visibility of our environment by adding network...">
-    <meta property="og:image" content="https://bytebl33d.github.io/assets/images/headers/ad-banner.jpg">
+    <meta property="og:url" content="https://bytebl33d.github.io/blog/ludus-cyber-range/">
+    <meta property="og:title" content="Building a Cyber Range with Ludus">
+    <meta property="og:description" content="Ever since I built my first homelab, I’ve been obsessed with having my own dedicated cyber range — my little digital fight club where I can break...">
+    <meta property="og:image" content="https://bytebl33d.github.io/assets/images/headers/ludus.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://bytebl33d.github.io/blog/proxmox-homelab-part4/">
-    <meta property="twitter:title" content="Active Directory Home Lab with Proxmox - Part 4">
-    <meta property="twitter:description" content="In this part of our Active Directory Home Lab series, we'll focus on enhancing the security and visibility of our environment by adding network...">
-    <meta property="twitter:image" content="https://bytebl33d.github.io/assets/images/headers/ad-banner.jpg">
+    <meta property="twitter:url" content="https://bytebl33d.github.io/blog/ludus-cyber-range/">
+    <meta property="twitter:title" content="Building a Cyber Range with Ludus">
+    <meta property="twitter:description" content="Ever since I built my first homelab, I’ve been obsessed with having my own dedicated cyber range — my little digital fight club where I can break...">
+    <meta property="twitter:image" content="https://bytebl33d.github.io/assets/images/headers/ludus.png">
 
     <!-- RSS -->
     <link rel="alternate" type="application/rss+xml" title="Blog >> Feed" href="https://bytebl33d.github.io/blog/feed.xml">
@@ -174,10 +174,10 @@
                             <!-- Rendered if sidebar right is enabled -->
                             <div id="retype-sidebar-right-toggle"></div>
                             <!-- Page content  -->
-<doc-anchor-target id="active-directory-home-lab-with-proxmox---part-4" class="break-words">
+<doc-anchor-target id="building-a-cyber-range-with-ludus" class="break-words">
     <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#active-directory-home-lab-with-proxmox---part-4">#</doc-anchor-trigger>
-        <span>Active Directory Home Lab with Proxmox - Part 4</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#building-a-cyber-range-with-ludus">#</doc-anchor-trigger>
+        <span>Building a Cyber Range with Ludus</span>
     </h1>
 </doc-anchor-target>
 <div class="-mt-3 mb-12 flex flex-wrap text-sm text-gray-400 dark:text-dark-350 items-center print:justify-center">
@@ -185,230 +185,263 @@
     <div><a href="../../categories/active-directory/">Active-Directory</a>,&nbsp;</div>
     <div><a href="../../categories/homelab/">Homelab</a></div>
     <div class="mx-2">&#9679;</div>
-    <div class="flex items-center shrink-0">Published&nbsp;<span>2024-09-03</span></div>
+    <div class="flex items-center shrink-0">Published&nbsp;<span>2025-11-22</span></div>
 </div>
 
 <p><figure class="content-center">
-    <img src="../../assets/images/headers/ad-banner.jpg" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <img src="../../assets/images/headers/ludus.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
-<p>In this part of our Active Directory Home Lab series, we&#x27;ll focus on enhancing the security and visibility of our environment by adding network monitoring. Since we&#x27;re utilizing PfSense as our software-based firewall, it provides a convenient platform for deploying additional security tools. Specifically, we&#x27;ll be setting up Suricata, a powerful intrusion detection and prevention system (IDS/IPS), to monitor traffic and detect potential threats. This post will guide you through configuring Suricata and creating custom rules to detect attacks, such as those we simulated in Part 3.</p>
-<doc-anchor-target id="suricata-setup">
+<p>Ever since I built my first homelab, I’ve been obsessed with having my own dedicated cyber range — my little digital fight club where I can break things, fix things, automate things, and then do it all again. True definition of insanity right here. But I didn’t want to risk nuking my daily-driver machine.</p>
+<p>Then one day I looked over at my ancient desktop — the one that wheezes when you open more than three Chrome tabs (I actually needed to replace a few faulty fans) — and thought:</p>
+<blockquote>
+<p>“Bestie, you’re getting a glow-up.”</p>
+</blockquote>
+<p>A quick dive into the documentation rabbit hole later, I found <a href="https://docs.ludus.cloud/">Ludus</a>, an open-source framework that basically said, “I heard you hate clicking through installers manually, let me cook.”</p>
+<doc-anchor-target id="why-ludus">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#suricata-setup">#</doc-anchor-trigger>
-        <span>Suricata Setup</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#why-ludus">#</doc-anchor-trigger>
+        <span>Why Ludus?</span>
     </h2>
 </doc-anchor-target>
-<p>To begin, navigate to the PfSense web interface and proceed to <code v-pre>System &gt; Package Manager &gt; Available Packages</code>. Search for Suricata and install the latest version. Once installed, go to <code v-pre>Services &gt; Suricata</code> to start configuring the tool. We’ll add interfaces and tweak some options, but the default settings should suffice for most purposes. For our ruleset, we&#x27;ll use the ETOpen Emerging Threats as a foundation.</p>
-<doc-anchor-target id="adding-monitoring-interfaces">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#adding-monitoring-interfaces">#</doc-anchor-trigger>
-        <span>Adding Monitoring Interfaces</span>
-    </h3>
-</doc-anchor-target>
-<p>Under the Interfaces tab, select the interfaces that Suricata will monitor. For our lab, I chose the <code v-pre>LAN</code> and <code v-pre>ADLAB</code> interfaces to observe traffic between the attacking VM on the LAN and the AD network.</p>
-<p><figure class="content-center">
-    <img src="../../assets/images/homelab/pfsense-suricata-interfaces.png" alt="PfSense-suricata-interfaces" class="rounded-image-rounded border-image-border border-image-border-width" />
-    <figcaption class="caption">PfSense-suricata-interfaces</figcaption>
-</figure>
-</p>
-<doc-anchor-target id="creating-custom-detection-rules">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#creating-custom-detection-rules">#</doc-anchor-trigger>
-        <span>Creating Custom Detection Rules</span>
-    </h3>
-</doc-anchor-target>
-<p>Next, let&#x27;s create custom rules tailored to our lab environment. We’ll do this by editing one of the interfaces and navigating to the rules tab.</p>
-<doc-anchor-target id="detecting-evil-winrm-traffic">
-    <h4>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#detecting-evil-winrm-traffic">#</doc-anchor-trigger>
-        <span>Detecting Evil-WinRM Traffic</span>
-    </h4>
-</doc-anchor-target>
-<p>Our first custom rule will detect Evil-WinRM traffic, which is often used for remote management in penetration testing scenarios. For more information on setting up Remote Management on your target hosts, refer to Part 3 of this series.</p>
-<p><figure class="content-center">
-    <img src="../../assets/images/homelab/pfsense-suricata-rules.png" alt="PfSense-suricata-rules" class="rounded-image-rounded border-image-border border-image-border-width" />
-    <figcaption class="caption">PfSense-suricata-rules</figcaption>
-</figure>
-</p>
-<p>To build this rule, we need to understand how an authentication request from Evil-WinRM appears in network traffic. Using WireShark, we can capture an authentication attempt from a host on the LAN interface. We run the following command in a Linux terminal:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ evil-winrm -i 172.16.0.17 -u 'cicada.local\winnie.wonder' -p 'P@ssw0rd123'</code></pre>
-</doc-codeblock></div>
-<p>To capture this traffic in PfSense, go to <code v-pre>Diagnostics &gt; Packet Capture</code> and select the appropriate interface.</p>
-<div class="flex mb-6">
-    <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-callout-info"></div>
-    <div class="flex w-full py-4 border border-l-0 rounded-tr-lg rounded-br-lg doc-callout bg-callout-base-bg border-callout-base-border" role="alert">
-        <div class="flex items-center ml-4 h-7">
-            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-callout-info" width="22" height="22" viewBox="0 0 24 24" role="presentation">
-                <g fill="currentColor"><g>
-                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
-                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
-                    <path fill="none" d="M0 0h24v24H0z"></path>
-                </g></g>
-            </svg>
-        </div>
-        <div class="pr-5 ml-3 w-full">
-            <h5>Tip</h5>
-<p>Ensure you target the domain-joined host from a machine outside of the LAN to properly capture traffic. If you capture traffic from devices within the same LAN, PfSense may not log the packets unless you create a port mirror. At the final section, I will discuss how to setup a SPAN port and route traffic to another machine to monitor traffic.</p>
-        </div>
-    </div>
-</div>
-<p>In WireShark, we can focus on the packet containing the authentication request.</p>
-<p><figure class="content-center">
-    <img src="../../assets/images/homelab/pfsense-capture-winrm.png" alt="PfSense-capture-winrm" class="rounded-image-rounded border-image-border border-image-border-width" />
-    <figcaption class="caption">PfSense-capture-winrm</figcaption>
-</figure>
-</p>
-<p>The captured packet shows the authentication request from <code v-pre>winnie.wonder</code>. Based on this, we can now craft our Suricata rule:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">alert http any any -&gt; any 5985 (msg: &quot;Connection via Evil-WinRM Detected&quot;; flow:established,to_server; http.method; content:&quot;POST&quot;; http.header; content:&quot;User-Agent: Ruby WinRM Client&quot;; content:&quot;Authorization: &quot;; base64_decode:bytes 13,offset 10,relative; base64_data; content:&quot;NTLMSSP&quot;; content:&quot;|03|&quot;; classtype:bad-unknown; sid:9990001; rev:1;)</code></pre>
-</doc-codeblock></div>
-<div class="flex mb-6">
-    <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-callout-info"></div>
-    <div class="flex w-full py-4 border border-l-0 rounded-tr-lg rounded-br-lg doc-callout bg-callout-base-bg border-callout-base-border" role="alert">
-        <div class="flex items-center ml-4 h-7">
-            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-callout-info" width="22" height="22" viewBox="0 0 24 24" role="presentation">
-                <g fill="currentColor"><g>
-                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
-                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
-                    <path fill="none" d="M0 0h24v24H0z"></path>
-                </g></g>
-            </svg>
-        </div>
-        <div class="pr-5 ml-3 w-full">
-<p><strong>Snort</strong> is a similar IDS/IPS solution that can be installed on PfSense, but has slightly different syntax.</p>
-        </div>
-    </div>
-</div>
-<p>Explanation:</p>
+<p>I chose Ludus for a few reasons:</p>
 <ul>
-<li>The rule targets HTTP traffic performing a POST request on port 5985.</li>
-<li>It looks for the <code v-pre>Ruby WinRM Client</code> string in the User-Agent header, a unique identifier for Evil-WinRM.</li>
-<li>The rule then examines the Authorization header, decoding a portion of the Base64 encoded data to detect the NTLMSSP authentication type.</li>
+<li>It automates the heavy lifting of cyber range creation, because I am allergic to unnecessary clicking.</li>
+<li>It supports modular “plugins,” including prebuilt Active Directory environments.</li>
+<li>Everything is infrastructure-as-code, which means I can tear down and rebuild environments cleanly.</li>
+<li>It&#x27;s built for learning, research, and “I wonder what happens if—” moments, not production use.</li>
 </ul>
-<p>With this rule in place, Suricata will trigger an alert whenever someone tries to authenticate using Evil-WinRM using the default settings. We could tune this rule even further, or write additional rules that alert on traffic even if the attacker changes the User-Agent.</p>
-<p><figure class="content-center">
-    <img src="../../assets/images/homelab/pfsense-suricata-alert.png" alt="PfSense-suricata-alert" class="rounded-image-rounded border-image-border border-image-border-width" />
-    <figcaption class="caption">PfSense-suricata-alert</figcaption>
-</figure>
-</p>
-<doc-anchor-target id="detecting-smb-authentication">
-    <h4>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#detecting-smb-authentication">#</doc-anchor-trigger>
-        <span>Detecting SMB Authentication</span>
-    </h4>
-</doc-anchor-target>
-<p>Similarly, we can create a custom rule to detect SMB authentication attempts within the <code v-pre>CICADA</code> domain. The below rule looks for the SMB header with the NTLMSSP authentication type set to <code v-pre>03</code> and the domain name in hex format, separated by null bytes.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">alert smb any any -&gt; any 445 (msg: &quot;SMB Authentication&quot;;flow:established,to_server; content:&quot;|FE|SMB&quot;;content:&quot;NTLMSSP&quot;; content:&quot;|03|&quot;;distance: 1; content:&quot;|63 00 69 00 63 00 61 00 64 00 61|&quot;; sid:9990002; rev:1;)</code></pre>
-</doc-codeblock></div>
-<p>This rule was applied to the ADLAB interface. To test it, I used <code v-pre>NetExec</code> to initiate an SMB authentication from outside the ADLAB interface:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nxc smb 172.16.200.100 -u 'winnie.wonder' -p 'P@ssw0rd123' -d 'cicada.local'</code></pre>
-</doc-codeblock></div>
-<p>As expected, Suricata raised an alert upon detecting the authentication:
-<figure class="content-center">
-    <img src="../../assets/images/homelab/pfsense-suricata-alert2.png" alt="PfSense-suricata-alert2" class="rounded-image-rounded border-image-border border-image-border-width" />
-    <figcaption class="caption">PfSense-suricata-alert2</figcaption>
-</figure>
-</p>
-<doc-anchor-target id="detecting-as-reproasting">
-    <h4>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#detecting-as-reproasting">#</doc-anchor-trigger>
-        <span>Detecting AS-REPRoasting</span>
-    </h4>
-</doc-anchor-target>
-<p>In the third part of our series, we executed the following command to perform an ASREPRoasting attack on domain users:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ GetNPUsers.py CICADA.LOCAL/ -dc-ip 172.16.200.100 -no-pass -usersfile valid_users -format hashcat</code></pre>
-</doc-codeblock></div>
-<p>Now, let’s examine what this traffic looks like in WireShark
-<figure class="content-center">
-    <img src="../../assets/images/homelab/pfsense-capture-asrep.png" alt="PfSense-capture-asrep" class="rounded-image-rounded border-image-border border-image-border-width" />
-    <figcaption class="caption">PfSense-capture-asrep</figcaption>
-</figure>
-</p>
-<p>In this scenario, we identified one user with preauthentication disabled. By analyzing the <code v-pre>AS-REQ</code> packet, we can craft a Suricata rule to detect this type of attack:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">alert tcp any any -&gt; any 88 (msg:&quot;Possible AS-REP Roasting Attack&quot;; flow: to_server, stateless; content:&quot;|a0 07 03 05 00 50 80 00 00 a1|&quot;; content:&quot;|6b 72 62 74 67 74|&quot;; fast_pattern; content:!&quot;|a2 03 02 01 0c|&quot;; sid:9990003; rev:1;)</code></pre>
-</doc-codeblock></div>
-<p>Rule Breakdown:</p>
-<ul>
-<li>The rule monitors TCP traffic on port 88, which is used by Kerberos.</li>
-<li>It looks for a specific sequence of bytes that indicate the presence of an AS-REQ request.</li>
-<li>The string krbtgt (represented as <code v-pre>6b 72 62 74 67 74</code> in hexadecimal) is a key identifier within the packet.</li>
-<li>We also check for the absence of the byte sequence <code v-pre>a2 03 02 01 0c</code>, which indicates the presence of preauthentication. The lack of this sequence suggests the possibility of an AS-REP Roasting attack.</li>
-</ul>
-<p>By implementing this rule, Suricata will trigger an alert when it detects a pattern consistent with an ASREPRoast attack, helping to protect your domain from this common exploitation method.</p>
-<doc-anchor-target id="creating-span-ports-on-proxmox">
+<p>Besides, I was already making use of <a href="https://www.proxmox.com/">Proxmox</a> in my previous series and Ludus builds on top of it. So Ludus fits perfectly into my tech ecosystem.</p>
+<doc-anchor-target id="setting-up-my-range">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#creating-span-ports-on-proxmox">#</doc-anchor-trigger>
-        <span>Creating SPAN Ports on Proxmox</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#setting-up-my-range">#</doc-anchor-trigger>
+        <span>Setting up my Range</span>
     </h2>
 </doc-anchor-target>
-<p>Start by creating a new LXC and assign at least 2 cores, 2GB of RAM and 25GB of storage. After creating the container, add another network interface for the ports you want to mirror. In my case I added interfaces <code v-pre>vmbr1</code> and <code v-pre>vmbr2</code>. The interface is going to send copies of packets of machines connected to the switch to the container. Make sure the firewall is unchecked for these interfaces.
-<figure class="content-center">
-    <img src="../../assets/images/homelab/pfsense-suricata-lxc-net.png" alt="Suricata LXC Net" class="rounded-image-rounded border-image-border border-image-border-width" />
-    <figcaption class="caption">Suricata LXC Net</figcaption>
-</figure>
-</p>
-<p>Log in to the container and run the following commands.</p>
+<p>Ludus&#x27; <a href="https://docs.ludus.cloud/docs/quick-start/install-ludus">documentation</a> walks through the installation process, and following it is very straightforward so I won&#x27;t be covering it in this blogpost.</p>
+<p>After you have installed Ludus and created a user, you should be able to list the available templates.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ apt update &amp;&amp; apt upgrade -y
-$ ip a | grep @
-2: eth0@if95: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000
-3: mirrorInt@if96: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000
-4: mirrorAD@if97: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000</code></pre>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ ludus templates list
++------------------------------------+-------+
+|              TEMPLATE              | BUILT |
++------------------------------------+-------+
+| debian-11-x64-server-template      | FALSE |
+| debian-12-x64-server-template      | FALSE |
+| kali-x64-desktop-template          | FALSE |
+| win11-22h2-x64-enterprise-template | FALSE |
+| win2022-server-x64-template        | FALSE |
++------------------------------------+-------+</code></pre>
 </doc-codeblock></div>
-<p>If the interfaces are down, just run <code v-pre>ip link set &lt;INT_NAME&gt; up</code>. Next, open the shell on your Proxmox server, and run the command:</p>
+<p>On a fresh install, a few default templates are provided but haven&#x27;t been build yet. As I like to keep things up to date I added a <code v-pre>win2025</code> template, but you can add as many as you like (if the storage lets you).</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session"># ip link show | grep &lt;LXC_ID&gt;</code></pre>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ git clone https://gitlab.com/badsectorlabs/ludus
+$ cd ludus/templates
+$ ludus templates add -d win2025-server-x64-tpm
+[INFO]  Successfully added template
+$ ludus templates build -n win-2025-server-x64-tpm-template
+[INFO]  Template building started
+$ ludus templates build -n debian-12-x64-server-template
+[INFO]  Template building started</code></pre>
 </doc-codeblock></div>
-<p>where the <code v-pre>&lt;LXC_ID&gt;</code> is the id of the Proxmox node where Suricata is running.
-<figure class="content-center">
-    <img src="../../assets/images/homelab/pfsense-suricata-lxc-link.png" alt="Suricata Proxmox link" class="rounded-image-rounded border-image-border border-image-border-width" />
-    <figcaption class="caption">Suricata Proxmox link</figcaption>
-</figure>
-</p>
-<p>The first result is the interface that is connected to my home network, the last two are going to be the SPAN ports. Now we run the following command in the Proxmox shell to create the SPAN ports on the switch:</p>
+<p>While browsing the “Environment Guides,” I stumbled upon the <strong>Game Of Active Directory – Ninja Hacking Academy (GOAD-NHA)</strong> setup. This thing is basically an escape room for sysadmins — you drop in, and everything dares you to figure it out by yourself. But I wanted my cyber range to be on the latest Windows Server version, which at the time of writing is 2025.</p>
+<p>That meant modifying the original Ansible scripts. Thankfully, it wasn’t as dramatic as it sounds, but it did feel like giving the templates a well-deserved modern update. My current ludus range configuration looks as follows:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session"># ovs-vsctl \
-  -- --id=@veth101i1 get Port tap101i1 \
-  -- --id=@101m1 create mirror name=mirrorInt \
-  select-all=true output-port=@veth101i1 \
-  -- set Bridge vmbr1 mirrors=@101m1
-# ovs-vsctl \
-  -- --id=@veth101i2 get Port veth101i2 \
-  -- --id=@101m2 create mirror name=mirrorAD \
-  select-all=true output-port=@veth101i2 \
-  -- set Bridge vmbr2 mirrors=@101m2</code></pre>
-</doc-codeblock></div>
-<p>Replace the link names, ids and bridge name according to your setup.
-Next we need to edit the configuration file of Suricata located at <code v-pre>/etc/suricata/suricata.yaml</code>:</p>
-<ol>
-<li>Add our IP ranges to the <code v-pre>HOME_NET</code> variable under <code v-pre>vars</code> to hold <code v-pre>[172.16.0.0/24,172.16.100.0/24]</code>.</li>
-<li>Change the interface under <code v-pre>af-packet</code> from <code v-pre>eth0</code> to the monitoring interface. I added both <code v-pre>mirrorInt</code> and <code v-pre>mirrorAD</code> as an interface and assigned it a <code v-pre>cluster-id</code> of 99 and 100 respectively.</li>
-<li>Change the default rule path under <code v-pre>default-rule-path</code> to <code v-pre>/etc/suricata/rules</code> and add another <code v-pre>rule-files</code> value for any local rules (e.g. <code v-pre>local.rules</code>).</li>
-<li>Create the custom rule file under <code v-pre>/etc/suricata/rules/local.rules</code>. Here we can place our custom rules we created earlier.</li>
-</ol>
-<p>Finally we can restart Suricata on the container and monitor the two added interfaces. Any alerts will be logged to <code v-pre>fast.log</code>.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ systemctl enable suricata
-$ systemctl restart suricata
-$ suricata -i mirrorInt -i mirrorAD &amp;
+<pre translate="no" class="language-yaml"><code v-pre class="language-yaml">ludus:
+  - vm_name: &quot;-NHA-DC01&quot;
+    hostname: &quot;-DC01&quot;
+    template: win2025-server-x64-tpm-template
+    vlan: 10
+    ip_last_octet: 30
+    ram_gb: 8
+    cpus: 2
+    windows:
+      sysprep: true
+  - vm_name: &quot;-NHA-DC02&quot;
+    hostname: &quot;-DC02&quot;
+    template: win2025-server-x64-tpm-template
+    vlan: 10
+    ip_last_octet: 31
+    ram_gb: 8
+    cpus: 2
+    windows:
+      sysprep: true
+  - vm_name: &quot;-NHA-SRV01&quot;
+    hostname: &quot;-SRV01&quot;
+    template: win2025-server-x64-tpm-template
+    vlan: 10
+    ip_last_octet: 32
+    ram_gb: 6
+    cpus: 2
+    windows:
+      sysprep: true
+  - vm_name: &quot;-NHA-SRV02&quot;
+    hostname: &quot;-SRV02&quot;
+    template: win2025-server-x64-tpm-template
+    vlan: 10
+    ip_last_octet: 33
+    ram_gb: 6
+    cpus: 2
+    windows:
+      sysprep: true
+  - vm_name: &quot;-NHA-SRV03&quot;
+    hostname: &quot;-SRV03&quot;
+    template: win2025-server-x64-tpm-template
+    vlan: 10
+    ip_last_octet: 34
+    ram_gb: 6
+    cpus: 2
+    windows:
+      sysprep: true
 
-$ tail /var/log/suricata/fast.log</code></pre>
+router:
+  vm_name: &quot;-router-debian12-x64&quot;
+  hostname: &quot;-router&quot;
+  template: debian-12-x64-server-template
+  ram_gb: 2
+  ram_min_gb: 1
+  cpus: 2
+
+defaults:
+  ad_domain_functional_level: Win2025
+  ad_forest_functional_level: Win2025
+  snapshot_with_RAM: true
+  stale_hours: 0
+  ad_domain_admin: domainadmin
+  ad_domain_admin_password: password
+  ad_domain_user: domainuser
+  ad_domain_user_password: password
+  ad_domain_safe_mode_password: password
+  timezone: America/New_York
+  enable_dynamic_wallpaper: true</code></pre>
 </doc-codeblock></div>
-<p>After this, we should be able to capture all traffic coming from our network in pfSense (even same-LAN traffic). One issue we are having now is that the port mirror command needs to be ran each time the container is restarted. It is possible to create a hookscript for this. Check out <a href="https://codingpackets.com/blog/proxmox-vm-bridge-port-mirror/">this post</a> to create a custom script to run at VM start and stop. Since we created a LXC, it is (at the time of writing) not possible to create hookscripts for containers, but you can always create a hookscript on the pfSense VM that creates the SPAN ports at boot for the Suricata container.</p>
-<doc-anchor-target id="conclusion">
+<p>I also made a few tweaks to the available RAM of the VMs and updated the domain/forest functional level to 2025 as well. With this file we can start building our hacker lab.</p>
+<doc-anchor-target id="ninja-hacker-academy-setup">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#conclusion">#</doc-anchor-trigger>
-        <span>Conclusion</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#ninja-hacker-academy-setup">#</doc-anchor-trigger>
+        <span>Ninja Hacker Academy Setup</span>
     </h2>
 </doc-anchor-target>
-<p>In this part we have seen how we can leverage Suricata to detect malicious traffic on our network. We have also learned how we can write our own rules based on IOCs. By implementing these custom rules, you can enhance the security of your Active Directory lab environment, gaining visibility into specific attacks and unauthorized access attempts.</p>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-callout-info"></div>
+    <div class="flex w-full py-4 border border-l-0 rounded-tr-lg rounded-br-lg doc-callout bg-callout-base-bg border-callout-base-border" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-callout-info" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p>NHA is designed as an educational challenge where users normally work toward gaining domain admin on two domains (<code v-pre>academy.ninja.lan</code> and <code v-pre>ninja.hack</code>)</p>
+        </div>
+    </div>
+</div>
+<p>The scenario includes:</p>
+<ul>
+<li>A starting point on <code v-pre>srv01</code> at <code v-pre>10.5.10.32</code></li>
+<li>Flags hidden on each machine</li>
+<li>Up-to-date systems with Defender enabled</li>
+</ul>
+<p>Let&#x27;s create a new user for our range and start the deployment with the Ludus CLI.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ ludus user add --name Ninja --userid NHA --url https://127.0.0.1:8081
++--------+------------------+-------+---------------------------------------------+
+| USERID | PROXMOX USERNAME | ADMIN |                   API KEY                   |
++--------+------------------+-------+---------------------------------------------+
+| NHA    | Ninja            | true  |                &lt;YOUR_API_KEY&gt;               |
++--------+------------------+-------+---------------------------------------------+
+
+$ ludus range config set -f ad/NHA/providers/ludus/config.yml --user NHA
+[INFO]  Your range config has been successfully updated.
+
+$ ludus range deploy --user NHA
+[INFO]  range deploy started</code></pre>
+</doc-codeblock></div>
+<p>At the end you should see something like this:</p>
+<p><figure class="content-center">
+    <img src="/assets/images/headers/ludus-nha-range-status.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>At this point the old desktop is usually running enough VMs to sound mildly annoyed, but it manages.</p>
+<doc-anchor-target id="ansible-provisioning">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#ansible-provisioning">#</doc-anchor-trigger>
+        <span>Ansible Provisioning</span>
+    </h3>
+</doc-anchor-target>
+<p>With our range deployed, we can start setting up the actual environment. With <a href="https://docs.ansible.com/">Ansible</a> we can provision our whole infrastructure using custom playbooks. Using the available playbooks from <a href="https://github.com/Orange-Cyberdefense/GOAD">Orange-Cyberdefense</a>, I changed most of them to be compatible with the latest version of Ansible.</p>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-callout-info"></div>
+    <div class="flex w-full py-4 border border-l-0 rounded-tr-lg rounded-br-lg doc-callout bg-callout-base-bg border-callout-base-border" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-callout-info" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p>In the future I was thinking of publishing them on my <a href="https://github.com/bytebl33d">GitHub</a>, but they might already be there ;)</p>
+        </div>
+    </div>
+</div>
+<p>We proceed with the provisioning and install the required collections:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ ansible-galaxy collection install ansible.windows
+$ ansible-galaxy collection install community.general
+$ ansible-galaxy collection install community.windows</code></pre>
+</doc-codeblock></div>
+<p>Hop into the <code v-pre>ansible</code> directory where all the playbooks are located and run them all.</p>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-callout-info"></div>
+    <div class="flex w-full py-4 border border-l-0 rounded-tr-lg rounded-br-lg doc-callout bg-callout-base-bg border-callout-base-border" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-callout-info" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p>If you get the error <code v-pre>Ansible could not initialize the preferred locale: unsupported locale setting</code>, check your locales with <code v-pre>locale -a</code> and set it with <code v-pre>export LC_ALL=&lt;YOUR_LOCALE&gt;.utf8</code></p>
+        </div>
+    </div>
+</div>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ cd ansible
+$ ansible-playbook -i ../ad/NHA/data/inventory -i ../globalsettings.ini main.yml</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="connecting-to-the-lab">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#connecting-to-the-lab">#</doc-anchor-trigger>
+        <span>Connecting to the Lab</span>
+    </h2>
+</doc-anchor-target>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ ludus user wireguard --user NHAc531df | tee ludus-wg.conf
+[Interface]
+PrivateKey = &lt;PRIVATE_KEY&gt;
+Address = 198.51.100.5/32
+
+[Peer]
+PublicKey = &lt;PUBLIC_KEY&gt;
+Endpoint = 192.168.128.10:51820
+AllowedIPs = 10.5.0.0/16, 198.51.100.1/32
+PersistentKeepalive = 25</code></pre>
+</doc-codeblock></div>
+<p>Copy this file to your client and run WireGuard:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ wg-quick up ./ludus-wg.conf</code></pre>
+</doc-codeblock></div>
+<p>You can optionally narrow <code v-pre>AllowedIPs</code> down to only the <code v-pre>srv01</code> host for better isolation. And just like that, you’re securely connected to your newly deployed cyber range.</p>
 
                             
                             <!-- Required only on API pages -->
@@ -418,20 +451,13 @@ $ tail /var/log/suricata/fast.log</code></pre>
                         
                             <nav id="retype-nextprev" class="print:hidden flex mt-14">
                                 <div class="w-1/2">
-                                    <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../blog/sliver-evasion/">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
-                                        <span>
-                                            <span class="block text-xs font-normal text-base-text-muted">Newer</span>
-                                            <span class="block mt-1">Anti-​Virus Evasion with Sliver C​2</span>
-                                        </span>
-                                    </a>
                                 </div>
                         
                                 <div class="w-1/2">
-                                    <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../blog/proxmox-homelab-part3/">
+                                    <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-l rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../blog/proxmox-homelab-part5/">
                                         <span>
                                             <span class="block text-xs font-normal text-right text-base-text-muted">Older</span>
-                                            <span class="block mt-1">Active Directory Home Lab with Proxmox - Part 3</span>
+                                            <span class="block mt-1">Active Directory Home Lab with Proxmox - Part 5</span>
                                         </span>
                                         <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                     </a>
@@ -472,6 +498,6 @@ $ tail /var/log/suricata/fast.log</code></pre>
 
     <div id="retype-overlay-target"></div>
 
-    <script data-cfasync="false">window.__DOCS__ = { "title": "Active Directory Home Lab with Proxmox - Part 4", level: 2, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+    <script data-cfasync="false">window.__DOCS__ = { "title": "Building a Cyber Range with Ludus", level: 2, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
 </body>
 </html>
