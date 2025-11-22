@@ -6,7 +6,7 @@ icon: info
 
 ![](/assets/images/bio-photo.jpg)
 
-Hi, I'm s3rp3nt — a software and cybersecurity enthusiast with a deep interest in building robust software, understanding networks, and exploring the ever-evolving landscape of digital security. My journey into this field began during my studies, where I discovered a love for coding, solving complex problems, and securing systems.
+Hi, I'm 0xSerpent — a software and cybersecurity enthusiast with a deep interest in building robust software, understanding networks, and exploring the ever-evolving landscape of digital security. My journey into this field began during my studies, where I discovered a love for coding, solving complex problems, and securing systems.
 
 In my free time, you'll often find me sharpening my skills through CTF competitions or platforms like HackTheBox and TryHackMe, where I tackle real-world challenges and hone my expertise.
 
