@@ -60,10 +60,10 @@ While browsing the “Environment Guides,” I stumbled upon the **Game Of Activ
 
 That meant modifying the original Ansible scripts. Thankfully, it wasn’t as dramatic as it sounds, but it did feel like giving the templates a well-deserved modern update. My current ludus range configuration looks as follows:
 
-```yml
+```yaml
 ludus:
-  - vm_name: "{{ range_id }}-NHA-DC01"
-    hostname: "{{ range_id }}-DC01"
+  - vm_name: "{{ '{{ range_id }}' }}-NHA-DC01"
+    hostname: "{{ '{{ range_id }}' }}-DC01"
     template: win2025-server-x64-tpm-template
     vlan: 10
     ip_last_octet: 30
@@ -71,8 +71,8 @@ ludus:
     cpus: 2
     windows:
       sysprep: true
-  - vm_name: "{{ range_id }}-NHA-DC02"
-    hostname: "{{ range_id }}-DC02"
+  - vm_name: "{{ '{{ range_id }}' }}-NHA-DC02"
+    hostname: "{{ '{{ range_id }}' }}-DC02"
     template: win2025-server-x64-tpm-template
     vlan: 10
     ip_last_octet: 31
@@ -80,8 +80,8 @@ ludus:
     cpus: 2
     windows:
       sysprep: true
-  - vm_name: "{{ range_id }}-NHA-SRV01"
-    hostname: "{{ range_id }}-SRV01"
+  - vm_name: "{{ '{{ range_id }}' }}-NHA-SRV01"
+    hostname: "{{ '{{ range_id }}' }}-SRV01"
     template: win2025-server-x64-tpm-template
     vlan: 10
     ip_last_octet: 32
@@ -89,8 +89,8 @@ ludus:
     cpus: 2
     windows:
       sysprep: true
-  - vm_name: "{{ range_id }}-NHA-SRV02"
-    hostname: "{{ range_id }}-SRV02"
+  - vm_name: "{{ '{{ range_id }}' }}-NHA-SRV02"
+    hostname: "{{ '{{ range_id }}' }}-SRV02"
     template: win2025-server-x64-tpm-template
     vlan: 10
     ip_last_octet: 33
@@ -98,8 +98,8 @@ ludus:
     cpus: 2
     windows:
       sysprep: true
-  - vm_name: "{{ range_id }}-NHA-SRV03"
-    hostname: "{{ range_id }}-SRV03"
+  - vm_name: "{{ '{{ range_id }}' }}-NHA-SRV03"
+    hostname: "{{ '{{ range_id }}' }}-SRV03"
     template: win2025-server-x64-tpm-template
     vlan: 10
     ip_last_octet: 34
@@ -109,8 +109,8 @@ ludus:
       sysprep: true
 
 router:
-  vm_name: "{{ range_id }}-router-debian12-x64"
-  hostname: "{{ range_id }}-router"
+  vm_name: "{{ '{{ range_id }}' }}-router-debian12-x64"
+  hostname: "{{ '{{ range_id }}' }}-router"
   template: debian-12-x64-server-template
   ram_gb: 2
   ram_min_gb: 1
@@ -126,20 +126,20 @@ defaults:
   ad_domain_user: domainuser
   ad_domain_user_password: password
   ad_domain_safe_mode_password: password
-  timezone: America/New_York
+  timezone: Europe/Brussels
   enable_dynamic_wallpaper: true
 ```
 
 I also made a few tweaks to the available RAM of the VMs and updated the domain/forest functional level to 2025 as well. With this file we can start building our hacker lab.
 
-## Ninja Hacker Academy Setup
-
-!!!info
-NHA is designed as an educational challenge where users normally work toward gaining domain admin on two domains (`academy.ninja.lan` and `ninja.hack`)
+!!!warning
+If the build process fails, as happened to me :(, it might be because of unsufficient system resources. Just rerun the script or reboot the VMs and try again.
 !!!
 
-The scenario includes:
-- A starting point on `srv01` at `10.5.10.32`
+
+## Ninja Hacker Academy Setup
+NHA is designed as an educational challenge where users normally work toward gaining domain admin on two domains (`academy.ninja.lan` and `ninja.hack`). The scenario includes:
+- A starting point on `WEB` at `10.2.10.32`
 - Flags hidden on each machine
 - Up-to-date systems with Defender enabled
 
@@ -147,10 +147,11 @@ Let's create a new user for our range and start the deployment with the Ludus CL
 
 ```console
 $ ludus user add --name Ninja --userid NHA --url https://127.0.0.1:8081
+[INFO]  Adding user to Ludus, this can take up to a minute. Please wait.
 +--------+------------------+-------+---------------------------------------------+
 | USERID | PROXMOX USERNAME | ADMIN |                   API KEY                   |
 +--------+------------------+-------+---------------------------------------------+
-| NHA    | Ninja            | true  |                <YOUR_API_KEY>               |
+| NHA    | ninja            | false |                <YOUR_API_KEY>               |
 +--------+------------------+-------+---------------------------------------------+
 
 $ ludus range config set -f ad/NHA/providers/ludus/config.yml --user NHA
@@ -159,6 +160,10 @@ $ ludus range config set -f ad/NHA/providers/ludus/config.yml --user NHA
 $ ludus range deploy --user NHA
 [INFO]  range deploy started
 ```
+
+You can follow the deployment process with the `range logs -f` command:
+
+![](/assets/images/homelab/ludus-range-deploy-logs.png)
 
 At the end you should see something like this:
 
@@ -174,12 +179,40 @@ With our range deployed, we can start setting up the actual environment. With [A
 In the future I was thinking of publishing them on my [GitHub](https://github.com/bytebl33d), but they might already be there ;)
 !!!
 
-We proceed with the provisioning and install the required collections:
+We proceed with the provisioning and install the required collections (but these should already be installed with ludus):
 
 ```console
 $ ansible-galaxy collection install ansible.windows
+$ ansible-galaxy collection install microsoft.ad
 $ ansible-galaxy collection install community.general
 $ ansible-galaxy collection install community.windows
+```
+
+Before continuing, make sure that your inventory file at `workspace/ludus/inventory` matches the IP addresses from your range. In my case the range starts with `10.2.10.x` so I will update it accordingly:
+
+```console
+$ cat NHA/workspace/ludus/inventory
+[default]
+; Note: ansible_host *MUST* be an IPv4 address or setting things like DNS
+; servers will break.
+; ------------------------------------------------
+; ninja.local
+; ------------------------------------------------
+dc01 ansible_host=10.2.10.30 dns_domain=dc01 dns_domain=dc02 dict_key=dc01
+dc02 ansible_host=10.2.10.31 dns_domain=dc02 dict_key=dc02
+srv01 ansible_host=10.2.10.32 dns_domain=dc02 dict_key=srv01
+srv02 ansible_host=10.2.10.33 dns_domain=dc02 dict_key=srv02
+srv03 ansible_host=10.2.10.34 dns_domain=dc02 dict_key=srv03
+
+
+[all:vars]
+force_dns_server=no
+dns_server=10.2.10.254
+
+dns_server_forwarder=10.2.10.254
+
+ansible_user=localuser
+ansible_password=password
 ```
 
 Hop into the `ansible` directory where all the playbooks are located and run them all.
@@ -189,16 +222,36 @@ If you get the error `Ansible could not initialize the preferred locale: unsuppo
 !!!
 
 ```console
-$ cd ansible
-$ ansible-playbook -i ../ad/NHA/data/inventory -i ../globalsettings.ini main.yml
+$ cd NHA/ansible
+$ ansible-playbook -i ../ad/data/inventory -i ../workspace/ludus/inventory -i ../globalsettings.ini main.yml
 ```
 
-This will take some time to finish.
+![](/assets/images/homelab/ansible-ludus.gif)
+
+Ignore the warnings as Ansible goes brrr... 
+
+This will take some time for it to complete — a good opportunity to refresh your coffee while automation does its thing. In case we ever make a change to one of the playbooks or tasks we can also just run a single one:
+
+```console
+$ ansible-playbook -i ../ad/data/inventory -i ../workspace/ludus/inventory -i ../globalsettings.ini ad-trusts.yml
+```
+
+After it is finished provisioning our lab, we can take snapshots via the proxmox web UI or SSH run the following ludus command (make sure your disks allow snapshots)
+
+```console
+$ ludus --user NHA snapshot create clean-setup -d "Clean NHA setup after ansible run"
+[INFO]  Successfully created snapshot 'clean-setup' for VM 118
+[INFO]  Successfully created snapshot 'clean-setup' for VM 119
+[INFO]  Successfully created snapshot 'clean-setup' for VM 120
+[INFO]  Successfully created snapshot 'clean-setup' for VM 121
+[INFO]  Successfully created snapshot 'clean-setup' for VM 122
+[INFO]  Successfully created snapshot 'clean-setup' for VM 123
+```
 
 ## Connecting to the Lab
 
 ```console 
-$ ludus user wireguard --user NHAc531df | tee ludus-wg.conf
+$ ludus user wireguard --user NHA | tee ludus-wg.conf
 [Interface]
 PrivateKey = <PRIVATE_KEY>
 Address = 198.51.100.5/32
@@ -206,7 +259,7 @@ Address = 198.51.100.5/32
 [Peer]
 PublicKey = <PUBLIC_KEY>
 Endpoint = 192.168.128.10:51820
-AllowedIPs = 10.5.0.0/16, 198.51.100.1/32
+AllowedIPs = 10.2.0.0/16, 198.51.100.1/32
 PersistentKeepalive = 25
 ```
 
@@ -215,4 +268,20 @@ Copy this file to your client and run WireGuard:
 ```console
 $ wg-quick up ./ludus-wg.conf
 ```
-You can optionally narrow `AllowedIPs` down to only the `srv01` host for better isolation. And just like that, you’re securely connected to your newly deployed cyber range.
+You can optionally narrow `AllowedIPs` down to only the `srv01` host for better isolation. And just like that, you’re securely connected to your newly deployed cyber range. Let's do a quick test with one of the local admin passwords to see if everything works fine.
+
+```console
+$ evil-winrm-py -i SQL.academy.ninja.lan -u 'Administrator' -p '978i2pF43UqsdqsdJ-qsd'
+          _ _            _                             
+  _____ _(_| |_____ __ _(_)_ _  _ _ _ __ ___ _ __ _  _ 
+ / -_\ V | | |___\ V  V | | ' \| '_| '  |___| '_ | || |
+ \___|\_/|_|_|    \_/\_/|_|_||_|_| |_|_|_|  | .__/\_, |
+                                            |_|   |__/  v1.5.0
+
+[*] Connecting to 'SQL.academy.ninja.lan:5985' as 'Administrator'
+evil-winrm-py PS C:\Users\Administrator.SQL\Documents>
+```
+
+## Final Thoughts
+
+Turning an old desktop into a fully automated Active Directory cyber range has been one of the most satisfying upgrades to my homelab so far. With Proxmox handling the virtualization and Ludus orchestrating everything, I now have a modern, customizable environment for testing scenarios, experimenting with configurations, and learning in a safe space.
