@@ -8,13 +8,13 @@ categories: ['Active-Directory', 'Homelab']
 
 ![](/assets/images/headers/ludus.png)
 
-Ever since I built my first homelab, I’ve been obsessed with having my own dedicated cyber range — my little digital fight club where I can break things, fix things, automate things, and then do it all again. True definition of insanity right here. But I didn’t want to risk nuking my daily-driver machine.
+Ever since I built my first homelab, I wanted to create my own dedicated cyber range - my little digital playground where I can break things, fix things, automate things, and then do it all over again. True definition of insanity right here. But I didn’t want to risk nuking my daily-driver machine.
 
-Then one day I looked over at my ancient desktop — the one that wheezes when you open more than three Chrome tabs (I actually needed to replace a few faulty fans) — and thought:
+Then one day I looked over at my ancient desktop — the one that wheezes when you open up more than three Chrome tabs (I actually needed to replace a few faulty fans) and thought:
 
-> “Bestie, you’re getting a glow-up.”
+> "Bestie, you’re getting a glow-up."
 
-A quick dive into the documentation rabbit hole later, I found [Ludus](https://docs.ludus.cloud/), an open-source framework that basically said, “I heard you hate clicking through installers manually, let me cook.”
+A quick dive into the documentation rabbit hole later, I found [Ludus](https://docs.ludus.cloud/), an open-source framework that basically said, "I heard you hate clicking through installers manually, let me cook."
 
 ## Why Ludus?
 I chose Ludus for a few reasons:
@@ -39,7 +39,7 @@ $ ludus templates list
 | debian-12-x64-server-template      | FALSE |
 | kali-x64-desktop-template          | FALSE |
 | win11-22h2-x64-enterprise-template | FALSE |
-| win2022-server-x64-template        | FALSE |
+| win2022-server-x64-template        | True  |
 +------------------------------------+-------+
 ```
 
@@ -82,7 +82,7 @@ ludus:
       sysprep: true
   - vm_name: "{{ '{{ range_id }}' }}-NHA-SRV01"
     hostname: "{{ '{{ range_id }}' }}-SRV01"
-    template: win2025-server-x64-tpm-template
+    template: win2022-server-x64-template 
     vlan: 10
     ip_last_octet: 32
     ram_gb: 6
@@ -132,14 +132,14 @@ defaults:
 
 I also made a few tweaks to the available RAM of the VMs and updated the domain/forest functional level to 2025 as well. With this file we can start building our hacker lab.
 
-!!!warning
-If the build process fails, as happened to me :(, it might be because of unsufficient system resources. Just rerun the script or reboot the VMs and try again.
+!!!info
+For the lab I will be building, we also have to change one of the servers to Windows 2022. At the time of writing, the lab cannot be solved because of small changes in the newer versions of Windows.
 !!!
 
 
 ## Ninja Hacker Academy Setup
 NHA is designed as an educational challenge where users normally work toward gaining domain admin on two domains (`academy.ninja.lan` and `ninja.hack`). The scenario includes:
-- A starting point on `WEB` at `10.2.10.32`
+- A starting point on `WEB` (SRV01)
 - Flags hidden on each machine
 - Up-to-date systems with Defender enabled
 
@@ -191,7 +191,7 @@ $ ansible-galaxy collection install community.windows
 Before continuing, make sure that your inventory file at `workspace/ludus/inventory` matches the IP addresses from your range. In my case the range starts with `10.2.10.x` so I will update it accordingly:
 
 ```console
-$ cat NHA/workspace/ludus/inventory
+$ cat workspace/inventory
 [default]
 ; Note: ansible_host *MUST* be an IPv4 address or setting things like DNS
 ; servers will break.
@@ -223,7 +223,7 @@ If you get the error `Ansible could not initialize the preferred locale: unsuppo
 
 ```console
 $ cd NHA/ansible
-$ ansible-playbook -i ../ad/data/inventory -i ../workspace/ludus/inventory -i ../globalsettings.ini main.yml
+$ ansible-playbook -i ../ad/NHA/data/inventory -i ../workspace/inventory -i ../globalsettings.ini main.yml
 ```
 
 ![](/assets/images/homelab/ansible-ludus.gif)
@@ -233,7 +233,7 @@ Ignore the warnings as Ansible goes brrr...
 This will take some time for it to complete — a good opportunity to refresh your coffee while automation does its thing. In case we ever make a change to one of the playbooks or tasks we can also just run a single one:
 
 ```console
-$ ansible-playbook -i ../ad/data/inventory -i ../workspace/ludus/inventory -i ../globalsettings.ini ad-trusts.yml
+$ ansible-playbook -i ../ad/NHA/data/inventory -i ../workspace/inventory -i ../globalsettings.ini ad-trusts.yml
 ```
 
 After it is finished provisioning our lab, we can take snapshots via the proxmox web UI or SSH run the following ludus command (make sure your disks allow snapshots)

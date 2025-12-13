@@ -18,4 +18,4 @@ This blog is my space to dive into the world of cybersecurity and software devel
 
 Whether you're a seasoned professional or just beginning your journey in cybersecurity, I hope you’ll find value in these posts.
 
-Let’s Connect! Do you have any comments, questions, or feedback? Don’t hesitate to reach out, I’d love to hear from you!
+ [![](https://www.hackthebox.com/badge/image/888065)](https://app.hackthebox.com/users/888065)

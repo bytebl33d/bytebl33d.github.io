@@ -6,8 +6,6 @@ meta:
 ---
 # Welcome
 
-Below you can find reference links to my blog posts, writeups and educational content.
-
 [!ref icon="globe"](/blog)
 
 [!ref icon="package"](/categories/hackthebox/)
@@ -25,7 +23,7 @@ Below you can find reference links to my blog posts, writeups and educational co
     <div class="text-xs font-semibold text-blue-500 uppercase dark:text-blue-400">Active-Directory • Homelab</div>
     <div class="mt-2 text-lg font-semibold leading-snug text-gray-900 dark:text-white md:text-xl">Building a Cyber Range with Ludus</div>
     <div class="line-clamp-3">
-      <p class="hidden mt-2 md:block">Ever since I built my first homelab, I’ve been obsessed with having my own dedicated cyber range — my little digital fight club where I can break things..</p>
+      <p class="hidden mt-2 md:block">Ever since I built my first homelab, I wanted to create my own dedicated cyber range - my little digital playground where I can break things, fix things...</p>
     </div>
     <div class="flex mt-3 items-center">
       <div class="text-sm text-gray-500 dark:text-dark-350">
