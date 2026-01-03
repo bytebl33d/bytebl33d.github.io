@@ -2,11 +2,12 @@
 layout: blog
 title: Adding Endpoint Detection to our Cyber Range
 seo_title: Setting up Endpoint Detection and Response (EDR) in my Active Directory (AD) Cyber Range Lab with Proxmox VE and Ludus
-date: 2025-11-22T15:38
+date: 2026-01-03T11:00:00
 categories:
   - Active-Directory
   - Homelab
 ---
+![](/assets/images/headers/MDE.png)
 
 As a security analyst, you will likely come in contact with Antivirus, SIEMs, EDR, XDR and Cloud products. To better understand these products it is beneficial to create your own detection lab. In this post, I will go over the practical steps to improve my current lab setup to add Microsoft Defender for Endpoint as our EDR solution.
 
@@ -44,7 +45,7 @@ Then under the Devices section, I made a rule to match all endpoints that end wi
 ![](/assets/images/homelab/mde-automated-response.png)
 
 ## Testing Detection Capabilities
-For the attack scenario, my lab includes a MSSQL Server. Suppose for this scenario, we gained access to the database as the `sa` user. Let's execute a simple command with the `xp_cmdshell` stored procedure.
+To test our new EDR, let's assume we've gained `sa` access to a MSSQL server. Let's execute a simple command with the `xp_cmdshell` stored procedure.
 
 ![](/assets/images/homelab/mde-xp_cmdshell.png)
 
@@ -52,20 +53,20 @@ In this case, the database is running as `NT AUTHORITY\Network Service`. Over in
 
 ![](/assets/images/homelab/mde-xp_cmdshell-log.png)
 
-At this point, nothing is particularly suspicious. We’re technically just using built-in MSSQL functionality. So MDE has not created any alerts just yet. Let's step it up a notch and try to run a few more commands.
+At this point, nothing is particularly suspicious. We’re technically just using built-in MSSQL functionality, and since `xp_cmdshell` is a legitimate feature, it doesn't always trigger an immediate "High" severity alert. Let's step it up a notch and try to run a few more commands.
 
 Since we’re running as a service account, we often inherit _spicy_ local privileges that pair very nicely with classic Potato attacks. So naturally, the next logical move is to try uploading a Netcat binary to the target, because subtlety is overrated.
 
 ![](/assets/images/homelab/mde-nc.png)
 
-As expected, this attempt gets **immediately nuked** by MDE. The binary is signatured, Defender clocked it instantly, and the dream is over before it even started.
+As expected, this attempt gets **immediately nuked** by MDE. The binary is signatured, Defender clocked it instantly, and the dream is over before it even started. The file was deleted before it could even be executed.
 
 ![](/assets/images/homelab/mde-nc-incident.png)
 
 Let’s pivot to something a little more stealthy and use a custom reverse PowerShell cradle.
 
 !!!info
-This PowerShell cradle is a small adaptation to one of the public cradles on [PayloadAllTheThings](https://github.com/swisskyrepo/PayloadsAllTheThings) to avoid signature detections.
+This PowerShell cradle is a small adaptation to one of the public cradles on [PayloadAllTheThings](https://github.com/swisskyrepo/PayloadsAllTheThings) to avoid basic AMSI triggers.
 !!!
 
 ```console
@@ -84,9 +85,10 @@ And just like that we got a reverse shell without being blocked by MDE. While De
 
 ![](/assets/images/homelab/mde-revshell-logs.png)
 
+We can see the exact Base64 command line, the network connection to the attacker IP, and the subsequent commands run inside the shell.
 ## Conclusion
 Microsoft Defender for Endpoint is undeniably a strong security product. As demonstrated, it is highly effective at detecting and outright blocking known threats, particularly those that rely on well-known tooling, static signatures and behavioral analysis. However, as this lab also shows, detection does not always equate to prevention. When attackers adapt their techniques and move toward custom or living-off-the-land approaches, MDE may allow execution while still generating telemetry and alerts.
 
 This highlights an important takeaway: MDE is not a silver bullet. With sufficient adaptation, creativity, and an understanding of how detections work, it is entirely possible to bypass certain protections. That does not make MDE ineffective, it simply reinforces the reality that endpoint security is an ongoing cat-and-mouse game rather than a solved problem.
 
-In a future post, I will take this a step further and explore how Microsoft Defender for Endpoint can be bypassed using a custom Sliver stager, focusing on evasion techniques and the resulting detection artifacts.
+In the **next post**, we’re going deeper. I’ll demonstrate how to bypass MDE’s behavioral engines using a **custom Sliver stager** and analyze the resulting artifacts in the Advanced Hunting console. Stay tuned!
