@@ -4,6 +4,7 @@ title:  "Anti-Virus Evasion with Sliver C2"
 seo_title: "Using DInvoke and Sliver C2 beacons to evade Anti-Virus and Escalate Privileges"
 date:   2025-01-04T09:00
 categories: ['Maldev', 'Windows', 'Homelab']
+typora-root-url: ./..
 ---
 
 ![](/assets/images/headers/Sliver-Purple.jpg)

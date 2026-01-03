@@ -1,9 +1,11 @@
 ---
 layout: blog
-title:  "Building a Cyber Range with Ludus"
-seo_title: "Setting up and Active Directory (AD) Cyber Range Lab with Proxmox VE and Ludus"
-date:   2025-11-22T15:38
-categories: ['Active-Directory', 'Homelab']
+title: Building a Cyber Range with Ludus
+seo_title: Setting up and Active Directory (AD) Cyber Range Lab with Proxmox VE and Ludus
+date: 2025-11-22T15:38
+categories:
+  - Active-Directory
+  - Homelab
 ---
 
 ![](/assets/images/headers/ludus.png)

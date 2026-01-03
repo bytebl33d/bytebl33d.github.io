@@ -2,6 +2,7 @@
 permalink: /about/
 title: "About"
 icon: info
+typora-root-url: ./
 ---
 
 ![](/assets/images/bio-photo.jpg)

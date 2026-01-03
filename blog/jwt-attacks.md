@@ -10,6 +10,7 @@ categories: ['Web-Exploitation']
 Incorrect handling of JSON Web Tokens (JWTs) can leave a website vulnerable to a variety of attacks. To understand these attacks we first have to know what a JWT token is.
 
 ## What is a JSON Web Token?
+
 JSON Web Tokens are widely used for authentication, session management, and access control purposes in web applications. It is a compact and self-contained way to securely transmit data ("claims") between server and client as a JSON object. These tokens can be signed using a secret or a public/private key pair. A typical JWT token consists of 3 main parts:
 - **Header**: contains algorithm and type
 - **Payload**: contains user information
