@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Blog</title>
+    <title>bytebl33d Blog</title>
     <link>https://bytebl33d.github.io/blog/</link>
-    <description>Blog</description>
     <copyright>© Copyright 2026. All rights reserved.</copyright>
     <lastBuildDate>Sat, 03 Jan 2026 11:00:00 GMT</lastBuildDate>
-    <generator>https://retype.com</generator>
+    <generator>Retype 4.4.0</generator>
     <atom:link rel="self" type="application/rss+xml" href="https://bytebl33d.github.io/blog/feed.xml" />
     <item>
       <title>Adding Endpoint Detection to our Cyber Range</title>
       <guid isPermaLink="true">https://bytebl33d.github.io/blog/endpoint-detection-lab/</guid>
-      <description>As a security analyst, you will likely come in contact with Antivirus, SIEMs, EDR, XDR and Cloud products.</description>
+      <description>As a security analyst, you will likely come in contact with Antivirus, SIEMs, EDR, XDR and Cloud products. To better understand these products it is</description>
       <pubDate>Sat, 03 Jan 2026 11:00:00 GMT</pubDate>
       <category domain="https://bytebl33d.github.io/categories/active-directory/">Active-Directory</category>
       <category domain="https://bytebl33d.github.io/categories/homelab/">Homelab</category>
@@ -19,7 +18,7 @@
     <item>
       <title>Building a Cyber Range with Ludus</title>
       <guid isPermaLink="true">https://bytebl33d.github.io/blog/ludus-cyber-range/</guid>
-      <description>Ever since I built my first homelab, I wanted to create my own dedicated cyber range - my little digital playground where I can break things, fix...</description>
+      <description>Ever since I built my first homelab, I wanted to create my own dedicated cyber range - my little digital playground where I can break things, fix things,</description>
       <pubDate>Sat, 22 Nov 2025 15:38:00 GMT</pubDate>
       <category domain="https://bytebl33d.github.io/categories/active-directory/">Active-Directory</category>
       <category domain="https://bytebl33d.github.io/categories/homelab/">Homelab</category>
@@ -27,7 +26,7 @@
     <item>
       <title>Active Directory Home Lab with Proxmox - Part 5</title>
       <guid isPermaLink="true">https://bytebl33d.github.io/blog/proxmox-homelab-part5/</guid>
-      <description>Connecting Linux machines to an Active Directory (AD) domain can streamline user authentication and management in mixed-environment networks.</description>
+      <description>Connecting Linux machines to an Active Directory (AD) domain can streamline user authentication and management in mixed-environment networks. In this post</description>
       <pubDate>Sun, 01 Jun 2025 16:38:00 GMT</pubDate>
       <category domain="https://bytebl33d.github.io/categories/active-directory/">Active-Directory</category>
       <category domain="https://bytebl33d.github.io/categories/homelab/">Homelab</category>
@@ -35,7 +34,7 @@
     <item>
       <title>Anti-Virus Evasion with Sliver C2</title>
       <guid isPermaLink="true">https://bytebl33d.github.io/blog/sliver-evasion/</guid>
-      <description>My recent exploration into C2 frameworks led me to BishopFox's Sliver project.</description>
+      <description>My recent exploration into C2 frameworks led me to BishopFox's Sliver project. While its capabilities are impressive, I quickly encountered a common</description>
       <pubDate>Sat, 04 Jan 2025 09:00:00 GMT</pubDate>
       <category domain="https://bytebl33d.github.io/categories/maldev/">Maldev</category>
       <category domain="https://bytebl33d.github.io/categories/windows/">Windows</category>
@@ -44,7 +43,7 @@
     <item>
       <title>Active Directory Home Lab with Proxmox - Part 4</title>
       <guid isPermaLink="true">https://bytebl33d.github.io/blog/proxmox-homelab-part4/</guid>
-      <description>In this part of our Active Directory Home Lab series, we'll focus on enhancing the security and visibility of our environment by adding network...</description>
+      <description>In this part of our Active Directory Home Lab series, we'll focus on enhancing the security and visibility of our environment by adding network monitoring.</description>
       <pubDate>Tue, 03 Sep 2024 16:38:00 GMT</pubDate>
       <category domain="https://bytebl33d.github.io/categories/active-directory/">Active-Directory</category>
       <category domain="https://bytebl33d.github.io/categories/homelab/">Homelab</category>
@@ -52,7 +51,7 @@
     <item>
       <title>Active Directory Home Lab with Proxmox - Part 3</title>
       <guid isPermaLink="true">https://bytebl33d.github.io/blog/proxmox-homelab-part3/</guid>
-      <description>We are now going to add some simple misconfigurations to our AD Lab.</description>
+      <description>We are now going to add some simple misconfigurations to our AD Lab. In the final section we will verify them by targeting our network from an outside</description>
       <pubDate>Sat, 30 Mar 2024 18:38:00 GMT</pubDate>
       <category domain="https://bytebl33d.github.io/categories/active-directory/">Active-Directory</category>
       <category domain="https://bytebl33d.github.io/categories/homelab/">Homelab</category>
@@ -60,7 +59,7 @@
     <item>
       <title>Active Directory Home Lab with Proxmox - Part 2</title>
       <guid isPermaLink="true">https://bytebl33d.github.io/blog/proxmox-homelab-part2/</guid>
-      <description>In this post, we're diving into the setup of Windows virtual machines (VMs) in a Proxmox home lab, with the ultimate goal of building an Active...</description>
+      <description>In this post, we're diving into the setup of Windows virtual machines (VMs) in a Proxmox home lab, with the ultimate goal of building an Active Directory</description>
       <pubDate>Wed, 27 Mar 2024 15:30:00 GMT</pubDate>
       <category domain="https://bytebl33d.github.io/categories/active-directory/">Active-Directory</category>
       <category domain="https://bytebl33d.github.io/categories/homelab/">Homelab</category>
@@ -68,7 +67,7 @@
     <item>
       <title>Active Directory Home Lab with Proxmox - Part 1</title>
       <guid isPermaLink="true">https://bytebl33d.github.io/blog/proxmox-homelab-part1/</guid>
-      <description>In this post, I'll walk you through setting up my personal homelab - a project that serves both as a hands-on learning experience and as a future...</description>
+      <description>In this post, I'll walk you through setting up my personal homelab - a project that serves both as a hands-on learning experience and as a future</description>
       <pubDate>Tue, 20 Feb 2024 15:30:00 GMT</pubDate>
       <category domain="https://bytebl33d.github.io/categories/active-directory/">Active-Directory</category>
       <category domain="https://bytebl33d.github.io/categories/homelab/">Homelab</category>
@@ -76,14 +75,14 @@
     <item>
       <title>Attacking JSON Web Tokens</title>
       <guid isPermaLink="true">https://bytebl33d.github.io/blog/jwt-attacks/</guid>
-      <description>Incorrect handling of JSON Web Tokens (JWTs) can leave a website vulnerable to a variety of attacks.</description>
+      <description>Incorrect handling of JSON Web Tokens (JWTs) can leave a website vulnerable to a variety of attacks. To understand these attacks we first have to know what</description>
       <pubDate>Sat, 02 Sep 2023 13:22:00 GMT</pubDate>
       <category domain="https://bytebl33d.github.io/categories/web-exploitation/">Web-Exploitation</category>
     </item>
     <item>
       <title>Web Fuzzing with FFUF</title>
       <guid isPermaLink="true">https://bytebl33d.github.io/blog/web-fuzzing-with-ffuf/</guid>
-      <description>Fuzzing is "the art of automatic bug finding", as described by the OWASP community.</description>
+      <description>Fuzzing is "the art of automatic bug finding", as described by the OWASP community. It is the act of sending various types of input in HTTP requests,</description>
       <pubDate>Fri, 28 Jul 2023 13:22:00 GMT</pubDate>
       <category domain="https://bytebl33d.github.io/categories/web-exploitation/">Web-Exploitation</category>
     </item>
