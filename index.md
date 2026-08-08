@@ -9,7 +9,7 @@
 [!ref icon="beaker"](/categories/homelab/)
 
 ## Featured
-<a class="no-link mb-6 overflow-hidden border border-gray-200 rounded-lg md:flex dark:border-dark-700 hover:border-gray-400 dark:hover:border-dark-450" href="/writeups/hackthebox/machines/hercules/">
+<a class="no-link mb-6 overflow-hidden border border-gray-200 rounded-lg md:flex dark:border-dark-700 hover:border-gray-400 dark:hover:border-dark-450" href="/blog/obfuscation-pipeline/">
   <div class="relative shrink-0 bg-gray-300 md:w-5/12 pb-9/16 md:pb-0 dark:bg-dark-450">
     <img class="absolute object-cover w-full h-full" src="/assets/images/headers/malware.png">
   </div>
