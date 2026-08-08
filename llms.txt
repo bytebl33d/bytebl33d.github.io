@@ -1,0 +1,49 @@
+﻿# Welcome
+
+> Index
+
+- [Welcome](https://bytebl33d.github.io/index.md): Welcome
+- [About](https://bytebl33d.github.io/about.md): I'm bytebl33d, a software and cybersecurity enthusiast with a deep interest in building robust software, understanding networks, and exploring the ever-evolving landscape of digital security.
+
+## Writeups
+
+### CTF
+
+- [CSCBE24 - Bad Ransomware](https://bytebl33d.github.io/writeups/ctf/cscbe-bad-ransomware.md): Ransomware attacks are becoming more common every day. This forensics challenge goes in depth into the solution of the 'Bad Ransomware' challenge of the CSCBE24 Qualifiers dealing with a Known Plain-Text Attack on an encrypted zip archive.
+- [Hack The Boo 2023 - Forensics and Web](https://bytebl33d.github.io/writeups/ctf/htboo-forensics-reversing.md): For this years halloween I decided to participate in the Hack The Boo CTF competition from Hack the Box. Despite this being my first solo public CTF competition, I still managed to climb to leaderboards and reach top 50 (48th to be exact).
+- [HTB University CTF 2023: Brains & Bytes](https://bytebl33d.github.io/writeups/ctf/htb-university-ctf-23.md): Tasked with defending the antidote's research, a diverse group of students united against a relentless cyber onslaught. As codes clashed and defenses were tested, their collective effort stood as humanity's beacon, inching closer to safeguarding the research for the cure with every thwarted attack.
+- [LakeCTF 2023 - Scream Into The Abyss](https://bytebl33d.github.io/writeups/ctf/lake-ctf-scream-into-the-abyss.md): We are given the following files:
+
+### HackTheBox
+
+#### Machines
+
+- [Administrator (Medium)](https://bytebl33d.github.io/writeups/hackthebox/machines/administrator.md): Administrator is a medium-difficulty Windows machine designed around a complete domain compromise scenario, where credentials for a low-privileged user are provided.
+- [Blazorized (Hard)](https://bytebl33d.github.io/writeups/hackthebox/machines/blazorized.md): Blazorized is a Windows machine, starting with a website written using the Blazor .NET framework that allows downloading a DLL file that can be reverse engineered to find a JWT secret and use it to get access to the admin panel.
+- [Checker (Hard)](https://bytebl33d.github.io/writeups/hackthebox/machines/checker.md): Checker is a hard-level Linux machine running Teampass and Bookstack on separate ports. The Teampass version has a SQL injection vulnerability CVE-2023-1545 that can be exploited to obtain user password hashes.
+- [DarkCorp (Insane)](https://bytebl33d.github.io/writeups/hackthebox/machines/darkcorp.md): We start with a quick nmap scan and see that there are only two ports open.
+- [Infiltrator (Insane)](https://bytebl33d.github.io/writeups/hackthebox/machines/infiltrator.md): Infiltrator is an Insane Windows Active Directory machine that starts with a website that an attacker can scrape for possible usernames on the machine. One user doesn't have Kerberos pre-authentication enabled, and his password can be cracked.
+- [Office (Hard)](https://bytebl33d.github.io/writeups/hackthebox/machines/office.md): The "Office" machine on HackTheBox is a challenging Windows-based environment that incorporates a variety of vulnerabilities. These include exploiting a
+- [TheFrizz (Medium)](https://bytebl33d.github.io/writeups/hackthebox/machines/thefrizz.md): TheFrizz is a medium-difficulty Windows machine featuring a web application showcasing Walkerville Elementary School and a Gibbon CMS instance. The
+- [University (Insane)](https://bytebl33d.github.io/writeups/hackthebox/machines/university.md): University is an Insane Windows Active Directory machine that starts with a university webpage. The web application allows exporting user profile pages to a PDF using xhtml2pdf, which is vulnerable to a Remote Code Execution vulnerability via CVE-2023-33733.
+- [Vintage (Hard)](https://bytebl33d.github.io/writeups/hackthebox/machines/vintage.md): Vintage is a hard difficulty Windows machine designed around an assumed breach scenario, where the attacker is provided with low-privileged user credentials.
+- [Yummy (Hard)](https://bytebl33d.github.io/writeups/hackthebox/machines/yummy.md): Yummy is a hard box that starts with a Restaurant web app using Caddy web service, on port 80, where an attacker finds an arbitrary file read HTTP Location header, which is not handled and sanitized properly by the default Caddy configuration.
+
+#### Sherlocks
+
+- [ProcNet (Hard)](https://bytebl33d.github.io/writeups/hackthebox/sherlocks/procnet.md): With the increasing use of open-source Command and Control (C2) frameworks by threat actors, it has become crucial for blue teams to develop strategies to detect and mitigate these threats.
+
+## Blog
+
+- [Blog](https://bytebl33d.github.io/blog/)
+- [Building a CI/CD Pipeline for Malware Obfuscation](https://bytebl33d.github.io/blog/obfuscation-pipeline.md): It has been some time since my last post. Professional commitments, personal life, and preparation for the HackTheBox CAPE exam (more on that later) have kept me busy.
+- [Adding Endpoint Detection to our Cyber Range](https://bytebl33d.github.io/blog/endpoint-detection-lab.md): As a security analyst, you will likely come in contact with Antivirus, SIEMs, EDR, XDR and Cloud products. To better understand these products it is beneficial to create your own detection lab.
+- [Building a Cyber Range with Ludus](https://bytebl33d.github.io/blog/ludus-cyber-range.md): Ever since I built my first homelab, I wanted to create my own dedicated cyber range - my little digital playground where I can break things, fix things, automate things, and then do it all over again.
+- [Active Directory Home Lab with Proxmox - Part 5](https://bytebl33d.github.io/blog/proxmox-homelab-part5.md): Connecting Linux machines to an Active Directory (AD) domain can streamline user authentication and management in mixed-environment networks. In this post
+- [Anti-Virus Evasion with Sliver C2](https://bytebl33d.github.io/blog/sliver-evasion.md): My recent exploration into C2 frameworks led me to BishopFox's Sliver project. While its capabilities are impressive, I quickly encountered a common challenge: Windows Defender's detection of beacon payloads on my Windows VM.
+- [Active Directory Home Lab with Proxmox - Part 4](https://bytebl33d.github.io/blog/proxmox-homelab-part4.md): In this part of our Active Directory Home Lab series, we'll focus on enhancing the security and visibility of our environment by adding network monitoring. Since we're utilizing PfSense as our software-based firewall, it provides a convenient platform for deploying additional security tools.
+- [Active Directory Home Lab with Proxmox - Part 3](https://bytebl33d.github.io/blog/proxmox-homelab-part3.md): We are now going to add some simple misconfigurations to our AD Lab. In the final section we will verify them by targeting our network from an outside Linux VM.
+- [Active Directory Home Lab with Proxmox - Part 2](https://bytebl33d.github.io/blog/proxmox-homelab-part2.md): In this post, we're diving into the setup of Windows virtual machines (VMs) in a Proxmox home lab, with the ultimate goal of building an Active Directory (AD) environment.
+- [Active Directory Home Lab with Proxmox - Part 1](https://bytebl33d.github.io/blog/proxmox-homelab-part1.md): In this post, I'll walk you through setting up my personal homelab - a project that serves both as a hands-on learning experience and as a future
+- [Attacking JSON Web Tokens](https://bytebl33d.github.io/blog/jwt-attacks.md): Incorrect handling of JSON Web Tokens (JWTs) can leave a website vulnerable to a variety of attacks. To understand these attacks we first have to know what a JWT token is.
+- [Web Fuzzing with FFUF](https://bytebl33d.github.io/blog/web-fuzzing-with-ffuf.md): Fuzzing is "the art of automatic bug finding", as described by the OWASP community. It is the act of sending various types of input in HTTP requests, trying to find an input or payload that causes the application to respond in unexpected ways and reveal a vulnerability.

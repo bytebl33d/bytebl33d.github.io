@@ -4,24 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.4.0.827920368143">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.839542810150">
 
     <!-- See retype.com -->
-    <meta name="generator" content="Retype 4.4.0">
+    <meta name="generator" content="Retype 4.6.0">
 
     <!-- Primary Meta Tags -->
     <title>Active Directory Home Lab with Proxmox - Part 2</title>
     <meta name="title" content="Active Directory Home Lab with Proxmox - Part 2">
-    <meta name="description" content="In this post, we're diving into the setup of Windows virtual machines (VMs) in a Proxmox home lab, with the ultimate goal of building an Active Directory">
+    <meta name="description" content="In this post, we're diving into the setup of Windows virtual machines (VMs) in a Proxmox home lab, with the ultimate goal of building an Active Directory (AD) environment.">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://bytebl33d.github.io/blog/proxmox-homelab-part2/">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://bytebl33d.github.io/sitemap.xml">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://bytebl33d.github.io/blog/proxmox-homelab-part2/">
     <meta property="og:title" content="Active Directory Home Lab with Proxmox - Part 2">
-    <meta property="og:description" content="In this post, we're diving into the setup of Windows virtual machines (VMs) in a Proxmox home lab, with the ultimate goal of building an Active Directory">
+    <meta property="og:description" content="In this post, we're diving into the setup of Windows virtual machines (VMs) in a Proxmox home lab, with the ultimate goal of building an Active Directory (AD) environment.">
     <meta property="og:image" content="https://bytebl33d.github.io/assets/images/headers/ad-banner.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -33,20 +34,23 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://bytebl33d.github.io/blog/proxmox-homelab-part2/">
     <meta name="twitter:title" content="Active Directory Home Lab with Proxmox - Part 2">
-    <meta name="twitter:description" content="In this post, we're diving into the setup of Windows virtual machines (VMs) in a Proxmox home lab, with the ultimate goal of building an Active Directory">
+    <meta name="twitter:description" content="In this post, we're diving into the setup of Windows virtual machines (VMs) in a Proxmox home lab, with the ultimate goal of building an Active Directory (AD) environment.">
     <meta name="twitter:image" content="https://bytebl33d.github.io/assets/images/headers/ad-banner.jpg">
     <meta name="twitter:image:alt" content="Active Directory Home Lab with Proxmox - Part 2">
 
     <!-- RSS -->
     <link rel="alternate" type="application/rss+xml" href="https://bytebl33d.github.io/blog/feed.xml">
 
+    <!-- Alternate Markdown -->
+    <link rel="alternate" type="text/markdown" href="https://bytebl33d.github.io/blog/proxmox-homelab-part2.md">
+
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../resources/css/retype.css?v=4.4.0.827920368143" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=4.6.0.839542810150" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=4.4.0.827920368143" data-turbo-eval="false" defer></script>
-    <script data-cfasync="false" src="../../resources/js/retype.js?v=4.4.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=4.4.0.827920368143" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=4.6.0.839542810150" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/retype.js?v=4.6.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=4.6.0.839542810150" data-turbo-eval="false" defer></script>
 </head>
 <body>
     <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
@@ -151,9 +155,11 @@
             <!-- Render page content -->
 <div class="grow min-w-0 px-6">
     <main class="relative pt-6 pb-16">
-        <div class="retype-markdown" id="retype-content">
+        <div class="relative retype-markdown" id="retype-content">
             <!-- Rendered if sidebar right is enabled -->
             <div id="retype-sidebar-right-toggle"></div>
+            <doc-page-actions></doc-page-actions>
+
             <!-- Page content  -->
 <h1 id="active-directory-home-lab-with-proxmox---part-2">Active Directory Home Lab with Proxmox - Part 2</h1>
 <div class="-mt-3 mb-12 flex flex-wrap text-sm text-gray-400 dark:text-dark-350 items-center">
@@ -320,6 +326,6 @@
 
     <div id="retype-overlay-target"></div>
 
-    <script data-cfasync="false">window.__DOCS__ = { "title": "Active Directory Home Lab with Proxmox - Part 2", level: 2, icon: "file", hasPrism: false, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+        <script data-cfasync="false">window.__DOCS__ = { "title": "Active Directory Home Lab with Proxmox - Part 2", level: 2, icon: "file", hasPrism: false, hasInstagram: false, hasMermaid: false, hasMath: false, tocDepth: 23, "md": "/blog/proxmox-homelab-part2.md" }</script>
 </body>
 </html>

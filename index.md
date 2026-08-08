@@ -1,0 +1,113 @@
+# Welcome
+
+[!ref icon="globe"](/blog)
+
+[!ref icon="package"](/categories/hackthebox/)
+
+[!ref icon="trophy"](/categories/CTF/)
+
+[!ref icon="beaker"](/categories/homelab/)
+
+## Featured
+<a class="no-link mb-6 overflow-hidden border border-gray-200 rounded-lg md:flex dark:border-dark-700 hover:border-gray-400 dark:hover:border-dark-450" href="/writeups/hackthebox/machines/hercules/">
+  <div class="relative shrink-0 bg-gray-300 md:w-5/12 pb-9/16 md:pb-0 dark:bg-dark-450">
+    <img class="absolute object-cover w-full h-full" src="/assets/images/headers/malware.png">
+  </div>
+  <div class="p-6">
+    <div class="text-xs font-semibold text-blue-500 uppercase dark:text-blue-400">Homelab • Maldev</div>
+    <div class="mt-2 text-lg font-semibold leading-snug text-gray-900 dark:text-white md:text-xl">Building a CI/CD Pipeline for Malware Obfuscation</div>
+    <div class="line-clamp-3">
+      <p class="hidden mt-2 md:block">It has been some time since my last post. Professional commitments, personal life, and preparation for the HackTheBox CAPE exam ...y</p>
+    </div>
+    <div class="flex mt-3 items-center">
+      <div class="text-sm text-gray-500 dark:text-dark-350">
+        <span>2026-08-07</span>
+      </div>
+    </div>
+  </div>
+</a>
+<a class="no-link mb-6 overflow-hidden border border-gray-200 rounded-lg md:flex dark:border-dark-700 hover:border-gray-400 dark:hover:border-dark-450" href="/blog/ludus-cyber-range/">
+  <div class="relative shrink-0 bg-gray-300 md:w-5/12 pb-9/16 md:pb-0 dark:bg-dark-450">
+    <img class="absolute object-cover w-full h-full" src="/assets/images/headers/ludus.png">
+  </div>
+  <div class="p-6">
+    <div class="text-xs font-semibold text-blue-500 uppercase dark:text-blue-400">Active-Directory • Homelab</div>
+    <div class="mt-2 text-lg font-semibold leading-snug text-gray-900 dark:text-white md:text-xl">Building a Cyber Range with Ludus</div>
+    <div class="line-clamp-3">
+      <p class="hidden mt-2 md:block">Ever since I built my first homelab, I wanted to create my own dedicated cyber range - my little digital playground where I can break things, fix things...</p>
+    </div>
+    <div class="flex mt-3 items-center">
+      <div class="text-sm text-gray-500 dark:text-dark-350">
+        <span>2025-11-22</span>
+      </div>
+    </div>
+  </div>
+</a>
+<a class="no-link mb-6 overflow-hidden border border-gray-200 rounded-lg md:flex dark:border-dark-700 hover:border-gray-400 dark:hover:border-dark-450" href="/writeups/hackthebox/machines/darkcorp/">
+  <div class="relative shrink-0 bg-gray-300 md:w-5/12 pb-9/16 md:pb-0 dark:bg-dark-450">
+    <img class="absolute object-cover w-full h-full" src="/assets/images/headers/darkcorp.png">
+  </div>
+  <div class="p-6">
+    <div class="text-xs font-semibold text-blue-500 uppercase dark:text-blue-400">HackTheBox • Windows • Active Directory</div>
+    <div class="mt-2 text-lg font-semibold leading-snug text-gray-900 dark:text-white md:text-xl">DarkCorp (Insane)</div>
+    <div class="line-clamp-3">
+      <p class="hidden mt-2 md:block">DarkCorp is an Insane Windows Active Directory machine that starts with a DripMail site. The application is vulnerable to XSS that allows... </p>
+    </div>
+    <div class="flex mt-3 items-center">
+      <div class="text-sm text-gray-500 dark:text-dark-350">
+        <span>2025-10-18</span>
+      </div>
+    </div>
+  </div>
+</a>
+<a class="no-link mb-6 overflow-hidden border border-gray-200 rounded-lg md:flex dark:border-dark-700 hover:border-gray-400 dark:hover:border-dark-450" href="/writeups/hackthebox/machines/infiltrator/">
+  <div class="relative shrink-0 bg-gray-300 md:w-5/12 pb-9/16 md:pb-0 dark:bg-dark-450">
+    <img class="absolute object-cover w-full h-full" src="/assets/images/headers/infiltrator.png">
+  </div>
+  <div class="p-6">
+    <div class="text-xs font-semibold text-blue-500 uppercase dark:text-blue-400">HackTheBox • Windows • Active Directory</div>
+    <div class="mt-2 text-lg font-semibold leading-snug text-gray-900 dark:text-white md:text-xl">Infiltrator (Insane)</div>
+    <div class="line-clamp-3">
+      <p class="hidden mt-2 md:block">Infiltrator is an Insane Windows Active Directory machine that starts with a website that an attacker can scrape for possible usernames on the machine... </p>
+    </div>
+    <div class="flex mt-3 items-center">
+      <div class="text-sm text-gray-500 dark:text-dark-350">
+        <span>2025-08-01</span>
+      </div>
+    </div>
+  </div>
+</a>
+<a class="no-link mb-6 overflow-hidden border border-gray-200 rounded-lg md:flex dark:border-dark-700 hover:border-gray-400 dark:hover:border-dark-450" href="/blog/sliver-evasion/">
+  <div class="relative shrink-0 bg-gray-300 md:w-5/12 pb-9/16 md:pb-0 dark:bg-dark-450">
+    <img class="absolute object-cover w-full h-full" src="/assets/images/headers/sliver-purple.jpg">
+  </div>
+  <div class="p-6">
+    <div class="text-xs font-semibold text-blue-500 uppercase dark:text-blue-400">Maldev • Windows • Homelab</div>
+    <div class="mt-2 text-lg font-semibold leading-snug text-gray-900 dark:text-white md:text-xl">Anti-Virus Evasion with Sliver C2</div>
+    <div class="line-clamp-3">
+      <p class="hidden mt-2 md:block">Recently I have been playing around with Sliver from BishopFox as a C2 framework.</p>
+    </div>
+    <div class="flex mt-3 items-center">
+      <div class="text-sm text-gray-500 dark:text-dark-350">
+        <span>2025-01-04</span>
+      </div>
+    </div>
+  </div>
+</a>
+<a class="no-link mb-6 overflow-hidden border border-gray-200 rounded-lg md:flex dark:border-dark-700 hover:border-gray-400 dark:hover:border-dark-450" href="/blog/proxmox-homelab-part1/">
+  <div class="relative shrink-0 bg-gray-300 md:w-5/12 pb-9/16 md:pb-0 dark:bg-dark-450">
+    <img class="absolute object-cover w-full h-full" src="/assets/images/headers/ad-banner.jpg">
+  </div>
+  <div class="p-6">
+    <div class="text-xs font-semibold text-blue-500 uppercase dark:text-blue-400">Active-Directory • Homelab</div>
+    <div class="mt-2 text-lg font-semibold leading-snug text-gray-900 dark:text-white md:text-xl">Active Directory Home Lab with Proxmox - Part 1</div>
+    <div class="line-clamp-3">
+      <p class="hidden mt-2 md:block">In this post, I'll walk you through setting up my personal homelab - a project that serves both as a hands-on learning experience and as a future...</p>
+    </div>
+    <div class="flex mt-3 items-center">
+      <div class="text-sm text-gray-500 dark:text-dark-350">
+        <span>2024-02-20</span>
+      </div>
+    </div>
+  </div>
+</a>

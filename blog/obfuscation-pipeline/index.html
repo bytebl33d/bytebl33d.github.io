@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.839542810150">
+
+    <!-- See retype.com -->
+    <meta name="generator" content="Retype 4.6.0">
+
+    <!-- Primary Meta Tags -->
+    <title>Building a CI/CD Pipeline for Malware Obfuscation</title>
+    <meta name="title" content="Building a CI/CD Pipeline for Malware Obfuscation">
+    <meta name="description" content="It has been some time since my last post. Professional commitments, personal life, and preparation for the HackTheBox CAPE exam (more on that later) have kept me busy.">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://bytebl33d.github.io/blog/obfuscation-pipeline/">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://bytebl33d.github.io/sitemap.xml">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bytebl33d.github.io/blog/obfuscation-pipeline/">
+    <meta property="og:title" content="Building a CI/CD Pipeline for Malware Obfuscation">
+    <meta property="og:description" content="It has been some time since my last post. Professional commitments, personal life, and preparation for the HackTheBox CAPE exam (more on that later) have kept me busy.">
+    <meta property="og:image" content="https://bytebl33d.github.io/assets/images/headers/malware.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Building a CI/CD Pipeline for Malware Obfuscation">
+    <meta property="og:site_name" content="bytebl33d">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://bytebl33d.github.io/blog/obfuscation-pipeline/">
+    <meta name="twitter:title" content="Building a CI/CD Pipeline for Malware Obfuscation">
+    <meta name="twitter:description" content="It has been some time since my last post. Professional commitments, personal life, and preparation for the HackTheBox CAPE exam (more on that later) have kept me busy.">
+    <meta name="twitter:image" content="https://bytebl33d.github.io/assets/images/headers/malware.png">
+    <meta name="twitter:image:alt" content="Building a CI/CD Pipeline for Malware Obfuscation">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" href="https://bytebl33d.github.io/blog/feed.xml">
+
+    <!-- Alternate Markdown -->
+    <link rel="alternate" type="text/markdown" href="https://bytebl33d.github.io/blog/obfuscation-pipeline.md">
+
+    <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
+
+    <link href="../../resources/css/retype.css?v=4.6.0.839542810150" rel="stylesheet">
+
+    <script data-cfasync="false" src="../../resources/js/config.js?v=4.6.0.839542810150" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/retype.js?v=4.6.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=4.6.0.839542810150" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=4.6.0.839542810150" defer></script>
+</head>
+<body>
+    <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
+    <header id="retype-header" class="sticky top-0 z-30 flex w-full h-16 bg-header-bg border-b border-header-border md:h-20">
+        <div class="container relative flex items-center justify-between pr-6 grow md:justify-start">
+            <!-- Mobile menu button skeleton -->
+            <button v-cloak class="skeleton retype-mobile-menu-button flex items-center justify-center shrink-0 overflow-hidden dark:text-white focus:outline-hidden rounded-full w-10 h-10 ml-3.5 md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mb-px shrink-0" width="24" height="24" viewBox="0 0 24 24" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor"><path d="M2 4h20v2H2zM2 11h20v2H2zM2 18h20v2H2z"></path></g></svg></button>
+            <div v-cloak id="retype-sidebar-left-toggle-button"></div>
+    
+            <!-- Logo -->
+            <div class="flex items-center justify-between h-full py-2 md:w-75">
+                <div class="flex items-center px-2 md:px-6">
+                    <a id="retype-branding-logo" href="https://bytebl33d.github.io/" class="flex items-center leading-snug text-2xl">
+                        <span class="dark:text-white font-bold line-clamp-1 md:line-clamp-2">bytebl33d</span>
+                    </a><span id="retype-branding-label" class="inline-flex mt-1 px-2 py-1 ml-4 text-xs font-medium leading-none items-center rounded-md bg-branding-label-bg text-branding-label-text ring-1 ring-branding-label-border ring-inset md:inline-block">Blog</span>
+                </div>
+    
+                <span class="hidden h-8 border-r md:inline-block border-base-border"></span>
+            </div>
+    
+            <div class="flex justify-between md:grow">
+                <!-- Top Nav -->
+                <nav id="retype-header-nav" class="hidden md:flex">
+                    <ul class="flex flex-col mb-4 md:pl-16 md:mb-0 md:flex-row md:items-center">
+                        <li class="mr-6">
+                            <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text hover:text-header-text-hover" href="../../blog/">Posts</a>
+                        </li>
+                        <li class="mr-6">
+                            <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text hover:text-header-text-hover" href="https://github.com/bytebl33d">GitHub</a>
+                        </li>
+    
+                    </ul>
+                </nav>
+    
+                <div v-cloak class="flex justify-end grow">
+                    <div id="retype-mobile-search-button"></div>
+                    <doc-search-desktop></doc-search-desktop>
+    
+                    <doc-theme-switch class="lg:ml-2"></doc-theme-switch>
+                    <doc-history></doc-history>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <div class="relative flex mx-auto bg-white max-w-core">
+        <div class="md:hidden">
+            <!-- Sidebar Skeleton -->
+            <div v-cloak class="fixed flex flex-col shrink-0 duration-300 ease-in-out bg-sidebar-left-bg border-sidebar-left-border sidebar top-20 w-75 border-r h-screen md:sticky transition-transform skeleton">
+            
+                <div class="flex items-center h-16 px-6">
+                    <input id="retype-filter-input-mock" class="w-full h-10 pl-8 px-3 py-2 transition-colors duration-200 ease-linear bg-filter-bg border border-filter-border rounded-lg shadow-none md:text-sm hover:border-filter-border-hover focus:outline-hidden focus:border-filter-border-focus placeholder-filter-placeholder" type="text">
+                </div>
+            
+                <div class="pl-6 mt-1 mb-4">
+                    <div class="w-32 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-48 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-40 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-32 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-48 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                    <div class="w-40 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                </div>
+            
+                <div class="shrink-0 mt-auto bg-transparent dark:border-base-border">
+                    <a class="flex items-center justify-center flex-nowrap h-16 text-gray-350 dark:text-dark-400 hover:text-gray-600 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                        <span class="text-xs whitespace-nowrap">Powered by</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Sidebar component -->
+            <doc-sidebar v-cloak>
+                <template #sidebar-footer>
+                    <div class="shrink-0 mt-auto border-t md:bg-transparent md:border-none dark:border-base-border">
+            
+                        <div class="py-3 px-6 md:hidden border-b dark:border-base-border">
+                            <nav>
+                                <ul class="flex flex-wrap justify-center items-center">
+                                    <li class="mr-6">
+                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text hover:text-header-text-hover" href="../../blog/">Posts</a>
+                                    </li>
+                                    <li class="mr-6">
+                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text hover:text-header-text-hover" href="https://github.com/bytebl33d">GitHub</a>
+                                    </li>
+            
+                                </ul>
+                            </nav>
+                        </div>
+            
+                        <a class="flex items-center justify-center flex-nowrap h-16 text-gray-350 dark:text-dark-400 hover:text-gray-600 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                            <span class="text-xs whitespace-nowrap">Powered by</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                        </a>
+                    </div>
+                </template>
+            </doc-sidebar>
+        </div>
+
+        <div class="grow min-w-0 bg-body-bg">
+            <!-- Render page content -->
+<div class="grow min-w-0 px-6">
+    <main class="relative pt-6 pb-16">
+        <div class="relative retype-markdown" id="retype-content">
+            <!-- Rendered if sidebar right is enabled -->
+            <div id="retype-sidebar-right-toggle"></div>
+            <doc-page-actions></doc-page-actions>
+
+            <!-- Page content  -->
+<h1 id="building-a-cicd-pipeline-for-malware-obfuscation">Building a CI/CD Pipeline for Malware Obfuscation</h1>
+<div class="-mt-3 mb-12 flex flex-wrap text-sm text-gray-400 dark:text-dark-350 items-center">
+    <div>In&nbsp;</div>
+    <div><a href="../../categories/homelab/">Homelab</a>,&nbsp;</div>
+    <div><a href="../../categories/maldev/">Maldev</a></div>
+    <div class="mx-2">&#9679;</div>
+    <div class="flex items-center shrink-0">Published&nbsp;<span>2026-08-07</span></div>
+</div>
+
+<figure class="content-center">
+    <img src="../../assets/images/headers/malware.png" alt="" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1883" height="1179" />
+    <figcaption class="caption"></figcaption>
+</figure>
+<p>It has been some time since my last post. Professional commitments, personal life, and preparation for the <a href="https://academy.hackthebox.com/preview/certifications/htb-certified-active-directory-pentesting-expert">HackTheBox CAPE</a> exam (more on that later) have kept me busy. During my preparation, one of the topics covered in the CAPE syllabus is defense evasion, and while the underlying concepts are not particularly complex, the practical execution often boils down to obfuscating open-source tooling to bypass AV signatures.</p>
+<p>Until recently, I relied on a dedicated &quot;malware development&quot; VM (as recommended by HTB). However, this workflow is inherently repetitive: clone the repository, perform manual string obfuscation, rename variables and project metadata, and finally, pass the binary through whatever post-build obfuscation tool. For a single project, this process can easily consume an hour or more to achieve a somewhat decent evasion rate.</p>
+<p>Furthermore, this manual approach introduces a significant risk of breaking functionality. I learned this the hard way where certain functions (looking at you, Rubeus) simply stopped working because I adapted too much code. Without rigorous, automated testing, you only discover these things when executing the tool in a live environment.</p>
+<p>In my current job, my role has shifted a bit toward DevSecOps, which has given me some exposure to Jenkins pipelines. The value proposition of Jenkins is clear: it allows you to codify the entire build and obfuscation process. Once you define the standard transformations required for a project, you can automate the entire pipeline, ensuring consistency and speed.</p>
+<p>To operationalize this, you still require a dedicated build VM with all necessary toolchains installed. The build process may vary per project, but for my use case, I focused initially on .NET projects, specifically the Ghostpack binaries leveraged in the CAPE course. In this post, I will walk through how I set up this malware development pipeline and how you can replicate it for your own workflows.</p>
+<h2 id="project-repository-setup">Project Repository Setup</h2>
+<p>To begin, I established a central repository for all my .NET projects. I used a local Gitea instance hosted on a spare machine within my home lab to manage the source control. For each .NET tool, I created a dedicated branch and cloned the respective source code.</p>
+<figure class="content-center">
+    <img src="../../assets/images/homelab/pipeline-1.png" alt="Gitea .NET Projects Repository" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="2646" height="1160" />
+    <figcaption class="caption">Gitea .NET Projects Repository</figcaption>
+</figure>
+<p>With the project repositories in place, I created a separate repository to house my Jenkins pipeline scripts.</p>
+<figure class="content-center">
+    <img src="../../assets/images/homelab/pipeline-2.png" alt="Gitea Jenkins Pipeline Repository" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="2656" height="1314" />
+    <figcaption class="caption">Gitea Jenkins Pipeline Repository</figcaption>
+</figure>
+<p>This secondary repository will serve as the source for the multibranch pipeline configuration later in the setup.</p>
+<h2 id="jenkins-environment-setup">Jenkins Environment Setup</h2>
+<p>Next, I configured my Jenkins instance. I already maintain a Portainer deployment for managing my Docker containers, so I opted to deploy Jenkins as an additional container on my development server.</p>
+<p>Jenkins operates on a node-based architecture, where nodes are designated machines responsible for executing build tasks. My build infrastructure consists of two Proxmox virtual machines:</p>
+<ul>
+<li><code translate="no" v-pre>devbuild-1</code>: An Ubuntu Linux VM designated for Linux-based build jobs.</li>
+<li><code translate="no" v-pre>devbuild-2</code>: A Windows Server 2025 Core VM designated for Windows-based build jobs.</li>
+</ul>
+<p>While I currently have no immediate need for the Linux node, I have provisioned it and added it to Jenkins for future use. At present, the Windows node is the active build executor.</p>
+<figure class="content-center">
+    <img src="../../assets/images/homelab/pipeline-3.png" alt="Jenkins Nodes" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="2905" height="795" />
+    <figcaption class="caption">Jenkins Nodes</figcaption>
+</figure>
+<h3 id="connecting-to-the-repositories">Connecting to the Repositories</h3>
+<p>Recall that I created two distinct repositories. The objective is to establish an automated build process that pulls the source code from the correct branch and executes the tasks defined in the pipeline script. To achieve this, I created a new <strong>Multibranch Pipeline</strong> project in Jenkins and configured it with the Gitea credentials required to access the repository.</p>
+<figure class="content-center">
+    <img src="../../assets/images/homelab/pipeline-4.png" alt="Jenkins Multibranch Pipeline sources" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="2334" height="1311" />
+    <figcaption class="caption">Jenkins Multibranch Pipeline sources</figcaption>
+</figure>
+<p>Most settings remain at their default values. The critical requirement is that each branch must contain a <code translate="no" v-pre>Jenkinsfile</code>, this is the declarative or scripted pipeline definition that instructs Jenkins on how to process the code.</p>
+<p>To centralize my pipeline logic, I configured a Global Trusted Pipeline Library under <em>Manage Jenkins &gt; System</em>. I named this library <code translate="no" v-pre>dotnet-obfuscate</code> and pointed it to my pipeline-scripts repository.</p>
+<figure class="content-center">
+    <img src="../../assets/images/homelab/pipeline-5.png" alt="Jenkins Global Pipeline" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="2840" height="1619" />
+    <figcaption class="caption">Jenkins Global Pipeline</figcaption>
+</figure>
+<h2 id="jenkins-obfuscation-library">Jenkins Obfuscation Library</h2>
+<p>For .NET projects, I built a reusable pipeline library that encapsulates the entire obfuscation workflow. This library, which I named <code translate="no" v-pre>dotnet-obfuscate</code>, is referenced in each project&#x27;s <code translate="no" v-pre>Jenkinsfile</code> at the root of the repository. The shared library approach means I can maintain the obfuscation logic in a single location while applying it consistently across multiple tools. Below is an example Jenkinsfile that invokes the library with the default configuration:</p>
+<div id="jenkins-obfuscation-library-code-1" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-groovy"><code v-pre class="language-groovy">@Library('dotnet-obfuscate') _
+
+dotnetObfuscate{
+    binaryName = 'MyTool'
+    outputDir = 'bin\\Release'
+    obfuscationMethods = ['none', 'rename', 'base64', 'rot13', 'reverse']
+    avCheck = ['gocheck', 'threatcheck', 'all', 'none']
+    
+    customBuildCmd = 'C:\\Tools\\nuget.exe restore &amp;&amp; dotnet build --configuration Release --artifacts-path ./artifacts /p:AssemblyName=&quot;MyTool&quot;'
+
+    customObfuscation = false
+    customObfuscateScript = 'obfuscate.ps1'
+    binaryObfuscation = true
+}</code></pre>
+</doc-codeblock></div>
+<p>Every build pipeline includes two critical validation stages: a functional test to verify the binary executes without runtime errors, and a detection test using <code translate="no" v-pre>ThreatCheck</code> or <code translate="no" v-pre>Gocheck</code> to determine if the binary is flagged by Microsoft Defender.</p>
+<p>The pipeline implements several key features to streamline the obfuscation process:</p>
+<h3 id="invisibilitycloak-source-code-obfuscation">InvisibilityCloak: Source Code Obfuscation</h3>
+<p>This stage performs source-level transformations before compilation. It alters project metadata such as GUIDs and assembly attributes, and applies string obfuscation techniques to make static analysis more difficult. The goal is to break signature-based detection at the source level before the binary is even compiled.</p>
+<h3 id="custom-obfuscation">Custom Obfuscation</h3>
+<p>For projects requiring specialized handling, the pipeline supports invoking a custom PowerShell script. This provides flexibility to apply project-specific modifications—such as function renaming, comment stripping, or additional string encryption—that may not be covered by generic obfuscation methods.</p>
+<h3 id="confuserex-binary-level-obfuscation">ConfuserEx: Binary-Level Obfuscation</h3>
+<p>At the binary stage, the pipeline integrates <code translate="no" v-pre>ConfuserEx</code>, an open-source protector for .NET applications. ConfuserEx offers a comprehensive suite of protections :</p>
+<ul>
+<li>Symbol renaming: obfuscates class, method, and field names</li>
+<li>Control flow obfuscation: scrambles code logic to impede decompilation</li>
+<li>Anti-debug/anti-tamper: prevents debugging and memory dumping</li>
+<li>Constant and resource encryption: protects sensitive strings and embedded resources</li>
+</ul>
+<p>ConfuserEx is invoked via its command-line interface (Confuser.CLI.exe) using a project configuration file (.crproj) that defines the protection rules. The pipeline generates this file dynamically based on the parameters passed to the library. Note that ConfuserEx supports .NET Framework versions 2.0 through 4.8, making it compatible with most legacy red-team tooling.</p>
+<h3 id="functional-testing">Functional Testing</h3>
+<p>A critical step that validates the obfuscated binary still performs its intended functions. This guards against the &quot;breakage&quot; issue I encountered previously—where aggressive obfuscation inadvertently disabled core functionality. The test runs the binary with common arguments (e.g., --help) and verifies expected output and exit codes.</p>
+<h3 id="threatcheckgocheck-automated-detection-testing">ThreatCheck/Gocheck: Automated Detection Testing</h3>
+<p>ThreatCheck, originally derived from DefenderCheck and further modified by Rasta Mouse, performs byte-level analysis against Microsoft Defender and AMSI. It takes a binary as input, recursively splits it into smaller chunks, and scans each segment to pinpoint the exact byte ranges that trigger detection . This outputs a hex dump of the offending bytes, allowing me to identify which code sections are causing signatures without waiting for a full Defender scan. The pipeline archives these results alongside the obfuscated binary for later analysis.</p>
+<figure class="content-center">
+    <img src="../../assets/images/homelab/pipeline-9.png" alt="Defender Threat Check Stage" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1737" height="572" />
+    <figcaption class="caption">Defender Threat Check Stage</figcaption>
+</figure>
+<p>There is also a <strong>Yara rules</strong> check on the binary, but this is merely informational. At this point I just wanted to see what kind of detections the default Yara rules generate.</p>
+<figure class="content-center">
+    <img src="../../assets/images/homelab/pipeline-8.png" alt="Yara Rules Pipeline Stage" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="2608" height="1540" />
+    <figcaption class="caption">Yara Rules Pipeline Stage</figcaption>
+</figure>
+<h3 id="artifact-archiving">Artifact Archiving</h3>
+<p>All obfuscated binaries, along with their accompanying .crproj configuration files, detection test logs, and functional test outputs, are automatically archived by Jenkins. This ensures a complete audit trail and enables easy comparison across different obfuscation attempts.</p>
+<h2 id="the-final-look">The final look</h2>
+<p>After extensive testing, and more than a few failures along the way, I finally arrived at a stable, working pipeline. The build process is now fully automated and yields consistent results across different projects. Below is a screenshot of all my current projects:</p>
+<figure class="content-center">
+    <img src="../../assets/images/homelab/pipeline-6.png" alt="Binfuscator Pipeline" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="3413" height="1496" />
+    <figcaption class="caption">Binfuscator Pipeline</figcaption>
+</figure>
+<p>The pipeline runs through each stage sequentially: source checkout, source-level obfuscation (InvisibilityCloak), compilation, binary-level obfuscation (ConfuserEx), functional validation, and finally, detection testing with ThreatCheck/Gocheck.</p>
+<h3 id="customizable-build-parameters">Customizable Build Parameters</h3>
+<p>One of the key design decisions was making the pipeline parameterized, allowing me to tailor each build without modifying the underlying pipeline code. When triggering a new build, I can specify the following parameters:</p>
+<figure class="content-center">
+    <img src="../../assets/images/homelab/pipeline-7.png" alt="Binfuscator Build Parameters" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="2331" height="1372" />
+    <figcaption class="caption">Binfuscator Build Parameters</figcaption>
+</figure>
+<ul>
+<li>Tool Name: The name of the target binary. This determines the output filename and is used in the functional testing stage.</li>
+<li>String Obfuscation Method: Select from methods like base64, rot13, reverse, or none. This controls how strings are encoded in the source before compilation.</li>
+<li>Custom Obfuscation: A toggle that, when enabled, triggers the pipeline to look for and execute a project-specific PowerShell script. This allows me to apply unique transformations that aren&#x27;t covered by the generic obfuscation methods—such as renaming specific classes.</li>
+<li>Binary Obfuscation: Enables or disables the ConfuserEx stage. While I typically leave this on, having the option to disable it is useful for debugging or when I need a clean binary for comparison.</li>
+<li>AV Check: Toggles the ThreatCheck detection stage. I can disable this during rapid iteration to save time, and re-enable it for final validation before deployment.</li>
+</ul>
+<h3 id="time-savings-and-workflow-efficiency">Time Savings and Workflow Efficiency</h3>
+<p>The pipeline has dramatically reduced the time required to produce evasive binaries. What previously took an hour of manual, error-prone work is now reduced to a 5-10 minute automated process. The consistency is equally valuable, I no longer worry about accidentally breaking functions or forgetting a critical obfuscation step.</p>
+<p>Most .NET tools from the Ghostpack suite share a similar project structure, which means the pipeline works out-of-the-box for the majority of projects. However, there are occasional edge cases where I need to adjust the source code itself, for example, when a tool has hardcoded paths or relies on reflection that breaks under obfuscation. Fortunately, these adjustments are typically minor and only require changes to the project repository; the pipeline itself remains untouched.</p>
+<p>This separation of concerns is what makes the approach scalable. With the pipeline infrastructure in place, onboarding a new tool is as simple as:</p>
+<ul>
+<li>Creating a new branch in the Gitea repository</li>
+<li>Adding a minimal Jenkinsfile that calls the shared library</li>
+<li>Triggering the build with the appropriate parameters</li>
+</ul>
+<p>The pipeline handles everything else: downloading dependencies, applying obfuscation, running tests, and archiving the final binary. This allows me to focus on the actual research and tool development rather than the repetitive mechanics of building evasive binaries.</p>
+
+            
+            <!-- Required only on API pages -->
+            <doc-toolbar-member-filter-no-results></doc-toolbar-member-filter-no-results>
+        </div>
+        <footer id="retype-content-footer" class="clear-both">
+        
+            <nav id="retype-nextprev" class="print:hidden flex mt-14">
+                <div class="w-1/2">
+                </div>
+        
+                <div class="w-1/2">
+                    <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-l rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../blog/endpoint-detection-lab/">
+                        <span>
+                            <span class="block text-xs font-normal text-right text-base-text-muted">Older</span>
+                            <span class="block mt-1">Adding Endpoint Detection to our Cyber Range</span>
+                        </span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
+                    </a>
+                </div>
+            </nav>
+        </footer>
+    </main>
+</div>
+
+        </div>
+    </div>
+
+    <div class="border-t dark:border-base-border">
+        <div class="max-w-core mx-auto px-6 py-6">
+            <footer>
+                <div class="flex flex-wrap items-center justify-between">
+                    <div id="retype-footer-links" class="pt-3 print:hidden">
+                        <ul class="flex flex-wrap items-center text-sm">
+                        </ul>
+                    </div>
+                    <div id="retype-copyright" class="print:justify-center pt-3 text-footer-text font-footer-link text-sm leading-relaxed"><p>© Copyright 2026. All rights reserved.</p></div>
+                </div>
+            
+                <div class="flex justify-center">
+                    <a class="flex items-center justify-center flex-nowrap h-16 text-gray-350 dark:text-dark-400 hover:text-gray-600 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                        <span class="text-xs whitespace-nowrap">Powered by</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                    </a>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <doc-search-mobile></doc-search-mobile>
+    <doc-back-to-top></doc-back-to-top>
+</div>
+
+
+    <div id="retype-overlay-target"></div>
+
+        <script data-cfasync="false">window.__DOCS__ = { "title": "Building a CI/CD Pipeline for Malware Obfuscation", level: 2, icon: "file", hasPrism: true, hasInstagram: false, hasMermaid: false, hasMath: false, tocDepth: 23, "md": "/blog/obfuscation-pipeline.md" }</script>
+</body>
+</html>

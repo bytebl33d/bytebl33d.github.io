@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.4.0.827920368143">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.839542810150">
 
     <!-- See retype.com -->
-    <meta name="generator" content="Retype 4.4.0">
+    <meta name="generator" content="Retype 4.6.0">
 
     <!-- Primary Meta Tags -->
     <title>LakeCTF 2023 - Scream Into The Abyss</title>
@@ -16,6 +16,7 @@
 
     <!-- Canonical -->
     <link rel="canonical" href="https://bytebl33d.github.io/writeups/ctf/lake-ctf-scream-into-the-abyss/">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://bytebl33d.github.io/sitemap.xml">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
@@ -40,14 +41,17 @@
     <!-- RSS -->
     <link rel="alternate" type="application/rss+xml" href="https://bytebl33d.github.io/blog/feed.xml">
 
+    <!-- Alternate Markdown -->
+    <link rel="alternate" type="text/markdown" href="https://bytebl33d.github.io/writeups/ctf/lake-ctf-scream-into-the-abyss.md">
+
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../../resources/css/retype.css?v=4.4.0.827920368143" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=4.6.0.839542810150" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=4.4.0.827920368143" data-turbo-eval="false" defer></script>
-    <script data-cfasync="false" src="../../../resources/js/retype.js?v=4.4.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=4.4.0.827920368143" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=4.4.0.827920368143" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=4.6.0.839542810150" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/retype.js?v=4.6.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=4.6.0.839542810150" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=4.6.0.839542810150" defer></script>
 </head>
 <body>
     <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
@@ -153,9 +157,11 @@
 <div class="flex">
     <div id="retype-main" class="min-w-0 p-4 grow md:px-16">
         <main class="relative pb-12 lg:pt-2">
-            <div class="retype-markdown" id="retype-content">
+            <div class="relative retype-markdown" id="retype-content">
                 <!-- Rendered if sidebar right is enabled -->
                 <div id="retype-sidebar-right-toggle"></div>
+                <doc-page-actions></doc-page-actions>
+
                 <!-- Page content  -->
 <figure class="content-center">
     <img src="../../../assets/images/headers/lake-ctf.png" alt="" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="782" height="482" />
@@ -508,7 +514,7 @@ EPFL{H3Y_C4LM_D0WN_N0_N33D_T0_SCR34M_S0_L0UD_1_C4N_H34R_Y0U!!!!!!}</code></pre>
                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                             <span>
                                 <span class="block text-xs font-normal text-base-text-muted">Previous</span>
-                                <span class="block mt-1">HTB University CTF 2023: Brains & Bytes</span>
+                                <span class="block mt-1">HTB University CTF 2023: Brains &amp; Bytes</span>
                             </span>
                         </a>
                     </div>
@@ -561,6 +567,6 @@ EPFL{H3Y_C4LM_D0WN_N0_N33D_T0_SCR34M_S0_L0UD_1_C4N_H34R_Y0U!!!!!!}</code></pre>
 
     <div id="retype-overlay-target"></div>
 
-    <script data-cfasync="false">window.__DOCS__ = { "title": "LakeCTF 2023 - Scream Into The Abyss", level: 3, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+        <script data-cfasync="false">window.__DOCS__ = { "title": "LakeCTF 2023 - Scream Into The Abyss", level: 3, icon: "file", hasPrism: true, hasInstagram: false, hasMermaid: false, hasMath: false, tocDepth: 23, "md": "/writeups/ctf/lake-ctf-scream-into-the-abyss.md" }</script>
 </body>
 </html>

@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.4.0.827920368143">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.839542810150">
 
     <!-- See retype.com -->
-    <meta name="generator" content="Retype 4.4.0">
+    <meta name="generator" content="Retype 4.6.0">
 
     <!-- Primary Meta Tags -->
     <title>bytebl33d - Security Blog</title>
@@ -16,6 +16,7 @@
 
     <!-- Canonical -->
     <link rel="canonical" href="https://bytebl33d.github.io/">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://bytebl33d.github.io/sitemap.xml">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
@@ -34,13 +35,16 @@
     <!-- RSS -->
     <link rel="alternate" type="application/rss+xml" href="https://bytebl33d.github.io/blog/feed.xml">
 
+    <!-- Alternate Markdown -->
+    <link rel="alternate" type="text/markdown" href="https://bytebl33d.github.io/index.md">
+
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="resources/css/retype.css?v=4.4.0.827920368143" rel="stylesheet">
+    <link href="resources/css/retype.css?v=4.6.0.839542810150" rel="stylesheet">
 
-    <script data-cfasync="false" src="resources/js/config.js?v=4.4.0.827920368143" data-turbo-eval="false" defer></script>
-    <script data-cfasync="false" src="resources/js/retype.js?v=4.4.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="resources/js/lunr.js?v=4.4.0.827920368143" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="resources/js/config.js?v=4.6.0.839542810150" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="resources/js/retype.js?v=4.6.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="resources/js/lunr.js?v=4.6.0.839542810150" data-turbo-eval="false" defer></script>
 </head>
 <body>
     <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
@@ -146,9 +150,11 @@
 <div class="flex">
     <div id="retype-main" class="min-w-0 p-4 grow md:px-16">
         <main class="relative pb-12 lg:pt-2">
-            <div class="retype-markdown" id="retype-content">
+            <div class="relative retype-markdown" id="retype-content">
                 <!-- Rendered if sidebar right is enabled -->
                 <div id="retype-sidebar-right-toggle"></div>
+                <doc-page-actions></doc-page-actions>
+
                 <!-- Page content  -->
 <h1 id="welcome">Welcome</h1>
 <p>
@@ -208,6 +214,23 @@
 </div>
 </p>
 <h2 id="featured">Featured</h2>
+<a class="no-link mb-6 overflow-hidden border border-gray-200 rounded-lg md:flex dark:border-dark-700 hover:border-gray-400 dark:hover:border-dark-450" href="/writeups/hackthebox/machines/hercules/">
+  <div class="relative shrink-0 bg-gray-300 md:w-5/12 pb-9/16 md:pb-0 dark:bg-dark-450">
+    <img class="absolute object-cover w-full h-full" src="/assets/images/headers/malware.png">
+  </div>
+  <div class="p-6">
+    <div class="text-xs font-semibold text-blue-500 uppercase dark:text-blue-400">Homelab • Maldev</div>
+    <div class="mt-2 text-lg font-semibold leading-snug text-gray-900 dark:text-white md:text-xl">Building a CI/CD Pipeline for Malware Obfuscation</div>
+    <div class="line-clamp-3">
+      <p class="hidden mt-2 md:block">It has been some time since my last post. Professional commitments, personal life, and preparation for the HackTheBox CAPE exam ...y</p>
+    </div>
+    <div class="flex mt-3 items-center">
+      <div class="text-sm text-gray-500 dark:text-dark-350">
+        <span>2026-08-07</span>
+      </div>
+    </div>
+  </div>
+</a>
 <a class="no-link mb-6 overflow-hidden border border-gray-200 rounded-lg md:flex dark:border-dark-700 hover:border-gray-400 dark:hover:border-dark-450" href="/blog/ludus-cyber-range/">
   <div class="relative shrink-0 bg-gray-300 md:w-5/12 pb-9/16 md:pb-0 dark:bg-dark-450">
     <img class="absolute object-cover w-full h-full" src="/assets/images/headers/ludus.png">
@@ -352,6 +375,6 @@
 
     <div id="retype-overlay-target"></div>
 
-    <script data-cfasync="false">window.__DOCS__ = { "title": "Home", isRoot: true, level: 0, icon: "file", hasPrism: false, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+        <script data-cfasync="false">window.__DOCS__ = { "title": "Home", isRoot: true, level: 0, icon: "file", hasPrism: false, hasInstagram: false, hasMermaid: false, hasMath: false, tocDepth: 23, "md": "/index.md" }</script>
 </body>
 </html>

@@ -4,24 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.4.0.827920368143">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.839542810150">
 
     <!-- See retype.com -->
-    <meta name="generator" content="Retype 4.4.0">
+    <meta name="generator" content="Retype 4.6.0">
 
     <!-- Primary Meta Tags -->
     <title>Infiltrator (Insane)</title>
     <meta name="title" content="Infiltrator (Insane)">
-    <meta name="description" content="Infiltrator is an Insane Windows Active Directory machine that starts with a website that an attacker can scrape for possible usernames on the machine. One">
+    <meta name="description" content="Infiltrator is an Insane Windows Active Directory machine that starts with a website that an attacker can scrape for possible usernames on the machine. One user doesn't have Kerberos pre-authentication enabled, and his password can be cracked.">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://bytebl33d.github.io/writeups/hackthebox/machines/infiltrator/">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://bytebl33d.github.io/sitemap.xml">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://bytebl33d.github.io/writeups/hackthebox/machines/infiltrator/">
     <meta property="og:title" content="Infiltrator (Insane)">
-    <meta property="og:description" content="Infiltrator is an Insane Windows Active Directory machine that starts with a website that an attacker can scrape for possible usernames on the machine. One">
+    <meta property="og:description" content="Infiltrator is an Insane Windows Active Directory machine that starts with a website that an attacker can scrape for possible usernames on the machine. One user doesn't have Kerberos pre-authentication enabled, and his password can be cracked.">
     <meta property="og:image" content="https://bytebl33d.github.io/assets/images/headers/infiltrator.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -33,21 +34,24 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://bytebl33d.github.io/writeups/hackthebox/machines/infiltrator/">
     <meta name="twitter:title" content="Infiltrator (Insane)">
-    <meta name="twitter:description" content="Infiltrator is an Insane Windows Active Directory machine that starts with a website that an attacker can scrape for possible usernames on the machine. One">
+    <meta name="twitter:description" content="Infiltrator is an Insane Windows Active Directory machine that starts with a website that an attacker can scrape for possible usernames on the machine. One user doesn't have Kerberos pre-authentication enabled, and his password can be cracked.">
     <meta name="twitter:image" content="https://bytebl33d.github.io/assets/images/headers/infiltrator.png">
     <meta name="twitter:image:alt" content="Infiltrator (Insane)">
 
     <!-- RSS -->
     <link rel="alternate" type="application/rss+xml" href="https://bytebl33d.github.io/blog/feed.xml">
 
+    <!-- Alternate Markdown -->
+    <link rel="alternate" type="text/markdown" href="https://bytebl33d.github.io/writeups/hackthebox/machines/infiltrator.md">
+
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../../../resources/css/retype.css?v=4.4.0.827920368143" rel="stylesheet">
+    <link href="../../../../resources/css/retype.css?v=4.6.0.839542810150" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../../resources/js/config.js?v=4.4.0.827920368143" data-turbo-eval="false" defer></script>
-    <script data-cfasync="false" src="../../../../resources/js/retype.js?v=4.4.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=4.4.0.827920368143" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=4.4.0.827920368143" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/config.js?v=4.6.0.839542810150" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/retype.js?v=4.6.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=4.6.0.839542810150" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=4.6.0.839542810150" defer></script>
 </head>
 <body>
     <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
@@ -153,9 +157,11 @@
 <div class="flex">
     <div id="retype-main" class="min-w-0 p-4 grow md:px-16">
         <main class="relative pb-12 lg:pt-2">
-            <div class="retype-markdown" id="retype-content">
+            <div class="relative retype-markdown" id="retype-content">
                 <!-- Rendered if sidebar right is enabled -->
                 <div id="retype-sidebar-right-toggle"></div>
+                <doc-page-actions></doc-page-actions>
+
                 <!-- Page content  -->
 <figure class="content-center">
     <img src="../../../../assets/images/headers/infiltrator.png" alt="" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="698" height="489" />
@@ -828,6 +834,6 @@ Certipy v4.8.2 - by Oliver Lyak (ly4k)
 
     <div id="retype-overlay-target"></div>
 
-    <script data-cfasync="false">window.__DOCS__ = { "title": "Infiltrator (Insane)", level: 4, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+        <script data-cfasync="false">window.__DOCS__ = { "title": "Infiltrator (Insane)", level: 4, icon: "file", hasPrism: true, hasInstagram: false, hasMermaid: false, hasMath: false, tocDepth: 23, "md": "/writeups/hackthebox/machines/infiltrator.md" }</script>
 </body>
 </html>

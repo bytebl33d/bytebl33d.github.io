@@ -4,24 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.4.0.827920368143">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.839542810150">
 
     <!-- See retype.com -->
-    <meta name="generator" content="Retype 4.4.0">
+    <meta name="generator" content="Retype 4.6.0">
 
     <!-- Primary Meta Tags -->
     <title>Attacking JSON Web Tokens</title>
     <meta name="title" content="Attacking JSON Web Tokens">
-    <meta name="description" content="Incorrect handling of JSON Web Tokens (JWTs) can leave a website vulnerable to a variety of attacks. To understand these attacks we first have to know what">
+    <meta name="description" content="Incorrect handling of JSON Web Tokens (JWTs) can leave a website vulnerable to a variety of attacks. To understand these attacks we first have to know what a JWT token is.">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://bytebl33d.github.io/blog/jwt-attacks/">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://bytebl33d.github.io/sitemap.xml">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://bytebl33d.github.io/blog/jwt-attacks/">
     <meta property="og:title" content="Attacking JSON Web Tokens">
-    <meta property="og:description" content="Incorrect handling of JSON Web Tokens (JWTs) can leave a website vulnerable to a variety of attacks. To understand these attacks we first have to know what">
+    <meta property="og:description" content="Incorrect handling of JSON Web Tokens (JWTs) can leave a website vulnerable to a variety of attacks. To understand these attacks we first have to know what a JWT token is.">
     <meta property="og:image" content="https://bytebl33d.github.io/assets/images/headers/jwt.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -33,21 +34,24 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://bytebl33d.github.io/blog/jwt-attacks/">
     <meta name="twitter:title" content="Attacking JSON Web Tokens">
-    <meta name="twitter:description" content="Incorrect handling of JSON Web Tokens (JWTs) can leave a website vulnerable to a variety of attacks. To understand these attacks we first have to know what">
+    <meta name="twitter:description" content="Incorrect handling of JSON Web Tokens (JWTs) can leave a website vulnerable to a variety of attacks. To understand these attacks we first have to know what a JWT token is.">
     <meta name="twitter:image" content="https://bytebl33d.github.io/assets/images/headers/jwt.png">
     <meta name="twitter:image:alt" content="Attacking JSON Web Tokens">
 
     <!-- RSS -->
     <link rel="alternate" type="application/rss+xml" href="https://bytebl33d.github.io/blog/feed.xml">
 
+    <!-- Alternate Markdown -->
+    <link rel="alternate" type="text/markdown" href="https://bytebl33d.github.io/blog/jwt-attacks.md">
+
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../resources/css/retype.css?v=4.4.0.827920368143" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=4.6.0.839542810150" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=4.4.0.827920368143" data-turbo-eval="false" defer></script>
-    <script data-cfasync="false" src="../../resources/js/retype.js?v=4.4.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=4.4.0.827920368143" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=4.4.0.827920368143" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=4.6.0.839542810150" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/retype.js?v=4.6.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=4.6.0.839542810150" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=4.6.0.839542810150" defer></script>
 </head>
 <body>
     <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
@@ -152,9 +156,11 @@
             <!-- Render page content -->
 <div class="grow min-w-0 px-6">
     <main class="relative pt-6 pb-16">
-        <div class="retype-markdown" id="retype-content">
+        <div class="relative retype-markdown" id="retype-content">
             <!-- Rendered if sidebar right is enabled -->
             <div id="retype-sidebar-right-toggle"></div>
+            <doc-page-actions></doc-page-actions>
+
             <!-- Page content  -->
 <h1 id="attacking-json-web-tokens">Attacking JSON Web Tokens</h1>
 <div class="-mt-3 mb-12 flex flex-wrap text-sm text-gray-400 dark:text-dark-350 items-center">
@@ -373,6 +379,6 @@ V8WS+YiYCU5OBAmTcz2w2kzBhZFlH6RK4mquexJHra23IGv5UJ5GVPEXpdCqK3Tr
 
     <div id="retype-overlay-target"></div>
 
-    <script data-cfasync="false">window.__DOCS__ = { "title": "Attacking JSON Web Tokens", level: 2, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+        <script data-cfasync="false">window.__DOCS__ = { "title": "Attacking JSON Web Tokens", level: 2, icon: "file", hasPrism: true, hasInstagram: false, hasMermaid: false, hasMath: false, tocDepth: 23, "md": "/blog/jwt-attacks.md" }</script>
 </body>
 </html>

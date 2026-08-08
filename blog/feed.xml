@@ -4,13 +4,21 @@
     <title>bytebl33d Blog</title>
     <link>https://bytebl33d.github.io/blog/</link>
     <copyright>© Copyright 2026. All rights reserved.</copyright>
-    <lastBuildDate>Sat, 03 Jan 2026 11:00:00 GMT</lastBuildDate>
-    <generator>Retype 4.4.0</generator>
+    <lastBuildDate>Fri, 07 Aug 2026 18:00:00 GMT</lastBuildDate>
+    <generator>Retype 4.6.0</generator>
     <atom:link rel="self" type="application/rss+xml" href="https://bytebl33d.github.io/blog/feed.xml" />
+    <item>
+      <title>Building a CI/CD Pipeline for Malware Obfuscation</title>
+      <guid isPermaLink="true">https://bytebl33d.github.io/blog/obfuscation-pipeline/</guid>
+      <description>It has been some time since my last post. Professional commitments, personal life, and preparation for the HackTheBox CAPE exam (more on that later) have kept me busy.</description>
+      <pubDate>Fri, 07 Aug 2026 18:00:00 GMT</pubDate>
+      <category domain="https://bytebl33d.github.io/categories/homelab/">Homelab</category>
+      <category domain="https://bytebl33d.github.io/categories/maldev/">Maldev</category>
+    </item>
     <item>
       <title>Adding Endpoint Detection to our Cyber Range</title>
       <guid isPermaLink="true">https://bytebl33d.github.io/blog/endpoint-detection-lab/</guid>
-      <description>As a security analyst, you will likely come in contact with Antivirus, SIEMs, EDR, XDR and Cloud products. To better understand these products it is</description>
+      <description>As a security analyst, you will likely come in contact with Antivirus, SIEMs, EDR, XDR and Cloud products. To better understand these products it is beneficial to create your own detection lab.</description>
       <pubDate>Sat, 03 Jan 2026 11:00:00 GMT</pubDate>
       <category domain="https://bytebl33d.github.io/categories/active-directory/">Active-Directory</category>
       <category domain="https://bytebl33d.github.io/categories/homelab/">Homelab</category>
@@ -18,7 +26,7 @@
     <item>
       <title>Building a Cyber Range with Ludus</title>
       <guid isPermaLink="true">https://bytebl33d.github.io/blog/ludus-cyber-range/</guid>
-      <description>Ever since I built my first homelab, I wanted to create my own dedicated cyber range - my little digital playground where I can break things, fix things,</description>
+      <description>Ever since I built my first homelab, I wanted to create my own dedicated cyber range - my little digital playground where I can break things, fix things, automate things, and then do it all over again.</description>
       <pubDate>Sat, 22 Nov 2025 15:38:00 GMT</pubDate>
       <category domain="https://bytebl33d.github.io/categories/active-directory/">Active-Directory</category>
       <category domain="https://bytebl33d.github.io/categories/homelab/">Homelab</category>
@@ -34,7 +42,7 @@
     <item>
       <title>Anti-Virus Evasion with Sliver C2</title>
       <guid isPermaLink="true">https://bytebl33d.github.io/blog/sliver-evasion/</guid>
-      <description>My recent exploration into C2 frameworks led me to BishopFox's Sliver project. While its capabilities are impressive, I quickly encountered a common</description>
+      <description>My recent exploration into C2 frameworks led me to BishopFox's Sliver project. While its capabilities are impressive, I quickly encountered a common challenge: Windows Defender's detection of beacon payloads on my Windows VM.</description>
       <pubDate>Sat, 04 Jan 2025 09:00:00 GMT</pubDate>
       <category domain="https://bytebl33d.github.io/categories/maldev/">Maldev</category>
       <category domain="https://bytebl33d.github.io/categories/windows/">Windows</category>
@@ -43,7 +51,7 @@
     <item>
       <title>Active Directory Home Lab with Proxmox - Part 4</title>
       <guid isPermaLink="true">https://bytebl33d.github.io/blog/proxmox-homelab-part4/</guid>
-      <description>In this part of our Active Directory Home Lab series, we'll focus on enhancing the security and visibility of our environment by adding network monitoring.</description>
+      <description>In this part of our Active Directory Home Lab series, we'll focus on enhancing the security and visibility of our environment by adding network monitoring. Since we're utilizing PfSense as our software-based firewall, it provides a convenient platform for deploying additional security tools.</description>
       <pubDate>Tue, 03 Sep 2024 16:38:00 GMT</pubDate>
       <category domain="https://bytebl33d.github.io/categories/active-directory/">Active-Directory</category>
       <category domain="https://bytebl33d.github.io/categories/homelab/">Homelab</category>
@@ -51,7 +59,7 @@
     <item>
       <title>Active Directory Home Lab with Proxmox - Part 3</title>
       <guid isPermaLink="true">https://bytebl33d.github.io/blog/proxmox-homelab-part3/</guid>
-      <description>We are now going to add some simple misconfigurations to our AD Lab. In the final section we will verify them by targeting our network from an outside</description>
+      <description>We are now going to add some simple misconfigurations to our AD Lab. In the final section we will verify them by targeting our network from an outside Linux VM.</description>
       <pubDate>Sat, 30 Mar 2024 18:38:00 GMT</pubDate>
       <category domain="https://bytebl33d.github.io/categories/active-directory/">Active-Directory</category>
       <category domain="https://bytebl33d.github.io/categories/homelab/">Homelab</category>
@@ -59,7 +67,7 @@
     <item>
       <title>Active Directory Home Lab with Proxmox - Part 2</title>
       <guid isPermaLink="true">https://bytebl33d.github.io/blog/proxmox-homelab-part2/</guid>
-      <description>In this post, we're diving into the setup of Windows virtual machines (VMs) in a Proxmox home lab, with the ultimate goal of building an Active Directory</description>
+      <description>In this post, we're diving into the setup of Windows virtual machines (VMs) in a Proxmox home lab, with the ultimate goal of building an Active Directory (AD) environment.</description>
       <pubDate>Wed, 27 Mar 2024 15:30:00 GMT</pubDate>
       <category domain="https://bytebl33d.github.io/categories/active-directory/">Active-Directory</category>
       <category domain="https://bytebl33d.github.io/categories/homelab/">Homelab</category>
@@ -75,14 +83,14 @@
     <item>
       <title>Attacking JSON Web Tokens</title>
       <guid isPermaLink="true">https://bytebl33d.github.io/blog/jwt-attacks/</guid>
-      <description>Incorrect handling of JSON Web Tokens (JWTs) can leave a website vulnerable to a variety of attacks. To understand these attacks we first have to know what</description>
+      <description>Incorrect handling of JSON Web Tokens (JWTs) can leave a website vulnerable to a variety of attacks. To understand these attacks we first have to know what a JWT token is.</description>
       <pubDate>Sat, 02 Sep 2023 13:22:00 GMT</pubDate>
       <category domain="https://bytebl33d.github.io/categories/web-exploitation/">Web-Exploitation</category>
     </item>
     <item>
       <title>Web Fuzzing with FFUF</title>
       <guid isPermaLink="true">https://bytebl33d.github.io/blog/web-fuzzing-with-ffuf/</guid>
-      <description>Fuzzing is "the art of automatic bug finding", as described by the OWASP community. It is the act of sending various types of input in HTTP requests,</description>
+      <description>Fuzzing is "the art of automatic bug finding", as described by the OWASP community. It is the act of sending various types of input in HTTP requests, trying to find an input or payload that causes the application to respond in unexpected ways and reveal a vulnerability.</description>
       <pubDate>Fri, 28 Jul 2023 13:22:00 GMT</pubDate>
       <category domain="https://bytebl33d.github.io/categories/web-exploitation/">Web-Exploitation</category>
     </item>
