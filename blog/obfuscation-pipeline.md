@@ -70,7 +70,7 @@ dotnetObfuscate{
 
 Every build pipeline includes two critical validation stages: a functional test to verify the binary executes without runtime errors, and a detection test using `ThreatCheck` or `Gocheck` to determine if the binary is flagged by Microsoft Defender.
 
-The pipeline implements several key features to streamline the obfuscation process:
+The pipeline implements several key features to streamline the obfuscation process.
 
 ### InvisibilityCloak: Source Code Obfuscation
 
@@ -78,26 +78,26 @@ This stage performs source-level transformations before compilation. It alters p
 
 ### Custom Obfuscation
 
-For projects requiring specialized handling, the pipeline supports invoking a custom PowerShell script. This provides flexibility to apply project-specific modifications—such as function renaming, comment stripping, or additional string encryption—that may not be covered by generic obfuscation methods.
+For projects requiring specialized handling, the pipeline supports invoking a custom PowerShell script. This provides flexibility to apply project-specific modifications such as function renaming, comment stripping, or additional string encryption that may not be covered by generic obfuscation methods.
 
 ### ConfuserEx: Binary-Level Obfuscation
 
-At the binary stage, the pipeline integrates `ConfuserEx`, an open-source protector for .NET applications. ConfuserEx offers a comprehensive suite of protections :
+At the binary stage, the pipeline integrates `ConfuserEx`, an open-source protector for .NET applications. ConfuserEx offers a comprehensive suite of protections:
 
 - Symbol renaming: obfuscates class, method, and field names
 - Control flow obfuscation: scrambles code logic to impede decompilation
 - Anti-debug/anti-tamper: prevents debugging and memory dumping
 - Constant and resource encryption: protects sensitive strings and embedded resources
 
-ConfuserEx is invoked via its command-line interface (Confuser.CLI.exe) using a project configuration file (.crproj) that defines the protection rules. The pipeline generates this file dynamically based on the parameters passed to the library. Note that ConfuserEx supports .NET Framework versions 2.0 through 4.8, making it compatible with most legacy red-team tooling.
+ConfuserEx is invoked via its command-line interface (`Confuser.CLI.exe`) using a project configuration file (.crproj) that defines the protection rules. The pipeline generates this file dynamically based on the parameters passed to the library. Note that ConfuserEx supports .NET Framework versions 2.0 through 4.8, making it compatible with most legacy red-team tooling.
 
 ### Functional Testing
 
-A critical step that validates the obfuscated binary still performs its intended functions. This guards against the "breakage" issue I encountered previously—where aggressive obfuscation inadvertently disabled core functionality. The test runs the binary with common arguments (e.g., --help) and verifies expected output and exit codes.
+A critical step that validates the obfuscated binary still performs its intended functions. This guards against the "breakage" issue I encountered previously. The test runs the binary with common arguments and verifies expected output and exit codes.
 
 ### ThreatCheck/Gocheck: Automated Detection Testing
 
-ThreatCheck, originally derived from DefenderCheck and further modified by Rasta Mouse, performs byte-level analysis against Microsoft Defender and AMSI. It takes a binary as input, recursively splits it into smaller chunks, and scans each segment to pinpoint the exact byte ranges that trigger detection . This outputs a hex dump of the offending bytes, allowing me to identify which code sections are causing signatures without waiting for a full Defender scan. The pipeline archives these results alongside the obfuscated binary for later analysis.
+ThreatCheck, originally derived from DefenderCheck and further modified by Rasta Mouse, performs byte-level analysis against Microsoft Defender and AMSI. It takes a binary as input, recursively splits it into smaller chunks, and scans each segment to pinpoint the exact byte ranges that trigger detection. This outputs a hex dump of the offending bytes, allowing me to identify which code sections are causing signatures without waiting for a full Defender scan. The pipeline archives these results alongside the obfuscated binary for later analysis.
 
 ![Defender Threat Check Stage](/assets/images/homelab/pipeline-9.png)
 
@@ -125,7 +125,7 @@ One of the key design decisions was making the pipeline parameterized, allowing 
 
 - Tool Name: The name of the target binary. This determines the output filename and is used in the functional testing stage.
 - String Obfuscation Method: Select from methods like base64, rot13, reverse, or none. This controls how strings are encoded in the source before compilation.
-- Custom Obfuscation: A toggle that, when enabled, triggers the pipeline to look for and execute a project-specific PowerShell script. This allows me to apply unique transformations that aren't covered by the generic obfuscation methods—such as renaming specific classes.
+- Custom Obfuscation: A toggle that, when enabled, triggers the pipeline to look for and execute a project-specific PowerShell script. This allows me to apply unique transformations that aren't covered by the generic obfuscation methods such as renaming specific classes.
 - Binary Obfuscation: Enables or disables the ConfuserEx stage. While I typically leave this on, having the option to disable it is useful for debugging or when I need a clean binary for comparison.
 - AV Check: Toggles the ThreatCheck detection stage. I can disable this during rapid iteration to save time, and re-enable it for final validation before deployment.
 

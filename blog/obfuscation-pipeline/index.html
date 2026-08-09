@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.839542959323">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.839578655806">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 4.6.0">
@@ -46,12 +46,12 @@
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../resources/css/retype.css?v=4.6.0.839542959323" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=4.6.0.839578655806" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=4.6.0.839542959323" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=4.6.0.839578655806" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=4.6.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=4.6.0.839542959323" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=4.6.0.839542959323" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=4.6.0.839578655806" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=4.6.0.839578655806" defer></script>
 </head>
 <body>
     <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
@@ -235,24 +235,24 @@ dotnetObfuscate{
 }</code></pre>
 </doc-codeblock></div>
 <p>Every build pipeline includes two critical validation stages: a functional test to verify the binary executes without runtime errors, and a detection test using <code translate="no" v-pre>ThreatCheck</code> or <code translate="no" v-pre>Gocheck</code> to determine if the binary is flagged by Microsoft Defender.</p>
-<p>The pipeline implements several key features to streamline the obfuscation process:</p>
+<p>The pipeline implements several key features to streamline the obfuscation process.</p>
 <h3 id="invisibilitycloak-source-code-obfuscation">InvisibilityCloak: Source Code Obfuscation</h3>
 <p>This stage performs source-level transformations before compilation. It alters project metadata such as GUIDs and assembly attributes, and applies string obfuscation techniques to make static analysis more difficult. The goal is to break signature-based detection at the source level before the binary is even compiled.</p>
 <h3 id="custom-obfuscation">Custom Obfuscation</h3>
-<p>For projects requiring specialized handling, the pipeline supports invoking a custom PowerShell script. This provides flexibility to apply project-specific modifications—such as function renaming, comment stripping, or additional string encryption—that may not be covered by generic obfuscation methods.</p>
+<p>For projects requiring specialized handling, the pipeline supports invoking a custom PowerShell script. This provides flexibility to apply project-specific modifications such as function renaming, comment stripping, or additional string encryption that may not be covered by generic obfuscation methods.</p>
 <h3 id="confuserex-binary-level-obfuscation">ConfuserEx: Binary-Level Obfuscation</h3>
-<p>At the binary stage, the pipeline integrates <code translate="no" v-pre>ConfuserEx</code>, an open-source protector for .NET applications. ConfuserEx offers a comprehensive suite of protections :</p>
+<p>At the binary stage, the pipeline integrates <code translate="no" v-pre>ConfuserEx</code>, an open-source protector for .NET applications. ConfuserEx offers a comprehensive suite of protections:</p>
 <ul>
 <li>Symbol renaming: obfuscates class, method, and field names</li>
 <li>Control flow obfuscation: scrambles code logic to impede decompilation</li>
 <li>Anti-debug/anti-tamper: prevents debugging and memory dumping</li>
 <li>Constant and resource encryption: protects sensitive strings and embedded resources</li>
 </ul>
-<p>ConfuserEx is invoked via its command-line interface (Confuser.CLI.exe) using a project configuration file (.crproj) that defines the protection rules. The pipeline generates this file dynamically based on the parameters passed to the library. Note that ConfuserEx supports .NET Framework versions 2.0 through 4.8, making it compatible with most legacy red-team tooling.</p>
+<p>ConfuserEx is invoked via its command-line interface (<code translate="no" v-pre>Confuser.CLI.exe</code>) using a project configuration file (.crproj) that defines the protection rules. The pipeline generates this file dynamically based on the parameters passed to the library. Note that ConfuserEx supports .NET Framework versions 2.0 through 4.8, making it compatible with most legacy red-team tooling.</p>
 <h3 id="functional-testing">Functional Testing</h3>
-<p>A critical step that validates the obfuscated binary still performs its intended functions. This guards against the &quot;breakage&quot; issue I encountered previously—where aggressive obfuscation inadvertently disabled core functionality. The test runs the binary with common arguments (e.g., --help) and verifies expected output and exit codes.</p>
+<p>A critical step that validates the obfuscated binary still performs its intended functions. This guards against the &quot;breakage&quot; issue I encountered previously. The test runs the binary with common arguments and verifies expected output and exit codes.</p>
 <h3 id="threatcheckgocheck-automated-detection-testing">ThreatCheck/Gocheck: Automated Detection Testing</h3>
-<p>ThreatCheck, originally derived from DefenderCheck and further modified by Rasta Mouse, performs byte-level analysis against Microsoft Defender and AMSI. It takes a binary as input, recursively splits it into smaller chunks, and scans each segment to pinpoint the exact byte ranges that trigger detection . This outputs a hex dump of the offending bytes, allowing me to identify which code sections are causing signatures without waiting for a full Defender scan. The pipeline archives these results alongside the obfuscated binary for later analysis.</p>
+<p>ThreatCheck, originally derived from DefenderCheck and further modified by Rasta Mouse, performs byte-level analysis against Microsoft Defender and AMSI. It takes a binary as input, recursively splits it into smaller chunks, and scans each segment to pinpoint the exact byte ranges that trigger detection. This outputs a hex dump of the offending bytes, allowing me to identify which code sections are causing signatures without waiting for a full Defender scan. The pipeline archives these results alongside the obfuscated binary for later analysis.</p>
 <figure class="content-center">
     <img src="../../assets/images/homelab/pipeline-9.png" alt="Defender Threat Check Stage" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1737" height="572" />
     <figcaption class="caption">Defender Threat Check Stage</figcaption>
@@ -280,7 +280,7 @@ dotnetObfuscate{
 <ul>
 <li>Tool Name: The name of the target binary. This determines the output filename and is used in the functional testing stage.</li>
 <li>String Obfuscation Method: Select from methods like base64, rot13, reverse, or none. This controls how strings are encoded in the source before compilation.</li>
-<li>Custom Obfuscation: A toggle that, when enabled, triggers the pipeline to look for and execute a project-specific PowerShell script. This allows me to apply unique transformations that aren&#x27;t covered by the generic obfuscation methods—such as renaming specific classes.</li>
+<li>Custom Obfuscation: A toggle that, when enabled, triggers the pipeline to look for and execute a project-specific PowerShell script. This allows me to apply unique transformations that aren&#x27;t covered by the generic obfuscation methods such as renaming specific classes.</li>
 <li>Binary Obfuscation: Enables or disables the ConfuserEx stage. While I typically leave this on, having the option to disable it is useful for debugging or when I need a clean binary for comparison.</li>
 <li>AV Check: Toggles the ThreatCheck detection stage. I can disable this during rapid iteration to save time, and re-enable it for final validation before deployment.</li>
 </ul>
