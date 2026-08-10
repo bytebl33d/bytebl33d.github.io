@@ -9,6 +9,8 @@ categories: ['HackTheBox', 'Windows', 'Active-Directory']
 
 # Synopsis
 
+DarkCorp is an Insane-difficulty Windows machine with several computers joined. The initial foothold involves exploiting CVE-2024-42009, an XXS vulnerability and IDOR in `RoundCube`, via the Contact Page to read emails from a developer and leak a hidden, password-protected Analytics dashboard. By leveraging the XXS vulnerability, a separate vhost is accessed, which is vulnerable to a command injection vulnerability using `Postgres`, allowing us to gain an initial foothold on the machine. Then, an internal web application monitoring service is abused by relaying the authentication request to the domain controller. Furthermore, `PrinterBug` is used to coerce the web server within DarkCorp's internal network following a Kerberos relay attack to compromise the host. After enumerating `Credential Manager` installed in the web server, abusing ACLs using the credentials found, and exploiting **"A broken marriage, Abusing mixed vendor Kerberos stacks"** to get an SSH session on the Drip machine, finally the cached credentials inside the host is extracted which can be leveraged to manage Group Policy Objects allowing us to add a local administrator account to get adminitrative access to the domain controller.
+
 ## Reconnaissance
 We start with a quick nmap scan and see that there are only two ports open.
 

@@ -10,21 +10,22 @@ categories: ['Active-Directory', 'Homelab']
 
 Connecting Linux machines to an Active Directory (AD) domain can streamline user authentication and management in mixed-environment networks. In this post I will guide you through the process of joining a Linux machine to a Windows Active Directory domain, allowing for centralized authentication and simplified access control for your Linux servers.
 
-# Setting Up Your Web Server
-To begin, we'll provision a new AlmaLinux container. 
+## Setting Up Your Web Server
+
+To begin, we'll provision a new AlmaLinux container.
 
 !!!info
 You need to make a privileged container in order to join it to the domain. To do this you first make a regular LXC, make a backup and restore it as privileged.
 !!!
 
+![Almalinux container setup](/assets/images/homelab/almalinux-container-setup.png)
 
-![](/assets/images/homelab/almalinux-container-setup.png)
-
-![](/assets/images/homelab/almalinux-container-setup-config.png)
+![Almalinux container setup config](/assets/images/homelab/almalinux-container-setup-config.png)
 
 This container will serve as our web server and the machine we'll join to the Active Directory domain.
 
 ## Installing Necessary Packages
+
 Before joining the domain, you need to install several key packages that facilitate communication and integration with Active Directory. It's always a good practice to ensure your system is up-to-date before installing new software.
 
 First, update and upgrade your existing packages:
@@ -40,7 +41,8 @@ Next, install the required packages. These include `sssd` (System Security Servi
 [root@WEB01 ~]# yum install sssd realmd oddjob oddjob-mkhomedir adcli samba-common samba-common-tools krb5-workstation openldap-clients
 ```
 
-# Joining Active Directory
+## Joining Active Directory
+
 With the necessary packages installed, you can now join your AlmaLinux machine to the Active Directory domain. This is done using the `realm` command, which simplifies the process of configuring Kerberos and SSSD for domain integration.
 
 Execute the following command, replacing `CICADA.LOCAL` with your actual domain name and `Administrator` with an Active Directory user account that has permissions to join machines to the domain:
@@ -59,7 +61,8 @@ uid=136801114(web01$@cicada.local) gid=136800515(domain computers@cicada.local) 
 
 As you can see, our machine is now recognized as a domain computer within Active Directory.
 
-## Configuring SSSD and PAM for AD Integration
+### Configuring SSSD and PAM for AD Integration
+
 To enable users to authenticate against Active Directory and have their home directories created automatically upon login, you need to configure SSSD and edit the PAM (Pluggable Authentication Modules) configuration for SSH.
 
 First, ensure `openssh-server` is installed, as it's crucial for remote access and is often a primary way users will interact with the joined Linux machine.
@@ -71,7 +74,6 @@ First, ensure `openssh-server` is installed, as it's crucial for remote access a
 ```
 
 Next, start and enable the `sssd` and `oddjobd` services. SSSD is responsible for handling authentication and identity lookups against Active Directory, while `oddjobd` (along with `oddjob-mkhomedir`) helps with tasks like creating home directories for domain users.
-
 
 ```console
 [root@WEB01 ~]# sudo systemctl start oddjobd
@@ -122,10 +124,11 @@ ldap_id_mapping = True
 access_provider = ad
 ```
 
-## Authenticating with Kerberos and SSH
+### Authenticating with Kerberos and SSH
+
 To enable Kerberos authentication, you need to configure the `/etc/krb5.conf` file on your local machine. This file tells your system how to locate the Kerberos Key Distribution Center (KDC) for your domain. Add the following configuration:
 
-```
+```text
 [libdefaults]
     default_realm = CICADA.LOCAL
     dns_lookup_realm = true
@@ -170,5 +173,6 @@ $ ssh w.wonder@web01.cicada.local
 
 You should be logged in without being prompted for a password, demonstrating successful Kerberos authentication and Active Directory integration!
 
-# Conclusion
+## Conclusion
+
 By following these steps, you've successfully joined your Linux machine to a Windows Active Directory domain. This setup allows for centralized user authentication and management, significantly simplifying administration in environments with both Windows and Linux systems. Users can now seamlessly log in to your Linux machines using their Active Directory credentials, benefiting from single sign-on capabilities.

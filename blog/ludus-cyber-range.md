@@ -10,24 +10,26 @@ categories:
 
 ![](/assets/images/headers/ludus.png)
 
-Ever since I built my first homelab, I wanted to create my own dedicated cyber range - my little digital playground where I can break things, fix things, automate things, and then do it all over again. True definition of insanity right here. But I didn’t want to risk nuking my daily-driver machine.
+Ever since I built my first homelab, I wanted to create my own dedicated cyber range. My little digital playground where I can break things, fix things, automate things, and then do it all over again. True definition of insanity right here. But I didn’t want to risk nuking my daily-driver machine.
 
-Then one day I looked over at my ancient desktop — the one that wheezes when you open up more than three Chrome tabs (I actually needed to replace a few faulty fans) and thought:
+Then one day I looked over at my ancient desktop. You know, the one that wheezes when you open up more than three Chrome tabs (I actually needed to replace a few faulty fans) and thought:
 
 > "Bestie, you’re getting a glow-up."
 
 A quick dive into the documentation rabbit hole later, I found [Ludus](https://docs.ludus.cloud/), an open-source framework that basically said, "I heard you hate clicking through installers manually, let me cook."
 
 ## Why Ludus?
+
 I chose Ludus for a few reasons:
+
 - It automates the heavy lifting of cyber range creation, because I am allergic to unnecessary clicking.
-- It supports modular “plugins,” including prebuilt Active Directory environments.
+- It supports modular plugins, including prebuilt Active Directory environments.
 - Everything is infrastructure-as-code, which means I can tear down and rebuild environments cleanly.
-- It's built for learning, research, and “I wonder what happens if—” moments, not production use.
 
 Besides, I was already making use of [Proxmox](https://www.proxmox.com/) in my previous series and Ludus builds on top of it. So Ludus fits perfectly into my tech ecosystem.
 
 ## Setting up my Range
+
 Ludus' [documentation](https://docs.ludus.cloud/docs/quick-start/install-ludus) walks through the installation process, and following it is very straightforward so I won't be covering it in this blogpost.
 
 After you have installed Ludus and created a user, you should be able to list the available templates.
@@ -58,7 +60,7 @@ $ ludus templates build -n debian-12-x64-server-template
 [INFO]  Template building started
 ```
 
-While browsing the “Environment Guides,” I stumbled upon the **Game Of Active Directory – Ninja Hacking Academy (GOAD-NHA)** setup. This thing is basically an escape room for sysadmins — you drop in, and everything dares you to figure it out by yourself. But I wanted my cyber range to be on the latest Windows Server version, which at the time of writing is 2025.
+While browsing the "Environment Guides", I stumbled upon the **Game Of Active Directory – Ninja Hacking Academy (GOAD-NHA)** setup. This thing is basically an escape room for sysadmins. You drop in, and everything dares you to figure it out by yourself. But I wanted my cyber range to be on the latest Windows Server version, which at the time of writing is 2025.
 
 That meant modifying the original Ansible scripts. Thankfully, it wasn’t as dramatic as it sounds, but it did feel like giving the templates a well-deserved modern update. My current ludus range configuration looks as follows:
 
@@ -138,9 +140,10 @@ I also made a few tweaks to the available RAM of the VMs and updated the domain/
 For the lab I will be building, we also have to change one of the servers to Windows 2022. At the time of writing, the lab cannot be solved because of small changes in the newer versions of Windows.
 !!!
 
-
 ## Ninja Hacker Academy Setup
+
 NHA is designed as an educational challenge where users normally work toward gaining domain admin on two domains (`academy.ninja.lan` and `ninja.hack`). The scenario includes:
+
 - A starting point on `WEB` (SRV01)
 - Flags hidden on each machine
 - Up-to-date systems with Defender enabled
@@ -165,11 +168,11 @@ $ ludus range deploy --user NHA
 
 You can follow the deployment process with the `range logs -f` command:
 
-![](/assets/images/homelab/ludus-range-deploy-logs.png)
+![Ludus Range Deploy Logs](/assets/images/homelab/ludus-range-deploy-logs.png)
 
 At the end you should see something like this:
 
-![](/assets/images/homelab/ludus-nha-range-status.png)
+![Ludus NHA Status](/assets/images/homelab/ludus-nha-range-status.png)
 
 At this point the old desktop is usually running enough VMs to sound mildly annoyed, but it manages.
 
@@ -184,10 +187,10 @@ In the future I was thinking of publishing them on my [GitHub](https://github.co
 We proceed with the provisioning and install the required collections (but these should already be installed with ludus):
 
 ```console
-$ ansible-galaxy collection install ansible.windows
-$ ansible-galaxy collection install microsoft.ad
-$ ansible-galaxy collection install community.general
-$ ansible-galaxy collection install community.windows
+ansible-galaxy collection install ansible.windows
+ansible-galaxy collection install microsoft.ad
+ansible-galaxy collection install community.general
+ansible-galaxy collection install community.windows
 ```
 
 Before continuing, make sure that your inventory file at `workspace/ludus/inventory` matches the IP addresses from your range. In my case the range starts with `10.2.10.x` so I will update it accordingly:
@@ -220,22 +223,21 @@ ansible_password=password
 Hop into the `ansible` directory where all the playbooks are located and run them all.
 
 !!!info
-If you get the error `Ansible could not initialize the preferred locale: unsupported locale setting`, check your locales with `locale -a` and set it with `export LC_ALL=<YOUR_LOCALE>.utf8`
+If you get the error **Ansible could not initialize the preferred locale: unsupported locale setting**, check your locales with `locale -a` and set it with `export LC_ALL=<YOUR_LOCALE>.utf8`
 !!!
 
 ```console
-$ cd NHA/ansible
-$ ansible-playbook -i ../ad/NHA/data/inventory -i ../workspace/inventory -i ../globalsettings.ini main.yml
+cd NHA/ansible
+
+ansible-playbook -i ../ad/NHA/data/inventory -i ../workspace/inventory -i ../globalsettings.ini main.yml
 ```
 
-![](/assets/images/homelab/ansible-ludus.gif)
+![Ansible goes brrr...](/assets/images/homelab/ansible-ludus.gif)
 
-Ignore the warnings as Ansible goes brrr... 
-
-This will take some time for it to complete — a good opportunity to refresh your coffee while automation does its thing. In case we ever make a change to one of the playbooks or tasks we can also just run a single one:
+This will take some time for it to complete, a good opportunity to refresh your coffee while automation does its thing. In case we ever make a change to one of the playbooks or tasks we can also just run a single one:
 
 ```console
-$ ansible-playbook -i ../ad/NHA/data/inventory -i ../workspace/inventory -i ../globalsettings.ini ad-trusts.yml
+ansible-playbook -i ../ad/NHA/data/inventory -i ../workspace/inventory -i ../globalsettings.ini ad-trusts.yml
 ```
 
 After it is finished provisioning our lab, we can take snapshots via the proxmox web UI or SSH run the following ludus command (make sure your disks allow snapshots)
@@ -252,7 +254,7 @@ $ ludus --user NHA snapshot create clean-setup -d "Clean NHA setup after ansible
 
 ## Connecting to the Lab
 
-```console 
+```console
 $ ludus user wireguard --user NHA | tee ludus-wg.conf
 [Interface]
 PrivateKey = <PRIVATE_KEY>
@@ -268,8 +270,9 @@ PersistentKeepalive = 25
 Copy this file to your client and run WireGuard:
 
 ```console
-$ wg-quick up ./ludus-wg.conf
+wg-quick up ./ludus-wg.conf
 ```
+
 You can optionally narrow `AllowedIPs` down to only the `srv01` host for better isolation. And just like that, you’re securely connected to your newly deployed cyber range. Let's do a quick test with one of the local admin passwords to see if everything works fine.
 
 ```console
