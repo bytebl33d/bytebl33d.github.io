@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.839578655806">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.839691610260">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 4.6.0">
@@ -46,12 +46,12 @@
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../resources/css/retype.css?v=4.6.0.839578655806" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=4.6.0.839691610260" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=4.6.0.839578655806" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=4.6.0.839691610260" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=4.6.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=4.6.0.839578655806" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=4.6.0.839578655806" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=4.6.0.839691610260" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=4.6.0.839691610260" defer></script>
 </head>
 <body>
     <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
@@ -162,12 +162,7 @@
             <doc-page-actions></doc-page-actions>
 
             <!-- Page content  -->
-<figure class="content-center">
-    <img src="../../assets/images/headers/ad-banner.jpg" alt="" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1358" height="764" />
-    <figcaption class="caption"></figcaption>
-</figure>
-<p>Connecting Linux machines to an Active Directory (AD) domain can streamline user authentication and management in mixed-environment networks. In this post I will guide you through the process of joining a Linux machine to a Windows Active Directory domain, allowing for centralized authentication and simplified access control for your Linux servers.</p>
-<h1 id="setting-up-your-web-server">Setting Up Your Web Server</h1>
+<h1 id="active-directory-home-lab-with-proxmox---part-5">Active Directory Home Lab with Proxmox - Part 5</h1>
 <div class="-mt-3 mb-12 flex flex-wrap text-sm text-gray-400 dark:text-dark-350 items-center">
     <div>In&nbsp;</div>
     <div><a href="../../categories/active-directory/">Active-Directory</a>,&nbsp;</div>
@@ -176,6 +171,12 @@
     <div class="flex items-center shrink-0">Published&nbsp;<span>2025-06-01</span></div>
 </div>
 
+<figure class="content-center">
+    <img src="../../assets/images/headers/ad-banner.jpg" alt="" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1358" height="764" />
+    <figcaption class="caption"></figcaption>
+</figure>
+<p>Connecting Linux machines to an Active Directory (AD) domain can streamline user authentication and management in mixed-environment networks. In this post I will guide you through the process of joining a Linux machine to a Windows Active Directory domain, allowing for centralized authentication and simplified access control for your Linux servers.</p>
+<h2 id="setting-up-your-web-server">Setting Up Your Web Server</h2>
 <p>To begin, we&#x27;ll provision a new AlmaLinux container.</p>
 <div class="flex mb-6">
     <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-callout-info"></div>
@@ -195,12 +196,12 @@
     </div>
 </div>
 <figure class="content-center">
-    <img src="../../assets/images/homelab/almalinux-container-setup.png" alt="" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1605" height="828" />
-    <figcaption class="caption"></figcaption>
+    <img src="../../assets/images/homelab/almalinux-container-setup.png" alt="Almalinux container setup" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1605" height="828" />
+    <figcaption class="caption">Almalinux container setup</figcaption>
 </figure>
 <figure class="content-center">
-    <img src="../../assets/images/homelab/almalinux-container-setup-config.png" alt="" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1622" height="809" />
-    <figcaption class="caption"></figcaption>
+    <img src="../../assets/images/homelab/almalinux-container-setup-config.png" alt="Almalinux container setup config" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1622" height="809" />
+    <figcaption class="caption">Almalinux container setup config</figcaption>
 </figure>
 <p>This container will serve as our web server and the machine we&#x27;ll join to the Active Directory domain.</p>
 <h2 id="installing-necessary-packages">Installing Necessary Packages</h2>
@@ -214,7 +215,7 @@
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">[root@WEB01 ~]# yum update &amp;&amp; yum upgrade
 [root@WEB01 ~]# yum install sssd realmd oddjob oddjob-mkhomedir adcli samba-common samba-common-tools krb5-workstation openldap-clients</code></pre>
 </doc-codeblock></div>
-<h1 id="joining-active-directory">Joining Active Directory</h1>
+<h2 id="joining-active-directory">Joining Active Directory</h2>
 <p>With the necessary packages installed, you can now join your AlmaLinux machine to the Active Directory domain. This is done using the <code translate="no" v-pre>realm</code> command, which simplifies the process of configuring Kerberos and SSSD for domain integration.</p>
 <p>Execute the following command, replacing <code translate="no" v-pre>CICADA.LOCAL</code> with your actual domain name and <code translate="no" v-pre>Administrator</code> with an Active Directory user account that has permissions to join machines to the domain:</p>
 <div id="joining-active-directory-code-1" class="codeblock-wrapper"><doc-codeblock>
@@ -227,7 +228,7 @@ Password for Administrator@CICADA.LOCAL: &lt;REDACTED&gt;</code></pre>
 uid=136801114(web01$@cicada.local) gid=136800515(domain computers@cicada.local) groups=136800515(domain computers@cicada.local)</code></pre>
 </doc-codeblock></div>
 <p>As you can see, our machine is now recognized as a domain computer within Active Directory.</p>
-<h2 id="configuring-sssd-and-pam-for-ad-integration">Configuring SSSD and PAM for AD Integration</h2>
+<h3 id="configuring-sssd-and-pam-for-ad-integration">Configuring SSSD and PAM for AD Integration</h3>
 <p>To enable users to authenticate against Active Directory and have their home directories created automatically upon login, you need to configure SSSD and edit the PAM (Pluggable Authentication Modules) configuration for SSH.</p>
 <p>First, ensure <code translate="no" v-pre>openssh-server</code> is installed, as it&#x27;s crucial for remote access and is often a primary way users will interact with the joined Linux machine.</p>
 <div id="configuring-sssd-and-pam-for-ad-integration-code-1" class="codeblock-wrapper"><doc-codeblock>
@@ -280,7 +281,7 @@ use_fully_qualified_names = False
 ldap_id_mapping = True
 access_provider = ad</code></pre>
 </doc-codeblock></div>
-<h2 id="authenticating-with-kerberos-and-ssh">Authenticating with Kerberos and SSH</h2>
+<h3 id="authenticating-with-kerberos-and-ssh">Authenticating with Kerberos and SSH</h3>
 <p>To enable Kerberos authentication, you need to configure the <code translate="no" v-pre>/etc/krb5.conf</code> file on your local machine. This file tells your system how to locate the Kerberos Key Distribution Center (KDC) for your domain. Add the following configuration:</p>
 <div id="authenticating-with-kerberos-and-ssh-code-1" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-none"><code v-pre class="language-none">[libdefaults]
@@ -320,7 +321,7 @@ Valid starting       Expires              Service principal
 $ ssh w.wonder@web01.cicada.local</code></pre>
 </doc-codeblock></div>
 <p>You should be logged in without being prompted for a password, demonstrating successful Kerberos authentication and Active Directory integration!</p>
-<h1 id="conclusion">Conclusion</h1>
+<h2 id="conclusion">Conclusion</h2>
 <p>By following these steps, you&#x27;ve successfully joined your Linux machine to a Windows Active Directory domain. This setup allows for centralized user authentication and management, significantly simplifying administration in environments with both Windows and Linux systems. Users can now seamlessly log in to your Linux machines using their Active Directory credentials, benefiting from single sign-on capabilities.</p>
 
             

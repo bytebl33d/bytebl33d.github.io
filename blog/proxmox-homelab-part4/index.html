@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.839578655806">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.839691610260">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 4.6.0">
@@ -46,12 +46,12 @@
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../resources/css/retype.css?v=4.6.0.839578655806" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=4.6.0.839691610260" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=4.6.0.839578655806" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=4.6.0.839691610260" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=4.6.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=4.6.0.839578655806" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=4.6.0.839578655806" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=4.6.0.839691610260" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=4.6.0.839691610260" defer></script>
 </head>
 <body>
     <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
@@ -177,7 +177,7 @@
 </figure>
 <p>In this part of our Active Directory Home Lab series, we&#x27;ll focus on enhancing the security and visibility of our environment by adding network monitoring. Since we&#x27;re utilizing PfSense as our software-based firewall, it provides a convenient platform for deploying additional security tools. Specifically, we&#x27;ll be setting up Suricata, a powerful intrusion detection and prevention system (IDS/IPS), to monitor traffic and detect potential threats. This post will guide you through configuring Suricata and creating custom rules to detect attacks, such as those we simulated in Part 3.</p>
 <h2 id="suricata-setup">Suricata Setup</h2>
-<p>To begin, navigate to the PfSense web interface and proceed to <code translate="no" v-pre>System &gt; Package Manager &gt; Available Packages</code>. Search for Suricata and install the latest version. Once installed, go to <code translate="no" v-pre>Services &gt; Suricata</code> to start configuring the tool. We’ll add interfaces and tweak some options, but the default settings should suffice for most purposes. For our ruleset, we&#x27;ll use the ETOpen Emerging Threats as a foundation.</p>
+<p>To begin, navigate to the PfSense web interface and proceed to <strong>System &gt; Package Manager &gt; Available Packages</strong>. Search for Suricata and install the latest version. Once installed, go to <strong>Services &gt; Suricata</strong> to start configuring the tool. We’ll add interfaces and tweak some options, but the default settings should suffice for most purposes. For our ruleset, we&#x27;ll use the ETOpen Emerging Threats as a foundation.</p>
 <h3 id="adding-monitoring-interfaces">Adding Monitoring Interfaces</h3>
 <p>Under the Interfaces tab, select the interfaces that Suricata will monitor. For our lab, I chose the <code translate="no" v-pre>LAN</code> and <code translate="no" v-pre>ADLAB</code> interfaces to observe traffic between the attacking VM on the LAN and the AD network.</p>
 <figure class="content-center">
@@ -194,7 +194,7 @@
 </figure>
 <p>To build this rule, we need to understand how an authentication request from Evil-WinRM appears in network traffic. Using WireShark, we can capture an authentication attempt from a host on the LAN interface. We run the following command in a Linux terminal:</p>
 <div id="detecting-evil-winrm-traffic-code-1" class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ evil-winrm -i 172.16.0.17 -u 'cicada.local\winnie.wonder' -p 'P@ssw0rd123'</code></pre>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">evil-winrm -i 172.16.0.17 -u 'cicada.local\winnie.wonder' -p 'P@ssw0rd123'</code></pre>
 </doc-codeblock></div>
 <p>To capture this traffic in PfSense, go to <code translate="no" v-pre>Diagnostics &gt; Packet Capture</code> and select the appropriate interface.</p>
 <div class="flex mb-6">
@@ -259,7 +259,7 @@
 </doc-codeblock></div>
 <p>This rule was applied to the ADLAB interface. To test it, I used <code translate="no" v-pre>NetExec</code> to initiate an SMB authentication from outside the ADLAB interface:</p>
 <div id="detecting-smb-authentication-code-2" class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nxc smb 172.16.200.100 -u 'winnie.wonder' -p 'P@ssw0rd123' -d 'cicada.local'</code></pre>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">nxc smb 172.16.200.100 -u 'winnie.wonder' -p 'P@ssw0rd123' -d 'cicada.local'</code></pre>
 </doc-codeblock></div>
 <p>As expected, Suricata raised an alert upon detecting the authentication:
 <figure class="content-center">
@@ -270,7 +270,7 @@
 <h4 id="detecting-as-reproasting">Detecting AS-REPRoasting</h4>
 <p>In the third part of our series, we executed the following command to perform an ASREPRoasting attack on domain users:</p>
 <div id="detecting-as-reproasting-code-1" class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ GetNPUsers.py CICADA.LOCAL/ -dc-ip 172.16.200.100 -no-pass -usersfile valid_users -format hashcat</code></pre>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">GetNPUsers.py CICADA.LOCAL/ -dc-ip 172.16.200.100 -no-pass -usersfile valid_users -format hashcat</code></pre>
 </doc-codeblock></div>
 <p>Now, let’s examine what this traffic looks like in WireShark
 <figure class="content-center">
@@ -291,12 +291,11 @@
 </ul>
 <p>By implementing this rule, Suricata will trigger an alert when it detects a pattern consistent with an ASREPRoast attack, helping to protect your domain from this common exploitation method.</p>
 <h2 id="creating-span-ports-on-proxmox">Creating SPAN Ports on Proxmox</h2>
-<p>Start by creating a new LXC and assign at least 2 cores, 2GB of RAM and 25GB of storage. After creating the container, add another network interface for the ports you want to mirror. In my case I added interfaces <code translate="no" v-pre>vmbr1</code> and <code translate="no" v-pre>vmbr2</code>. The interface is going to send copies of packets of machines connected to the switch to the container. Make sure the firewall is unchecked for these interfaces.
+<p>Start by creating a new LXC and assign at least 2 cores, 2GB of RAM and 25GB of storage. After creating the container, add another network interface for the ports you want to mirror. In my case I added interfaces <code translate="no" v-pre>vmbr1</code> and <code translate="no" v-pre>vmbr2</code>. The interface is going to send copies of packets of machines connected to the switch to the container. Make sure the firewall is unchecked for these interfaces.</p>
 <figure class="content-center">
     <img src="../../assets/images/homelab/pfsense-suricata-lxc-net.png" alt="Suricata LXC Net" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1282" height="585" />
     <figcaption class="caption">Suricata LXC Net</figcaption>
 </figure>
-</p>
 <p>Log in to the container and run the following commands.</p>
 <div id="creating-span-ports-on-proxmox-code-1" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ apt update &amp;&amp; apt upgrade -y
@@ -338,11 +337,11 @@ Next we need to edit the configuration file of Suricata located at <code transla
 </ol>
 <p>Finally we can restart Suricata on the container and monitor the two added interfaces. Any alerts will be logged to <code translate="no" v-pre>fast.log</code>.</p>
 <div id="creating-span-ports-on-proxmox-code-4" class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ systemctl enable suricata
-$ systemctl restart suricata
-$ suricata -i mirrorInt -i mirrorAD &amp;
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">systemctl enable suricata
+systemctl restart suricata
+suricata -i mirrorInt -i mirrorAD &amp;
 
-$ tail /var/log/suricata/fast.log</code></pre>
+tail /var/log/suricata/fast.log</code></pre>
 </doc-codeblock></div>
 <p>After this, we should be able to capture all traffic coming from our network in pfSense (even same-LAN traffic). One issue we are having now is that the port mirror command needs to be ran each time the container is restarted. It is possible to create a hookscript for this. Check out <a href="https://codingpackets.com/blog/proxmox-vm-bridge-port-mirror/">this post</a> to create a custom script to run at VM start and stop. Since we created a LXC, it is (at the time of writing) not possible to create hookscripts for containers, but you can always create a hookscript on the pfSense VM that creates the SPAN ports at boot for the Suricata container.</p>
 <h2 id="conclusion">Conclusion</h2>

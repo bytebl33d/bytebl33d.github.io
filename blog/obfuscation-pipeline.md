@@ -1,14 +1,12 @@
 ![](/assets/images/headers/malware.png)
 
-It has been some time since my last post. Professional commitments, personal life, and preparation for the [HackTheBox CAPE](https://academy.hackthebox.com/preview/certifications/htb-certified-active-directory-pentesting-expert) exam (more on that later) have kept me busy. During my preparation, one of the topics covered in the CAPE syllabus is defense evasion, and while the underlying concepts are not particularly complex, the practical execution often boils down to obfuscating open-source tooling to bypass AV signatures.
+It has been some time since my last post. Professional commitments, personal life, and preparation for the [HackTheBox CAPE](https://academy.hackthebox.com/preview/certifications/htb-certified-active-directory-pentesting-expert) exam (more on that later) have kept me busy. During my exam preparation, one of the topics covered in the CAPE course is defense evasion, and while the underlying concepts are not particularly complex, it often boils down to obfuscating open-source tooling to bypass AV signatures. This workflow is inherently repetitive: clone the repository, perform manual string obfuscation, rename variables and project metadata, and finally, pass the binary through whatever binary obfuscation tool. For a single project, this process can easily consume an hour or more to achieve a somewhat decent evasion rate, and that's only if you're hoping it doesn't completely break the tool in the process (looking at you, Rubeus).
 
-Until recently, I relied on a dedicated "malware development" VM (as recommended by HTB). However, this workflow is inherently repetitive: clone the repository, perform manual string obfuscation, rename variables and project metadata, and finally, pass the binary through whatever post-build obfuscation tool. For a single project, this process can easily consume an hour or more to achieve a somewhat decent evasion rate.
-
-Furthermore, this manual approach introduces a significant risk of breaking functionality. I learned this the hard way where certain functions (looking at you, Rubeus) simply stopped working because I adapted too much code. Without rigorous, automated testing, you only discover these things when executing the tool in a live environment.
-
-In my current job, my role has shifted a bit toward DevSecOps, which has given me some exposure to Jenkins pipelines. The value proposition of Jenkins is clear: it allows you to codify the entire build and obfuscation process. Once you define the standard transformations required for a project, you can automate the entire pipeline, ensuring consistency and speed.
+In my current job, my role has grown a bit toward DevSecOps, which has given me some exposure to Jenkins pipelines. The value proposition of Jenkins is clear: it allows you to codify the entire build and obfuscation process. No more manual grind, just let the pipeline do the heavy lifting.
 
 To operationalize this, you still require a dedicated build VM with all necessary toolchains installed. The build process may vary per project, but for my use case, I focused initially on .NET projects, specifically the Ghostpack binaries leveraged in the CAPE course. In this post, I will walk through how I set up this malware development pipeline and how you can replicate it for your own workflows.
+
+Trust me, once you automate this, you'll wonder why you didn't do it sooner. It's low-key a game changer.
 
 ## Project Repository Setup
 

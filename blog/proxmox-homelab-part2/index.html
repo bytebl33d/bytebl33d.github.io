@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.839578655806">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.839691610260">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 4.6.0">
@@ -46,11 +46,11 @@
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../resources/css/retype.css?v=4.6.0.839578655806" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=4.6.0.839691610260" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=4.6.0.839578655806" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=4.6.0.839691610260" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=4.6.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=4.6.0.839578655806" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=4.6.0.839691610260" data-turbo-eval="false" defer></script>
 </head>
 <body>
     <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
@@ -228,30 +228,30 @@
     <img src="../../assets/images/homelab/dc-setup-3.1.png" alt="DC-Setup-3.1" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="2082" height="1079" />
     <figcaption class="caption">DC-Setup-3.1</figcaption>
 </figure>
-<p>The first thing to do after the first boot is to rename the computer. Go to <code translate="no" v-pre>Settings &gt; System &gt; About &gt; Rename This PC</code>. I renamed mine to <code translate="no" v-pre>DC01</code> and chose to restart later.</p>
-<p>Since this machine will serve as the DHCP server, it needs a static IP. Go to <code translate="no" v-pre>Control Panel &gt; Network and Internet &gt; Network and Sharing Center &gt; Change Adapter Settings</code>, and configure the network interface with a private IP address (e.g., <code translate="no" v-pre>172.16.200.100</code>). Set the DNS server to <code translate="no" v-pre>127.0.0.1</code>, since the DC will also be a DNS server.</p>
+<p>The first thing to do after the first boot is to rename the computer. Go to <strong>Settings &gt; System &gt; About &gt; Rename This PC</strong>. I renamed mine to <code translate="no" v-pre>DC01</code> and chose to restart later.</p>
+<p>Since this machine will serve as the DHCP server, it needs a static IP. Go to <strong>Control Panel &gt; Network and Internet &gt; Network and Sharing Center &gt; Change Adapter Settings</strong>, and configure the network interface with a private IP address (e.g., <code translate="no" v-pre>172.16.200.100</code>). Set the DNS server to <code translate="no" v-pre>127.0.0.1</code>, since the DC will also be a DNS server.</p>
 <figure class="content-center">
     <img src="../../assets/images/homelab/dc-setup-4.png" alt="DC-Setup-4" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1092" height="685" />
     <figcaption class="caption">DC-Setup-4</figcaption>
 </figure>
 <h3 id="step-2-install-active-directory-domain-services">Step 2: Install Active Directory Domain Services</h3>
-<p>Open Server Manager and select <code translate="no" v-pre>Add roles and features</code>. Accept the default settings until you&#x27;re prompted with the <code translate="no" v-pre>Server Roles</code> section. Select <code translate="no" v-pre>Active Directory Domain Services</code> and add the necessary features. Once it has installed successfully, select <code translate="no" v-pre>Close</code>. I also installed the DNS and DHCP Server Features together with Active Directory Certificate Services, but this is optional.</p>
+<p>Open Server Manager and select <strong>Add roles and features</strong>. Accept the default settings until you&#x27;re prompted with the <code translate="no" v-pre>Server Roles</code> section. Select <strong>Active Directory Domain Services</strong> and add the necessary features. Once it has installed successfully, select <code translate="no" v-pre>Close</code>. I also installed the DNS and DHCP Server Features together with Active Directory Certificate Services, but this is optional.</p>
 <figure class="content-center">
     <img src="../../assets/images/homelab/dc-setup-ad-services.gif" alt="DC-Setup-ad-services" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1092" height="685" />
     <figcaption class="caption">DC-Setup-ad-services</figcaption>
 </figure>
-<p>The next step is to promote the server to a domain controller. You will need to have the domain name you want to use in the next step. I will choose the domain name of <code translate="no" v-pre>cicada.local</code>. To promote the server to a domain controller, click on the notification icon on the top section of the Server Manager program. Then select <code translate="no" v-pre>Promote this server to a domain controller</code>. Select <code translate="no" v-pre>Add a new forest</code> as this is a newly created AD environment. Enter the domain name in the root domain name field. Once the Windows Server has rebooted, you will see the login screen show the domain entered in the previous step.</p>
+<p>The next step is to promote the server to a domain controller. You will need to have the domain name you want to use in the next step. I will choose the domain name of <code translate="no" v-pre>cicada.local</code>. To promote the server to a domain controller, click on the notification icon on the top section of the Server Manager program. Then select <strong>Promote this server to a domain controller</strong>. Select <code translate="no" v-pre>Add a new forest</code> as this is a newly created AD environment. Enter the domain name in the root domain name field. Once the Windows Server has rebooted, you will see the login screen show the domain entered in the previous step.</p>
 <h3 id="step-3-create-a-domain-admin-account">Step 3: Create a Domain Admin Account</h3>
-<p>After logging in, open <code translate="no" v-pre>Active Directory Users and Computers</code>. As I like to keep things organized, I will create a new group for all the user accounts. Right click on your domain and select <code translate="no" v-pre>New &gt; Organizational Unit</code> and name it <code translate="no" v-pre>Groups</code>. Move all group related objects from the <code translate="no" v-pre>Users</code> to the <code translate="no" v-pre>Groups</code> folder. Right click on the <code translate="no" v-pre>Users</code> folder and select <code translate="no" v-pre>New &gt; User</code>.</p>
+<p>After logging in, open <strong>Active Directory Users and Computers</strong>. As I like to keep things organized, I will create a new group for all the user accounts. Right click on your domain and select <strong>New &gt; Organizational Unit</strong> and name it <code translate="no" v-pre>Groups</code>. Move all group related objects from the <code translate="no" v-pre>Users</code> to the <code translate="no" v-pre>Groups</code> folder. Right click on the <code translate="no" v-pre>Users</code> folder and select <strong>New &gt; User</strong>.</p>
 <figure class="content-center">
     <img src="../../assets/images/homelab/dc-setup-5.png" alt="DC-Setup-5" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1042" height="652" />
     <figcaption class="caption">DC-Setup-5</figcaption>
 </figure>
-<p>Fill in the user details and set a password for the account. Disable the option <code translate="no" v-pre>User must change password at next logon</code> and check the <code translate="no" v-pre>Password never expires</code>. In an organization, the former should be checked so that the end user can set their own password.</p>
-<p>Now we need to add the newly created account to the <code translate="no" v-pre>Domain Admin</code> group. This can be done right clicking the newly created user and selecting Properties. Select the <code translate="no" v-pre>Member of &gt; Add</code>. Under the <code translate="no" v-pre>Enter the object names to select</code> section, click on the <code translate="no" v-pre>Advanced</code> button. Then click <code translate="no" v-pre>Find now &gt; Domain Admins</code> and click <code translate="no" v-pre>OK</code>.</p>
+<p>Fill in the user details and set a password for the account. Disable the option <strong>&quot;User must change password at next logon&quot;</strong> and check the <strong>&quot;Password never expires&quot;</strong>. In an organization, the former should be checked so that the end user can set their own password.</p>
+<p>Now we need to add the newly created account to the <code translate="no" v-pre>Domain Admin</code> group. This can be done right clicking the newly created user and selecting Properties. Select the <code translate="no" v-pre>Member of &gt; Add</code>. Under the <strong>&quot;Enter the object names to select&quot;</strong> section, click on the <code translate="no" v-pre>Advanced</code> button. Then click <code translate="no" v-pre>Find now &gt; Domain Admins</code> and click <code translate="no" v-pre>OK</code>.</p>
 <p>We can then logout of the Administrator account and login with our newly created domain account. Whenever we create a new user account, they are able to login with their credentials on any domain joined host.</p>
 <h3 id="step-4-configure-the-dhcp-server">Step 4: Configure the DHCP Server</h3>
-<p>Go to <code translate="no" v-pre>Server Manager &gt; Add roles and Features</code>, select DHCP Server, and complete the installation. Once done, complete the DHCP configuration through the notifications in Server Manager.</p>
+<p>Go to <strong>&quot;Server Manager &gt; Add roles and Features&quot;</strong>, select DHCP Server, and complete the installation. Once done, complete the DHCP configuration through the notifications in Server Manager.</p>
 <p>We then have to configure a DHCP scope. To do so, go to <code translate="no" v-pre>Server Manager</code> once again. Then select <code translate="no" v-pre>Tools &gt; DHCP</code>. Expand the available options and then right click on IPv4 to create an IPv4 Scope. Set a name for the scope and give it a description if you wish to do so. Select <code translate="no" v-pre>Next</code> and set the range to be somewhere inside the <code translate="no" v-pre>172.16.200.1/24</code> network. I choose the starting IP to be <code translate="no" v-pre>172.16.200.11</code> to give me some room in case I want to add some static IPs later. You can also exclude some IP addresses if you want to.</p>
 <figure class="content-center">
     <img src="../../assets/images/homelab/dc-setup-6.png" alt="DC-Setup-6" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1042" height="652" />
@@ -259,7 +259,7 @@
 </figure>
 <p>When prompted if you want to configure DHCP options for this scope now, choose <code translate="no" v-pre>Yes</code>, then select <code translate="no" v-pre>Next</code>. You will then be prompted to select the IP address for the default gateway. The IP address we gave our default gateway was <code translate="no" v-pre>172.16.200.1</code>. Enter that and click on Add. Then select Next.</p>
 <h3 id="add-windows-10-vm-to-domain">Add Windows 10 VM to Domain</h3>
-<p>Go through the initial setup wizard and login with the local account you created. The next step is to join the Windows 10 VM to the domain. To do so, open the <code translate="no" v-pre>Settings</code> program and go to <code translate="no" v-pre>Accounts &gt; Access work or school &gt; Connect</code>. In the pop out window, select the option <code translate="no" v-pre>Join this device to a local Active Directory domain</code>. Enter the domain name we used to configure our Active Directory forest (I used cicada.local). You will then be prompted for a login.</p>
+<p>Go through the initial setup wizard and login with the local account you created. The next step is to join the Windows 10 VM to the domain. To do so, open the <code translate="no" v-pre>Settings</code> program and go to <strong>Accounts &gt; Access work or school &gt; Connect</strong>. In the pop out window, select the option <strong>&quot;Join this device to a local Active Directory domain&quot;</strong>. Enter the domain name we used to configure our Active Directory forest (I used cicada.local). You will then be prompted for a login.</p>
 <p>Windows 10 will restart after entering the credentials. After rebooting, you can now login to the domain by selecting Other User in the lower left corner.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>Congratulations! You now have a fully functioning Active Directory home lab. With your Domain Controller and Windows 10 VM set up, you’re ready to explore, experiment, and even simulate attacks to understand how AD environments operate and how they can be secured or compromised. In the next part, we’ll delve into common misconfigurations in Windows and Active Directory and explore how attackers might exploit them. Stay tuned!</p>

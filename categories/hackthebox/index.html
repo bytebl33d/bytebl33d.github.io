@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.839578655806">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.839691610260">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 4.6.0">
@@ -34,11 +34,11 @@
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../resources/css/retype.css?v=4.6.0.839578655806" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=4.6.0.839691610260" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=4.6.0.839578655806" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=4.6.0.839691610260" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=4.6.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=4.6.0.839578655806" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=4.6.0.839691610260" data-turbo-eval="false" defer></script>
 </head>
 <body>
     <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
@@ -235,7 +235,7 @@
         <div class="p-card-padding">
             <div class="text-card-kicker font-card-kicker text-card-kicker-text card-kicker-case">HackTheBox &#8226; Windows &#8226; Active-Directory</div>
             <div class="mt-2 text-card-title font-card-title leading-card-title text-card-title-text md:text-card-title-md">DarkCorp (Insane)</div>
-            <div class="line-clamp-3"><p class="mt-card-description-margin-top text-card-description-text">We start with a quick nmap scan and see that there are only two ports open.</p></div>
+            <div class="line-clamp-3"><p class="mt-card-description-margin-top text-card-description-text">DarkCorp is an Insane-difficulty Windows machine with several computers joined. The initial foothold involves exploiting CVE-2024-42009, an XXS vulnerability and IDOR in <code translate="no" v-pre>RoundCube</code>, via the Contact Page to read emails from a developer and leak a hidden, password-protected Analytics dashboard. By leveraging the XXS vulnerability, a separate vhost is accessed, which is vulnerable to a command injection vulnerability using <code translate="no" v-pre>Postgres</code>, allowing us to gain an initial foothold on the machine. Then, an internal web application monitoring service is abused by relaying the authentication request to the domain controller. Furthermore, <code translate="no" v-pre>PrinterBug</code> is used to coerce the web server within DarkCorp's internal network following a Kerberos relay attack to compromise the host. After enumerating <code translate="no" v-pre>Credential Manager</code> installed in the web server, abusing ACLs using the credentials found, and exploiting <strong>&quot;A broken marriage, Abusing mixed vendor Kerberos stacks&quot;</strong> to get an SSH session on the Drip machine, finally the cached credentials inside the host is extracted which can be leveraged to manage Group Policy Objects allowing us to add a local administrator account to get adminitrative access to the domain controller.</p></div>
             <div class="flex mt-card-footer-margin-top items-center">
                 <div class="text-card-footer text-card-footer-text"><span>2025-10-18</span></div>
             </div>
@@ -297,7 +297,7 @@
             <div class="mt-2 text-card-title font-card-title leading-card-title text-card-title-text md:text-card-title-md">University (Insane)</div>
             <div class="line-clamp-3"><p class="mt-card-description-margin-top text-card-description-text">University is an Insane Windows Active Directory machine that starts with a university webpage. The web application allows exporting user profile pages to a PDF using xhtml2pdf, which is vulnerable to a Remote Code Execution vulnerability via CVE-2023-33733.</p></div>
             <div class="flex mt-card-footer-margin-top items-center">
-                <div class="text-card-footer text-card-footer-text"><span>2024-08-15</span></div>
+                <div class="text-card-footer text-card-footer-text"><span>2025-08-15</span></div>
             </div>
         </div>
     </a>

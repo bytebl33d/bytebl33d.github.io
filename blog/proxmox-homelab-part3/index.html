@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.839578655806">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.839691610260">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 4.6.0">
@@ -46,12 +46,12 @@
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../resources/css/retype.css?v=4.6.0.839578655806" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=4.6.0.839691610260" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=4.6.0.839578655806" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=4.6.0.839691610260" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=4.6.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=4.6.0.839578655806" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=4.6.0.839578655806" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=4.6.0.839691610260" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=4.6.0.839691610260" defer></script>
 </head>
 <body>
     <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
@@ -177,7 +177,7 @@
 </figure>
 <p>We are now going to add some simple misconfigurations to our AD Lab. In the final section we will verify them by targeting our network from an outside Linux VM. To make the Active Directory Lab vulnerable we first need to change some settings.</p>
 <h2 id="group-policy-configuration">Group Policy Configuration</h2>
-<p>Open the <code translate="no" v-pre>Start menu</code> and click on <code translate="no" v-pre>Windows Administrative Tools</code>, then choose <code translate="no" v-pre>Group Policy Management</code>. Expand <code translate="no" v-pre>Forest</code> and <code translate="no" v-pre>Domains</code>, to view your own domain.</p>
+<p>Open the <code translate="no" v-pre>Start menu</code> and click on <strong>Windows Administrative Tools</strong>, then choose <strong>Group Policy Management</strong>. Expand <code translate="no" v-pre>Forest</code> and <code translate="no" v-pre>Domains</code>, to view your own domain.</p>
 <h3 id="disable-windows-defender-and-firewall">Disable Windows Defender and Firewall</h3>
 <p>We can create a first GPO that will disable the Windows Defender Firewall so we can more easily experiment with attacks later on. Of course we could also disable (unlink) the policy later.</p>
 <div class="flex mb-6">
@@ -197,7 +197,7 @@
     </div>
 </div>
 <p>Right-click on the domain name. Select <code translate="no" v-pre>Create a GPO in the domain and link here</code>. Give the GPO the name <code translate="no" v-pre>Disable Protections</code>. Right-click on the newly added policy and choose <code translate="no" v-pre>Edit</code>.</p>
-<p>This will open the <code translate="no" v-pre>Group Policy Management Editor</code>. From the sidebar go to the following folder: <code translate="no" v-pre>Computer Configuration &gt; Policies &gt; Administrative Templates &gt; Windows Components &gt; Microsoft Defender Antivirus</code>. Select <code translate="no" v-pre>Microsoft Defender Antivirus</code>. From the right side select <code translate="no" v-pre>Turn off Microsoft Defender Antivirus</code> and click on <code translate="no" v-pre>Edit policy setting</code>. Set it to Enabled. Click on Apply then OK to save the changes.</p>
+<p>This will open the <strong>Group Policy Management Editor</strong>. From the sidebar go to the following folder: <strong>Computer Configuration &gt; Policies &gt; Administrative Templates &gt; Windows Components &gt; Microsoft Defender Antivirus</strong>. Select <code translate="no" v-pre>Microsoft Defender Antivirus</code>. From the right side select <strong>&quot;Turn off Microsoft Defender Antivirus&quot;</strong> and click on <code translate="no" v-pre>Edit policy setting</code>. Set it to Enabled. Click on Apply then OK to save the changes.</p>
 <figure class="content-center">
     <img src="../../assets/images/homelab/vuln-setup-1.png" alt="vulnerability-setup-1" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1091" height="683" />
     <figcaption class="caption">vulnerability-setup-1</figcaption>
@@ -207,20 +207,20 @@
     <img src="../../assets/images/homelab/vuln-setup-2.png" alt="vulnerability-setup-2" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1091" height="683" />
     <figcaption class="caption">vulnerability-setup-2</figcaption>
 </figure>
-<p>Expand the sidebar folders to the following: <code translate="no" v-pre>Computer Configuration &gt; Policies &gt; Administrative Templates &gt; Network &gt; Network Connections &gt; Windows Defender Firewall &gt; Domain Profile</code>. Disable the <code translate="no" v-pre>Windows Defender Firewall: Protect all network connections</code> setting.</p>
+<p>Expand the sidebar folders to the following: <strong>Computer Configuration &gt; Policies &gt; Administrative Templates &gt; Network &gt; Network Connections &gt; Windows Defender Firewall &gt; Domain Profile</strong>. Disable the <strong>&quot;Windows Defender Firewall: Protect all network connections&quot;</strong> setting.</p>
 <figure class="content-center">
     <img src="../../assets/images/homelab/vuln-setup-3.png" alt="vulnerability-setup-3" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1091" height="683" />
     <figcaption class="caption">vulnerability-setup-3</figcaption>
 </figure>
 <p>Close Group Policy Management Editor. From the sidebar of Group Policy Management right-click on <code translate="no" v-pre>Disable Protections</code> and choose <code translate="no" v-pre>Enforced</code>.</p>
 <h3 id="enable-winrm-server">Enable WinRM Server</h3>
-<p>Right-click on your domain name. Select <code translate="no" v-pre>Create a GPO in the domain and link here</code>. Give the GPO the name <code translate="no" v-pre>Enable WinRM Server</code>. Right-click on it and choose <code translate="no" v-pre>Edit</code>. Using the sidebar go to the following folder: <code translate="no" v-pre>Computer Configuration &gt; Policies &gt; Administrative Templates &gt; Windows Components &gt; Windows Remote Management (WinRM) &gt; WinRM Service</code>. Select <code translate="no" v-pre>Allow remote server management through WinRM</code> and then click on <code translate="no" v-pre>Edit policy settings</code>. Set the policy to <code translate="no" v-pre>Enabled</code> and in the IPv4 filter field enter <code translate="no" v-pre>*</code>. Click on <code translate="no" v-pre>Apply</code> then <code translate="no" v-pre>OK</code>.</p>
+<p>Right-click on your domain name. Select <strong>&quot;Create a GPO in the domain and link here&quot;</strong>. Give the GPO the name <code translate="no" v-pre>Enable WinRM Server</code>. Right-click on it and choose <code translate="no" v-pre>Edit</code>. Using the sidebar go to the following folder: <strong>Computer Configuration &gt; Policies &gt; Administrative Templates &gt; Windows Components &gt; Windows Remote Management (WinRM) &gt; WinRM Service</strong>. Select <strong>&quot;Allow remote server management through WinRM&quot;</strong> and then click on <code translate="no" v-pre>Edit policy settings</code>. Set the policy to <code translate="no" v-pre>Enabled</code> and in the IPv4 filter field enter <code translate="no" v-pre>*</code>. Click on <code translate="no" v-pre>Apply</code> then <code translate="no" v-pre>OK</code>.</p>
 <figure class="content-center">
     <img src="../../assets/images/homelab/vuln-setup-4.png" alt="vulnerability-setup-4" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1091" height="683" />
     <figcaption class="caption">vulnerability-setup-4</figcaption>
 </figure>
-<p>Optionally you can enable <code translate="no" v-pre>Allow Basic authentication</code> and <code translate="no" v-pre>Allow unencrypted traffic</code> if you want people to perform Man-in-the-Middle attacks.</p>
-<p>Next navigate to <code translate="no" v-pre>Computer Configuration &gt; Preferences &gt; Control Panel Settings</code>. Right-click on <code translate="no" v-pre>Services</code> and select <code translate="no" v-pre>New &gt; Service</code>.</p>
+<p>Optionally you can enable <strong>Allow Basic authentication</strong> and <strong>Allow unencrypted traffic</strong> if you want people to perform Man-in-the-Middle attacks.</p>
+<p>Next navigate to <strong>Computer Configuration &gt; Preferences &gt; Control Panel Settings</strong>. Right-click on <code translate="no" v-pre>Services</code> and select <strong>New &gt; Service</strong>.</p>
 <figure class="content-center">
     <img src="../../assets/images/homelab/vuln-setup-5.png" alt="vulnerability-setup-5" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1091" height="683" />
     <figcaption class="caption">vulnerability-setup-5</figcaption>
@@ -230,12 +230,12 @@
     <img src="../../assets/images/homelab/vuln-setup-6.png" alt="vulnerability-setup-6" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1091" height="683" />
     <figcaption class="caption">vulnerability-setup-6</figcaption>
 </figure>
-<p>Once again in the sidebar navigate to <code translate="no" v-pre>Computer Configuration &gt; Policies &gt; Administrative Templates &gt; Windows Components &gt; Windows Remote Shell</code>. Select <code translate="no" v-pre>Allow Remote Shell Access</code> and enable it.</p>
+<p>Once again in the sidebar navigate to <strong>Computer Configuration &gt; Policies &gt; Administrative Templates &gt; Windows Components &gt; Windows Remote Shell</strong>. Select <code translate="no" v-pre>Allow Remote Shell Access</code> and enable it.</p>
 <figure class="content-center">
     <img src="../../assets/images/homelab/vuln-setup-7.png" alt="vulnerability-setup-7" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1091" height="683" />
     <figcaption class="caption">vulnerability-setup-7</figcaption>
 </figure>
-<p>Finally go to <code translate="no" v-pre>Computer Configuration &gt; Policies &gt; Security Settings &gt; Windows Firewall with Advanced Security</code>. Right-click <code translate="no" v-pre>Inbound Rules</code> and create a <code translate="no" v-pre>New Rule</code>.</p>
+<p>Finally go to <strong>Computer Configuration &gt; Policies &gt; Security Settings &gt; Windows Firewall with Advanced Security</strong>. Right-click <code translate="no" v-pre>Inbound Rules</code> and create a <code translate="no" v-pre>New Rule</code>.</p>
 <figure class="content-center">
     <img src="../../assets/images/homelab/vuln-setup-7.0.png" alt="vulnerability-setup-7.0" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="2412" height="1511" />
     <figcaption class="caption">vulnerability-setup-7.0</figcaption>
@@ -253,25 +253,25 @@ SourceAddress       : 172.16.200.100
 TcpTestSucceeded    : True</code></pre>
 </doc-codeblock></div>
 <h4 id="additional-registry-edit">Additional Registry Edit</h4>
-<p>I found that when applying the GPO to the domain, I was still not able to WinRM from a remote host. I found that enabling the WinRM service throught the Registry solved the issue. To do this go to <code translate="no" v-pre>Computer Configuration &gt; Preferences &gt; Registry</code>. Right-click and select <code translate="no" v-pre>New &gt; Registry Item</code>. As the registry path select <code translate="no" v-pre>HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WinRM\Service</code> and set the value of the IPv4Filter to <code translate="no" v-pre>*</code> or whatever IP range you want to include.</p>
+<p>I found that when applying the GPO to the domain, I was still not able to WinRM from a remote host. I found that enabling the WinRM service throught the Registry solved the issue. To do this go to <strong>Computer Configuration &gt; Preferences &gt; Registry</strong>. Right-click and select <strong>New &gt; Registry Item</strong>. As the registry path select <code translate="no" v-pre>HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WinRM\Service</code> and set the value of the IPv4Filter to <code translate="no" v-pre>*</code> or whatever IP range you want to include.</p>
 <figure class="content-center">
     <img src="../../assets/images/homelab/vuln-setup-7.1.png" alt="vulnerability-setup-7.1" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="2412" height="1511" />
     <figcaption class="caption">vulnerability-setup-7.1</figcaption>
 </figure>
 <h3 id="adding-a-public-file-share">Adding a Public File Share</h3>
 <h4 id="local-share">Local Share</h4>
-<p>Login as a local administator to one of your Windows VMs and navigate to <code translate="no" v-pre>Control Panel &gt; Network and Internet &gt; Network and Sharing Center &gt; Change Advanced sharing settings &gt; Guest or Public &gt; Turn on File and Printer sharing</code>.</p>
+<p>Login as a local administator to one of your Windows VMs and navigate to <strong>Control Panel &gt; Network and Internet &gt; Network and Sharing Center &gt; Change Advanced sharing settings &gt; Guest or Public &gt; Turn on File and Printer sharing</strong>.</p>
 <p>Next create a new folder, Right-click and go to <code translate="no" v-pre>Properties &gt; Sharing tab &gt; Share</code> and give the <code translate="no" v-pre>Everyone</code> user read permission.</p>
 <figure class="content-center">
     <img src="../../assets/images/homelab/vuln-setup-9.png" alt="vulnerability-setup-9" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1199" height="729" />
     <figcaption class="caption">vulnerability-setup-9</figcaption>
 </figure>
-<p>If you want to allow users to access the file share as a <code translate="no" v-pre>Guest</code> user, then open <code translate="no" v-pre>Local Security Policy</code> as an Administrator. Next go to <code translate="no" v-pre>Local Policies &gt; Security Options &gt; Accounts: Guest account status</code> and switch it to Enabled.</p>
+<p>If you want to allow users to access the file share as a <code translate="no" v-pre>Guest</code> user, then open <code translate="no" v-pre>Local Security Policy</code> as an Administrator. Next go to <strong>Local Policies &gt; Security Options &gt; Accounts: Guest account status</strong> and switch it to Enabled.</p>
 <figure class="content-center">
     <img src="../../assets/images/homelab/vuln-setup-8.png" alt="vulnerability-setup-8" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1088" height="682" />
     <figcaption class="caption">vulnerability-setup-8</figcaption>
 </figure>
-<p>In the same window go to <code translate="no" v-pre>User Rights Assignment &gt; Deny access to this computer from the network</code> and make sure that the Guest account is not in this list.</p>
+<p>In the same window go to <strong>User Rights Assignment &gt; Deny access to this computer from the network</strong> and make sure that the Guest account is not in this list.</p>
 <figure class="content-center">
     <img src="../../assets/images/homelab/vuln-setup-8.1.png" alt="vulnerability-setup-8" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1154" height="589" />
     <figcaption class="caption">vulnerability-setup-8</figcaption>
@@ -285,7 +285,7 @@ In the terminal enter the following:</p>
 <p>Now whenever a new device joins our AD environment the Group Policies that apply to all the devices will automatically be applied to them. With this, we have completed the Domain Controller setup.</p>
 <h2 id="account-misconfigurations">Account Misconfigurations</h2>
 <h3 id="asrep-roasting">ASREP Roasting</h3>
-<p>In older versions of Kerberos, it was possible to allow authentication without a password. Since Kerberos 5, a password is required, which is called <code translate="no" v-pre>Pre-Authentication</code>. If an account has the option <code translate="no" v-pre>Do not require Kerberos preauthentication</code> checked, an attacker can send any request for authentication to the KDC to retrieve an encrypted TGT that can be brute-forced offline.</p>
+<p>In older versions of Kerberos, it was possible to allow authentication without a password. Since Kerberos 5, a password is required, which is called <code translate="no" v-pre>Pre-Authentication</code>. If an account has the option <strong>&quot;Do not require Kerberos preauthentication&quot;</strong> checked, an attacker can send any request for authentication to the KDC to retrieve an encrypted TGT that can be brute-forced offline.</p>
 <figure class="content-center">
     <img src="../../assets/images/homelab/vuln-setup-10.png" alt="asreproast-enable" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="2467" height="1543" />
     <figcaption class="caption">asreproast-enable</figcaption>
@@ -343,7 +343,7 @@ Info: Establishing connection to remote endpoint
 cicada\winnie.wonder</code></pre>
 </doc-codeblock></div>
 <h3 id="asreproasting">ASREPRoasting</h3>
-<p>Assuming we have gathered a list of valid users, we can try to perform an ASREPRoast attack on the domain users to see if any account has the <code translate="no" v-pre>Do not require Kerberos preauthentication</code> option set. With a valid list of users, we can use <a href="https://github.com/fortra/impacket/blob/master/examples/GetNPUsers.py">Get-NPUsers.py</a> from the Impacket toolkit to hunt for all users with Kerberos pre-authentication not required.</p>
+<p>Assuming we have gathered a list of valid users, we can try to perform an ASREPRoast attack on the domain users to see if any account has the <strong>&quot;Do not require Kerberos preauthentication&quot;</strong> option set. With a valid list of users, we can use <a href="https://github.com/fortra/impacket/blob/master/examples/GetNPUsers.py">Get-NPUsers.py</a> from the Impacket toolkit to hunt for all users with Kerberos pre-authentication not required.</p>
 <div id="asreproasting-code-1" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-bash"><code v-pre class="language-bash">GetNPUsers.py CICADA.LOCAL/ -dc-ip 172.16.200.100 -no-pass -usersfile valid_users -format hashcat
 

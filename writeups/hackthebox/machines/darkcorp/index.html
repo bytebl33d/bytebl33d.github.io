@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.839578655806">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.839691610260">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 4.6.0">
@@ -12,7 +12,7 @@
     <!-- Primary Meta Tags -->
     <title>DarkCorp (Insane)</title>
     <meta name="title" content="DarkCorp (Insane)">
-    <meta name="description" content="We start with a quick nmap scan and see that there are only two ports open.">
+    <meta name="description" content="DarkCorp is an Insane-difficulty Windows machine with several computers joined. The initial foothold involves exploiting CVE-2024-42009, an XXS vulnerability and IDOR in RoundCube, via the Contact Page to read emails from a developer and leak a hidden, password-protected Analytics dashboard.">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://bytebl33d.github.io/writeups/hackthebox/machines/darkcorp/">
@@ -22,7 +22,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://bytebl33d.github.io/writeups/hackthebox/machines/darkcorp/">
     <meta property="og:title" content="DarkCorp (Insane)">
-    <meta property="og:description" content="We start with a quick nmap scan and see that there are only two ports open.">
+    <meta property="og:description" content="DarkCorp is an Insane-difficulty Windows machine with several computers joined. The initial foothold involves exploiting CVE-2024-42009, an XXS vulnerability and IDOR in RoundCube, via the Contact Page to read emails from a developer and leak a hidden, password-protected Analytics dashboard.">
     <meta property="og:image" content="https://bytebl33d.github.io/assets/images/headers/darkcorp.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -34,7 +34,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://bytebl33d.github.io/writeups/hackthebox/machines/darkcorp/">
     <meta name="twitter:title" content="DarkCorp (Insane)">
-    <meta name="twitter:description" content="We start with a quick nmap scan and see that there are only two ports open.">
+    <meta name="twitter:description" content="DarkCorp is an Insane-difficulty Windows machine with several computers joined. The initial foothold involves exploiting CVE-2024-42009, an XXS vulnerability and IDOR in RoundCube, via the Contact Page to read emails from a developer and leak a hidden, password-protected Analytics dashboard.">
     <meta name="twitter:image" content="https://bytebl33d.github.io/assets/images/headers/darkcorp.png">
     <meta name="twitter:image:alt" content="DarkCorp (Insane)">
 
@@ -46,12 +46,12 @@
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../../../resources/css/retype.css?v=4.6.0.839578655806" rel="stylesheet">
+    <link href="../../../../resources/css/retype.css?v=4.6.0.839691610260" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../../resources/js/config.js?v=4.6.0.839578655806" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/config.js?v=4.6.0.839691610260" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../../resources/js/retype.js?v=4.6.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=4.6.0.839578655806" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=4.6.0.839578655806" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=4.6.0.839691610260" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=4.6.0.839691610260" defer></script>
 </head>
 <body>
     <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
@@ -177,6 +177,7 @@
     <div class="flex items-center shrink-0">Published&nbsp;<span>2025-10-18</span></div>
 </div>
 
+<p>DarkCorp is an Insane-difficulty Windows machine with several computers joined. The initial foothold involves exploiting CVE-2024-42009, an XXS vulnerability and IDOR in <code translate="no" v-pre>RoundCube</code>, via the Contact Page to read emails from a developer and leak a hidden, password-protected Analytics dashboard. By leveraging the XXS vulnerability, a separate vhost is accessed, which is vulnerable to a command injection vulnerability using <code translate="no" v-pre>Postgres</code>, allowing us to gain an initial foothold on the machine. Then, an internal web application monitoring service is abused by relaying the authentication request to the domain controller. Furthermore, <code translate="no" v-pre>PrinterBug</code> is used to coerce the web server within DarkCorp&#x27;s internal network following a Kerberos relay attack to compromise the host. After enumerating <code translate="no" v-pre>Credential Manager</code> installed in the web server, abusing ACLs using the credentials found, and exploiting <strong>&quot;A broken marriage, Abusing mixed vendor Kerberos stacks&quot;</strong> to get an SSH session on the Drip machine, finally the cached credentials inside the host is extracted which can be leveraged to manage Group Policy Objects allowing us to add a local administrator account to get adminitrative access to the domain controller.</p>
 <h2 id="reconnaissance">Reconnaissance</h2>
 <p>We start with a quick nmap scan and see that there are only two ports open.</p>
 <div id="reconnaissance-code-1" class="codeblock-wrapper"><doc-codeblock>
