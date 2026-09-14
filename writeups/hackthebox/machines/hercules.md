@@ -1,3 +1,5 @@
+![](/assets/images/headers/Hercules.png)
+
 ## Synopsis
 
 ## Reconnaissance
