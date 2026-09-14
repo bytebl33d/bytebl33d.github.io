@@ -126,7 +126,9 @@ When testing the login form further, I found it is vulnerable to LDAP injection.
 - `adriana*)(cn=*` matches anything with a common name
 - `adriana*)(description=*` returns a valid response if the description field contains data
 
-!!!info The payload needs to be properly encoded (double-URL) so that the backend (IIS/ASP.NET) processes the request. !!!
+!!!info
+The payload needs to be properly encoded (double-URL) so that the backend (IIS/ASP.NET) processes the request.
+!!!
 
 Similar to SQL Injection, an LDAP injection vulnerability results when an application injects unfiltered user input directly into an LDAP statement. Because of the rate-limiting, we need to write a custom script that allows us to brute force valid usernames and LDAP fields much easier.
 
@@ -794,7 +796,9 @@ evil-winrm-py PS C:\Users\auditor\desktop> cat user.txt
 6e001f4f622c290c03e287f89f51a972
 ```
 
-!!!info The regular evil-winrm didn't work, so I switched to the python version !!!
+!!!info
+The regular evil-winrm didn't work, so I switched to the python version
+!!!
 
 ## Root
 
